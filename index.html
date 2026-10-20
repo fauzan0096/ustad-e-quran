@@ -3,32 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Dictionary - Touch & Learn</title>
+    <title>Islamic Learning App - Padho, Samjho, Khelo</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Fonts for Arabic and Urdu -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <h1>📖 Quran & Namaz Dictionary</h1>
-        <p>Lafz par touch karein aur uski aawaz sunein</p>
+        <div class="header-top">
+            <h1>📖 Quran & Namaz Learning</h1>
+            <button id="themeToggle" class="icon-btn">🌙</button>
+        </div>
+        <p>Padho, Samjho, Aawaz Suno aur Exam Pass Karo!</p>
     </header>
 
-    <div class="controls">
-        <input type="text" id="searchBar" placeholder="🔍 Search Arabic, Roman, or Urdu...">
-        <div class="tabs">
-            <button class="tab-btn active" data-category="namaz">Namaz ki Duaen</button>
-            <button class="tab-btn" data-category="quran326">Quran (326 Alfaz)</button>
-            <button class="tab-btn" data-category="quran650">Quran (650 Alfaz)</button>
+    <nav class="main-nav">
+        <button class="nav-btn active" data-view="dictView">📚 Dictionary</button>
+        <button class="nav-btn" data-view="dailyView">🎯 Daily 10 Words</button>
+    </nav>
+
+    <!-- DICTIONARY VIEW -->
+    <div id="dictView" class="view-section active">
+        <div class="controls">
+            <input type="text" id="searchBar" placeholder="🔍 Search Arabic, Roman, or Urdu...">
+        </div>
+        <div class="grid-container" id="wordGrid"></div>
+    </div>
+
+    <!-- DAILY LEARNING & EXAM VIEW -->
+    <div id="dailyView" class="view-section">
+        <div class="daily-header">
+            <h2 id="dayTitle">Day 1 - Learn 10 Words</h2>
+            <div class="progress-bar"><div id="progressFill"></div></div>
+        </div>
+
+        <!-- Learning Cards -->
+        <div class="grid-container" id="dailyGrid"></div>
+
+        <!-- Start Exam Button -->
+        <div class="exam-start-container" id="startExamContainer">
+            <p>Saare 10 lafz yaad ho gaye? Chalo exam dekar agla din unlock karein!</p>
+            <button id="startExamBtn" class="btn-primary">Start Exam</button>
+        </div>
+
+        <!-- Exam Section (Hidden Initially) -->
+        <div id="examSection" class="exam-section hidden">
+            <h2>📝 Daily Exam</h2>
+            <p style="text-align:center; margin-bottom: 20px;">Sahi Urdu meaning select karein. (8/10 chahiye pass hone ke liye)</p>
+            <div id="quizContainer"></div>
+            <button id="submitExamBtn" class="btn-primary hidden" style="display:block; margin: 20px auto;">Submit Exam</button>
+            <div id="examResult" class="hidden"></div>
         </div>
     </div>
 
-    <div class="grid-container" id="wordGrid">
-        <!-- Words will be loaded here by JavaScript -->
+    <!-- MODAL POPUP FOR FAZILAT/TAFSEEL -->
+    <div id="infoModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="color: var(--primary); text-align: center;">Fazilat / Tafseel</h2>
+            <div id="modalText" class="modal-text urdu"></div>
+            <button class="btn-primary" id="speakExplanationBtn" style="width:100%; margin-top:20px;">🔊 Tafseel Suno (Urdu)</button>
+        </div>
     </div>
 
-    <div id="toast" class="toast">Aawaz play ho rahi hai...</div>
+    <div id="toast" class="toast">Message</div>
 
     <script src="script.js"></script>
 </body>
