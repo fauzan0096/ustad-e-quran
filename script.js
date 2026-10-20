@@ -1,5 +1,5 @@
 // ==========================================
-// 1. DATA (With Correct Iraab / Diacritics)
+// 1. DATA (With Correct Iraab)
 // ==========================================
 const duaData = [
     { arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", roman: "Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur", urdu: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں نیند کی موت کے بعد زندہ کیا", tafseel: "حدیث: نبی ﷺ جب نیند سے جاگتے تو یہ پڑھتے۔ (صحیح البخاری 6312)" },
@@ -88,37 +88,81 @@ const toast = document.getElementById('toast');
 let bestArabicVoice = null;
 let bestUrduVoice = null;
 
+// Passwords Configuration
+const ADMIN_PASS = "Fauzan8087";
+const GUEST_PASS = "quran123"; 
+
 // Load Voices
 function loadVoices() {
     const voices = window.speechSynthesis.getVoices();
-    
-    // Try to find Saudi Arabic voice (Best for Quran)
     bestArabicVoice = voices.find(v => v.lang.includes('ar-SA')) || 
                       voices.find(v => v.lang.includes('ar-EG')) || 
                       voices.find(v => v.lang.includes('ar'));
-                      
-    // Try to find Urdu voice
     bestUrduVoice = voices.find(v => v.lang.includes('ur-PK')) || 
                     voices.find(v => v.lang.includes('ur')) ||
-                    voices.find(v => v.lang.includes('hi')); // Fallback to Hindi if Urdu missing
+                    voices.find(v => v.lang.includes('hi')); 
 }
 window.speechSynthesis.onvoiceschanged = loadVoices;
 loadVoices();
 
 // ==========================================
-// 3. INITIALIZATION & UI RENDERING
+// 3. INITIALIZATION & LOGIN LOGIC
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     if (isDarkMode) {
         document.body.setAttribute('data-theme', 'dark');
         document.getElementById('themeToggle').innerText = '☀️';
     }
+
+    // Check if already logged in
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+    }
+
+    // Setup Login
+    document.getElementById('loginBtn').addEventListener('click', handleLogin);
+    document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+
+    // Setup Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('isLoggedIn');
+        location.reload();
+    });
+
     renderCards(duaData, 'duaGrid', 'dua');
     renderCards(quranData, 'quranGrid', 'quran');
     setupNavigation();
     setupThemeToggle();
 });
 
+function handleLogin() {
+    const pass = document.getElementById('passwordInput').value;
+    const error = document.getElementById('loginError');
+    
+    if (pass === ADMIN_PASS) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userRole', 'admin');
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        showToast("Welcome Admin! 👑");
+    } else if (pass === GUEST_PASS) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userRole', 'guest');
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        showToast("Welcome! 🤲");
+    } else {
+        error.innerText = "Galat Password! Dobara koshish karein.";
+        document.getElementById('passwordInput').value = '';
+    }
+}
+
+// ==========================================
+// 4. UI RENDERING & TTS
+// ==========================================
 function renderCards(data, containerId, type) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
@@ -150,17 +194,13 @@ function renderCards(data, containerId, type) {
     });
 }
 
-// ==========================================
-// 4. TTS, COPY & MODAL
-// ==========================================
 function speakText(text, type) {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     
     if (type === 'ar') {
         utterance.lang = 'ar-SA';
-        utterance.rate = 0.7; // Slow speed for better Arabic pronunciation
-        utterance.pitch = 1.0;
+        utterance.rate = 0.7; // Proper speed
         if (bestArabicVoice) utterance.voice = bestArabicVoice;
     } else if (type === 'ur') {
         utterance.lang = 'ur-PK';
