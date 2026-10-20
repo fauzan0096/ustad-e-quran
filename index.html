@@ -4,27 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🎬 Ayat & Nasihat Video Maker</title>
-  <meta name="description" content="Free web app to create beautiful Ayat & Nasihat videos for Reels, Shorts and Posts">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="app">
     
-    <!-- CONTROL PANEL -->
     <aside class="panel">
       <h1>🎬 Ayat Video Maker</h1>
       <p class="subtitle">Reels • Shorts • Posts ke liye free video banayein</p>
 
       <label for="text">Apna text likho:</label>
       <textarea id="text" maxlength="300">Indeed, with hardship comes ease.</textarea>
-
-      <label>Quick preset:</label>
-      <div class="presets">
-        <button data-preset="Indeed, with hardship comes ease.">Hardship & Ease</button>
-        <button data-preset="So remember Me, and I will remember you.">Remember Me</button>
-        <button data-preset="Do good to others, it always comes back to you.">Do Good</button>
-        <button data-preset="Patience is the key to relief.">Patience</button>
-      </div>
 
       <label for="animType">Animation style:</label>
       <select id="animType">
@@ -52,7 +42,13 @@
         <option value="">(koi nahi)</option>
       </select>
 
-      <label>Background colors:</label>
+      <label for="bgImage">🖼️ Background Image (Cartoon/Photo):</label>
+      <input type="file" id="bgImage" accept="image/*">
+
+      <label for="bgAudio">🎵 Background Music / Sound:</label>
+      <input type="file" id="bgAudio" accept="audio/*">
+
+      <label>Background colors (Agar image nahi hai toh):</label>
       <div class="color-row">
         <input type="color" id="bg1" value="#1a1a2e" title="Top color">
         <input type="color" id="bg2" value="#4a1a6b" title="Bottom color">
@@ -65,15 +61,10 @@
       <input type="number" id="duration" value="8" min="3" max="30">
 
       <button class="btn-primary" id="recordBtn">⏺ Start Recording</button>
-
-      <p class="hint">
-        💡 Video <b>WebM</b> format me download hogi. MP4 chahiye to
-        <a href="https://cloudconvert.com/webm-to-mp4" target="_blank" rel="noopener">cloudconvert.com</a>
-        pe convert karo. Instagram / YouTube direct upload ho jaati hai.
-      </p>
+      
+      <p class="hint">💡 Video WebM format me download hogi.</p>
     </aside>
 
-    <!-- PREVIEW -->
     <main class="preview">
       <canvas id="canvas" width="720" height="1280"></canvas>
       <p class="preview-note" id="previewNote"></p>
