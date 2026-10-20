@@ -1,12 +1,10 @@
 // ==========================================
-// 1. DATA (With Correct Iraab)
+// 1. DATA
 // ==========================================
 const duaData = [
     { arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", roman: "Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur", urdu: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں نیند کی موت کے بعد زندہ کیا", tafseel: "حدیث: نبی ﷺ جب نیند سے جاگتے تو یہ پڑھتے۔ (صحیح البخاری 6312)" },
     { arabic: "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", roman: "Bismillah, tawakkaltu 'alallah, la hawla wa la quwwata illa billah", urdu: "اللہ کے نام سے، میں نے اللہ پر بھروسہ کیا، اور کوئی طاقت نہیں مگر اللہ کی مدد سے", tafseel: "حدیث: جو گھر سے نکلتے وقت یہ پڑھے، اسے ہدایت دی جاتی ہے اور شیطان سے بچا لیا جاتا ہے۔ (سنن ابی داؤد 5095)" },
-    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ", roman: "Allahumma inni as'alukal-'afiyata fid-dunya wal-akhirah", urdu: "اے اللہ! میں تجھ سے دنیا و آخرت میں عافیت مانگتا ہوں", tafseel: "حدیث: نبی ﷺ صبح و شام یہ دعا کبھی نہیں چھوڑتے تھے۔ (سنن ابی داؤد 5074)" },
-    { arabic: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ", roman: "Ya Hayyu ya Qayyumu bi rahmatika astaghith", urdu: "اے زندہ! اے سب کو قائم رکھنے والے! میں تیری رحمت کے وسیلے سے فریاد کرتا ہوں", tafseel: "حدیث: نبی ﷺ نے فاطمہ کو صبح و شام یہ پڑھنے کی وصیت کی۔ (سلسلہ صحیحہ 661)" },
-    { arabic: "اللَّهُمَّ رَحْمَتَكَ أَرْجُو، فَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ", roman: "Allahumma rahmataka arju, fala takilni ila nafsi tarfata 'ayn", urdu: "اے اللہ! میں تیری رحمت کا امیدوار ہوں، مجھے پلک جھپکنے کے برابر بھی میرے نفس کے سپرد نہ کر", tafseel: "حدیث: پریشانی کے وقت یہ دعا پڑھنا مسنون ہے۔ (سنن ابی داؤد 5090)" }
+    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ", roman: "Allahumma inni as'alukal-'afiyata fid-dunya wal-akhirah", urdu: "اے اللہ! میں تجھ سے دنیا و آخرت میں عافیت مانگتا ہوں", tafseel: "حدیث: نبی ﷺ صبح و شام یہ دعا کبھی نہیں چھوڑتے تھے۔ (سنن ابی داؤد 5074)" }
 ];
 
 const quranData = [
@@ -15,16 +13,7 @@ const quranData = [
     { arabic: "رَحْمَٰنٌ", roman: "Rahmaan", urdu: "بہت مہربان", tafseel: "الرحمٰن کا مطلب ہے وہ جو تمام مخلوقات پر بلا تفریق رحم کرنے والا ہے۔" },
     { arabic: "رَحِيمٌ", roman: "Raheem", urdu: "نہایت رحم والا", tafseel: "الرحیم کا مطلب ہے وہ جو خاص طور پر ایمان والوں پر رحم کرنے والا ہے۔" },
     { arabic: "غَفُورٌ", roman: "Ghafoor", urdu: "بخشنی والا", tafseel: "الغفور وہ ہے جو بندوں کے گناہوں کو بار بار معاف کرنے والا ہے۔" },
-    { arabic: "عَزِيزٌ", roman: "Azeez", urdu: "زبردست", tafseel: "العزیز کا مطلب ہے زبردست، جسے کوئی ہرا نہیں سکتا۔" },
-    { arabic: "حَكِيمٌ", roman: "Hakeem", urdu: "حکمت والا", tafseel: "الحکیم کا مطلب ہے وہ جو ہر کام کمال حکمت سے کرنے والا ہے۔" },
-    { arabic: "عَلِيمٌ", roman: "Aleem", urdu: "سب کچھ جاننے والا", tafseel: "العلیم وہ ہے جس کے علم سے کوئی چیز چھپی ہوئی نہیں۔" },
-    { arabic: "سَمِيعٌ", roman: "Samee'", urdu: "سب سننے والا", tafseel: "السمیع وہ ہے جو ہر آہٹ اور دل کے وسوسوں کو بھی سننے والا ہے۔" },
-    { arabic: "بَصِيرٌ", roman: "Baseer", urdu: "سب دیکھنے والا", tafseel: "البصیر وہ ہے جس کی نظر سے کوئی ذرہ بھی اوجھل نہیں۔" },
-    { arabic: "بَعُوضَةٌ", roman: "Ba'oodah", urdu: "مچھر", tafseel: "اللہ تعالیٰ نے قرآن میں مچھر کی مثال دی ہے (سورۃ البقرہ 2:26)۔" },
-    { arabic: "قِثَّاءٌ", roman: "Qiththa'a", urdu: "ککڑی", tafseel: "بنی اسرائیل نے کھانے کی تنوع مانگتے ہوئے یہ لفظ کہا تھا۔" },
-    { arabic: "فُومٌ", roman: "Fuum", urdu: "گیہوں یا لہسن", tafseel: "یہ بھی بنی اسرائیل کی خوراک سے متعلق قرآن میں آیا ہے۔" },
-    { arabic: "عَدَسٌ", roman: "Adas", urdu: "مسور کی دال", tafseel: "بنی اسرائیل نے حضرت موسیٰ سے کہا تھا کہ ہمیں دال چاہیے۔" },
-    { arabic: "بَصَلٌ", roman: "Basal", urdu: "پیاز", tafseel: "یہ قرآنِ مجید میں بنی اسرائیل کی مانگی ہوئی خوراک کے طور پر آیا ہے۔" }
+    { arabic: "عَزِيزٌ", roman: "Azeez", urdu: "زبردست", tafseel: "العزیز کا مطلب ہے زبردست، جسے کوئی ہرا نہیں سکتا۔" }
 ];
 
 const gkQuestions = [
@@ -81,32 +70,31 @@ const gkQuestions = [
 ];
 
 // ==========================================
-// 2. SMART VOICE & STATE VARIABLES
+// 2. VARIABLES & CONFIG
 // ==========================================
 let isDarkMode = localStorage.getItem('darkMode') === 'true';
-const toast = document.getElementById('toast');
-let bestArabicVoice = null;
-let bestUrduVoice = null;
-
-// Passwords Configuration
 const ADMIN_PASS = "Fauzan8087";
 const GUEST_PASS = "quran123"; 
+let currentShareText = ""; // For Share Button
 
-// Load Voices
-function loadVoices() {
-    const voices = window.speechSynthesis.getVoices();
-    bestArabicVoice = voices.find(v => v.lang.includes('ar-SA')) || 
-                      voices.find(v => v.lang.includes('ar-EG')) || 
-                      voices.find(v => v.lang.includes('ar'));
-    bestUrduVoice = voices.find(v => v.lang.includes('ur-PK')) || 
-                    voices.find(v => v.lang.includes('ur')) ||
-                    voices.find(v => v.lang.includes('hi')); 
+// Stats Tracker (Admin)
+function updateStat(key) {
+    let val = parseInt(localStorage.getItem(key)) || 0;
+    localStorage.setItem(key, val + 1);
 }
-window.speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
+
+// PWA Service Worker Register
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(() => console.log("PWA Ready"));
+}
+
+// Haptic Vibration
+function vibrate() {
+    if (navigator.vibrate) navigator.vibrate(50);
+}
 
 // ==========================================
-// 3. INITIALIZATION & LOGIN LOGIC
+// 3. LOGIN & STREAK LOGIC
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     if (isDarkMode) {
@@ -114,20 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('themeToggle').innerText = '☀️';
     }
 
-    // Check if already logged in
+    // Login Check
     if (localStorage.getItem('isLoggedIn') === 'true') {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
+        showApp();
     }
 
-    // Setup Login
-    document.getElementById('loginBtn').addEventListener('click', handleLogin);
-    document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        vibrate();
+        const pass = document.getElementById('passwordInput').value;
+        if (pass === ADMIN_PASS || pass === GUEST_PASS) {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userRole', pass === ADMIN_PASS ? 'admin' : 'guest');
+            updateStat('statTotalLogins');
+            showApp();
+        } else {
+            document.getElementById('loginError').innerText = "Galat Password!";
+        }
     });
 
-    // Setup Logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
+        vibrate();
         localStorage.removeItem('isLoggedIn');
         location.reload();
     });
@@ -135,51 +129,65 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCards(duaData, 'duaGrid', 'dua');
     renderCards(quranData, 'quranGrid', 'quran');
     setupNavigation();
-    setupThemeToggle();
 });
 
-function handleLogin() {
-    const pass = document.getElementById('passwordInput').value;
-    const error = document.getElementById('loginError');
+function showApp() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
     
-    if (pass === ADMIN_PASS) {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userRole', 'admin');
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
-        showToast("Welcome Admin! 👑");
-    } else if (pass === GUEST_PASS) {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userRole', 'guest');
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
-        showToast("Welcome! 🤲");
-    } else {
-        error.innerText = "Galat Password! Dobara koshish karein.";
-        document.getElementById('passwordInput').value = '';
+    // Admin Button Logic
+    if (localStorage.getItem('userRole') === 'admin') {
+        document.getElementById('adminBtn').classList.remove('hidden');
+        document.getElementById('adminBtn').onclick = showAdminDashboard;
     }
+
+    calculateStreak();
+}
+
+function calculateStreak() {
+    const today = new Date().toDateString();
+    const lastLogin = localStorage.getItem('lastLoginDate');
+    let streak = parseInt(localStorage.getItem('streak')) || 0;
+
+    if (lastLogin !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastLogin === yesterday.toDateString()) {
+            streak++;
+        } else if (lastLogin !== today) {
+            streak = 1; // Reset
+        }
+        localStorage.setItem('streak', streak);
+        localStorage.setItem('lastLoginDate', today);
+    }
+
+    const badge = document.getElementById('streakBadge');
+    badge.innerText = `🔥 ${streak}`;
+    badge.classList.remove('hidden');
+}
+
+function showAdminDashboard() {
+    vibrate();
+    document.getElementById('statLogins').innerText = localStorage.getItem('statTotalLogins') || 0;
+    document.getElementById('statQuizzes').innerText = localStorage.getItem('statQuizzes') || 0;
+    document.getElementById('statHighScore').innerText = localStorage.getItem('statHighScore') || 0;
+    document.getElementById('statStreak').innerText = localStorage.getItem('streak') || 0;
+    document.getElementById('adminModal').classList.remove('hidden');
 }
 
 // ==========================================
-// 4. UI RENDERING & TTS
+// 4. UI RENDERING & SHARE
 // ==========================================
 function renderCards(data, containerId, type) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
     
-    if(data.length === 0) {
-        container.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:gray;">Koi data nahi mila.</p>';
-        return;
-    }
-
     data.forEach((word, index) => {
         const card = document.createElement('div');
         card.className = 'card';
         
-        let explainBtnHTML = '';
-        if (word.tafseel) {
-            explainBtnHTML = `<button class="explain-btn" onclick="showTafseel('${type}', ${index})">📖 Fazilat / Tafseel Padhein</button>`;
-        }
+        let explainBtnHTML = word.tafseel ? `<button class="explain-btn" onclick="showTafseel('${type}', ${index})">📖 Fazilat / Tafseel</button>` : '';
 
         card.innerHTML = `
             <div class="arabic" onclick="speakText('${word.arabic}', 'ar')">${word.arabic}</div>
@@ -194,36 +202,48 @@ function renderCards(data, containerId, type) {
     });
 }
 
-function speakText(text, type) {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    if (type === 'ar') {
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.7; // Proper speed
-        if (bestArabicVoice) utterance.voice = bestArabicVoice;
-    } else if (type === 'ur') {
-        utterance.lang = 'ur-PK';
-        utterance.rate = 0.9;
-        if (bestUrduVoice) utterance.voice = bestUrduVoice;
-    }
-
-    utterance.onstart = () => showToast("🔊 Aawaz play ho rahi hai...");
-    utterance.onerror = () => showToast("⚠️ Voice device me nahi hai.");
-    window.speechSynthesis.speak(utterance);
-}
-
 function showTafseel(type, index) {
-    let wordData;
-    if (type === 'dua') wordData = duaData[index];
-    else if (type === 'quran') wordData = quranData[index];
+    vibrate();
+    let wordData = (type === 'dua') ? duaData[index] : quranData[index];
 
     document.getElementById('modalText').innerText = wordData.tafseel;
     document.getElementById('infoModal').classList.remove('hidden');
     
+    // Tafseel Suno
     document.getElementById('speakExplanationBtn').onclick = () => {
         speakText(wordData.tafseel, 'ur');
     };
+
+    // Share Logic
+    currentShareText = `${wordData.arabic}\n\n${wordData.urdu}\n\n${wordData.tafseel}\n\n- Quraan and Duaa Ustad App`;
+    document.getElementById('shareBtn').onclick = shareText;
+}
+
+function shareText() {
+    vibrate();
+    if (navigator.share) {
+        navigator.share({
+            title: 'Quraan and Duaa Ustad',
+            text: currentShareText,
+        }).catch(console.error);
+    } else {
+        copyText(currentShareText);
+        showToast("📋 Copy ho gaya! Ab paste karein.");
+    }
+}
+
+function speakText(text, type) {
+    vibrate();
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = type === 'ar' ? 'ar-SA' : 'ur-PK';
+    utterance.rate = 0.7;
+    window.speechSynthesis.speak(utterance);
+}
+
+function copyText(text) {
+    vibrate();
+    navigator.clipboard.writeText(text).then(() => showToast("📋 Copy ho gaya!"));
 }
 
 function closeModal() {
@@ -231,65 +251,50 @@ function closeModal() {
     document.getElementById('infoModal').classList.add('hidden');
 }
 
-function copyText(text) {
-    navigator.clipboard.writeText(text).then(() => showToast("📋 Copy ho gaya!"));
-}
-
 // ==========================================
-// 5. GAME LOGIC (Islamic GK Quiz)
+// 5. GAME LOGIC (Gamified)
 // ==========================================
 let gameQuestions = [];
 let currentQuestionIndex = 0;
 let score = 0;
 
-const startScreen = document.getElementById('gameStartScreen');
-const quizScreen = document.getElementById('quizScreen');
-const gameOverScreen = document.getElementById('gameOverScreen');
-
-document.getElementById('startGameBtn').addEventListener('click', startGame);
-document.getElementById('restartGameBtn').addEventListener('click', startGame);
-
-function startGame() {
+document.getElementById('startGameBtn').addEventListener('click', () => {
+    vibrate();
     gameQuestions = [...gkQuestions].sort(() => 0.5 - Math.random());
     currentQuestionIndex = 0;
     score = 0;
+    updateStat('statQuizzes');
     
-    startScreen.classList.add('hidden');
-    gameOverScreen.classList.add('hidden');
-    quizScreen.classList.remove('hidden');
-    
+    document.getElementById('gameStartScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
     loadQuestion();
-}
+});
 
 function loadQuestion() {
-    if (currentQuestionIndex >= gameQuestions.length) {
-        endGame();
-        return;
-    }
+    if (currentQuestionIndex >= gameQuestions.length) return endGame();
 
     const q = gameQuestions[currentQuestionIndex];
-    document.getElementById('questionCount').innerText = `Question ${currentQuestionIndex + 1}/${gameQuestions.length}`;
+    document.getElementById('questionCount').innerText = `Q ${currentQuestionIndex + 1}/${gameQuestions.length}`;
     document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
     document.getElementById('questionText').innerText = q.q;
 
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
-
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
     q.options.forEach((opt, index) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.innerText = opt;
         btn.onclick = () => checkAnswer(index, btn);
-        optionsContainer.appendChild(btn);
+        container.appendChild(btn);
     });
 
     document.getElementById('nextQuestionBtn').classList.add('hidden');
 }
 
 function checkAnswer(selectedIndex, btnElement) {
+    vibrate();
     const q = gameQuestions[currentQuestionIndex];
     const allBtns = document.querySelectorAll('.option-btn');
-    
     allBtns.forEach(b => b.style.pointerEvents = 'none');
 
     if (selectedIndex === q.correct) {
@@ -304,65 +309,56 @@ function checkAnswer(selectedIndex, btnElement) {
     
     const nextBtn = document.getElementById('nextQuestionBtn');
     nextBtn.classList.remove('hidden');
-    
-    if (currentQuestionIndex === gameQuestions.length - 1) {
-        nextBtn.innerText = "See Result 🏆";
-    } else {
-        nextBtn.innerText = "Next Question ➡️";
-    }
+    nextBtn.innerText = (currentQuestionIndex === gameQuestions.length - 1) ? "See Result 🏆" : "Next ➡️";
     
     nextBtn.onclick = () => {
+        vibrate();
         currentQuestionIndex++;
         loadQuestion();
     };
 }
 
 function endGame() {
-    quizScreen.classList.add('hidden');
-    gameOverScreen.classList.remove('hidden');
+    document.getElementById('quizScreen').classList.add('hidden');
+    document.getElementById('gameOverScreen').classList.remove('hidden');
     document.getElementById('finalScoreText').innerText = `Aapne ${score} out of ${gameQuestions.length} score kiya!`;
+    
+    // Update High Score for Admin
+    let high = parseInt(localStorage.getItem('statHighScore')) || 0;
+    if (score > high) localStorage.setItem('statHighScore', score);
+    
+    document.getElementById('restartGameBtn').onclick = () => {
+        vibrate();
+        document.getElementById('gameStartScreen').classList.remove('hidden');
+        document.getElementById('gameOverScreen').classList.add('hidden');
+    };
 }
 
 // ==========================================
-// 6. UTILS & NAVIGATION
+// 6. UTILS
 // ==========================================
 function setupNavigation() {
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            vibrate();
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            
             e.target.classList.add('active');
             document.getElementById(e.target.dataset.view).classList.add('active');
         });
     });
 }
 
-document.getElementById('duaSearch').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    document.querySelectorAll('#duaGrid .card').forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(query) ? 'flex' : 'none';
-    });
-});
-
-document.getElementById('quranSearch').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    document.querySelectorAll('#quranGrid .card').forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(query) ? 'flex' : 'none';
-    });
-});
-
-function setupThemeToggle() {
-    const btn = document.getElementById('themeToggle');
-    btn.onclick = () => {
-        isDarkMode = !isDarkMode;
-        document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-        btn.innerText = isDarkMode ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDarkMode);
-    };
-}
+document.getElementById('themeToggle').onclick = () => {
+    vibrate();
+    isDarkMode = !isDarkMode;
+    document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    document.getElementById('themeToggle').innerText = isDarkMode ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', isDarkMode);
+};
 
 function showToast(msg) {
+    const toast = document.getElementById('toast');
     toast.textContent = msg;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2500);
