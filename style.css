@@ -1,128 +1,134 @@
-// ==========================================
-// DATA (Aapke PDFs se nikala gaya sample data)
-// ==========================================
-const appData = {
-    namaz: [
-        { arabic: "أَشْهَدُ أَنْ لَّا إِلَهَ إِلَّا اللَّهُ", roman: "Ashhadu an la ilaha illallah", urdu: "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں" },
-        { arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", roman: "La hawla wa la quwwata illa billah", urdu: "گناہ سے بچنے کی کوئی طاقت اور نیکی کی کوئی قوت نہیں مگر اللہ کی مدد سے" },
-        { arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", roman: "Allahummaftah li abwaba rahmatik", urdu: "اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے" },
-        { arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", roman: "Subhanaka Allahumma wa bihamdika", urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے" },
-        { arabic: "رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي", roman: "Rabbighfir li, Rabbighfir li", urdu: "اے میرے رب! مجھے بخش دے، اے میرے رب! مجھے بخش دے" }
-    ],
-    quran326: [
-        { arabic: "بَعُوضَة", roman: "Ba'oodah", urdu: "مچھر" },
-        { arabic: "قِثَّاء", roman: "Qiththa'a", urdu: "ککڑی" },
-        { arabic: "فُوم", roman: "Fuum", urdu: "گیہوں یا لہسن" },
-        { arabic: "عَدَس", roman: "Adas", urdu: "مسور کی دال" },
-        { arabic: "بَصَل", roman: "Basal", urdu: "پیاز" },
-        { arabic: "هَارُوت", roman: "Haaroot", urdu: "ہاروت (ایک فرشتہ)" },
-        { arabic: "مَارُوت", roman: "Maaroot", urdu: "ماروت (دوسرا فرشتہ)" }
-    ],
-    quran650: [
-        { arabic: "اللَّهُ", roman: "Allah", urdu: "اللہ، سب کا رب اور مالک" },
-        { arabic: "رَبِّ", roman: "Rabb", urdu: "پالنے والا، مالک" },
-        { arabic: "رَحْمَن", roman: "Rahmaan", urdu: "بہت مہربان" },
-        { arabic: "رَحِيم", roman: "Raheem", urdu: "نہایت رحم والا" },
-        { arabic: "غَفُور", roman: "Ghafoor", urdu: "بخشنی والا" },
-        { arabic: "عَزِيز", roman: "Azeez", urdu: "زبردست" },
-        { arabic: "حَكِيم", roman: "Hakeem", urdu: "حکمت والا" },
-        { arabic: "عَلِيم", roman: "Aleem", urdu: "سب کچھ جاننے والا" }
-    ]
-};
-
-// ==========================================
-// APP LOGIC
-// ==========================================
-let currentCategory = 'namaz';
-const grid = document.getElementById('wordGrid');
-const searchBar = document.getElementById('searchBar');
-const toast = document.getElementById('toast');
-
-// 1. Render Cards
-function renderCards(data) {
-    grid.innerHTML = '';
-    
-    if(data.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color:#888;">Koi lafz nahi mila.</p>';
-        return;
-    }
-
-    data.forEach(word => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <div class="play-icon">🔊</div>
-            <div class="arabic">${word.arabic}</div>
-            <div class="roman">${word.roman}</div>
-            <div class="urdu">${word.urdu}</div>
-        `;
-        
-        // Touch/Click Event
-        card.addEventListener('click', () => speakWord(word.arabic, card));
-        grid.appendChild(card);
-    });
+:root {
+    --primary: #0F4C3A;
+    --secondary: #D4AF37;
+    --bg: #F4F7F6;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --text-light: #666;
+    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+    --border: #ddd;
 }
 
-// 2. Speak Function (Web Speech API)
-function speakWord(text, cardElement) {
-    // Stop if already speaking
-    window.speechSynthesis.cancel();
-
-    // Remove highlight from all cards
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('speaking'));
-    
-    // Add highlight to clicked card
-    cardElement.classList.add('speaking');
-    showToast("Aawaz play ho rahi hai...");
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ar-SA'; // Arabic voice (Saudi Arabia)
-    utterance.rate = 0.8; // Thoda dheere taaki samajh aaye
-
-    // Event fires when speech ends
-    utterance.onend = () => {
-        cardElement.classList.remove('speaking');
-    };
-
-    // Event fires if speech errors out
-    utterance.onerror = () => {
-        cardElement.classList.remove('speaking');
-        showToast("⚠️ Aapke browser me Arabic voice nahi hai.");
-    };
-
-    window.speechSynthesis.speak(utterance);
+[data-theme="dark"] {
+    --primary: #1a1a2e;
+    --secondary: #6ee7b7;
+    --bg: #0f0f23;
+    --card-bg: #1e1e36;
+    --text: #eee;
+    --text-light: #aaa;
+    --shadow: 0 4px 15px rgba(0,0,0,0.3);
+    --border: #333;
 }
 
-// 3. Toast Notification
-let toastTimeout;
-function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+* { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    padding-bottom: 50px;
 }
 
-// 4. Search Filter
-searchBar.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    const filteredData = appData[currentCategory].filter(word => 
-        word.arabic.includes(query) || 
-        word.roman.toLowerCase().includes(query) || 
-        word.urdu.includes(query)
-    );
-    renderCards(filteredData);
-});
+header {
+    background-color: var(--primary);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-bottom: 4px solid var(--secondary);
+}
 
-// 5. Tab Switching
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        currentCategory = e.target.dataset.category;
-        searchBar.value = ''; // Clear search
-        renderCards(appData[currentCategory]);
-    });
-});
+.header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+header h1 { font-size: 20px; }
+header p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
 
-// 6. Initialize App
-renderCards(appData['namaz']);
+.icon-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: white; }
+
+.main-nav { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+
+.nav-btn {
+    padding: 10px 20px; border: none; border-radius: 20px; font-size: 14px; font-weight: 600;
+    background: var(--card-bg); color: var(--text); box-shadow: var(--shadow); cursor: pointer;
+}
+.nav-btn.active { background: var(--primary); color: #fff; }
+
+.view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.view-section.active { display: block; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.controls { margin-bottom: 20px; }
+#searchBar {
+    width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: 10px;
+    font-size: 16px; outline: none; background: var(--card-bg); color: var(--text);
+}
+#searchBar:focus { border-color: var(--primary); }
+
+.grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+
+.card {
+    background: var(--card-bg); border-radius: 12px; padding: 20px;
+    box-shadow: var(--shadow); position: relative; border-left: 6px solid var(--primary);
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.card:hover { transform: translateY(-3px); }
+
+.arabic {
+    font-family: 'Amiri', serif; font-size: 32px; color: var(--secondary); margin-bottom: 10px; direction: rtl;
+    cursor: pointer; user-select: none;
+}
+.arabic:active { transform: scale(0.95); }
+
+.roman { font-weight: 600; font-size: 15px; margin-bottom: 5px; }
+.urdu {
+    font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; color: var(--text-light); direction: rtl; line-height: 1.8;
+    cursor: pointer; user-select: none;
+}
+.urdu:active { transform: scale(0.98); }
+
+.card-actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+.action-btn {
+    background: var(--bg); border: 1px solid var(--border); padding: 6px 12px; border-radius: 5px;
+    cursor: pointer; font-size: 13px; color: var(--text); font-weight: 600;
+}
+.action-btn:hover { background: var(--border); }
+
+.explain-btn { background: #D4AF37; color: #000; font-weight: bold; width: 100%; margin-top: 10px; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+.explain-btn:hover { background: #c29f31; }
+
+/* DAILY VIEW */
+.daily-header { text-align: center; margin-bottom: 20px; }
+.progress-bar { width: 100%; max-width: 400px; height: 10px; background: var(--border); border-radius: 5px; margin: 10px auto; overflow: hidden; }
+#progressFill { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
+
+.exam-start-container { text-align: center; margin-top: 30px; background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: var(--shadow); }
+.btn-primary { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 16px; font-weight: 600; border-radius: 25px; cursor: pointer; margin-top: 15px; }
+.btn-primary:hover { opacity: 0.9; }
+
+/* EXAM SECTION */
+.exam-section { margin-top: 40px; border-top: 2px dashed var(--border); padding-top: 30px; }
+.exam-section h2 { text-align: center; color: var(--primary); margin-bottom: 10px; }
+.quiz-question { background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: var(--shadow); }
+.quiz-question h3 { font-family: 'Amiri', serif; font-size: 28px; color: var(--secondary); margin-bottom: 15px; text-align: center; }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.option-btn { padding: 12px; border: 2px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; cursor: pointer; font-size: 16px; font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; }
+.option-btn.selected { border-color: var(--primary); background: rgba(15, 76, 58, 0.1); }
+.option-btn.correct { border-color: #28a745; background: #d4edda; color: #155724; }
+.option-btn.wrong { border-color: #dc3545; background: #f8d7da; color: #721c24; }
+.hidden { display: none !important; }
+
+#examResult { text-align: center; margin-top: 20px; font-size: 20px; font-weight: bold; padding: 15px; border-radius: 10px; }
+
+/* MODAL POPUP */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 20px; }
+.modal-content { background: var(--card-bg); padding: 25px; border-radius: 15px; width: 100%; max-width: 500px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-top: 5px solid var(--secondary); }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: var(--text-light); }
+.close-btn:hover { color: #dc3545; }
+.modal-text { margin-top: 15px; font-size: 20px; line-height: 1.8; color: var(--text); text-align: right; max-height: 50vh; overflow-y: auto; padding-right: 10px; font-family: 'Noto Nastaliq Urdu', serif; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; box-shadow: var(--shadow); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 3000; }
+.toast.show { opacity: 1; }
+
+@media (max-width: 600px) {
+    .grid-container { grid-template-columns: 1fr; }
+    .options { grid-template-columns: 1fr; }
+}
