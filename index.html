@@ -1,77 +1,35 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎬 Ayat & Nasihat Video Maker</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Dictionary - Touch & Learn</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts for Arabic and Urdu -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="app">
-    
-    <aside class="panel">
-      <h1>🎬 Ayat Video Maker</h1>
-      <p class="subtitle">Reels • Shorts • Posts ke liye free video banayein</p>
 
-      <label for="text">Apna text likho:</label>
-      <textarea id="text" maxlength="300">Indeed, with hardship comes ease.</textarea>
+    <header>
+        <h1>📖 Quran & Namaz Dictionary</h1>
+        <p>Lafz par touch karein aur uski aawaz sunein</p>
+    </header>
 
-      <label for="animType">Animation style:</label>
-      <select id="animType">
-        <option value="fade">Fade In</option>
-        <option value="slide">Slide Up</option>
-        <option value="typewriter">Typewriter</option>
-        <option value="zoom">Zoom In</option>
-      </select>
+    <div class="controls">
+        <input type="text" id="searchBar" placeholder="🔍 Search Arabic, Roman, or Urdu...">
+        <div class="tabs">
+            <button class="tab-btn active" data-category="namaz">Namaz ki Duaen</button>
+            <button class="tab-btn" data-category="quran326">Quran (326 Alfaz)</button>
+            <button class="tab-btn" data-category="quran650">Quran (650 Alfaz)</button>
+        </div>
+    </div>
 
-      <label for="aspectRatio">Video size:</label>
-      <select id="aspectRatio">
-        <option value="9:16">9:16 (Reels / Shorts)</option>
-        <option value="1:1">1:1 (Instagram Post)</option>
-        <option value="16:9">16:9 (YouTube)</option>
-      </select>
+    <div class="grid-container" id="wordGrid">
+        <!-- Words will be loaded here by JavaScript -->
+    </div>
 
-      <label for="emoji">Emoji (optional):</label>
-      <select id="emoji">
-        <option value="🌙">🌙 Chaand</option>
-        <option value="⭐">⭐ Star</option>
-        <option value="🕌">🕌 Masjid</option>
-        <option value="🤲">🤲 Dua</option>
-        <option value="❤️">❤️ Heart</option>
-        <option value="🌸">🌸 Flower</option>
-        <option value="">(koi nahi)</option>
-      </select>
+    <div id="toast" class="toast">Aawaz play ho rahi hai...</div>
 
-      <label for="bgImage">🖼️ Background Image (Cartoon/Photo):</label>
-      <input type="file" id="bgImage" accept="image/*">
-
-      <label for="bgAudio">🎵 Background Music / Sound:</label>
-      <input type="file" id="bgAudio" accept="audio/*">
-
-      <label>Background colors (Agar image nahi hai toh):</label>
-      <div class="color-row">
-        <input type="color" id="bg1" value="#1a1a2e" title="Top color">
-        <input type="color" id="bg2" value="#4a1a6b" title="Bottom color">
-      </div>
-
-      <label for="textColor">Text color:</label>
-      <input type="color" id="textColor" value="#ffffff">
-
-      <label for="duration">Duration (seconds):</label>
-      <input type="number" id="duration" value="8" min="3" max="30">
-
-      <button class="btn-primary" id="recordBtn">⏺ Start Recording</button>
-      
-      <p class="hint">💡 Video WebM format me download hogi.</p>
-    </aside>
-
-    <main class="preview">
-      <canvas id="canvas" width="720" height="1280"></canvas>
-      <p class="preview-note" id="previewNote"></p>
-    </main>
-
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
