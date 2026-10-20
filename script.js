@@ -1,8 +1,8 @@
 // ==========================================
-// 1. DATA (Duaen, Quran, aur 50 GK Questions)
+// 1. DATA (With Correct Iraab / Diacritics)
 // ==========================================
 const duaData = [
-    { arabic: "الحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", roman: "Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur", urdu: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں نیند کی موت کے بعد زندہ کیا", tafseel: "حدیث: نبی ﷺ جب نیند سے جاگتے تو یہ پڑھتے۔ (صحیح البخاری 6312)" },
+    { arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", roman: "Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur", urdu: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں نیند کی موت کے بعد زندہ کیا", tafseel: "حدیث: نبی ﷺ جب نیند سے جاگتے تو یہ پڑھتے۔ (صحیح البخاری 6312)" },
     { arabic: "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", roman: "Bismillah, tawakkaltu 'alallah, la hawla wa la quwwata illa billah", urdu: "اللہ کے نام سے، میں نے اللہ پر بھروسہ کیا، اور کوئی طاقت نہیں مگر اللہ کی مدد سے", tafseel: "حدیث: جو گھر سے نکلتے وقت یہ پڑھے، اسے ہدایت دی جاتی ہے اور شیطان سے بچا لیا جاتا ہے۔ (سنن ابی داؤد 5095)" },
     { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ", roman: "Allahumma inni as'alukal-'afiyata fid-dunya wal-akhirah", urdu: "اے اللہ! میں تجھ سے دنیا و آخرت میں عافیت مانگتا ہوں", tafseel: "حدیث: نبی ﷺ صبح و شام یہ دعا کبھی نہیں چھوڑتے تھے۔ (سنن ابی داؤد 5074)" },
     { arabic: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ", roman: "Ya Hayyu ya Qayyumu bi rahmatika astaghith", urdu: "اے زندہ! اے سب کو قائم رکھنے والے! میں تیری رحمت کے وسیلے سے فریاد کرتا ہوں", tafseel: "حدیث: نبی ﷺ نے فاطمہ کو صبح و شام یہ پڑھنے کی وصیت کی۔ (سلسلہ صحیحہ 661)" },
@@ -11,12 +11,20 @@ const duaData = [
 
 const quranData = [
     { arabic: "اللَّهُ", roman: "Allah", urdu: "اللہ، سب کا رب اور مالک", tafseel: "یہ اسمِ اعظم ہے۔ قرآن کی سب سے زیادہ آنے والی آیت۔" },
-    { arabic: "رَبِّ", roman: "Rabb", urdu: "پالنے والا، مالک", tafseel: "رب کا مطلب ہے وہ جو ہمیں پیدا کرے، پالے، اور سنبھالے رکھے۔" },
-    { arabic: "رَحْمَن", roman: "Rahmaan", urdu: "بہت مہربان", tafseel: "الرحمٰن کا مطلب ہے وہ جو تمام مخلوقات پر بلا تفریق رحم کرنے والا ہے۔" },
-    { arabic: "رَحِيم", roman: "Raheem", urdu: "نہایت رحم والا", tafseel: "الرحیم کا مطلب ہے وہ جو خاص طور پر ایمان والوں پر رحم کرنے والا ہے۔" },
-    { arabic: "غَفُور", roman: "Ghafoor", urdu: "بخشنی والا", tafseel: "الغفور وہ ہے جو بندوں کے گناہوں کو بار بار معاف کرنے والا ہے۔" },
-    { arabic: "بَعُوضَة", roman: "Ba'oodah", urdu: "مچھر", tafseel: "اللہ تعالیٰ نے قرآن میں مچھر کی مثال دی ہے (سورۃ البقرہ 2:26)۔" },
-    { arabic: "قِثَّاء", roman: "Qiththa'a", urdu: "ککڑی", tafseel: "بنی اسرائیل نے کھانے کی تنوع مانگتے ہوئے یہ لفظ کہا تھا۔" }
+    { arabic: "رَبٌّ", roman: "Rabb", urdu: "پالنے والا، مالک", tafseel: "رب کا مطلب ہے وہ جو ہمیں پیدا کرے، پالے، اور سنبھالے رکھے۔" },
+    { arabic: "رَحْمَٰنٌ", roman: "Rahmaan", urdu: "بہت مہربان", tafseel: "الرحمٰن کا مطلب ہے وہ جو تمام مخلوقات پر بلا تفریق رحم کرنے والا ہے۔" },
+    { arabic: "رَحِيمٌ", roman: "Raheem", urdu: "نہایت رحم والا", tafseel: "الرحیم کا مطلب ہے وہ جو خاص طور پر ایمان والوں پر رحم کرنے والا ہے۔" },
+    { arabic: "غَفُورٌ", roman: "Ghafoor", urdu: "بخشنی والا", tafseel: "الغفور وہ ہے جو بندوں کے گناہوں کو بار بار معاف کرنے والا ہے۔" },
+    { arabic: "عَزِيزٌ", roman: "Azeez", urdu: "زبردست", tafseel: "العزیز کا مطلب ہے زبردست، جسے کوئی ہرا نہیں سکتا۔" },
+    { arabic: "حَكِيمٌ", roman: "Hakeem", urdu: "حکمت والا", tafseel: "الحکیم کا مطلب ہے وہ جو ہر کام کمال حکمت سے کرنے والا ہے۔" },
+    { arabic: "عَلِيمٌ", roman: "Aleem", urdu: "سب کچھ جاننے والا", tafseel: "العلیم وہ ہے جس کے علم سے کوئی چیز چھپی ہوئی نہیں۔" },
+    { arabic: "سَمِيعٌ", roman: "Samee'", urdu: "سب سننے والا", tafseel: "السمیع وہ ہے جو ہر آہٹ اور دل کے وسوسوں کو بھی سننے والا ہے۔" },
+    { arabic: "بَصِيرٌ", roman: "Baseer", urdu: "سب دیکھنے والا", tafseel: "البصیر وہ ہے جس کی نظر سے کوئی ذرہ بھی اوجھل نہیں۔" },
+    { arabic: "بَعُوضَةٌ", roman: "Ba'oodah", urdu: "مچھر", tafseel: "اللہ تعالیٰ نے قرآن میں مچھر کی مثال دی ہے (سورۃ البقرہ 2:26)۔" },
+    { arabic: "قِثَّاءٌ", roman: "Qiththa'a", urdu: "ککڑی", tafseel: "بنی اسرائیل نے کھانے کی تنوع مانگتے ہوئے یہ لفظ کہا تھا۔" },
+    { arabic: "فُومٌ", roman: "Fuum", urdu: "گیہوں یا لہسن", tafseel: "یہ بھی بنی اسرائیل کی خوراک سے متعلق قرآن میں آیا ہے۔" },
+    { arabic: "عَدَسٌ", roman: "Adas", urdu: "مسور کی دال", tafseel: "بنی اسرائیل نے حضرت موسیٰ سے کہا تھا کہ ہمیں دال چاہیے۔" },
+    { arabic: "بَصَلٌ", roman: "Basal", urdu: "پیاز", tafseel: "یہ قرآنِ مجید میں بنی اسرائیل کی مانگی ہوئی خوراک کے طور پر آیا ہے۔" }
 ];
 
 const gkQuestions = [
@@ -73,10 +81,29 @@ const gkQuestions = [
 ];
 
 // ==========================================
-// 2. STATE & VARIABLES
+// 2. SMART VOICE & STATE VARIABLES
 // ==========================================
 let isDarkMode = localStorage.getItem('darkMode') === 'true';
 const toast = document.getElementById('toast');
+let bestArabicVoice = null;
+let bestUrduVoice = null;
+
+// Load Voices
+function loadVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    
+    // Try to find Saudi Arabic voice (Best for Quran)
+    bestArabicVoice = voices.find(v => v.lang.includes('ar-SA')) || 
+                      voices.find(v => v.lang.includes('ar-EG')) || 
+                      voices.find(v => v.lang.includes('ar'));
+                      
+    // Try to find Urdu voice
+    bestUrduVoice = voices.find(v => v.lang.includes('ur-PK')) || 
+                    voices.find(v => v.lang.includes('ur')) ||
+                    voices.find(v => v.lang.includes('hi')); // Fallback to Hindi if Urdu missing
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
 
 // ==========================================
 // 3. INITIALIZATION & UI RENDERING
@@ -111,9 +138,9 @@ function renderCards(data, containerId, type) {
         }
 
         card.innerHTML = `
-            <div class="arabic" onclick="speakText('${word.arabic}', 'ar-SA')">${word.arabic}</div>
+            <div class="arabic" onclick="speakText('${word.arabic}', 'ar')">${word.arabic}</div>
             <div class="roman">${word.roman}</div>
-            <div class="urdu" onclick="speakText('${word.urdu}', 'ur-PK')">${word.urdu}</div>
+            <div class="urdu" onclick="speakText('${word.urdu}', 'ur')">${word.urdu}</div>
             <div class="card-actions">
                 <button class="action-btn" onclick="copyText('${word.arabic}')">📋 Copy</button>
             </div>
@@ -126,11 +153,21 @@ function renderCards(data, containerId, type) {
 // ==========================================
 // 4. TTS, COPY & MODAL
 // ==========================================
-function speakText(text, lang) {
+function speakText(text, type) {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = 0.8;
+    
+    if (type === 'ar') {
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.7; // Slow speed for better Arabic pronunciation
+        utterance.pitch = 1.0;
+        if (bestArabicVoice) utterance.voice = bestArabicVoice;
+    } else if (type === 'ur') {
+        utterance.lang = 'ur-PK';
+        utterance.rate = 0.9;
+        if (bestUrduVoice) utterance.voice = bestUrduVoice;
+    }
+
     utterance.onstart = () => showToast("🔊 Aawaz play ho rahi hai...");
     utterance.onerror = () => showToast("⚠️ Voice device me nahi hai.");
     window.speechSynthesis.speak(utterance);
@@ -145,7 +182,7 @@ function showTafseel(type, index) {
     document.getElementById('infoModal').classList.remove('hidden');
     
     document.getElementById('speakExplanationBtn').onclick = () => {
-        speakText(wordData.tafseel, 'ur-PK');
+        speakText(wordData.tafseel, 'ur');
     };
 }
 
@@ -173,7 +210,6 @@ document.getElementById('startGameBtn').addEventListener('click', startGame);
 document.getElementById('restartGameBtn').addEventListener('click', startGame);
 
 function startGame() {
-    // Shuffle Questions
     gameQuestions = [...gkQuestions].sort(() => 0.5 - Math.random());
     currentQuestionIndex = 0;
     score = 0;
@@ -214,7 +250,6 @@ function checkAnswer(selectedIndex, btnElement) {
     const q = gameQuestions[currentQuestionIndex];
     const allBtns = document.querySelectorAll('.option-btn');
     
-    // Disable all buttons
     allBtns.forEach(b => b.style.pointerEvents = 'none');
 
     if (selectedIndex === q.correct) {
@@ -222,7 +257,6 @@ function checkAnswer(selectedIndex, btnElement) {
         score++;
     } else {
         btnElement.classList.add('wrong');
-        // Show correct answer
         allBtns[q.correct].classList.add('correct');
     }
 
@@ -231,7 +265,6 @@ function checkAnswer(selectedIndex, btnElement) {
     const nextBtn = document.getElementById('nextQuestionBtn');
     nextBtn.classList.remove('hidden');
     
-    // If last question, change button text
     if (currentQuestionIndex === gameQuestions.length - 1) {
         nextBtn.innerText = "See Result 🏆";
     } else {
@@ -265,7 +298,6 @@ function setupNavigation() {
     });
 }
 
-// Search Filters
 document.getElementById('duaSearch').addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
     document.querySelectorAll('#duaGrid .card').forEach(card => {
