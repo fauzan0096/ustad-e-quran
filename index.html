@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quraan and Duaa Ustad</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0F4C3A">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -20,12 +22,14 @@
         </div>
     </div>
 
-    <!-- ================= MAIN APP (Hidden by Default) ================= -->
+    <!-- ================= MAIN APP ================= -->
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-top">
                 <h1>📖 Quraan and Duaa Ustad</h1>
                 <div class="header-controls">
+                    <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
+                    <button id="adminBtn" class="icon-btn hidden" title="Admin Dashboard">👑</button>
                     <button id="themeToggle" class="icon-btn" title="Theme">🌙</button>
                     <button id="logoutBtn" class="icon-btn" title="Logout">🚪</button>
                 </div>
@@ -33,7 +37,6 @@
             <p>Padho, Samjho, Aawaz Suno aur Games Khelo!</p>
         </header>
 
-        <!-- 3 MAIN TABS -->
         <nav class="main-nav">
             <button class="nav-btn active" data-view="duaView">🤲 Duaen & Azkar</button>
             <button class="nav-btn" data-view="quranView">📚 Quran Words</button>
@@ -86,13 +89,30 @@
         </div>
     </div>
 
-    <!-- MODAL POPUP FOR FAZILAT/TAFSEEL -->
+    <!-- MODAL FOR FAZILAT/TAFSEEL -->
     <div id="infoModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle" style="color: var(--primary); text-align: center;">Fazilat / Tafseel</h2>
             <div id="modalText" class="modal-text urdu"></div>
-            <button class="btn-primary" id="speakExplanationBtn" style="width:100%; margin-top:20px;">🔊 Tafseel Suno (Urdu)</button>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn-primary" id="speakExplanationBtn" style="flex:1;">🔊 Tafseel Suno</button>
+                <button class="btn-share" id="shareBtn" style="flex:1;">📤 Share</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR ADMIN DASHBOARD -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('adminModal').classList.add('hidden')">&times;</span>
+            <h2 style="text-align: center; color: var(--secondary);">👑 Admin Dashboard</h2>
+            <div style="margin-top: 20px; line-height: 2;">
+                <p><b>Total Logins:</b> <span id="statLogins">0</span></p>
+                <p><b>Quizzes Played:</b> <span id="statQuizzes">0</span></p>
+                <p><b>Highest Score:</b> <span id="statHighScore">0</span></p>
+                <p><b>Current Streak:</b> <span id="statStreak">0</span> Days 🔥</p>
+            </div>
         </div>
     </div>
 
