@@ -164,9 +164,7 @@
             <div class="game-box">
                 <h2>🎮 Islamic GK Quiz</h2>
                 <p style="margin: 10px 0;">Aaj ka sawal aapke saamne hai!</p>
-                <div id="quizContainer">
-                    <!-- Quiz goes here -->
-                </div>
+                <div id="quizContainer"></div>
                 <button id="nextGkBtn" class="exam-btn hidden" onclick="loadRandomGK()">Next Sawal ➡️</button>
             </div>
         </div>
@@ -210,7 +208,7 @@
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('feedbackModal').classList.add('hidden')">&times;</span>
             <h2 style="text-align: center; color: var(--primary);">✉️ Feedback & Support</h2>
-            <p style="text-align: center; font-size: 14px; margin: 10px 0;">Aapka feedback humare liye bohot zaroori hai. Agar koi problem ho ya suggestion ho, toh humein email karein.</p>
+            <p style="text-align: center; font-size: 14px; margin: 10px 0;">Aapka feedback humare liye bohot zaroori hai.</p>
             <a href="mailto:fauzan0096@gmail.com?subject=Feedback%20from%20Quran%20Ustad%20App&body=Assalamu%20Alaikum,%0A%0AMujhe%20app%20ke%20baare%20mein%20yeh%20kehana%20hai:" style="text-decoration: none; display: block;">
                 <button class="exam-btn" style="background: var(--primary); color: white; margin-top: 10px;">📧 Email Karein</button>
             </a>
@@ -222,44 +220,237 @@
 
     <script>
         // ==========================================
-        // --- 1. DATA STRUCTURE (Minhaj-ul-Arabiya Style) ---
+        // --- 1. DATA STRUCTURE (15 Days Ready) ---
         // ==========================================
-        // Yahan 3 mahine (90 din) ka structure banega. Roz 10 words honge.
         const courseData = [
             {
                 day: 1,
                 words: [
-                    { arabic: "اللَّهُ", roman: "Allah", urdu: "اللہ", mashq: "Mashq: اللَّهُ أَحَدٌ (Allah ek hai)", tafseel: "اسمِ اعظم، ہر چیز کا پیدا کرنے والا۔" },
-                    { arabic: "رَبٌّ", roman: "Rabb", urdu: "پالنے والا", mashq: "Mashq: رَبِّ الْعَالَمِينَ (تمام جہانوں کا رب)", tafseel: "وہ جو ہمیں پیدا کرے اور پالے۔" },
-                    { arabic: "رَحْمَٰنٌ", roman: "Rahmaan", urdu: "بہت مہربان", mashq: "Mashq: الرَّحْمَٰنُ (بہت مہربان)", tafseel: "تمام مخلوقات پر بلا تفریق رحم کرنے والا۔" },
-                    { arabic: "رَحِيمٌ", roman: "Raheem", urdu: "نہایت رحم والا", mashq: "Mashq: رَحِيمٌ (نہایت رحم والا)", tafseel: "ایمان والوں پر خاص رحم کرنے والا۔" },
-                    { arabic: "غَفُورٌ", roman: "Ghafoor", urdu: "بخشنی والا", mashq: "Mashq: غَفُورٌ رَّحِيمٌ (بخشنی والا، رحم کرنے والا)", tafseel: "گناہوں کو معاف کرنے والا۔" },
-                    { arabic: "عَزِيزٌ", roman: "Azeez", urdu: "زبردست", mashq: "Mashq: عَزِيزٌ حَكِيمٌ (زبردست، حکمت والا)", tafseel: "جسے کوئی ہرا نہیں سکتا۔" },
-                    { arabic: "حَكِيمٌ", roman: "Hakeem", urdu: "حکمت والا", mashq: "Mashq: حَكِيمٌ (حکمت والا)", tafseel: "ہر کام کمال حکمت سے کرنے والا۔" },
-                    { arabic: "عَلِيمٌ", roman: "Aleem", urdu: "سب کچھ جاننے والا", mashq: "Mashq: عَلِيمٌ (سب کچھ جاننے والا)", tafseel: "جس کے علم سے کچھ چھپا نہیں۔" },
-                    { arabic: "سَمِيعٌ", roman: "Samee'", urdu: "سب سننے والا", mashq: "Mashq: سَمِيعٌ (سب سننے والا)", tafseel: "ہر آواز سننے والا۔" },
-                    { arabic: "بَصِيرٌ", roman: "Baseer", urdu: "سب دیکھنے والا", mashq: "Mashq: بَصِيرٌ (سب دیکھنے والا)", tafseel: "ہر چیز دیکھنے والا۔" }
+                    { arabic: "اللَّهُ", roman: "Allah", urdu: "اللہ", mashq: "اللَّهُ أَحَدٌ", tafseel: "اسمِ اعظم، ہر چیز کا پیدا کرنے والا۔" },
+                    { arabic: "رَبٌّ", roman: "Rabb", urdu: "پالنے والا", mashq: "رَبِّ الْعَالَمِينَ", tafseel: "وہ جو ہمیں پیدا کرے اور پالے۔" },
+                    { arabic: "رَحْمَٰنٌ", roman: "Rahmaan", urdu: "بہت مہربان", mashq: "الرَّحْمَٰنُ", tafseel: "تمام مخلوقات پر رحم کرنے والا۔" },
+                    { arabic: "رَحِيمٌ", roman: "Raheem", urdu: "نہایت رحم والا", mashq: "غَفُورٌ رَّحِيمٌ", tafseel: "ایمان والوں پر خاص رحم کرنے والا۔" },
+                    { arabic: "غَفُورٌ", roman: "Ghafoor", urdu: "بخشنی والا", mashq: "هُوَ الْغَفُورُ", tafseel: "گناہوں کو معاف کرنے والا۔" },
+                    { arabic: "عَزِيزٌ", roman: "Azeez", urdu: "زبردست", mashq: "عَزِيزٌ حَكِيمٌ", tafseel: "جسے کوئی ہرا نہیں سکتا۔" },
+                    { arabic: "حَكِيمٌ", roman: "Hakeem", urdu: "حکمت والا", mashq: "عَلِيمٌ حَكِيمٌ", tafseel: "ہر کام حکمت سے کرنے والا۔" },
+                    { arabic: "عَلِيمٌ", roman: "Aleem", urdu: "سب جاننے والا", mashq: "هُوَ عَلِيمٌ", tafseel: "جس کے علم سے کچھ چھپا نہیں۔" },
+                    { arabic: "سَمِيعٌ", roman: "Samee'", urdu: "سب سننے والا", mashq: "سَمِيعٌ بَصِيرٌ", tafseel: "ہر آواز سننے والا۔" },
+                    { arabic: "بَصِيرٌ", roman: "Baseer", urdu: "سب دیکھنے والا", mashq: "هُوَ الْبَصِيرُ", tafseel: "ہر چیز دیکھنے والا۔" }
                 ]
             },
             {
                 day: 2,
                 words: [
-                    { arabic: "الْحَمْدُ", roman: "Alhamdu", urdu: "تمام تعریف", mashq: "Mashq: الْحَمْدُ لِلَّهِ (تمام تعریف اللہ کے لیے)", tafseel: "تعریف کا لفظ۔" },
-                    { arabic: "شُكْرٌ", roman: "Shukrun", urdu: "شکر", mashq: "Mashq: شُكْرٌ (شکر)", tafseel: "نعمتوں کی قدر کرنا۔" },
-                    { arabic: "صَبْرٌ", roman: "Sabrun", urdu: "صبر", mashq: "Mashq: صَبْرٌ (صبر)", tafseel: "مشکل میں ضبط سے کام لینا۔" },
-                    { arabic: "إِيمَانٌ", roman: "Eemaan", urdu: "ایمان", mashq: "Mashq: إِيمَانٌ (ایمان)", tafseel: "یقین کرنا۔" },
-                    { arabic: "عِلْمٌ", roman: "Ilm", urdu: "علم", mashq: "Mashq: عِلْمٌ (علم)", tafseel: "جاننا۔" },
-                    { arabic: "عَمَلٌ", roman: "Amal", urdu: "عمل", mashq: "Mashq: عَمَلٌ (عمل)", tafseel: "کام کرنا۔" },
-                    { arabic: "قَلْبٌ", roman: "Qalb", urdu: "دل", mashq: "Mashq: قَلْبٌ (دل)", tafseel: "دل۔" },
-                    { arabic: "عَيْنٌ", roman: "Ayn", urdu: "آنکھ", mashq: "Mashq: عَيْنٌ (آنکھ)", tafseel: "آنکھ۔" },
-                    { arabic: "نُورٌ", roman: "Noor", urdu: "روشنی", mashq: "Mashq: نُورٌ (روشنی)", tafseel: "روشنی۔" },
-                    { arabic: "ظُلْمَةٌ", roman: "Zulmah", urdu: "اندھیرا", mashq: "Mashq: ظُلْمَةٌ (اندھیرا)", tafseel: "اندھیرا۔" }
+                    { arabic: "الْحَمْدُ", roman: "Alhamdu", urdu: "تمام تعریف", mashq: "الْحَمْدُ لِلَّهِ", tafseel: "تعریف کا لفظ۔" },
+                    { arabic: "شُكْرٌ", roman: "Shukrun", urdu: "شکر", mashq: "أَشْكُرُ لِلَّهِ", tafseel: "نعمتوں کی قدر کرنا۔" },
+                    { arabic: "صَبْرٌ", roman: "Sabrun", urdu: "صبر", mashq: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", tafseel: "مشکل میں ضبط سے کام لینا۔" },
+                    { arabic: "إِيمَانٌ", roman: "Eemaan", urdu: "ایمان", mashq: "الْإِيمَانُ فِي الْقَلْبِ", tafseel: "یقین کرنا۔" },
+                    { arabic: "عِلْمٌ", roman: "Ilm", urdu: "علم", mashq: "رَبِّ زِدْنِي عِلْمًا", tafseel: "جاننا۔" },
+                    { arabic: "عَمَلٌ", roman: "Amal", urdu: "عمل", mashq: "عَمَلٌ صَالِحٌ", tafseel: "کام کرنا۔" },
+                    { arabic: "قَلْبٌ", roman: "Qalb", urdu: "دل", mashq: "قَلْبٌ سَلِيمٌ", tafseel: "دل۔" },
+                    { arabic: "عَيْنٌ", roman: "Ayn", urdu: "آنکھ", mashq: "عَيْنَانِ", tafseel: "آنکھ۔" },
+                    { arabic: "نُورٌ", roman: "Noor", urdu: "روشنی", mashq: "نُورٌ عَلَىٰ نُورٍ", tafseel: "روشنی۔" },
+                    { arabic: "ظُلْمَةٌ", roman: "Zulmah", urdu: "اندھیرا", mashq: "ظُلُمَاتٌ بَعْضُهَا فَوْقَ بَعْضٍ", tafseel: "اندھیرا۔" }
+                ]
+            },
+            {
+                day: 3,
+                words: [
+                    { arabic: "سَمَاء", roman: "Samaa'", urdu: "آسمان", mashq: "السَّمَاءُ بِنَاءٌ", tafseel: "آسمان۔" },
+                    { arabic: "أَرْض", roman: "Ard", urdu: "زمین", mashq: "الْأَرْضُ فِرَاشٌ", tafseel: "زمین۔" },
+                    { arabic: "شَمْس", roman: "Shams", urdu: "سورج", mashq: "الشَّمْسُ ضِيَاءٌ", tafseel: "سورج۔" },
+                    { arabic: "قَمَر", roman: "Qamar", urdu: "چاند", mashq: "الْقَمَرُ مُنِيرٌ", tafseel: "چاند۔" },
+                    { arabic: "نَجْم", roman: "Najm", urdu: "ستارہ", mashq: "النَّجْمُ ثَاقِبٌ", tafseel: "ستارہ۔" },
+                    { arabic: "لَيْل", roman: "Layl", urdu: "رات", mashq: "اللَّيْلُ سَاكِنٌ", tafseel: "رات۔" },
+                    { arabic: "نَهَار", roman: "Nahaar", urdu: "دن", mashq: "النَّهَارُ مُنِيرٌ", tafseel: "دن۔" },
+                    { arabic: "يَوْم", roman: "Yawm", urdu: "دن", mashq: "يَوْمُ الدِّينِ", tafseel: "دن (خاص طور پر قیامت کا دن)۔" },
+                    { arabic: "فَجْر", roman: "Fajr", urdu: "صبح", mashq: "وَالْفَجْرِ", tafseel: "صبح کی پہلی روشنی۔" },
+                    { arabic: "مَاء", roman: "Maa'", urdu: "پانی", mashq: "مَاءً طَهُورًا", tafseel: "پانی۔" }
+                ]
+            },
+            {
+                day: 4,
+                words: [
+                    { arabic: "مَطَر", roman: "Matar", urdu: "بارش", mashq: "مَطَرٌ غَزِيرٌ", tafseel: "بارش۔" },
+                    { arabic: "سَحَاب", roman: "Sahaab", urdu: "بادل", mashq: "سَحَابٌ ثِقَالٌ", tafseel: "بادل۔" },
+                    { arabic: "بَرْق", roman: "Barq", urdu: "بجلی", mashq: "الْبَرْقُ خَطْفَةٌ", tafseel: "بجلی۔" },
+                    { arabic: "رَعْد", roman: "Ra'd", urdu: "بادل کی گرج", mashq: "الرَّعْدُ صَوْتٌ", tafseel: "گرج۔" },
+                    { arabic: "رِيح", roman: "Reeh", urdu: "ہوا", mashq: "رِيحٌ صَرْصَرٌ", tafseel: "ہوا۔" },
+                    { arabic: "بَحْر", roman: "Bahr", urdu: "سمندر", mashq: "الْبَحْرُ وَاسِعٌ", tafseel: "سمندر۔" },
+                    { arabic: "نَهْر", roman: "Nahr", urdu: "نہر", mashq: "نَهْرٌ جَارٍ", tafseel: "نہر۔" },
+                    { arabic: "جَبَل", roman: "Jabal", urdu: "پہاڑ", mashq: "جَبَلٌ عَالٍ", tafseel: "پہاڑ۔" },
+                    { arabic: "نَار", roman: "Naar", urdu: "آگ", mashq: "نَارٌ حَامِيَةٌ", tafseel: "آگ۔" },
+                    { arabic: "حَجَر", roman: "Hajar", urdu: "پتھر", mashq: "حَجَرٌ أَسْوَدُ", tafseel: "پتھر۔" }
+                ]
+            },
+            {
+                day: 5,
+                words: [
+                    { arabic: "قَالَ", roman: "Qaala", urdu: "اس نے کہا", mashq: "قَالَ رَبِّي", tafseel: "کہنا۔" },
+                    { arabic: "آمَنَ", roman: "Aamana", urdu: "ایمان لایا", mashq: "آمَنَ بِاللَّهِ", tafseel: "ایمان لانا۔" },
+                    { arabic: "كَفَرَ", roman: "Kafara", urdu: "انکار کیا", mashq: "كَفَرُوا بِاللَّهِ", tafseel: "انکار کرنا۔" },
+                    { arabic: "صَدَقَ", roman: "Sadaqa", urdu: "سچ کہا", mashq: "صَدَقَ الْعَبْدُ", tafseel: "سچ بولنا۔" },
+                    { arabic: "كَذَبَ", roman: "Kadhaba", urdu: "جھوٹ بولا", mashq: "كَذَبُوا عَلَى اللَّهِ", tafseel: "جھوٹ بولنا۔" },
+                    { arabic: "ظَلَمَ", roman: "Zalama", urdu: "ظلم کیا", mashq: "ظَلَمُوا أَنفُسَهُمْ", tafseel: "ظلم کرنا۔" },
+                    { arabic: "كَتَبَ", roman: "Kataba", urdu: "لکھا", mashq: "كَتَبَ اللَّهُ", tafseel: "لکھنا۔" },
+                    { arabic: "خَلَقَ", roman: "Khalaqa", urdu: "پیدا کیا", mashq: "خَلَقَ الْإِنسَانَ", tafseel: "پیدا کرنا۔" },
+                    { arabic: "جَعَلَ", roman: "Ja'ala", urdu: "بنایا", mashq: "جَعَلَ لَكُمُ الْأَرْضَ", tafseel: "بنانا۔" },
+                    { arabic: "أَنزَلَ", roman: "Anzala", urdu: "نازل کیا", mashq: "أَنزَلَ الْقُرْآنَ", tafseel: "اتارنا۔" }
+                ]
+            },
+            {
+                day: 6,
+                words: [
+                    { arabic: "يَقُولُ", roman: "Yaqoolu", urdu: "وہ کہتا ہے", mashq: "يَقُولُ الْحَقَّ", tafseel: "کہنا (موجودہ زمانہ)۔" },
+                    { arabic: "يَفْعَلُ", roman: "Yaf'alu", urdu: "وہ کرتا ہے", mashq: "يَفْعَلُ مَا يَشَاءُ", tafseel: "کرنا۔" },
+                    { arabic: "أَقِمْ", roman: "Aqim", urdu: "قائم کر", mashq: "أَقِمِ الصَّلَاةَ", tafseel: "قائم کرنا۔" },
+                    { arabic: "اصْبِرْ", roman: "Isbir", urdu: "صبر کر", mashq: "اصْبِرْ وَمَا صَبْرُكَ", tafseel: "صبر کرنا۔" },
+                    { arabic: "ادْعُ", roman: "Ud'oo", urdu: "پکارو / دعا کرو", mashq: "ادْعُونِي أَسْتَجِبْ لَكُمْ", tafseel: "دعا کرنا۔" },
+                    { arabic: "ارْحَمْ", roman: "Irham", urdu: "رحم کر", mashq: "ارْحَمْنِي يَا اللَّهُ", tafseel: "رحم کرنا۔" },
+                    { arabic: "اغْفِرْ", roman: "Ighfir", urdu: "بخش دے", mashq: "اغْفِرْ لِي ذَنْبِي", tafseel: "بخشنا۔" },
+                    { arabic: "اذْكُرْ", roman: "Udhkur", urdu: "یاد کر", mashq: "اذْكُرُوا اللَّهَ", tafseel: "یاد کرنا۔" },
+                    { arabic: "اسْمَعْ", roman: "Isma'", urdu: "سن", mashq: "اسْمَعْ يَا وَلَدِي", tafseel: "سننا۔" },
+                    { arabic: "اهْدِ", roman: "Ihdi", urdu: "ہدایت دے", mashq: "اهْدِنَا الصِّرَاطَ", tafseel: "ہدایت دینا۔" }
+                ]
+            },
+            {
+                day: 7,
+                words: [
+                    { arabic: "إِنْسَان", roman: "Insaan", urdu: "انسان", mashq: "الْإِنسَانُ ضَعِيفٌ", tafseel: "انسان۔" },
+                    { arabic: "نَاس", roman: "Naas", urdu: "لوگ", mashq: "قُلْ يَا أَيُّهَا النَّاسُ", tafseel: "لوگ۔" },
+                    { arabic: "رَجُل", roman: "Rajul", urdu: "مرد", mashq: "رَجُلٌ مُؤْمِنٌ", tafseel: "مرد۔" },
+                    { arabic: "امْرَأَة", roman: "Imra'ah", urdu: "عورت", mashq: "امْرَأَةُ فِرْعَوْنَ", tafseel: "عورت۔" },
+                    { arabic: "وَلَد", roman: "Walad", urdu: "بیٹا / اولاد", mashq: "وَلَدٌ صَالِحٌ", tafseel: "اولاد۔" },
+                    { arabic: "ابْن", roman: "Ibn", urdu: "بیٹا", mashq: "ابْنُ آدَمَ", tafseel: "بیٹا۔" },
+                    { arabic: "بِنْت", roman: "Bint", urdu: "بیٹی", mashq: "بِنْتُ النَّبِيِّ", tafseel: "بیٹی۔" },
+                    { arabic: "أَب", roman: "Ab", urdu: "والد", mashq: "أَبِي وَأُمِّي", tafseel: "باپ۔" },
+                    { arabic: "أُمّ", roman: "Umm", urdu: "والدہ", mashq: "أُمُّ الْكِتَابِ", tafseel: "ماں۔" },
+                    { arabic: "أَخ", roman: "Akh", urdu: "بھائی", mashq: "أَخِي فِي الْإِسْلَامِ", tafseel: "بھائی۔" }
+                ]
+            },
+            {
+                day: 8,
+                words: [
+                    { arabic: "جَنَّة", roman: "Jannah", urdu: "جنت", mashq: "جَنَّةٌ عَرْضُهَا السَّمَاوَاتُ", tafseel: "جنت۔" },
+                    { arabic: "جَهَنَّم", roman: "Jahannam", urdu: "جہنم", mashq: "جَهَنَّمُ مِيعَادُهُمْ", tafseel: "جہنم۔" },
+                    { arabic: "قِيَامَة", roman: "Qiyaamah", urdu: "قیامت", mashq: "يَوْمَ الْقِيَامَةِ", tafseel: "قیامت۔" },
+                    { arabic: "مَوْت", roman: "Mawt", urdu: "موت", mashq: "الْمَوْتُ حَقٌّ", tafseel: "موت۔" },
+                    { arabic: "حَيَاة", roman: "Hayaat", urdu: "زندگی", mashq: "الْحَيَاةُ الدُّنْيَا", tafseel: "زندگی۔" },
+                    { arabic: "قَبْر", roman: "Qabr", urdu: "قبر", mashq: "عَذَابُ الْقَبْرِ", tafseel: "قبر۔" },
+                    { arabic: "حِسَاب", roman: "Hisaab", urdu: "حساب", mashq: "يَوْمَ الْحِسَابِ", tafseel: "حساب۔" },
+                    { arabic: "جَزَاء", roman: "Jazaa'", urdu: "بدلہ", mashq: "جَزَاءً وِفَاقًا", tafseel: "بدلہ۔" },
+                    { arabic: "أَجْر", roman: "Ajr", urdu: "اجر / ثواب", mashq: "أَجْرٌ عَظِيمٌ", tafseel: "ثواب۔" },
+                    { arabic: "فِرْدَوْس", roman: "Firdaws", urdu: "فردوس", mashq: "جَنَّاتُ الْفِرْدَوْسِ", tafseel: "جنت کا اعلیٰ درجہ۔" }
+                ]
+            },
+            {
+                day: 9,
+                words: [
+                    { arabic: "مُحَمَّد", roman: "Muhammad", urdu: "محمد ﷺ", mashq: "مُحَمَّدٌ رَسُولُ اللَّهِ", tafseel: "آخری نبی۔" },
+                    { arabic: "آدَم", roman: "Aadam", urdu: "آدم علیہ السلام", mashq: "خَلَقَ آدَمَ", tafseel: "پہلے انسان۔" },
+                    { arabic: "نُوح", roman: "Nooh", urdu: "نوح علیہ السلام", mashq: "قَوْمُ نُوحٍ", tafseel: "کشتی والے نبی۔" },
+                    { arabic: "إِبْرَاهِيم", roman: "Ibraaheem", urdu: "ابراہیم علیہ السلام", mashq: "مِلَّةَ إِبْرَاهِيمَ", tafseel: "خلیل اللہ۔" },
+                    { arabic: "مُوسَى", roman: "Moosaa", urdu: "موسیٰ علیہ السلام", mashq: "كَلَّمَ اللَّهُ مُوسَى", tafseel: "کلیم اللہ۔" },
+                    { arabic: "عِيسَى", roman: "Eesaa", urdu: "عیسیٰ علیہ السلام", mashq: "عِيسَى ابْنُ مَرْيَمَ", tafseel: "روح اللہ۔" },
+                    { arabic: "يُوسُف", roman: "Yoosuf", urdu: "یوسف علیہ السلام", mashq: "قِصَّةُ يُوسُفَ", tafseel: "خوبصورت نبی۔" },
+                    { arabic: "يُونُس", roman: "Yoonus", urdu: "یونس علیہ السلام", mashq: "ذَا النُّونِ", tafseel: "مچھلی والے نبی۔" },
+                    { arabic: "دَاوُود", roman: "Daawood", urdu: "داؤد علیہ السلام", mashq: "آتَيْنَا دَاوُودَ زَبُورًا", tafseel: "زبور والے نبی۔" },
+                    { arabic: "سُلَيْمَان", roman: "Sulaymaan", urdu: "سلیمان علیہ السلام", mashq: "مُلْكُ سُلَيْمَانَ", tafseel: "جنات پر حکمران نبی۔" }
+                ]
+            },
+            {
+                day: 10,
+                words: [
+                    { arabic: "مَسْجِد", roman: "Masjid", urdu: "مسجد", mashq: "الْمَسْجِدُ الْحَرَامُ", tafseel: "سجدہ کرنے کی جگہ۔" },
+                    { arabic: "كَعْبَة", roman: "Ka'bah", urdu: "کعبہ", mashq: "بَيْتُ اللَّهِ الْحَرَامُ", tafseel: "اللہ کا گھر۔" },
+                    { arabic: "قَرْيَة", roman: "Qaryah", urdu: "بستی", mashq: "قَرْيَةٌ ظَالِمَةٌ", tafseel: "بستی۔" },
+                    { arabic: "مَدِينَة", roman: "Madeenah", urdu: "شہر", mashq: "الْمَدِينَةُ الْمُنَوَّرَةُ", tafseel: "شہر۔" },
+                    { arabic: "بَاب", roman: "Baab", urdu: "دروازہ", mashq: "بَابُ الرَّحْمَةِ", tafseel: "دروازہ۔" },
+                    { arabic: "فُلْك", roman: "Fulk", urdu: "کشتی", mashq: "الْفُلْكَ تَجْرِي", tafseel: "کشتی۔" },
+                    { arabic: "كِتَاب", roman: "Kitaab", urdu: "کتاب", mashq: "الْكِتَابُ الْمُبِينُ", tafseel: "کتاب۔" },
+                    { arabic: "قَلَم", roman: "Qalam", urdu: "قلم", mashq: "عَلَّمَ بِالْقَلَمِ", tafseel: "قلم۔" },
+                    { arabic: "مِيزَان", roman: "Meezaan", urdu: "ترازو", mashq: "الْمِيزَانُ الْعَدْلُ", tafseel: "ترازو۔" },
+                    { arabic: "مَال", roman: "Maal", urdu: "مال / دولت", mashq: "مَالٌ وَبَنُونَ", tafseel: "دولت۔" }
+                ]
+            },
+            {
+                day: 11,
+                words: [
+                    { arabic: "بَابٌ", roman: "Baabun", urdu: "دروازہ", mashq: "بَابُ الْجَنَّةِ", tafseel: "دروازہ" },
+                    { arabic: "بَيْتٌ", roman: "Baitun", urdu: "گھر", mashq: "بَيْتُ اللَّهِ", tafseel: "گھر" },
+                    { arabic: "كِتَابٌ", roman: "Kitaabun", urdu: "کتاب", mashq: "كِتَابُ اللَّهِ", tafseel: "کتاب" },
+                    { arabic: "قَلَمٌ", roman: "Qalamun", urdu: "قلم", mashq: "قَلَمٌ جَدِيدٌ", tafseel: "قلم" },
+                    { arabic: "مِفْتَاحٌ", roman: "Miftaahun", urdu: "چابی", mashq: "مِفْتَاحُ الْبَابِ", tafseel: "چابی" },
+                    { arabic: "سَرِيرٌ", roman: "Sareerun", urdu: "بستر", mashq: "سَرِيرٌ وَثِيرٌ", tafseel: "بستر" },
+                    { arabic: "كُرْسِيٌّ", roman: "Kursiyyun", urdu: "کرسی", mashq: "كُرْسِيٌّ عَالٍ", tafseel: "کرسی" },
+                    { arabic: "مَاءٌ", roman: "Maa'un", urdu: "پانی", mashq: "مَاءٌ بَارِدٌ", tafseel: "پانی" },
+                    { arabic: "خُبْزٌ", roman: "Khubzun", urdu: "روٹی", mashq: "خُبْزٌ طَازَجٌ", tafseel: "روٹی" },
+                    { arabic: "لَبَنٌ", roman: "Labanun", urdu: "دودھ", mashq: "لَبَنٌ خَالِصٌ", tafseel: "دودھ" }
+                ]
+            },
+            {
+                day: 12,
+                words: [
+                    { arabic: "أَكَلَ", roman: "Akala", urdu: "اس نے کھایا", mashq: "أَكَلَ الطَّعَامَ", tafseel: "کھانا" },
+                    { arabic: "شَرِبَ", roman: "Shariba", urdu: "اس نے پیا", mashq: "شَرِبَ الْمَاءَ", tafseel: "پینا" },
+                    { arabic: "ذَهَبَ", roman: "Dhahaba", urdu: "وہ گیا", mashq: "ذَهَبَ إِلَى الْمَسْجِدِ", tafseel: "جانا" },
+                    { arabic: "رَجَعَ", roman: "Raja'a", urdu: "وہ واپس آیا", mashq: "رَجَعَ إِلَى الْبَيْتِ", tafseel: "واپس آنا" },
+                    { arabic: "جَلَسَ", roman: "Jalasa", urdu: "وہ بیٹھا", mashq: "جَلَسَ عَلَى الْكُرْسِيِّ", tafseel: "بیٹھنا" },
+                    { arabic: "قَامَ", roman: "Qaama", urdu: "وہ کھڑا ہوا", mashq: "قَامَ لِلصَّلَاةِ", tafseel: "کھڑا ہونا" },
+                    { arabic: "نَامَ", roman: "Naama", urdu: "وہ سویا", mashq: "نَامَ بَعْدَ الْعِشَاءِ", tafseel: "سونا" },
+                    { arabic: "فَتَحَ", roman: "Fataha", urdu: "اس نے کھولا", mashq: "فَتَحَ الْبَابَ", tafseel: "کھولنا" },
+                    { arabic: "سَمِعَ", roman: "Sami'a", urdu: "اس نے سنا", mashq: "سَمِعَ الْأَذَانَ", tafseel: "سننا" },
+                    { arabic: "رَأَى", roman: "Ra'aa", urdu: "اس نے دیکھا", mashq: "رَأَى الْهِلَالَ", tafseel: "دیکھنا" }
+                ]
+            },
+            {
+                day: 13,
+                words: [
+                    { arabic: "يَذْهَبُ", roman: "Yadh-habu", urdu: "وہ جاتا ہے", mashq: "يَذْهَبُ إِلَى الْعَمَلِ", tafseel: "وہ جاتا ہے" },
+                    { arabic: "يَرْجِعُ", roman: "Yarji'u", urdu: "وہ واپس آتا ہے", mashq: "يَرْجِعُ مِنَ السُّوقِ", tafseel: "واپس آنا" },
+                    { arabic: "يَأْكُلُ", roman: "Ya'kulu", urdu: "وہ کھاتا ہے", mashq: "يَأْكُلُ الْفَاكِهَةَ", tafseel: "کھانا" },
+                    { arabic: "يَشْرَبُ", roman: "Yashrabu", urdu: "وہ پیتا ہے", mashq: "يَشْرَبُ اللَّبَنَ", tafseel: "پینا" },
+                    { arabic: "يَقْرَأُ", roman: "Yaqra'u", urdu: "وہ پڑھتا ہے", mashq: "يَقْرَأُ الْقُرْآنَ", tafseel: "پڑھنا" },
+                    { arabic: "يَكْتُبُ", roman: "Yaktubu", urdu: "وہ لکھتا ہے", mashq: "يَكْتُبُ الدَّرْسَ", tafseel: "لکھنا" },
+                    { arabic: "يَفْتَحُ", roman: "Yaftahu", urdu: "وہ کھولتا ہے", mashq: "يَفْتَحُ النَّافِذَةَ", tafseel: "کھولنا" },
+                    { arabic: "يَسْمَعُ", roman: "Yasma'u", urdu: "وہ سنتا ہے", mashq: "يَسْمَعُ الْقُرْآنَ", tafseel: "سننا" },
+                    { arabic: "يَنْظُرُ", roman: "Yandhuru", urdu: "وہ دیکھتا ہے", mashq: "يَنْظُرُ إِلَى السَّمَاءِ", tafseel: "دیکھنا" },
+                    { arabic: "يَعْلَمُ", roman: "Ya'lamu", urdu: "وہ جانتا ہے", mashq: "اللَّهُ يَعْلَمُ", tafseel: "جانا" }
+                ]
+            },
+            {
+                day: 14,
+                words: [
+                    { arabic: "أَبٌ", roman: "Abun", urdu: "باپ", mashq: "أَبِي طَيِّبٌ", tafseel: "والد" },
+                    { arabic: "أُمٌّ", roman: "Ummun", urdu: "ماں", mashq: "أُمِّي رَحِيمَةٌ", tafseel: "والدہ" },
+                    { arabic: "اِبْنٌ", roman: "Ibnun", urdu: "بیٹا", mashq: "اِبْنِي صَغِيرٌ", tafseel: "بیٹا" },
+                    { arabic: "بِنْتٌ", roman: "Bintun", urdu: "بیٹی", mashq: "بِنْتِي كَبِيرَةٌ", tafseel: "بیٹی" },
+                    { arabic: "أَخٌ", roman: "Akhun", urdu: "بھائی", mashq: "أَخِي مُسْلِمٌ", tafseel: "بھائی" },
+                    { arabic: "أُخْتٌ", roman: "Ukhtun", urdu: "بہن", mashq: "أُخْتِي فِي الْبَيْتِ", tafseel: "بہن" },
+                    { arabic: "جَدٌّ", roman: "Jaddun", urdu: "دادا / نانا", mashq: "جَدِّي كَبِيرٌ", tafseel: "دادا" },
+                    { arabic: "جَدَّةٌ", roman: "Jaddatun", urdu: "دادی / نانی", mashq: "جَدَّتِي طَيِّبَةٌ", tafseel: "دادی" },
+                    { arabic: "عَمٌّ", roman: "Ammun", urdu: "چچا", mashq: "عَمِّي فِي الْمَسْجِدِ", tafseel: "چچا" },
+                    { arabic: "خَالٌ", roman: "Khaalun", urdu: "ماموں", mashq: "خَالِي فِي السُّوقِ", tafseel: "ماموں" }
+                ]
+            },
+            {
+                day: 15,
+                words: [
+                    { arabic: "مُدَرِّسٌ", roman: "Mudarrisun", urdu: "استاد", mashq: "الْمُدَرِّسُ فِي الْفَصْلِ", tafseel: "استاد" },
+                    { arabic: "طَالِبٌ", roman: "Taalibun", urdu: "طالب علم", mashq: "الطَّالِبُ مُجْتَهِدٌ", tafseel: "طالب علم" },
+                    { arabic: "طَبِيبٌ", roman: "Tabeebun", urdu: "ڈاکٹر", mashq: "الطَّبِيبُ فِي الْمُسْتَشْفَى", tafseel: "ڈاکٹر" },
+                    { arabic: "تاجِرٌ", roman: "Taajirun", urdu: "تاجر", mashq: "التَّاجِرُ فِي السُّوقِ", tafseel: "تاجر" },
+                    { arabic: "مُهَنْدِسٌ", roman: "Muhandisun", urdu: "انجینئر", mashq: "الْمُهَنْدِسُ فِي الْمَكْتَبِ", tafseel: "انجینئر" },
+                    { arabic: "عَامِلٌ", roman: "Aamilun", urdu: "مزدور / کارکن", mashq: "الْعَامِلُ فِي الْمَصْنَعِ", tafseel: "کارکن" },
+                    { arabic: "فَلَّاحٌ", roman: "Fallaahun", urdu: "کسان", mashq: "الْفَلَّاحُ فِي الْحَقْلِ", tafseel: "کسان" },
+                    { arabic: "بَائِعٌ", roman: "Baa'iun", urdu: "دکاندار", mashq: "الْبَائِعُ فِي الدُّكَانِ", tafseel: "دکاندار" },
+                    { arabic: "إِمَامٌ", roman: "Imaamun", urdu: "امام", mashq: "الْإِمَامُ فِي الْمَسْجِدِ", tafseel: "امام" },
+                    { arabic: "مُؤَذِّنٌ", roman: "Mu'adhinun", urdu: "مؤذن", mashq: "الْمُؤَذِّنُ يُنَادِي لِلصَّلَاةِ", tafseel: "اذان دینے والا" }
                 ]
             }
-            // ... Yahan aap aur din add kar sakte hain (Day 3, Day 4... Day 90)
+            // Yahan aage Day 16 se Day 90 tak add karein
         ];
 
-        // Alag-Alag PDF Data
         const namazDuaData = [
             { arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", roman: "Subhanaka Allahumma wa bihamdika", urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے", tafseel: "نماز کی پہلی دعا (استفتاح)۔ (سنن ابی داؤد 776)" },
             { arabic: "رَبِّ اغْفِرْ لِي", roman: "Rabbighfir li", urdu: "اے میرے رب! مجھے بخش دے", tafseel: "دو سجدوں کے درمیان دعا۔ (ابن ماجہ 897)" },
@@ -294,7 +485,6 @@
         let userRole = localStorage.getItem('userRole') || 'guest';
         let shareTextContext = "";
 
-        // Login & Init
         function handleLogin() {
             const pass = document.getElementById('passwordInput').value;
             if (pass === ADMIN_PASS || pass === GUEST_PASS) {
@@ -330,13 +520,9 @@
         // ==========================================
         // --- 3. RENDERING FUNCTIONS ---
         // ==========================================
-        
-        // 1. Course Render & Lock Logic
         function renderCourse() {
             const grid = document.getElementById('courseGrid');
             grid.innerHTML = '';
-            
-            // Admin bypass lock
             let maxUnlockedDay = userRole === 'admin' ? 90 : currentDay;
             
             document.getElementById('dayTitle').innerText = `Day ${currentDay} - Learn 10 Words`;
@@ -368,10 +554,9 @@
                 });
             });
 
-            // Show/Hide Exam button
             const examBtn = document.getElementById('startExamBtn');
             if(currentDay > courseData.length && userRole !== 'admin') {
-                 examBtn.innerText = "🎉 Aapne Course Complete Kar Liya!";
+                 examBtn.innerText = "🎉 Abhi Aur Data Nahi Hai!";
                  examBtn.disabled = true;
             } else {
                  examBtn.innerText = `📝 Day ${currentDay} Exam Start Karein`;
@@ -379,7 +564,6 @@
             }
         }
 
-        // 2. List Data Render (Duas, Azkar, Words)
         function renderListData(data, containerId) {
             const grid = document.getElementById(containerId);
             grid.innerHTML = '';
@@ -435,18 +619,13 @@
         }
 
         // ==========================================
-        // --- 5. EXAM LOGIC (Word Exam) ---
+        // --- 5. EXAM LOGIC ---
         // ==========================================
-        let examScore = 0;
-        let currentExamQuestions = [];
-
         function startWordExam() {
             let targetDayObj = courseData.find(d => d.day === currentDay);
             if(!targetDayObj) return;
 
-            // Generate Questions (Urdu meanings)
-            currentExamQuestions = targetDayObj.words.map(word => {
-                // Pick 3 random wrong answers
+            let currentExamQuestions = targetDayObj.words.map(word => {
                 let wrongOpts = courseData.flatMap(d => d.words)
                     .filter(w => w.urdu !== word.urdu)
                     .sort(() => 0.5 - Math.random())
@@ -475,12 +654,10 @@
             const parent = btn.parentElement;
             parent.querySelectorAll('.option-btn').forEach(b => {
                 b.classList.remove('selected', 'correct', 'wrong');
-                b.style.borderColor = 'var(--border)'; // reset
+                b.style.borderColor = 'var(--border)';
             });
             btn.classList.add('selected');
             btn.style.borderColor = 'var(--primary)';
-            
-            // Store selection
             btn.dataset.isCorrect = (selected === correct).toString();
         }
 
@@ -492,7 +669,6 @@
             questions.forEach(qDiv => {
                 const selectedBtn = qDiv.querySelector('.selected');
                 if (!selectedBtn) { allAnswered = false; return; }
-                
                 if (selectedBtn.dataset.isCorrect === 'true') {
                     selectedBtn.classList.add('correct');
                     score++;
@@ -512,8 +688,6 @@
             if (score >= 8) {
                 document.getElementById('examResult').innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`;
                 document.getElementById('examResult').style.color = "green";
-                
-                // Unlock next day
                 if(userRole !== 'admin') {
                     currentDay++;
                     localStorage.setItem('currentDay', currentDay);
@@ -523,14 +697,14 @@
                     renderCourse();
                 }, 2000);
             } else {
-                document.getElementById('examResult').innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye. Wapas padhein.`;
+                document.getElementById('examResult').innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye.`;
                 document.getElementById('examResult').style.color = "red";
                 document.getElementById('submitExamBtn').style.display = 'block';
             }
         }
 
         // ==========================================
-        // --- 6. GAMES (Random MCQ) ---
+        // --- 6. GAMES & UTILS ---
         // ==========================================
         function loadRandomGK() {
             const randomQ = gkQuestions[Math.floor(Math.random() * gkQuestions.length)];
@@ -554,9 +728,6 @@
             document.getElementById('nextGkBtn').classList.remove('hidden');
         }
 
-        // ==========================================
-        // --- 7. UTILS ---
-        // ==========================================
         function switchTab(tabId, btn) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
