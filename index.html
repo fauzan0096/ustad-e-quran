@@ -9,64 +9,79 @@
 </head>
 <body>
 
-    <header>
-        <div class="header-top">
-            <h1>📖 Quraan and Duaa Ustad</h1>
-            <button id="themeToggle" class="icon-btn">🌙</button>
+    <!-- ================= LOGIN SCREEN ================= -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h1>🔐 Quraan and Duaa Ustad</h1>
+            <p>App ko access karne ke liye password daalein</p>
+            <input type="password" id="passwordInput" placeholder="Enter Password" autocomplete="off">
+            <button id="loginBtn" class="btn-primary">Login</button>
+            <p id="loginError" style="color: #ff4d4d; margin-top: 10px; font-weight: bold;"></p>
         </div>
-        <p>Padho, Samjho, Aawaz Suno aur Games Khelo!</p>
-    </header>
-
-    <!-- 3 MAIN TABS -->
-    <nav class="main-nav">
-        <button class="nav-btn active" data-view="duaView">🤲 Duaen & Azkar</button>
-        <button class="nav-btn" data-view="quranView">📚 Quran Words</button>
-        <button class="nav-btn" data-view="gameView">🎮 Islamic Games</button>
-    </nav>
-
-    <!-- ================= TAB 1: DUAEN & AZKAR ================= -->
-    <div id="duaView" class="view-section active">
-        <div class="controls">
-            <input type="text" id="duaSearch" placeholder="🔍 Search Dua...">
-        </div>
-        <div class="grid-container" id="duaGrid"></div>
     </div>
 
-    <!-- ================= TAB 2: QURAN WORDS ================= -->
-    <div id="quranView" class="view-section">
-        <div class="controls">
-            <input type="text" id="quranSearch" placeholder="🔍 Search Quran Word...">
-        </div>
-        <div class="grid-container" id="quranGrid"></div>
-    </div>
-
-    <!-- ================= TAB 3: ISLAMIC GAMES ================= -->
-    <div id="gameView" class="view-section">
-        <div class="game-container">
-            <div id="gameStartScreen">
-                <h2>🎮 Islamic GK Quiz</h2>
-                <p>Test your Islamic Knowledge with 50 questions!</p>
-                <button id="startGameBtn" class="btn-primary">Start Game</button>
-            </div>
-
-            <div id="quizScreen" class="hidden">
-                <div class="quiz-header">
-                    <span id="questionCount">Question 1/50</span>
-                    <span id="scoreDisplay">Score: 0</span>
+    <!-- ================= MAIN APP (Hidden by Default) ================= -->
+    <div id="mainApp" class="hidden">
+        <header>
+            <div class="header-top">
+                <h1>📖 Quraan and Duaa Ustad</h1>
+                <div class="header-controls">
+                    <button id="themeToggle" class="icon-btn" title="Theme">🌙</button>
+                    <button id="logoutBtn" class="icon-btn" title="Logout">🚪</button>
                 </div>
-                <div class="quiz-card">
-                    <h2 id="questionText">Question aayega yahan...</h2>
-                    <div class="options-container" id="optionsContainer">
-                        <!-- Options will load here -->
+            </div>
+            <p>Padho, Samjho, Aawaz Suno aur Games Khelo!</p>
+        </header>
+
+        <!-- 3 MAIN TABS -->
+        <nav class="main-nav">
+            <button class="nav-btn active" data-view="duaView">🤲 Duaen & Azkar</button>
+            <button class="nav-btn" data-view="quranView">📚 Quran Words</button>
+            <button class="nav-btn" data-view="gameView">🎮 Islamic Games</button>
+        </nav>
+
+        <!-- TAB 1: DUAEN & AZKAR -->
+        <div id="duaView" class="view-section active">
+            <div class="controls">
+                <input type="text" id="duaSearch" placeholder="🔍 Search Dua...">
+            </div>
+            <div class="grid-container" id="duaGrid"></div>
+        </div>
+
+        <!-- TAB 2: QURAN WORDS -->
+        <div id="quranView" class="view-section">
+            <div class="controls">
+                <input type="text" id="quranSearch" placeholder="🔍 Search Quran Word...">
+            </div>
+            <div class="grid-container" id="quranGrid"></div>
+        </div>
+
+        <!-- TAB 3: ISLAMIC GAMES -->
+        <div id="gameView" class="view-section">
+            <div class="game-container">
+                <div id="gameStartScreen">
+                    <h2>🎮 Islamic GK Quiz</h2>
+                    <p>Test your Islamic Knowledge with 50 questions!</p>
+                    <button id="startGameBtn" class="btn-primary">Start Game</button>
+                </div>
+
+                <div id="quizScreen" class="hidden">
+                    <div class="quiz-header">
+                        <span id="questionCount">Question 1/50</span>
+                        <span id="scoreDisplay">Score: 0</span>
                     </div>
+                    <div class="quiz-card">
+                        <h2 id="questionText">Question aayega yahan...</h2>
+                        <div class="options-container" id="optionsContainer"></div>
+                    </div>
+                    <button id="nextQuestionBtn" class="btn-primary hidden">Next Question ➡️</button>
                 </div>
-                <button id="nextQuestionBtn" class="btn-primary hidden">Next Question ➡️</button>
-            </div>
 
-            <div id="gameOverScreen" class="hidden">
-                <h2>🏆 Game Over!</h2>
-                <p id="finalScoreText">Your Score: 0/50</p>
-                <button id="restartGameBtn" class="btn-primary">Play Again</button>
+                <div id="gameOverScreen" class="hidden">
+                    <h2>🏆 Game Over!</h2>
+                    <p id="finalScoreText">Your Score: 0/50</p>
+                    <button id="restartGameBtn" class="btn-primary">Play Again</button>
+                </div>
             </div>
         </div>
     </div>
