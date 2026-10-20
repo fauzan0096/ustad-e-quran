@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Learning App - Padho, Samjho, Khelo</title>
+    <title>Quraan and Duaa Ustad</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,48 +11,63 @@
 
     <header>
         <div class="header-top">
-            <h1>📖 Quran & Namaz Learning</h1>
+            <h1>📖 Quraan and Duaa Ustad</h1>
             <button id="themeToggle" class="icon-btn">🌙</button>
         </div>
-        <p>Padho, Samjho, Aawaz Suno aur Exam Pass Karo!</p>
+        <p>Padho, Samjho, Aawaz Suno aur Games Khelo!</p>
     </header>
 
+    <!-- 3 MAIN TABS -->
     <nav class="main-nav">
-        <button class="nav-btn active" data-view="dictView">📚 Dictionary</button>
-        <button class="nav-btn" data-view="dailyView">🎯 Daily 10 Words</button>
+        <button class="nav-btn active" data-view="duaView">🤲 Duaen & Azkar</button>
+        <button class="nav-btn" data-view="quranView">📚 Quran Words</button>
+        <button class="nav-btn" data-view="gameView">🎮 Islamic Games</button>
     </nav>
 
-    <!-- DICTIONARY VIEW -->
-    <div id="dictView" class="view-section active">
+    <!-- ================= TAB 1: DUAEN & AZKAR ================= -->
+    <div id="duaView" class="view-section active">
         <div class="controls">
-            <input type="text" id="searchBar" placeholder="🔍 Search Arabic, Roman, or Urdu...">
+            <input type="text" id="duaSearch" placeholder="🔍 Search Dua...">
         </div>
-        <div class="grid-container" id="wordGrid"></div>
+        <div class="grid-container" id="duaGrid"></div>
     </div>
 
-    <!-- DAILY LEARNING & EXAM VIEW -->
-    <div id="dailyView" class="view-section">
-        <div class="daily-header">
-            <h2 id="dayTitle">Day 1 - Learn 10 Words</h2>
-            <div class="progress-bar"><div id="progressFill"></div></div>
+    <!-- ================= TAB 2: QURAN WORDS ================= -->
+    <div id="quranView" class="view-section">
+        <div class="controls">
+            <input type="text" id="quranSearch" placeholder="🔍 Search Quran Word...">
         </div>
+        <div class="grid-container" id="quranGrid"></div>
+    </div>
 
-        <!-- Learning Cards -->
-        <div class="grid-container" id="dailyGrid"></div>
+    <!-- ================= TAB 3: ISLAMIC GAMES ================= -->
+    <div id="gameView" class="view-section">
+        <div class="game-container">
+            <div id="gameStartScreen">
+                <h2>🎮 Islamic GK Quiz</h2>
+                <p>Test your Islamic Knowledge with 50 questions!</p>
+                <button id="startGameBtn" class="btn-primary">Start Game</button>
+            </div>
 
-        <!-- Start Exam Button -->
-        <div class="exam-start-container" id="startExamContainer">
-            <p>Saare 10 lafz yaad ho gaye? Chalo exam dekar agla din unlock karein!</p>
-            <button id="startExamBtn" class="btn-primary">Start Exam</button>
-        </div>
+            <div id="quizScreen" class="hidden">
+                <div class="quiz-header">
+                    <span id="questionCount">Question 1/50</span>
+                    <span id="scoreDisplay">Score: 0</span>
+                </div>
+                <div class="quiz-card">
+                    <h2 id="questionText">Question aayega yahan...</h2>
+                    <div class="options-container" id="optionsContainer">
+                        <!-- Options will load here -->
+                    </div>
+                </div>
+                <button id="nextQuestionBtn" class="btn-primary hidden">Next Question ➡️</button>
+            </div>
 
-        <!-- Exam Section (Hidden Initially) -->
-        <div id="examSection" class="exam-section hidden">
-            <h2>📝 Daily Exam</h2>
-            <p style="text-align:center; margin-bottom: 20px;">Sahi Urdu meaning select karein. (8/10 chahiye pass hone ke liye)</p>
-            <div id="quizContainer"></div>
-            <button id="submitExamBtn" class="btn-primary hidden" style="display:block; margin: 20px auto;">Submit Exam</button>
-            <div id="examResult" class="hidden"></div>
+            <div id="gameOverScreen" class="hidden">
+                <h2>🏆 Game Over!</h2>
+                <p id="finalScoreText">Your Score: 0/50</p>
+                <button id="restartGameBtn" class="btn-primary">Play Again</button>
+            </div>
         </div>
     </div>
 
