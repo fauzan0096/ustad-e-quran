@@ -5,30 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quraan and Duaa Ustad</title>
     
-    <!-- ICON SETUP (Ye aapki photo ko icon banayega) -->
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <link id="my-manifest-placeholder" rel="manifest">
     <meta name="theme-color" content="#0F4C3A">
-    
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary: #0F4C3A;
-            --secondary: #D4AF37;
-            --bg: #F4F7F6;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --text-light: #666;
-            --shadow: 0 4px 15px rgba(0,0,0,0.05);
-            --border: #ddd;
-            --locked: #e0e0e0;
-        }
-        [data-theme="dark"] {
-            --primary: #1a1a2e; --secondary: #6ee7b7; --bg: #0f0f23; --card-bg: #1e1e36;
-            --text: #eee; --text-light: #aaa; --shadow: 0 4px 15px rgba(0,0,0,0.3); --border: #333; --locked: #2a2a40;
-        }
+        :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #ffffff; --text: #333333; --text-light: #666; --shadow: 0 4px 15px rgba(0,0,0,0.05); --border: #ddd; }
+        [data-theme="dark"] { --primary: #1a1a2e; --secondary: #6ee7b7; --bg: #0f0f23; --card-bg: #1e1e36; --text: #eee; --text-light: #aaa; --shadow: 0 4px 15px rgba(0,0,0,0.3); --border: #333; }
         * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 70px; }
         
@@ -40,7 +25,6 @@
 
         header { background-color: var(--primary); color: white; text-align: center; padding: 15px; border-bottom: 4px solid var(--secondary); }
         .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-        header h1 { font-size: 18px; }
         .header-controls { display: flex; gap: 10px; align-items: center; }
         .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: white; }
         .streak-badge { background: #ff5722; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
@@ -54,25 +38,26 @@
         .view-section.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;}
         .day-header h2 { color: var(--primary); font-size: 18px; }
-        .progress-bar { width: 100%; height: 8px; background: var(--border); border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
-
+        .admin-select { padding: 8px; border-radius: 8px; border: 2px solid var(--primary); background: var(--card-bg); color: var(--text); font-weight: bold; }
+        
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .card { background: var(--card-bg); border-radius: 12px; padding: 15px; box-shadow: var(--shadow); border-left: 5px solid var(--primary); text-align: center; }
         .arabic { font-family: 'Amiri', serif; font-size: 28px; color: var(--secondary); margin-bottom: 5px; direction: rtl; cursor: pointer; }
         .roman { font-weight: 600; font-size: 14px; margin-bottom: 5px; }
         .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; color: var(--text-light); direction: rtl; cursor: pointer; }
-        .mashq-box { background: #fff8e1; border: 1px dashed var(--secondary); padding: 8px; margin-top: 10px; border-radius: 6px; font-size: 13px; color: #333; }
+        .mashq-box { background: #fff8e1; border: 1px dashed var(--secondary); padding: 8px; margin-top: 10px; border-radius: 6px; font-size: 13px; color: #333; text-align: right; direction: rtl;}
         [data-theme="dark"] .mashq-box { background: #2a2a40; color: #eee; }
         .tafseel-btn { background: var(--primary); color: white; border: none; padding: 8px; width: 100%; border-radius: 6px; margin-top: 10px; cursor: pointer; font-size: 12px; }
 
+        .locked-page { background: var(--card-bg); padding: 40px 20px; border-radius: 15px; box-shadow: var(--shadow); text-align: center; margin: 20px 0; border: 2px dashed var(--border); }
+        .locked-page h2 { color: var(--text-light); margin-bottom: 10px; font-size: 22px; }
+        .locked-page p { color: var(--text-light); font-size: 14px; margin-bottom: 20px; }
+        .lock-icon { font-size: 60px; margin-bottom: 15px; }
+
         .exam-btn { background: var(--secondary); color: #000; padding: 12px 20px; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; width: 100%; margin-top: 10px; cursor: pointer; }
         .search-box { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 15px; background: var(--card-bg); color: var(--text); outline: none; }
-
-        .card.locked { border-left-color: var(--locked); background: var(--locked); opacity: 0.7; pointer-events: none; }
-        .card.locked::before { content: "🔒 Locked (Exam Pass Karein)"; display: block; font-weight: bold; color: #888; margin-bottom: 10px; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--card-bg); padding: 20px; border-radius: 15px; width: 100%; max-width: 500px; border-top: 5px solid var(--secondary); position: relative; max-height: 90vh; overflow-y: auto; }
@@ -118,7 +103,7 @@
         </header>
 
         <nav class="main-nav">
-            <button class="nav-btn active" onclick="switchTab('courseTab', this)">📚 Sabaq (Course)</button>
+            <button class="nav-btn active" onclick="switchTab('courseTab', this)">📚 Sabaq</button>
             <button class="nav-btn" onclick="switchTab('namazTab', this)">🤲 Namaz ki Duaen</button>
             <button class="nav-btn" onclick="switchTab('azkarTab', this)">🌅 Azkar</button>
             <button class="nav-btn" onclick="switchTab('quranWordsTab', this)">📖 Quran Alfaz</button>
@@ -128,11 +113,10 @@
         <div id="courseTab" class="view-section active">
             <div class="day-header">
                 <h2 id="dayTitle">Day 1 - Learn 10 Words</h2>
-                <span id="wordCount" style="font-size: 12px; color: var(--secondary); font-weight:bold;">0/10</span>
+                <select id="adminDaySelect" class="admin-select hidden" onchange="changeAdminDay(this.value)"></select>
             </div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
             <div class="grid-container" id="courseGrid"></div>
-            <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day Exam Start Karein</button>
+            <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam Start Karein</button>
         </div>
 
         <div id="namazTab" class="view-section">
@@ -205,128 +189,85 @@
     <div id="toast" class="toast">Message</div>
 
     <script>
-        // YAHAN MANIFEST DYNAMICALLY BANTA HAI (Taki alag file na chahiye)
-        const manifest = {
-            name: "Quraan and Duaa Ustad",
-            short_name: "Quran Ustad",
-            start_url: "./index.html",
-            display: "standalone",
-            background_color: "#0F4C3A",
-            theme_color: "#0F4C3A",
-            icons: [
-                { src: "icon.png", sizes: "192x192", type: "image/png" },
-                { src: "icon.png", sizes: "512x512", type: "image/png" }
-            ]
-        };
-        const stringManifest = JSON.stringify(manifest);
-        const blob = new Blob([stringManifest], {type: 'application/json'});
-        const manifestURL = URL.createObjectURL(blob);
-        document.querySelector('#my-manifest-placeholder').setAttribute('href', manifestURL);
+        // PWA Icon Setup
+        const manifest = { name: "Quraan Ustad", short_name: "Quran Ustad", start_url: "./index.html", display: "standalone", background_color: "#0F4C3A", theme_color: "#0F4C3A", icons: [{ src: "icon.png", sizes: "192x192", type: "image/png" }, { src: "icon.png", sizes: "512x512", type: "image/png" }] };
+        document.querySelector('#my-manifest-placeholder').setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type: 'application/json'})));
 
         // ==========================================
-        // --- DATA (Day 1 to 5 with Ayrab from PDFs) ---
+        // --- DATA: 40 DAYS (400 Words) ---
+        // Format: a=arabic, r=roman, u=urdu, m=mashq, t=tafseel
         // ==========================================
         const courseData = [
-            {
-                day: 1,
-                words: [
-                    { arabic: "اللَّهُ", roman: "Allah", urdu: "اللہ، سب کا رب", mashq: "اللَّهُ أَحَدٌ", tafseel: "اسمِ اعظم، ہر چیز کا پیدا کرنے والا۔" },
-                    { arabic: "رَبِّ", roman: "Rabb", urdu: "پالنے والا، مالک", mashq: "رَبِّ الْعَالَمِينَ", tafseel: "وہ جو ہمیں پیدا کرے اور پالے۔" },
-                    { arabic: "رَحْمَن", roman: "Rahmaan", urdu: "بہت مہربان", mashq: "الرَّحْمَٰنُ", tafseel: "تمام مخلوقات پر رحم کرنے والا۔" },
-                    { arabic: "رَحِيم", roman: "Raheem", urdu: "نہایت رحم والا", mashq: "غَفُورٌ رَّحِيمٌ", tafseel: "ایمان والوں پر خاص رحم کرنے والا۔" },
-                    { arabic: "غَفُور", roman: "Ghafoor", urdu: "بخشنی والا", mashq: "هُوَ الْغَفُورُ", tafseel: "گناہوں کو معاف کرنے والا۔" },
-                    { arabic: "عَزِيز", roman: "Azeez", urdu: "زبردست", mashq: "عَزِيزٌ حَكِيمٌ", tafseel: "جسے کوئی ہرا نہیں سکتا۔" },
-                    { arabic: "حَكِيم", roman: "Hakeem", urdu: "حکمت والا", mashq: "عَلِيمٌ حَكِيمٌ", tafseel: "ہر کام حکمت سے کرنے والا۔" },
-                    { arabic: "عَلِيم", roman: "Aleem", urdu: "سب جاننے والا", mashq: "هُوَ عَلِيمٌ", tafseel: "جس کے علم سے کچھ چھپا نہیں۔" },
-                    { arabic: "سَمِيع", roman: "Samee'", urdu: "سب سننے والا", mashq: "سَمِيعٌ بَصِيرٌ", tafseel: "ہر آواز سننے والا۔" },
-                    { arabic: "بَصِير", roman: "Baseer", urdu: "سب دیکھنے والا", mashq: "هُوَ الْبَصِيرُ", tafseel: "ہر چیز دیکھنے والا۔" }
-                ]
-            },
-            {
-                day: 2,
-                words: [
-                    { arabic: "قَدِير", roman: "Qadeer", urdu: "قدرت والا", mashq: "إِنَّهُ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ", tafseel: "ہر چیز پر طاقت رکھنے والا۔" },
-                    { arabic: "لَطِيف", roman: "Lateef", urdu: "باریک بین، مہربان", mashq: "اللَّهُ لَطِيفٌ بِعِبَادِهِ", tafseel: "اپنے بندوں پر نہایت مہربان۔" },
-                    { arabic: "كَرِيم", roman: "Kareem", urdu: "کرم والا", mashq: "رَبٌّ كَرِيمٌ", tafseel: "بے حد سخاوت کرنے والا۔" },
-                    { arabic: "عَظِيم", roman: "Azeem", urdu: "عظمت والا", mashq: "عَلِيٌّ عَظِيمٌ", tafseel: "بہت بڑائی والا۔" },
-                    { arabic: "كَبِير", roman: "Kabeer", urdu: "بڑا", mashq: "اللَّهُ أَكْبَرُ", tafseel: "سب سے بڑا۔" },
-                    { arabic: "حَمِيد", roman: "Hameed", urdu: "تعریف کے لائق", mashq: "غَنِيٌّ حَمِيدٌ", tafseel: "جس کی تعریف کی جائے۔" },
-                    { arabic: "غَنِيّ", roman: "Ghaniyy", urdu: "بے نیاز", mashq: "اللَّهُ غَنِيٌّ", tafseel: "جسے کسی کی ضرورت نہیں۔" },
-                    { arabic: "حَيّ", roman: "Hayy", urdu: "ہمیشہ زندہ", mashq: "الْحَيُّ الْقَيُّومُ", tafseel: "جو کبھی نہیں مرے گا۔" },
-                    { arabic: "قَيُّوم", roman: "Qayyoom", urdu: "سب کو قائم رکھنے والا", mashq: "هُوَ الْقَيُّومُ", tafseel: "جو سب کو سنبھالے ہوئے ہے۔" },
-                    { arabic: "مَلِك", roman: "Malik", urdu: "بادشاہ", mashq: "مَلِكِ النَّاسِ", tafseel: "حقیقی بادشاہ۔" }
-                ]
-            },
-            {
-                day: 3,
-                words: [
-                    { arabic: "بَعُوضَة", roman: "Ba'oodah", urdu: "مچھر", mashq: "إِنَّ اللَّهَ لَا يَسْتَحْيِي أَن يَضْرِبَ مَثَلًا مَّا بَعُوضَةً", tafseel: "اللہ نے قرآن میں مچھر کی مثال دی ہے (البقرہ 26)۔" },
-                    { arabic: "قِثَّاء", roman: "Qiththa'a", urdu: "ککڑی", mashq: "وَمِنْ بَقْلِهَا وَقِثَّائِهَا", tafseel: "بنی اسرائیل کی خوراک۔" },
-                    { arabic: "فُوم", roman: "Fuum", urdu: "گیہوں یا لہسن", mashq: "وَفُومِهَا وَعَدَسِهَا", tafseel: "بنی اسرائیل کی خوراک۔" },
-                    { arabic: "عَدَس", roman: "Adas", urdu: "مسور کی دال", mashq: "وَعَدَسِهَا وَبَصَلِهَا", tafseel: "بنی اسرائیل کی خوراک۔" },
-                    { arabic: "بَصَل", roman: "Basal", urdu: "پیاز", mashq: "وَبَصَلِهَا", tafseel: "بنی اسرائیل کی خوراک۔" },
-                    { arabic: "هَارُوت", roman: "Haaroot", urdu: "ایک فرشتہ", mashq: "وَمَا أُنزِلَ عَلَى الْمَلَكَيْنِ هَارُوتَ", tafseel: "بابل کے دو فرشتوں میں سے ایک۔" },
-                    { arabic: "مَارُوت", roman: "Maaroot", urdu: "دوسرا فرشتہ", mashq: "هَارُوتَ وَمَارُوتَ", tafseel: "بابل کے دو فرشتوں میں سے دوسرا۔" },
-                    { arabic: "الصَّفَا", roman: "As-Safaa", urdu: "مکہ کی پہاڑی", mashq: "إِنَّ الصَّفَا وَالْمَرْوَةَ", tafseel: "مکہ کی ایک مشہور پہاڑی۔" },
-                    { arabic: "الْمَرْوَة", roman: "Al-Marwah", urdu: "مکہ کی پہاڑی", mashq: "وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ", tafseel: "مکہ کی دوسری پہاڑی۔" },
-                    { arabic: "عَرَفَات", roman: "Arafaat", urdu: "عرفات کا میدان", mashq: "فَإِذَا أَفَضْتُم مِّنْ عَرَفَاتٍ", tafseel: "حج کا اہم میدان۔" }
-                ]
-            },
-            {
-                day: 4,
-                words: [
-                    { arabic: "أَشْهَدُ أَنْ لَّا إِلَهَ إِلَّا اللَّهُ", roman: "Ashhadu an la ilaha illallah", urdu: "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں", mashq: "أَشْهَدُ أَنْ لَّا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ", tafseel: "وضو کے بعد کی دعا۔ جنت کے دروازے کھل جاتے ہیں۔ (مسلم 234)" },
-                    { arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", roman: "La hawla wa la quwwata illa billah", urdu: "گناہ سے بچنے کی طاقت نہیں مگر اللہ کی مدد سے", mashq: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", tafseel: "جنت کا خزانہ۔ اذان کے جواب میں پڑھنا مسنون ہے۔ (مسلم 385)" },
-                    { arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", roman: "Subhanaka Allahumma wa bihamdika", urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے", mashq: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ وَتَبَارَكَ اسْمُكَ", tafseel: "نماز کی پہلی دعا (استفتاح)۔ (سنن ابی داؤد 776)" },
-                    { arabic: "رَبِّ اغْفِرْ لِي", roman: "Rabbighfir li", urdu: "اے میرے رب! مجھے بخش دے", mashq: "رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي", tafseel: "دو سجدوں کے درمیان دعا۔ (ابن ماجہ 897)" },
-                    { arabic: "اللَّهُمَّ اغْفِرْ لِي", roman: "Allahummaghfir li", urdu: "اے اللہ! مجھے بخش دے", mashq: "اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي", tafseel: "دو سجدوں کے درمیان جامع دعا۔ (ترمذی 284)" },
-                    { arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", roman: "Rabbana atina fid-dunya hasanah", urdu: "اے ہمارے رب! ہمیں دنیا میں بھلائی دے", mashq: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", tafseel: "سب سے زیادہ پڑھی جانے والی جامع دعا۔ (بخاری 6389)" },
-                    { arabic: "رَبِّ زِدْنِي عِلْمًا", roman: "Rabbi zidni ilma", urdu: "اے میرے رب! میرے علم میں اضافہ فرما", mashq: "وَقُل رَّبِّ زِدْنِي عِلْمًا", tafseel: "علم میں اضافے کی قرآنی دعا۔ (سورہ طہ 114)" },
-                    { arabic: "رَبِّ اشْرَحْ لِي صَدْرِي", roman: "Rabbish rah li sadri", urdu: "اے میرے رب! میرا سینہ کھول دے", mashq: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", tafseel: "حضرت موسیٰ علیہ السلام کی دعا۔ (سورہ طہ 25-26)" },
-                    { arabic: "يَا حَيُّ يَا قَيُّومُ", roman: "Ya Hayyu ya Qayyum", urdu: "اے زندہ! اے قائم رکھنے والے!", mashq: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ", tafseel: "پریشانی کے وقت کی دعا۔ (ترمذی 3524)" },
-                    { arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ", roman: "Allahumma antas-salam", urdu: "اے اللہ! تو سلامتی والا ہے", mashq: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ", tafseel: "نماز کے بعد کی دعا۔ (مسلم 591)" }
-                ]
-            },
-            {
-                day: 5,
-                words: [
-                    { arabic: "الْحَمْدُ لِلَّهِ", roman: "Alhamdulillah", urdu: "تمام تعریف اللہ کے لیے ہے", mashq: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", tafseel: "سورہ فاتحہ کی پہلی آیت۔" },
-                    { arabic: "أَسْتَغْفِرُ اللَّهَ", roman: "Astaghfirullah", urdu: "میں اللہ سے بخشش مانگتا ہوں", mashq: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", tafseel: "نبی ﷺ دن میں 100 بار پڑھتے تھے۔ (مسلم 2702)" },
-                    { arabic: "سُبْحَانَ اللَّهِ", roman: "SubhanAllah", urdu: "اللہ پاک ہے", mashq: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", tafseel: "اللہ کی پاکی بیان کرنا۔" },
-                    { arabic: "اللَّهُ أَكْبَرُ", roman: "Allahu Akbar", urdu: "اللہ سب سے بڑا ہے", mashq: "اللَّهُ أَكْبَرُ كَبِيرًا", tafseel: "نماز کی تکبیرِ تحریمہ۔" },
-                    { arabic: "لَا إِلَهَ إِلَّا اللَّهُ", roman: "La ilaha illallah", urdu: "اللہ کے سوا کوئی معبود نہیں", mashq: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ", tafseel: "اسلام کا پہلا کلمہ۔" },
-                    { arabic: "بِسْمِ اللَّهِ", roman: "Bismillah", urdu: "اللہ کے نام سے", mashq: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", tafseel: "ہر کام کی شروعات۔" },
-                    { arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ", roman: "Allahumma salli 'ala Muhammad", urdu: "اے اللہ! محمد ﷺ پر رحمت نازل فرما", mashq: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ", tafseel: "درود شریف۔" },
-                    { arabic: "رَبَّنَا لَكَ الْحَمْدُ", roman: "Rabbana lakal hamd", urdu: "اے ہمارے رب! تیری ہی تعریف ہے", mashq: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ، رَبَّنَا وَلَكَ الْحَمْدُ", tafseel: "رکوع سے اٹھتے وقت کی دعا۔" },
-                    { arabic: "اللَّهُمَّ بَارِكْ", roman: "Allahumma barik", urdu: "اے اللہ! برکت نازل فرما", mashq: "اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ", tafseel: "درود ابراہیمی کا حصہ۔" },
-                    { arabic: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", roman: "Subhana Rabbiyal Azeem", urdu: "میرا رب بہت عظمت والا ہے", mashq: "سُبْحَانَ رَبِّيَ الْعَظِيمِ (رکوع میں)", tafseel: "رکوع کی تسبیح۔" }
-                ]
-            }
+            // DAY 1-10 (Asma-ul-Husna & Core Concepts)
+            { day: 1, words: [ { a: "اللَّهُ", r: "Allah", u: "اللہ", m: "اللَّهُ أَحَدٌ", t: "اسمِ اعظم" }, { a: "رَبِّ", r: "Rabb", u: "پالنے والا", m: "رَبِّ الْعَالَمِينَ", t: "مالک" }, { a: "رَحْمَٰن", r: "Rahmaan", u: "بہت مہربان", m: "الرَّحْمَٰنُ", t: "رحم کرنے والا" }, { a: "رَحِيم", r: "Raheem", u: "نہایت رحم والا", m: "غَفُورٌ رَّحِيمٌ", t: "خاص رحم والا" }, { a: "غَفُور", r: "Ghafoor", u: "بخشنی والا", m: "هُوَ الْغَفُورُ", t: "معاف کرنے والا" }, { a: "عَزِيز", r: "Azeez", u: "زبردست", m: "عَزِيزٌ حَكِيمٌ", t: "غالب" }, { a: "حَكِيم", r: "Hakeem", u: "حکمت والا", m: "عَلِيمٌ حَكِيمٌ", t: "دانا" }, { a: "عَلِيم", r: "Aleem", u: "سب جاننے والا", m: "هُوَ عَلِيمٌ", t: "جاننے والا" }, { a: "سَمِيع", r: "Samee'", u: "سب سننے والا", m: "سَمِيعٌ بَصِيرٌ", t: "سننے والا" }, { a: "بَصِير", r: "Baseer", u: "سب دیکھنے والا", m: "هُوَ الْبَصِيرُ", t: "دیکھنے والا" } ] },
+            { day: 2, words: [ { a: "قَدِير", r: "Qadeer", u: "قدرت والا", m: "قَدِيرٌ", t: "طاقت والا" }, { a: "لَطِيف", r: "Lateef", u: "باریک بین", m: "لَطِيفٌ", t: "مہربان" }, { a: "كَرِيم", r: "Kareem", u: "کرم والا", m: "كَرِيمٌ", t: "سخی" }, { a: "عَظِيم", r: "Azeem", u: "عظمت والا", m: "عَظِيمٌ", t: "بڑا" }, { a: "كَبِير", r: "Kabeer", u: "بڑا", m: "اللَّهُ أَكْبَرُ", t: "بزرگ" }, { a: "حَمِيد", r: "Hameed", u: "تعریف کے لائق", m: "حَمِيدٌ", t: "تعریف والا" }, { a: "غَنِيّ", r: "Ghaniyy", u: "بے نیاز", m: "غَنِيٌّ", t: "دولت والا" }, { a: "حَيّ", r: "Hayy", u: "ہمیشہ زندہ", m: "الْحَيُّ", t: "زندہ" }, { a: "قَيُّوم", r: "Qayyoom", u: "قائم رکھنے والا", m: "الْقَيُّومُ", t: "سنبھالنے والا" }, { a: "مَلِك", r: "Malik", u: "بادشاہ", m: "مَلِكِ النَّاسِ", t: "حکمران" } ] },
+            { day: 3, words: [ { a: "بَعُوضَة", r: "Ba'oodah", u: "مچھر", m: "بَعُوضَةً", t: "مچھر" }, { a: "قِثَّاء", r: "Qiththa'a", u: "ککڑی", m: "وَقِثَّائِهَا", t: "ککڑی" }, { a: "فُوم", r: "Fuum", u: "گیہوں/لہسن", m: "وَفُومِهَا", t: "لہسن" }, { a: "عَدَس", r: "Adas", u: "مسور کی دال", m: "وَعَدَسِهَا", t: "دال" }, { a: "بَصَل", r: "Basal", u: "پیاز", m: "وَبَصَلِهَا", t: "پیاز" }, { a: "هَارُوت", r: "Haaroot", u: "ایک فرشتہ", m: "هَارُوتَ", t: "فرشتہ" }, { a: "مَارُوت", r: "Maaroot", u: "دوسرا فرشتہ", m: "وَمَارُوتَ", t: "فرشتہ" }, { a: "الصَّفَا", r: "As-Safaa", u: "مکہ کی پہاڑی", m: "إِنَّ الصَّفَا", t: "پہاڑی" }, { a: "الْمَرْوَة", r: "Al-Marwah", u: "مکہ کی پہاڑی", m: "وَالْمَرْوَةَ", t: "پہاڑی" }, { a: "عَرَفَات", r: "Arafaat", u: "عرفات", m: "عَرَفَاتٍ", t: "میدان" } ] },
+            { day: 4, words: [ { a: "مَسْجِد", r: "Masjid", u: "مسجد", m: "الْمَسْجِدُ", t: "سجدہ گاہ" }, { a: "كَعْبَة", r: "Ka'bah", u: "کعبہ", m: "الْكَعْبَةَ", t: "خانہ کعبہ" }, { a: "قَرْيَة", r: "Qaryah", u: "بستی", m: "قَرْيَةٍ", t: "گاؤں" }, { a: "مَدِينَة", r: "Madeenah", u: "شہر", m: "الْمَدِينَةِ", t: "شہر" }, { a: "بَاب", r: "Baab", u: "دروازہ", m: "بَابِ", t: "دروازہ" }, { a: "فُلْك", r: "Fulk", u: "کشتی", m: "الْفُلْكِ", t: "کشتی" }, { a: "كِتَاب", r: "Kitaab", u: "کتاب", m: "الْكِتَابُ", t: "کتاب" }, { a: "قَلَم", r: "Qalam", u: "قلم", m: "بِالْقَلَمِ", t: "قلم" }, { a: "مِيزَان", r: "Meezaan", u: "ترازو", m: "الْمِيزَانَ", t: "ترازو" }, { a: "مَال", r: "Maal", u: "مال", m: "مَالٌ", t: "دولت" } ] },
+            { day: 5, words: [ { a: "جَنَّة", r: "Jannah", u: "جنت", m: "جَنَّةٌ", t: "باغ" }, { a: "جَهَنَّم", r: "Jahannam", u: "جہنم", m: "جَهَنَّمُ", t: "آگ" }, { a: "قِيَامَة", r: "Qiyaamah", u: "قیامت", m: "الْقِيَامَةِ", t: "قیامت" }, { a: "مَوْت", r: "Mawt", u: "موت", m: "الْمَوْتُ", t: "موت" }, { a: "حَيَاة", r: "Hayaat", u: "زندگی", m: "الْحَيَاةِ", t: "زندگی" }, { a: "قَبْر", r: "Qabr", u: "قبر", m: "الْقَبْرِ", t: "قبر" }, { a: "حِسَاب", r: "Hisaab", u: "حساب", m: "الْحِسَابِ", t: "حساب" }, { a: "جَزَاء", r: "Jazaa'", u: "بدلہ", m: "جَزَاءً", t: "بدلہ" }, { a: "أَجْر", r: "Ajr", u: "اجر", m: "أَجْرٌ", t: "ثواب" }, { a: "فِرْدَوْس", r: "Firdaws", u: "فردوس", m: "الْفِرْدَوْسِ", t: "اعلیٰ جنت" } ] },
+            { day: 6, words: [ { a: "مُحَمَّد", r: "Muhammad", u: "محمد ﷺ", m: "مُحَمَّدٌ", t: "نبی" }, { a: "آدَم", r: "Aadam", u: "آدم علیہ السلام", m: "آدَمَ", t: "پہلے انسان" }, { a: "نُوح", r: "Nooh", u: "نوح علیہ السلام", m: "نُوحٍ", t: "نبی" }, { a: "إِبْرَاهِيم", r: "Ibraaheem", u: "ابراہیم علیہ السلام", m: "إِبْرَاهِيمَ", t: "خلیل اللہ" }, { a: "مُوسَى", r: "Moosaa", u: "موسیٰ علیہ السلام", m: "مُوسَى", t: "کلیم اللہ" }, { a: "عِيسَى", r: "Eesaa", u: "عیسیٰ علیہ السلام", m: "عِيسَى", t: "روح اللہ" }, { a: "يُوسُف", r: "Yoosuf", u: "یوسف علیہ السلام", m: "يُوسُفَ", t: "نبی" }, { a: "يُونُس", r: "Yoonus", u: "یونس علیہ السلام", m: "يُونُسَ", t: "نبی" }, { a: "دَاوُود", r: "Daawood", u: "داؤد علیہ السلام", m: "دَاوُودَ", t: "نبی" }, { a: "سُلَيْمَان", r: "Sulaymaan", u: "سلیمان علیہ السلام", m: "سُلَيْمَانَ", t: "نبی" } ] },
+            { day: 7, words: [ { a: "صَلَاة", r: "Salaah", u: "نماز", m: "الصَّلَاةَ", t: "نماز" }, { a: "زَكَاة", r: "Zakaah", u: "زکوٰۃ", m: "الزَّكَاةَ", t: "زکوٰۃ" }, { a: "صِيَام", r: "Siyaam", u: "روزہ", m: "الصِّيَامُ", t: "روزہ" }, { a: "حَجّ", r: "Hajj", u: "حج", m: "الْحَجِّ", t: "حج" }, { a: "إِيمَان", r: "Eemaan", u: "ایمان", m: "الْإِيمَانُ", t: "ایمان" }, { a: "إِسْلَام", r: "Islaam", u: "اسلام", m: "الْإِسْلَامُ", t: "اسلام" }, { a: "قُرْآن", r: "Qur'aan", u: "قرآن", m: "الْقُرْآنُ", t: "قرآن" }, { a: "آيَة", r: "Aayah", u: "آیت", m: "آيَةٌ", t: "نشانی" }, { a: "سُورَة", r: "Soorah", u: "سورت", m: "سُورَةٌ", t: "باب" }, { a: "دُعَاء", r: "Du'aa'", u: "دعا", m: "الدُّعَاءُ", t: "پکار" } ] },
+            { day: 8, words: [ { a: "رُكُوع", r: "Ruku'", u: "رکوع", m: "الرُّكُوعَ", t: "جھکنا" }, { a: "سُجُود", r: "Sujood", u: "سجدہ", m: "السُّجُودَ", t: "سجدہ" }, { a: "تَسْبِيح", r: "Tasbeeh", u: "تسبیح", m: "التَّسْبِيحَ", t: "پاکی" }, { a: "حَمْد", r: "Hamd", u: "حمد", m: "الْحَمْدُ", t: "تعریف" }, { a: "شُكْر", r: "Shukr", u: "شکر", m: "الشُّكْرُ", t: "شکر" }, { a: "صَبْر", r: "Sabr", u: "صبر", m: "الصَّبْرَ", t: "صبر" }, { a: "تَوْبَة", r: "Tawbah", u: "توبہ", m: "التَّوْبَةَ", t: "رجوع" }, { a: "تَقْوَى", r: "Taqwaa", u: "تقویٰ", m: "التَّقْوَى", t: "ڈر" }, { a: "تَوَكُّل", r: "Tawakkul", u: "توکل", m: "التَّوَكُّلَ", t: "بھروسہ" }, { a: "إِخْلَاص", r: "Ikhlaas", u: "اخلاص", m: "الْإِخْلَاصَ", t: "خالص" } ] },
+            { day: 9, words: [ { a: "سَمَاء", r: "Samaa'", u: "آسمان", m: "السَّمَاءِ", t: "آسمان" }, { a: "أَرْض", r: "Ard", u: "زمین", m: "الْأَرْضِ", t: "زمین" }, { a: "شَمْس", r: "Shams", u: "سورج", m: "الشَّمْسُ", t: "سورج" }, { a: "قَمَر", r: "Qamar", u: "چاند", m: "الْقَمَرَ", t: "چاند" }, { a: "نَجْم", r: "Najm", u: "ستارہ", m: "النَّجْمُ", t: "ستارہ" }, { a: "لَيْل", r: "Layl", u: "رات", m: "اللَّيْلَ", t: "رات" }, { a: "نَهَار", r: "Nahaar", u: "دن", m: "النَّهَارَ", t: "دن" }, { a: "يَوْم", r: "Yawm", u: "دن", m: "يَوْمٍ", t: "دن" }, { a: "فَجْر", r: "Fajr", u: "صبح", m: "الْفَجْرِ", t: "صبح" }, { a: "مَاء", r: "Maa'", u: "پانی", m: "الْمَاءُ", t: "پانی" } ] },
+            { day: 10, words: [ { a: "مَطَر", r: "Matar", u: "بارش", m: "مَطَرًا", t: "بارش" }, { a: "سَحَاب", r: "Sahaab", u: "بادل", m: "السَّحَابَ", t: "بادل" }, { a: "بَرْق", r: "Barq", u: "بجلی", m: "الْبَرْقُ", t: "بجلی" }, { a: "رَعْد", r: "Ra'd", u: "گرج", m: "الرَّعْدُ", t: "گرج" }, { a: "رِيح", r: "Reeh", u: "ہوا", m: "الرِّيحَ", t: "ہوا" }, { a: "بَحْر", r: "Bahr", u: "سمندر", m: "الْبَحْرُ", t: "سمندر" }, { a: "نَهْر", r: "Nahr", u: "نہر", m: "نَهْرٌ", t: "نہر" }, { a: "جَبَل", r: "Jabal", u: "پہاڑ", m: "الْجِبَالَ", t: "پہاڑ" }, { a: "نَار", r: "Naar", u: "آگ", m: "النَّارُ", t: "آگ" }, { a: "حَجَر", r: "Hajar", u: "پتھر", m: "حِجَارَةً", t: "پتھر" } ] },
+            
+            // DAY 11-20 (Verbs, Family, Objects)
+            { day: 11, words: [ { a: "قَالَ", r: "Qaala", u: "اس نے کہا", m: "قَالَ", t: "کہنا" }, { a: "آمَنَ", r: "Aamana", u: "ایمان لایا", m: "آمَنَ", t: "ماننا" }, { a: "كَفَرَ", r: "Kafara", u: "انکار کیا", m: "كَفَرَ", t: "انکار" }, { a: "صَدَقَ", r: "Sadaqa", u: "سچ کہا", m: "صَدَقَ", t: "سچ" }, { a: "كَذَبَ", r: "Kadhaba", u: "جھوٹ بولا", m: "كَذَبَ", t: "جھوٹ" }, { a: "ظَلَمَ", r: "Zalama", u: "ظلم کیا", m: "ظَلَمَ", t: "ظلم" }, { a: "كَتَبَ", r: "Kataba", u: "لکھا", m: "كَتَبَ", t: "لکھنا" }, { a: "خَلَقَ", r: "Khalaqa", u: "پیدا کیا", m: "خَلَقَ", t: "پیدا کرنا" }, { a: "جَعَلَ", r: "Ja'ala", u: "بنایا", m: "جَعَلَ", t: "بنانا" }, { a: "أَنزَلَ", r: "Anzala", u: "نازل کیا", m: "أَنزَلَ", t: "اتارنا" } ] },
+            { day: 12, words: [ { a: "يَقُولُ", r: "Yaqoolu", u: "وہ کہتا ہے", m: "يَقُولُ", t: "کہنا" }, { a: "يَفْعَلُ", r: "Yaf'alu", u: "وہ کرتا ہے", m: "يَفْعَلُ", t: "کرنا" }, { a: "أَقِمْ", r: "Aqim", u: "قائم کر", m: "أَقِمِ", t: "قائم کرنا" }, { a: "اصْبِرْ", r: "Isbir", u: "صبر کر", m: "اصْبِرْ", t: "صبر" }, { a: "ادْعُ", r: "Ud'oo", u: "پکارو", m: "ادْعُ", t: "دعا" }, { a: "ارْحَمْ", r: "Irham", u: "رحم کر", m: "ارْحَمْ", t: "رحم" }, { a: "اغْفِرْ", r: "Ighfir", u: "بخش دے", m: "اغْفِرْ", t: "بخشش" }, { a: "اذْكُرْ", r: "Udhkur", u: "یاد کر", m: "اذْكُرْ", t: "یاد" }, { a: "اسْمَعْ", r: "Isma'", u: "سن", m: "اسْمَعْ", t: "سننا" }, { a: "اهْدِ", r: "Ihdi", u: "ہدایت دے", m: "اهْدِ", t: "ہدایت" } ] },
+            { day: 13, words: [ { a: "إِنْسَان", r: "Insaan", u: "انسان", m: "الْإِنسَانُ", t: "انسان" }, { a: "نَاس", r: "Naas", u: "لوگ", m: "النَّاسُ", t: "لوگ" }, { a: "رَجُل", r: "Rajul", u: "مرد", m: "رَجُلٌ", t: "مرد" }, { a: "امْرَأَة", r: "Imra'ah", u: "عورت", m: "امْرَأَةٌ", t: "عورت" }, { a: "وَلَد", r: "Walad", u: "اولاد", m: "وَلَدٌ", t: "اولاد" }, { a: "ابْن", r: "Ibn", u: "بیٹا", m: "ابْنٌ", t: "بیٹا" }, { a: "بِنْت", r: "Bint", u: "بیٹی", m: "بِنْتٌ", t: "بیٹی" }, { a: "أَب", r: "Ab", u: "والد", m: "أَبٌ", t: "باپ" }, { a: "أُمّ", r: "Umm", u: "والدہ", m: "أُمٌّ", t: "ماں" }, { a: "أَخ", r: "Akh", u: "بھائی", m: "أَخٌ", t: "بھائی" } ] },
+            { day: 14, words: [ { a: "أُخْت", r: "Ukht", u: "بہن", m: "أُخْتٌ", t: "بہن" }, { a: "جَدّ", r: "Jadd", u: "دادا", m: "جَدٌّ", t: "دادا" }, { a: "جَدَّة", r: "Jaddah", u: "دادی", m: "جَدَّةٌ", t: "دادی" }, { a: "عَمّ", r: "Amm", u: "چچا", m: "عَمٌّ", t: "چچا" }, { a: "خَال", r: "Khaal", u: "ماموں", m: "خَالٌ", t: "ماموں" }, { a: "مُدَرِّس", r: "Mudarris", u: "استاد", m: "مُدَرِّسٌ", t: "استاد" }, { a: "طَالِب", r: "Taalib", u: "طالب علم", m: "طَالِبٌ", t: "طالب" }, { a: "طَبِيب", r: "Tabeeb", u: "ڈاکٹر", m: "طَبِيبٌ", t: "ڈاکٹر" }, { a: "تَاجِر", r: "Taajir", u: "تاجر", m: "تَاجِرٌ", t: "تاجر" }, { a: "مُهَنْدِس", r: "Muhandis", u: "انجینئر", m: "مُهَنْدِسٌ", t: "انجینئر" } ] },
+            { day: 15, words: [ { a: "عَامِل", r: "Aamil", u: "مزدور", m: "عَامِلٌ", t: "مزدور" }, { a: "فَلَّاح", r: "Fallaah", u: "کسان", m: "فَلَّاحٌ", t: "کسان" }, { a: "بَائِع", r: "Baa'i", u: "دکاندار", m: "بَائِعٌ", t: "دکاندار" }, { a: "إِمَام", r: "Imaam", u: "امام", m: "إِمَامٌ", t: "امام" }, { a: "مُؤَذِّن", r: "Mu'adhin", u: "مؤذن", m: "مُؤَذِّنٌ", t: "مؤذن" }, { a: "بَابٌ", r: "Baabun", u: "دروازہ", m: "بَابٌ", t: "دروازہ" }, { a: "بَيْتٌ", r: "Baitun", u: "گھر", m: "بَيْتٌ", t: "گھر" }, { a: "كِتَابٌ", r: "Kitaabun", u: "کتاب", m: "كِتَابٌ", t: "کتاب" }, { a: "قَلَمٌ", r: "Qalamun", u: "قلم", m: "قَلَمٌ", t: "قلم" }, { a: "مِفْتَاحٌ", r: "Miftaahun", u: "چابی", m: "مِفْتَاحٌ", t: "چابی" } ] },
+            { day: 16, words: [ { a: "سَرِيرٌ", r: "Sareerun", u: "بستر", m: "سَرِيرٌ", t: "بستر" }, { a: "كُرْسِيٌّ", r: "Kursiyyun", u: "کرسی", m: "كُرْسِيٌّ", t: "کرسی" }, { a: "خُبْزٌ", r: "Khubzun", u: "روٹی", m: "خُبْزٌ", t: "روٹی" }, { a: "لَبَنٌ", r: "Labanun", u: "دودھ", m: "لَبَنٌ", t: "دودھ" }, { a: "أَكَلَ", r: "Akala", u: "اس نے کھایا", m: "أَكَلَ", t: "کھانا" }, { a: "شَرِبَ", r: "Shariba", u: "اس نے پیا", m: "شَرِبَ", t: "پینا" }, { a: "ذَهَبَ", r: "Dhahaba", u: "وہ گیا", m: "ذَهَبَ", t: "جانا" }, { a: "رَجَعَ", r: "Raja'a", u: "واپس آیا", m: "رَجَعَ", t: "واپسی" }, { a: "جَلَسَ", r: "Jalasa", u: "بیٹھا", m: "جَلَسَ", t: "بیٹھنا" }, { a: "قَامَ", r: "Qaama", u: "کھڑا ہوا", m: "قَامَ", t: "کھڑا ہونا" } ] },
+            { day: 17, words: [ { a: "نَامَ", r: "Naama", u: "سویا", m: "نَامَ", t: "سونا" }, { a: "فَتَحَ", r: "Fataha", u: "کھولا", m: "فَتَحَ", t: "کھولنا" }, { a: "سَمِعَ", r: "Sami'a", u: "سنا", m: "سَمِعَ", t: "سننا" }, { a: "رَأَى", r: "Ra'aa", u: "دیکھا", m: "رَأَى", t: "دیکھنا" }, { a: "يَذْهَبُ", r: "Yadh-habu", u: "وہ جاتا ہے", m: "يَذْهَبُ", t: "جانا" }, { a: "يَرْجِعُ", r: "Yarji'u", u: "واپس آتا ہے", m: "يَرْجِعُ", t: "واپسی" }, { a: "يَأْكُلُ", r: "Ya'kulu", u: "کھاتا ہے", m: "يَأْكُلُ", t: "کھانا" }, { a: "يَشْرَبُ", r: "Yashrabu", u: "پیتا ہے", m: "يَشْرَبُ", t: "پینا" }, { a: "يَقْرَأُ", r: "Yaqra'u", u: "پڑھتا ہے", m: "يَقْرَأُ", t: "پڑھنا" }, { a: "يَكْتُبُ", r: "Yaktubu", u: "لکھتا ہے", m: "يَكْتُبُ", t: "لکھنا" } ] },
+            { day: 18, words: [ { a: "يَفْتَحُ", r: "Yaftahu", u: "کھولتا ہے", m: "يَفْتَحُ", t: "کھولنا" }, { a: "يَسْمَعُ", r: "Yasma'u", u: "سنتا ہے", m: "يَسْمَعُ", t: "سننا" }, { a: "يَنْظُرُ", r: "Yandhuru", u: "دیکھتا ہے", m: "يَنْظُرُ", t: "دیکھنا" }, { a: "يَعْلَمُ", r: "Ya'lamu", u: "وہ جانتا ہے", m: "يَعْلَمُ", t: "جانا" }, { a: "رَحْمَة", r: "Rahmah", u: "رحمت", m: "رَحْمَةً", t: "رحمت" }, { a: "بَرَكَة", r: "Barakah", u: "برکت", m: "بَرَكَةٌ", t: "برکت" }, { a: "رِزْق", r: "Rizq", u: "رزق", m: "رِزْقًا", t: "رزق" }, { a: "قَدْر", r: "Qadr", u: "تقدیر", m: "قَدْرٌ", t: "تقدیر" }, { a: "عِلْم", r: "Ilm", u: "علم", m: "عِلْمًا", t: "علم" }, { a: "حِكْمَة", r: "Hikmah", u: "حکمت", m: "حِكْمَةً", t: "حکمت" } ] },
+            { day: 19, words: [ { a: "نَبِيّ", r: "Nabiyy", u: "نبی", m: "نَبِيٌّ", t: "نبی" }, { a: "رَسُول", r: "Rasool", u: "رسول", m: "رَسُولٌ", t: "رسول" }, { a: "مَلَك", r: "Malak", u: "فرشتہ", m: "مَلَكٌ", t: "فرشتہ" }, { a: "جِنّ", r: "Jinn", u: "جن", m: "الْجِنُّ", t: "جن" }, { a: "شَيْطَان", r: "Shaytaan", u: "شیطان", m: "الشَّيْطَانُ", t: "شیطان" }, { a: "إِبْلِيس", r: "Iblees", u: "ابلیس", m: "إِبْلِيسَ", t: "ابلیس" }, { a: "آخِرَة", r: "Aakhirah", u: "آخرت", m: "الْآخِرَةِ", t: "آخرت" }, { a: "دُنْيَا", r: "Dunyaa", u: "دنیا", m: "الدُّنْيَا", t: "دنیا" }, { a: "سَمَاوَات", r: "Samaawaat", u: "آسمان", m: "السَّمَاوَاتِ", t: "آسمان" }, { a: "أَرَضِين", r: "Aradeen", u: "زمینیں", m: "الْأَرْضِينَ", t: "زمینیں" } ] },
+            { day: 20, words: [ { a: "يَد", r: "Yad", u: "ہاتھ", m: "يَدٌ", t: "ہاتھ" }, { a: "رِجْل", r: "Rijl", u: "پاؤں", m: "رِجْلٌ", t: "پاؤں" }, { a: "عَيْن", r: "Ayn", u: "آنکھ", m: "عَيْنٌ", t: "آنکھ" }, { a: "أُذُن", r: "Udhun", u: "کان", m: "أُذُنٌ", t: "کان" }, { a: "أَنْف", r: "Anf", u: "ناک", m: "أَنْفٌ", t: "ناک" }, { a: "فَم", r: "Fam", u: "منہ", m: "فَمٌ", t: "منہ" }, { a: "رَأْس", r: "Ra's", u: "سر", m: "رَأْسٌ", t: "سر" }, { a: "قَلْب", r: "Qalb", u: "دل", m: "قَلْبٌ", t: "دل" }, { a: "وَجْه", r: "Wajh", u: "چہرہ", m: "وَجْهٌ", t: "چہرہ" }, { a: "شَعْر", r: "Sha'r", u: "بال", m: "شَعْرٌ", t: "بال" } ] },
+
+            // DAY 21-30 (More Verbs, Adjectives, Quranic Words)
+            { day: 21, words: [ { a: "كَبِير", r: "Kabeer", u: "بڑا", m: "كَبِيرٌ", t: "بڑا" }, { a: "صَغِير", r: "Sagheer", u: "چھوٹا", m: "صَغِيرٌ", t: "چھوٹا" }, { a: "جَدِيد", r: "Jadeed", u: "نیا", m: "جَدِيدٌ", t: "نیا" }, { a: "قَدِيم", r: "Qadeem", u: "پرانا", m: "قَدِيمٌ", t: "پرانا" }, { a: "طَوِيل", r: "Taweel", u: "لمبا", m: "طَوِيلٌ", t: "لمبا" }, { a: "قَصِير", r: "Qaseer", u: "چھوٹا", m: "قَصِيرٌ", t: "چھوٹا" }, { a: "جَمِيل", r: "Jameel", u: "خوبصورت", m: "جَمِيلٌ", t: "خوبصورت" }, { a: "قَبِيح", r: "Qabeeh", u: "بدصورت", m: "قَبِيحٌ", t: "بدصورت" }, { a: "سَهْل", r: "Sahl", u: "آسان", m: "سَهْلٌ", t: "آسان" }, { a: "صَعْب", r: "Sa'b", u: "مشکل", m: "صَعْبٌ", t: "مشکل" } ] },
+            { day: 22, words: [ { a: "حَارّ", r: "Haarr", u: "گرم", m: "حَارٌّ", t: "گرم" }, { a: "بَارِد", r: "Baarid", u: "ٹھنڈا", m: "بَارِدٌ", t: "ٹھنڈا" }, { a: "قَرِيب", r: "Qareeb", u: "قریب", m: "قَرِيبٌ", t: "قریب" }, { a: "بَعِيد", r: "Ba'eed", u: "دور", m: "بَعِيدٌ", t: "دور" }, { a: "كَثِير", r: "Katheer", u: "زیادہ", m: "كَثِيرٌ", t: "زیادہ" }, { a: "قَلِيل", r: "Qaleel", u: "تھوڑا", m: "قَلِيلٌ", t: "تھوڑا" }, { a: "سَعِيد", r: "Sa'eed", u: "خوش", m: "سَعِيدٌ", t: "خوش" }, { a: "حَزِين", r: "Hazeen", u: "غمگین", m: "حَزِينٌ", t: "غمگین" }, { a: "غَنِيّ", r: "Ghaniyy", u: "امیر", m: "غَنِيٌّ", t: "امیر" }, { a: "فَقِير", r: "Faqeer", u: "غریب", m: "فَقِيرٌ", t: "غریب" } ] },
+            { day: 23, words: [ { a: "يَوْم", r: "Yawm", u: "دن", m: "يَوْمٌ", t: "دن" }, { a: "أُسْبُوع", r: "Usboo'", u: "ہفتہ", m: "أُسْبُوعٌ", t: "ہفتہ" }, { a: "شَهْر", r: "Shahr", u: "مہینہ", m: "شَهْرٌ", t: "مہینہ" }, { a: "سَنَة", r: "Sanah", u: "سال", m: "سَنَةٌ", t: "سال" }, { a: "سَاعَة", r: "Saa'ah", u: "گھنٹہ", m: "سَاعَةٌ", t: "گھنٹہ" }, { a: "دَقِيقَة", r: "Daqeeqah", u: "منٹ", m: "دَقِيقَةٌ", t: "منٹ" }, { a: "لَحْظَة", r: "Lahzah", u: "لمحہ", m: "لَحْظَةٌ", t: "لمحہ" }, { a: "أَمْس", r: "Ams", u: "کل (گزرا)", m: "أَمْسِ", t: "گزرا کل" }, { a: "غَدًا", r: "Ghadan", u: "کل (آنے والا)", m: "غَدًا", t: "آنے والا کل" }, { a: "الْآن", r: "Al-aan", u: "ابھی", m: "الْآنَ", t: "ابھی" } ] },
+            { day: 24, words: [ { a: "أَيْنَ", r: "Ayna", u: "کہاں", m: "أَيْنَ", t: "کہاں" }, { a: "مَتَى", r: "Mataa", u: "کب", m: "مَتَى", t: "کب" }, { a: "كَيْفَ", r: "Kayfa", u: "کیسے", m: "كَيْفَ", t: "کیسے" }, { a: "لِمَاذَا", r: "Limaadhaa", u: "کیوں", m: "لِمَاذَا", t: "کیوں" }, { a: "مَنْ", r: "Man", u: "کون", m: "مَنْ", t: "کون" }, { a: "مَا", r: "Maa", u: "کیا", m: "مَا", t: "کیا" }, { a: "كَمْ", r: "Kam", u: "کتنے", m: "كَمْ", t: "کتنے" }, { a: "هَلْ", r: "Hal", u: "کیا (سوال)", m: "هَلْ", t: "کیا" }, { a: "نَعَمْ", r: "Na'am", u: "ہاں", m: "نَعَمْ", t: "ہاں" }, { a: "لَا", r: "Laa", u: "نہیں", m: "لَا", t: "نہیں" } ] },
+            { day: 25, words: [ { a: "وَاحِد", r: "Waahid", u: "ایک", m: "وَاحِدٌ", t: "ایک" }, { a: "اِثْنَان", r: "Ithnaan", u: "دو", m: "اِثْنَانِ", t: "دو" }, { a: "ثَلَاثَة", r: "Thalaathah", u: "تین", m: "ثَلَاثَةٌ", t: "تین" }, { a: "أَرْبَعَة", r: "Arba'ah", u: "چار", m: "أَرْبَعَةٌ", t: "چار" }, { a: "خَمْسَة", r: "Khamsah", u: "پانچ", m: "خَمْسَةٌ", t: "پانچ" }, { a: "سِتَّة", r: "Sittah", u: "چھ", m: "سِتَّةٌ", t: "چھ" }, { a: "سَبْعَة", r: "Sab'ah", u: "سات", m: "سَبْعَةٌ", t: "سات" }, { a: "ثَمَانِيَة", r: "Thamaaniyah", u: "آٹھ", m: "ثَمَانِيَةٌ", t: "آٹھ" }, { a: "تِسْعَة", r: "Tis'ah", u: "نو", m: "تِسْعَةٌ", t: "نو" }, { a: "عَشَرَة", r: "Ashrah", u: "دس", m: "عَشَرَةٌ", t: "دس" } ] },
+            { day: 26, words: [ { a: "يَبْنِي", r: "Yabnee", u: "بناتا ہے", m: "يَبْنِي", t: "بنانا" }, { a: "يَجْلِسُ", r: "Yajlisu", u: "بیٹھتا ہے", m: "يَجْلِسُ", t: "بیٹھنا" }, { a: "يَقُومُ", r: "Yaqoomu", u: "کھڑا ہوتا ہے", m: "يَقُومُ", t: "کھڑا ہونا" }, { a: "يَنَامُ", r: "Yanaamu", u: "سوتا ہے", m: "يَنَامُ", t: "سونا" }, { a: "يَضْحَكُ", r: "Yadhaku", u: "ہنستا ہے", m: "يَضْحَكُ", t: "ہنسنا" }, { a: "يَبْكِي", r: "Yabkee", u: "روتا ہے", m: "يَبْكِي", t: "رونا" }, { a: "يَلْعَبُ", r: "Yal'abu", u: "کھیلتا ہے", m: "يَلْعَبُ", t: "کھیلنا" }, { a: "يَدْرُسُ", r: "Yadrusu", u: "پڑھتا ہے", m: "يَدْرُسُ", t: "پڑھنا" }, { a: "يَعْمَلُ", r: "Ya'malu", u: "کام کرتا ہے", m: "يَعْمَلُ", t: "کام" }, { a: "يُسَافِرُ", r: "Yusaafiru", u: "سفر کرتا ہے", m: "يُسَافِرُ", t: "سفر" } ] },
+            { day: 27, words: [ { a: "كِتَاب", r: "Kitaab", u: "کتاب", m: "كِتَابٌ", t: "کتاب" }, { a: "دَفْتَر", r: "Daftar", u: "کاپی", m: "دَفْتَرٌ", t: "کاپی" }, { a: "وَرَقَة", r: "Waraqah", u: "کاغذ", m: "وَرَقَةٌ", t: "کاغذ" }, { a: "مِسْطَرَة", r: "Mistarah", u: "پیمانہ", m: "مِسْطَرَةٌ", t: "پیمانہ" }, { a: "حَقِيبَة", r: "Haqeebah", u: "بیگ", m: "حَقِيبَةٌ", t: "بیگ" }, { a: "سَاعَة", r: "Saa'ah", u: "گھڑی", m: "سَاعَةٌ", t: "گھڑی" }, { a: "مِفْتَاح", r: "Miftaah", u: "چابی", m: "مِفْتَاحٌ", t: "چابی" }, { a: "نَافِذَة", r: "Naafidhah", u: "کھڑکی", m: "نَافِذَةٌ", t: "کھڑکی" }, { a: "سَرِير", r: "Sareer", u: "بستر", m: "سَرِيرٌ", t: "بستر" }, { a: "كُرْسِيّ", r: "Kursiyy", u: "کرسی", m: "كُرْسِيٌّ", t: "کرسی" } ] },
+            { day: 28, words: [ { a: "مَدْرَسَة", r: "Madrasah", u: "اسکول", m: "مَدْرَسَةٌ", t: "اسکول" }, { a: "جَامِعَة", r: "Jaami'ah", u: "یونیورسٹی", m: "جَامِعَةٌ", t: "یونیورسٹی" }, { a: "مُسْتَشْفَى", r: "Mustashfaa", u: "ہسپتال", m: "مُسْتَشْفَى", t: "ہسپتال" }, { a: "مَكْتَب", r: "Maktab", u: "دفتر", m: "مَكْتَبٌ", t: "دفتر" }, { a: "مَطْعَم", r: "Mat'am", u: "ریسٹورنٹ", m: "مَطْعَمٌ", t: "ریسٹورنٹ" }, { a: "مَطَار", r: "Mataar", u: "ایئرپورٹ", m: "مَطَارٌ", t: "ایئرپورٹ" }, { a: "مَحَطَّة", r: "Mahattah", u: "اسٹیشن", m: "مَحَطَّةٌ", t: "اسٹیشن" }, { a: "سُوق", r: "Sooq", u: "بازار", m: "سُوقٌ", t: "بازار" }, { a: "حَدِيقَة", r: "Hadeeqah", u: "باغ", m: "حَدِيقَةٌ", t: "باغ" }, { a: "شَارِع", r: "Shaari'", u: "سڑک", m: "شَارِعٌ", t: "سڑک" } ] },
+            { day: 29, words: [ { a: "لَوْن", r: "Lawn", u: "رنگ", m: "لَوْنٌ", t: "رنگ" }, { a: "أَحْمَر", r: "Ahmar", u: "سرخ", m: "أَحْمَرُ", t: "سرخ" }, { a: "أَخْضَر", r: "Akhdar", u: "سبز", m: "أَخْضَرُ", t: "سبز" }, { a: "أَزْرَق", r: "Azraq", u: "نیلا", m: "أَزْرَقُ", t: "نیلا" }, { a: "أَصْفَر", r: "Asfar", u: "پیلا", m: "أَصْفَرُ", t: "پیلا" }, { a: "أَسْوَد", r: "Aswad", u: "کالا", m: "أَسْوَدُ", t: "کالا" }, { a: "أَبْيَض", r: "Abyad", u: "سفید", m: "أَبْيَضُ", t: "سفید" }, { a: "بُنِّيّ", r: "Bunniyy", u: "بھورا", m: "بُنِّيٌّ", t: "بھورا" }, { a: "بُرْتُقَالِيّ", r: "Burtuqaaliyy", u: "نارنجی", m: "بُرْتُقَالِيٌّ", t: "نارنجی" }, { a: "بَنَفْسَجِيّ", r: "Banafsajiyy", u: "جامنی", m: "بَنَفْسَجِيٌّ", t: "جامنی" } ] },
+            { day: 30, words: [ { a: "فَاكِهَة", r: "Faakihah", u: "پھل", m: "فَاكِهَةٌ", t: "پھل" }, { a: "خُضَار", r: "Khudaar", u: "سبزیاں", m: "خُضَارٌ", t: "سبزیاں" }, { a: "لَحْم", r: "Lahm", u: "گوشت", m: "لَحْمٌ", t: "گوشت" }, { a: "سَمَك", r: "Samak", u: "مچھلی", m: "سَمَكٌ", t: "مچھلی" }, { a: "دَجَاج", r: "Dajaaj", u: "مرغی", m: "دَجَاجٌ", t: "مرغی" }, { a: "بَيْض", r: "Bayd", u: "انڈا", m: "بَيْضٌ", t: "انڈا" }, { a: "أَرُزّ", r: "Aruzz", u: "چاول", m: "أَرُزٌّ", t: "چاول" }, { a: "سُكَّر", r: "Sukkar", u: "چینی", m: "سُكَّرٌ", t: "چینی" }, { a: "مِلْح", r: "Milh", u: "نمک", m: "مِلْحٌ", t: "نمک" }, { a: "زَيْت", r: "Zayt", u: "تیل", m: "زَيْتٌ", t: "تیل" } ] },
+
+            // DAY 31-40 (From User's PDFs specifically)
+            { day: 31, words: [ { a: "الْحَمْدُ لِلَّهِ", r: "Alhamdulillah", u: "تمام تعریف اللہ کے لیے ہے", m: "الْحَمْدُ لِلَّهِ", t: "سورہ فاتحہ" }, { a: "أَسْتَغْفِرُ اللَّهَ", r: "Astaghfirullah", u: "میں اللہ سے بخشش مانگتا ہوں", m: "أَسْتَغْفِرُ اللَّهَ", t: "استغفار" }, { a: "سُبْحَانَ اللَّهِ", r: "SubhanAllah", u: "اللہ پاک ہے", m: "سُبْحَانَ اللَّهِ", t: "تسبیح" }, { a: "اللَّهُ أَكْبَرُ", r: "Allahu Akbar", u: "اللہ سب سے بڑا ہے", m: "اللَّهُ أَكْبَرُ", t: "تکبیر" }, { a: "لَا إِلَهَ إِلَّا اللَّهُ", r: "La ilaha illallah", u: "اللہ کے سوا کوئی معبود نہیں", m: "لَا إِلَهَ إِلَّا اللَّهُ", t: "کلمہ" }, { a: "بِسْمِ اللَّهِ", r: "Bismillah", u: "اللہ کے نام سے", m: "بِسْمِ اللَّهِ", t: "شروعات" }, { a: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ", r: "Allahumma salli 'ala Muhammad", u: "محمد ﷺ پر رحمت نازل فرما", m: "اللَّهُمَّ صَلِّ", t: "درود" }, { a: "رَبَّنَا لَكَ الْحَمْدُ", r: "Rabbana lakal hamd", u: "تیری ہی تعریف ہے", m: "رَبَّنَا لَكَ الْحَمْدُ", t: "رکوع سے اٹھنا" }, { a: "اللَّهُمَّ بَارِكْ", r: "Allahumma barik", u: "برکت نازل فرما", m: "اللَّهُمَّ بَارِكْ", t: "درود" }, { a: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", r: "Subhana Rabbiyal Azeem", u: "میرا رب بڑا ہے", m: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", t: "رکوع" } ] },
+            { day: 32, words: [ { a: "سُبْحَانَ رَبِّيَ الْأَعْلَى", r: "Subhana Rabbiyal A'la", u: "میرا رب بلند ہے", m: "سُبْحَانَ رَبِّيَ الْأَعْلَى", t: "سجدہ" }, { a: "رَبِّ اغْفِرْ لِي", r: "Rabbighfir li", u: "اے رب! مجھے بخش دے", m: "رَبِّ اغْفِرْ لِي", t: "دو سجدوں کے بیچ" }, { a: "اللَّهُمَّ اغْفِرْ لِي", r: "Allahummaghfir li", u: "اے اللہ! مجھے بخش دے", m: "اللَّهُمَّ اغْفِرْ لِي", t: "دعا" }, { a: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", r: "Rabbana atina fid-dunya hasanah", u: "دنیا میں بھلائی دے", m: "رَبَّنَا آتِنَا", t: "دعا" }, { a: "رَبِّ زِدْنِي عِلْمًا", r: "Rabbi zidni ilma", u: "علم میں اضافہ فرما", m: "رَبِّ زِدْنِي عِلْمًا", t: "علم کی دعا" }, { a: "رَبِّ اشْرَحْ لِي صَدْرِي", r: "Rabbish rah li sadri", u: "سینہ کھول دے", m: "رَبِّ اشْرَحْ لِي", t: "موسیٰ کی دعا" }, { a: "يَا حَيُّ يَا قَيُّومُ", r: "Ya Hayyu ya Qayyum", u: "اے زندہ! اے قائم!", m: "يَا حَيُّ يَا قَيُّومُ", t: "پریشانی کی دعا" }, { a: "اللَّهُمَّ أَنْتَ السَّلَامُ", r: "Allahumma antas-salam", u: "تو سلامتی والا ہے", m: "اللَّهُمَّ أَنْتَ السَّلَامُ", t: "نماز کے بعد" }, { a: "أَسْتَغْفِرُ اللَّهَ", r: "Astaghfirullah", u: "بخشش مانگتا ہوں", m: "أَسْتَغْفِرُ اللَّهَ", t: "نماز کے بعد" }, { a: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", r: "La hawla wa la quwwata illa billah", u: "طاقت نہیں مگر اللہ سے", m: "لَا حَوْلَ وَلَا قُوَّةَ", t: "جنت کا خزانہ" } ] },
+            { day: 33, words: [ { a: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", r: "Subhanaka Allahumma wa bihamdika", u: "تو پاک ہے اور تیری تعریف", m: "سُبْحَانَكَ اللَّهُمَّ", t: "استفتاح" }, { a: "وَجَّهْتُ وَجْهِيَ", r: "Wajjahtu wajhiya", u: "میں نے رخ کیا", m: "وَجَّهْتُ وَجْهِيَ", t: "استفتاح" }, { a: "إِنَّ صَلَاتِي وَنُسُكِي", r: "Inna salati wa nusuki", u: "میری نماز اور قربانی", m: "إِنَّ صَلَاتِي", t: "استفتاح" }, { a: "اللَّهُمَّ بَاعِدْ بَيْنِي", r: "Allahumma ba'id bayni", u: "دوری کر دے", m: "اللَّهُمَّ بَاعِدْ", t: "استفتاح" }, { a: "آمِين", r: "Ameen", u: "اے اللہ قبول فرما", m: "آمِين", t: "قبولیت" }, { a: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ", r: "Sami'allahu liman hamidah", u: "اللہ نے سنا", m: "سَمِعَ اللَّهُ", t: "رکوع سے اٹھنا" }, { a: "رَبَّنَا وَلَكَ الْحَمْدُ", r: "Rabbana wa lakal hamd", u: "تیری ہی تعریف", m: "رَبَّنَا وَلَكَ", t: "تعریف" }, { a: "التَّحِيَّاتُ لِلَّهِ", r: "At-tahiyyatu lillah", u: "تمام زبانی عبادات اللہ کے لیے", m: "التَّحِيَّاتُ لِلَّهِ", t: "تشہد" }, { a: "السَّلَامُ عَلَيْكَ", r: "As-salamu 'alayka", u: "تم پر سلام ہو", m: "السَّلَامُ عَلَيْكَ", t: "تشہد" }, { a: "أَشْهَدُ أَنْ لَّا إِلَهَ إِلَّا اللَّهُ", r: "Ashhadu an la ilaha illallah", u: "گواہی دیتا ہوں", m: "أَشْهَدُ أَنْ", t: "تشہد" } ] },
+            { day: 34, words: [ { a: "اللَّهُمَّ إِنِّي ظَلَمْتُ", r: "Allahumma inni zalamtu", u: "میں نے ظلم کیا", m: "اللَّهُمَّ إِنِّي", t: "دعا" }, { a: "فَاغْفِرْ لِي", r: "Faghfir li", u: "مجھے بخش دے", m: "فَاغْفِرْ لِي", t: "دعا" }, { a: "وَارْحَمْنِي", r: "Warhamni", u: "مجھ پر رحم کر", m: "وَارْحَمْنِي", t: "دعا" }, { a: "وَاجْبُرْنِي", r: "Wajburni", u: "کمی پوری کر", m: "وَاجْبُرْنِي", t: "دعا" }, { a: "وَارْزُقْنِي", r: "Warzuqni", u: "رزق دے", m: "وَارْزُقْنِي", t: "دعا" }, { a: "وَاهْدِنِي", r: "Wahdini", u: "ہدایت دے", m: "وَاهْدِنِي", t: "دعا" }, { a: "وَعَافِنِي", r: "Wa 'afini", u: "عافیت دے", m: "وَعَافِنِي", t: "دعا" }, { a: "وَارْفَعْنِي", r: "Warfa'ni", u: "بلند کر", m: "وَارْفَعْنِي", t: "دعا" }, { a: "رَبَّنَا تَقَبَّلْ مِنَّا", r: "Rabbana taqabbal minna", u: "قبول فرما", m: "رَبَّنَا تَقَبَّلْ", t: "دعا" }, { a: "رَبَّنَا وَاجْعَلْنَا مُسْلِمَيْنِ", r: "Rabbana waj'alna muslimayni", u: "مسلمان بنا", m: "رَبَّنَا وَاجْعَلْنَا", t: "دعا" } ] },
+            { day: 35, words: [ { a: "رَبَّنَا آتِنَا", r: "Rabbana atina", u: "ہمیں دے", m: "رَبَّنَا آتِنَا", t: "دعا" }, { a: "مِنَ الصَّالِحِينَ", r: "Minas-saliheen", u: "نیک لوگوں میں سے", m: "مِنَ الصَّالِحِينَ", t: "نیکی" }, { a: "يَا أَيُّهَا النَّاسُ", r: "Ya ayyuhan-naas", u: "اے لوگو!", m: "يَا أَيُّهَا النَّاسُ", t: "پکار" }, { a: "اتَّقُوا اللَّهَ", r: "Ittaqullah", u: "اللہ سے ڈرو", m: "اتَّقُوا اللَّهَ", t: "تقویٰ" }, { a: "أَطِيعُوا اللَّهَ", r: "Atee'ullah", u: "اللہ کی اطاعت کرو", m: "أَطِيعُوا اللَّهَ", t: "اطاعت" }, { a: "وَأَطِيعُوا الرَّسُولَ", r: "Wa atee'ur-rasool", u: "رسول کی اطاعت کرو", m: "وَأَطِيعُوا الرَّسُولَ", t: "اطاعت" }, { a: "خُذُوا مَا آتَيْنَاكُمْ", r: "Khudhu ma ataynakum", u: "جو دیا ہے اسے پکڑو", m: "خُذُوا مَا", t: "حکم" }, { a: "وَاذْكُرُوا نِعْمَتَ اللَّهِ", r: "Wadhkuru ni'matallah", u: "اللہ کی نعمت یاد کرو", m: "وَاذْكُرُوا", t: "یاد" }, { a: "وَاشْكُرُوا لِلَّهِ", r: "Washkuru lillah", u: "اللہ کا شکر کرو", m: "وَاشْكُرُوا", t: "شکر" }, { a: "وَلَا تَكْفُرُوا", r: "Wa la takfuru", u: "انکار نہ کرو", m: "وَلَا تَكْفُرُوا", t: "انکار" } ] },
+            { day: 36, words: [ { a: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", r: "Innallaha ma'as-sabireen", u: "اللہ صبر کرنے والوں کے ساتھ ہے", m: "مَعَ الصَّابِرِينَ", t: "صبر" }, { a: "إِنَّ اللَّهَ غَفُورٌ رَّحِيمٌ", r: "Innallaha ghafoorur-raheem", u: "اللہ بخشنے والا رحم کرنے والا ہے", m: "غَفُورٌ رَّحِيمٌ", t: "رحمت" }, { a: "إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ", r: "Innallaha 'ala kulli shay'in qadeer", u: "اللہ ہر چیز پر قادر ہے", m: "عَلَىٰ كُلِّ شَيْءٍ", t: "قدرت" }, { a: "إِنَّ اللَّهَ سَمِيعٌ بَصِيرٌ", r: "Innallaha samee'un baseer", u: "اللہ سننے والا دیکھنے والا ہے", m: "سَمِيعٌ بَصِيرٌ", t: "سننا دیکھنا" }, { a: "إِنَّ اللَّهَ لَا يُحِبُّ الظَّالِمِينَ", r: "Innallaha la yuhibbuz-zalimeen", u: "اللہ ظالموں کو پسند نہیں کرتا", m: "لَا يُحِبُّ", t: "ظلم" }, { a: "وَاللَّهُ خَيْرُ الرَّازِقِينَ", r: "Wallahu khayrur-raziqeen", u: "اللہ بہترین رزق دینے والا ہے", m: "خَيْرُ الرَّازِقِينَ", t: "رزق" }, { a: "وَاللَّهُ عَلِيمٌ حَكِيمٌ", r: "Wallahu 'aleemun hakeem", u: "اللہ جاننے والا حکمت والا ہے", m: "عَلِيمٌ حَكِيمٌ", t: "علم" }, { a: "وَاللَّهُ بِمَا تَعْمَلُونَ بَصِيرٌ", r: "Wallahu bima ta'maloona baseer", u: "اللہ تمہارے کاموں کو دیکھتا ہے", m: "بِمَا تَعْمَلُونَ", t: "عمل" }, { a: "فَاذْكُرُونِي أَذْكُرْكُمْ", r: "Fadhkurooni adhkurkum", u: "مجھے یاد کرو میں تمہیں یاد رکھوں گا", m: "فَاذْكُرُونِي", t: "ذکر" }, { a: "وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ", r: "Washkuru li wa la takfuroon", u: "میرا شکر کرو انکار نہ کرو", m: "وَلَا تَكْفُرُونِ", t: "شکر" } ] },
+            { day: 37, words: [ { a: "رَبَّنَا ظَلَمْنَا أَنفُسَنَا", r: "Rabbana zalamna anfusana", u: "ہم نے اپنی جانوں پر ظلم کیا", m: "ظَلَمْنَا أَنفُسَنَا", t: "توبہ" }, { a: "وَإِن لَّمْ تَغْفِرْ لَنَا", r: "Wa il lam taghfir lana", u: "اگر تو نہیں بخشے گا", m: "تَغْفِرْ لَنَا", t: "بخشش" }, { a: "وَتَرْحَمْنَا", r: "Wa tarhamna", u: "اور رحم نہیں کرے گا", m: "وَتَرْحَمْنَا", t: "رحمت" }, { a: "لَنَكُونَنَّ مِنَ الْخَاسِرِينَ", r: "Lanakoonanna minal-khasireen", u: "تو ہم خسارہ پانے والوں میں ہوں گے", m: "مِنَ الْخَاسِرِينَ", t: "نقصان" }, { a: "رَبِّ إِنِّي لِمَا أَنزَلْتَ", r: "Rabbi inni lima anzalta", u: "اے رب! جو تو نے اتارا", m: "رَبِّ إِنِّي", t: "دعا" }, { a: "إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ", r: "Ilayya min khayrin faqeer", u: "مجھے اس کی ضرورت ہے", m: "مِنْ خَيْرٍ فَقِيرٌ", t: "ضرورت" }, { a: "لَا إِلَهَ إِلَّا أَنتَ سُبْحَانَكَ", r: "La ilaha illa anta subhanaka", u: "تیرے سوا کوئی معبود نہیں تو پاک ہے", m: "سُبْحَانَكَ", t: "یونس کی دعا" }, { a: "إِنِّي كُنتُ مِنَ الظَّالِمِينَ", r: "Inni kuntu minaz-zalimeen", u: "میں ظالموں میں سے تھا", m: "مِنَ الظَّالِمِينَ", t: "ظلم" }, { a: "حَسْبُنَا اللَّهُ", r: "Hasbunallah", u: "ہمیں اللہ کافی ہے", m: "حَسْبُنَا اللَّهُ", t: "بھروسہ" }, { a: "وَنِعْمَ الْوَكِيلُ", r: "Wa ni'mal wakeel", u: "وہ بہترین کارساز ہے", m: "نِعْمَ الْوَكِيلُ", t: "کارساز" } ] },
+            { day: 38, words: [ { a: "لَا يُكَلِّفُ اللَّهُ نَفْسًا", r: "La yukallifullahu nafsan", u: "اللہ کسی جان پر بوجھ نہیں ڈالتا", m: "لَا يُكَلِّفُ", t: "بوجھ" }, { a: "إِلَّا وُسْعَهَا", r: "Illa wus'aha", u: "اس کی طاقت کے مطابق", m: "إِلَّا وُسْعَهَا", t: "طاقت" }, { a: "لَهَا مَا كَسَبَتْ", r: "Laha ma kasabat", u: "اس کے لیے جو اس نے کمایا", m: "مَا كَسَبَتْ", t: "کمائی" }, { a: "وَعَلَيْهَا مَا اكْتَسَبَتْ", r: "Wa 'alayha maktasabat", u: "اس پر جو اس نے کیا", m: "مَا اكْتَسَبَتْ", t: "عمل" }, { a: "رَبَّنَا لَا تُؤَاخِذْنَا", r: "Rabbana la tu'akhidhna", u: "اے رب ہمیں نہ پکڑ", m: "لَا تُؤَاخِذْنَا", t: "پکڑ" }, { a: "إِن نَّسِينَا أَوْ أَخْطَأْنَا", r: "In naseena aw akhta'na", u: "اگر بھولیں یا خطا کریں", m: "أَوْ أَخْطَأْنَا", t: "خطا" }, { a: "رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا", r: "Rabbana wa la tahmil 'alayna", u: "ہم پر بوجھ نہ ڈال", m: "وَلَا تَحْمِلْ", t: "بوجھ" }, { a: "إِصْرًا كَمَا حَمَلْتَهُ", r: "Isran kama hamaltahu", u: "جیسا پہلوں پر ڈالا", m: "إِصْرًا", t: "بوجھ" }, { a: "وَاعْفُ عَنَّا", r: "Wa'fu 'anna", u: "ہمیں معاف کر", m: "وَاعْفُ عَنَّا", t: "معافی" }, { a: "وَاغْفِرْ لَنَا وَارْحَمْنَا", r: "Waghfir lana warhamna", u: "بخش دے اور رحم کر", m: "وَاغْفِرْ لَنَا", t: "بخشش" } ] },
+            { day: 39, words: [ { a: "أَنتَ مَوْلَانَا", r: "Anta mawlana", u: "تو ہمارا مولا ہے", m: "أَنتَ مَوْلَانَا", t: "مولا" }, { a: "فَانصُرْنَا", r: "Fansurna", u: "ہماری مدد کر", m: "فَانصُرْنَا", t: "مدد" }, { a: "عَلَى الْقَوْمِ الْكَافِرِينَ", r: "'Alal-qawmil-kafireen", u: "کافروں کے مقابلے میں", m: "الْكَافِرِينَ", t: "کافر" }, { a: "رَبَّنَا لَا تُزِغْ قُلُوبَنَا", r: "Rabbana la tuzigh quloobana", u: "ہمارے دلوں کو ٹیڑھا نہ کر", m: "قُلُوبَنَا", t: "دل" }, { a: "بَعْدَ إِذْ هَدَيْتَنَا", r: "Ba'da idh hadaytana", u: "ہدایت کے بعد", m: "هَدَيْتَنَا", t: "ہدایت" }, { a: "وَهَبْ لَنَا مِن لَّدُنكَ", r: "Wa hab lana min ladunka", u: "ہمیں اپنی طرف سے دے", m: "مِن لَّدُنكَ", t: "عطا" }, { a: "رَحْمَةً إِنَّكَ أَنتَ الْوَهَّابُ", r: "Rahmatan innaka antal-wahhab", u: "رحمت، تو بہت دینے والا ہے", m: "الْوَهَّابُ", t: "عطا کرنے والا" }, { a: "رَبَّنَا إِنَّكَ جَامِعُ النَّاسِ", r: "Rabbana innaka jami'un-nas", u: "تو لوگوں کو جمع کرے گا", m: "جَامِعُ النَّاسِ", t: "جمع" }, { a: "لِيَوْمٍ لَّا رَيْبَ فِيهِ", r: "Liyawmil la rayba fih", u: "اس دن جس میں شک نہیں", m: "لَّا رَيْبَ", t: "شک" }, { a: "إِنَّ اللَّهَ لَا يُخْلِفُ الْمِيعَادَ", r: "Innallaha la yukhliful-mi'ad", u: "اللہ وعدہ خلافی نہیں کرتا", m: "الْمِيعَادَ", t: "وعدہ" } ] },
+            { day: 40, words: [ { a: "رَبَّنَا إِنَّنَا آمَنَّا", r: "Rabbana innana amanna", u: "ہم ایمان لائے", m: "آمَنَّا", t: "ایمان" }, { a: "فَاغْفِرْ لَنَا ذُنُوبَنَا", r: "Faghfir lana dhunoobana", u: "ہمارے گناہ بخش دے", m: "ذُنُوبَنَا", t: "گناہ" }, { a: "وَقِنَا عَذَابَ النَّارِ", r: "Wa qina 'adhaban-nar", u: "آگ کے عذاب سے بچا", m: "عَذَابَ النَّارِ", t: "عذاب" }, { a: "رَبَّنَا إِنَّنَا آمَنَّا", r: "Rabbana innana amanna", u: "ہم ایمان لائے", m: "آمَنَّا", t: "ایمان" }, { a: "فَاكْتُبْنَا مَعَ الشَّاهِدِينَ", r: "Faktubna ma'ash-shahideen", u: "گواہوں میں لکھ دے", m: "مَعَ الشَّاهِدِينَ", t: "گواہ" }, { a: "رَبَّنَا آمَنَّا", r: "Rabbana amanna", u: "ہم ایمان لائے", m: "آمَنَّا", t: "ایمان" }, { a: "بِمَا أَنزَلْتَ", r: "Bima anzalta", u: "جو تو نے اتارا", m: "بِمَا أَنزَلْتَ", t: "نازل کرنا" }, { a: "وَاتَّبَعْنَا الرَّسُولَ", r: "Wattaba'nar-rasool", u: "ہم نے رسول کی پیروی کی", m: "الرَّسُولَ", t: "پیروی" }, { a: "فَاكْتُبْنَا مَعَ الشَّاهِدِينَ", r: "Faktubna ma'ash-shahideen", u: "گواہوں میں لکھ دے", m: "الشَّاهِدِينَ", t: "گواہ" }, { a: "سُبْحَانَ رَبِّكَ رَبِّ الْعِزَّةِ", r: "Subhana rabbika rabbil-'izzati", u: "تیرا رب عزت والا پاک ہے", m: "رَبِّ الْعِزَّةِ", t: "عزت" } ] }
         ];
 
+        // ==========================================
+        // --- FIXED DATA FOR TABS (Duas & Azkar) ---
+        // ==========================================
         const namazDuaData = [
             { arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", roman: "Subhanaka Allahumma wa bihamdika", urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے", tafseel: "نماز کی پہلی دعا (استفتاح)۔ (سنن ابی داؤد 776)" },
             { arabic: "رَبِّ اغْفِرْ لِي", roman: "Rabbighfir li", urdu: "اے میرے رب! مجھے بخش دے", tafseel: "دو سجدوں کے درمیان دعا۔ (ابن ماجہ 897)" },
             { arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", roman: "Rabbana atina fid-dunya hasanah", urdu: "اے ہمارے رب! ہمیں دنیا میں بھلائی دے", tafseel: "سب سے زیادہ پڑھی جانے والی جامع دعا۔ (بخاری 6389)" },
             { arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ", roman: "Allahumma antas-salam", urdu: "اے اللہ! تو سلامتی والا ہے", tafseel: "نماز کے بعد کی دعا۔ (مسلم 591)" }
         ];
-
         const azkarData = [
             { arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا", roman: "Alhamdulillahil-ladhi ahyana", urdu: "تمام تعریف اللہ کے لیے ہے جس نے زندہ کیا", tafseel: "نیند سے بیدار ہونے کی دعا۔ (بخاری 6312)" },
             { arabic: "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ", roman: "Bismillah, tawakkaltu 'alallah", urdu: "اللہ کے نام سے، میں نے اللہ پر بھروسہ کیا", tafseel: "گھر سے نکلنے کی دعا۔ (ابو داؤد 5095)" }
         ];
-
         const quranWordsData = [
             { arabic: "بَعُوضَة", roman: "Ba'oodah", urdu: "مچھر", tafseel: "قرآن میں مچھر کی مثال (البقرہ 26)۔" },
             { arabic: "قِثَّاء", roman: "Qiththa'a", urdu: "ککڑی", tafseel: "بنی اسرائیل کی خوراک۔" }
         ];
-
         const gkQuestions = [
             { q: "Islam mein kitne Arkaan (pillars) hain?", options: ["3", "5", "7", "10"], correct: 1 },
             { q: "Quran kis Nabi par nazil hua?", options: ["Musa (AS)", "Isa (AS)", "Muhammad (SAW)", "Ibrahim (AS)"], correct: 2 },
-            { q: "Pehle Nabi kaun the?", options: ["Nuh (AS)", "Aadam (AS)", "Ibrahim (AS)", "Musa (AS)"], correct: 1 },
-            { q: "Namaz mein total kitni rakat farz hoti hain?", options: ["15", "17", "20", "12"], correct: 1 },
-            { q: "Quran ki sabse badi ayat kaun si hai?", options: ["Ayatul Kursi", "Surah Fatiha", "Surah Ikhlas", "Ayat-ul-Birr"], correct: 0 }
+            { q: "Pehle Nabi kaun the?", options: ["Nuh (AS)", "Aadam (AS)", "Ibrahim (AS)", "Musa (AS)"], correct: 1 }
         ];
 
         // ==========================================
@@ -337,7 +278,6 @@
         let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
         let userRole = localStorage.getItem('userRole') || 'guest';
-        let shareTextContext = "";
 
         function handleLogin() {
             const pass = document.getElementById('passwordInput').value;
@@ -345,15 +285,10 @@
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userRole', pass === ADMIN_PASS ? 'admin' : 'guest');
                 location.reload();
-            } else {
-                document.getElementById('loginError').innerText = "Galat Password!";
-            }
+            } else { document.getElementById('loginError').innerText = "Galat Password!"; }
         }
 
-        function logout() {
-            localStorage.removeItem('isLoggedIn');
-            location.reload();
-        }
+        function logout() { localStorage.removeItem('isLoggedIn'); location.reload(); }
 
         if (localStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginScreen').classList.add('hidden');
@@ -364,9 +299,9 @@
 
         function initApp() {
             renderCourse();
-            renderListData(namazDuaData, 'namazGrid');
-            renderListData(azkarData, 'azkarGrid');
-            renderListData(quranWordsData, 'quranGrid');
+            renderListData(namazDuaData, 'namazGrid', 'ar', 'u', 't');
+            renderListData(azkarData, 'azkarGrid', 'ar', 'u', 't');
+            renderListData(quranWordsData, 'quranGrid', 'ar', 'u', 't');
             loadRandomGK();
             updateStreak();
         }
@@ -374,58 +309,62 @@
         function renderCourse() {
             const grid = document.getElementById('courseGrid');
             grid.innerHTML = '';
-            let maxUnlockedDay = userRole === 'admin' ? 90 : currentDay;
             
+            const adminSelect = document.getElementById('adminDaySelect');
+            if(userRole === 'admin') {
+                adminSelect.classList.remove('hidden');
+                if(adminSelect.innerHTML === '') {
+                    let opts = '';
+                    courseData.forEach(d => { opts += `<option value="${d.day}" ${d.day === currentDay ? 'selected' : ''}>Day ${d.day}</option>`; });
+                    adminSelect.innerHTML = opts;
+                }
+            }
+
             document.getElementById('dayTitle').innerText = `Day ${currentDay} - Learn 10 Words`;
-            document.getElementById('progressFill').style.width = `${(currentDay/90)*100}%`;
-            document.getElementById('wordCount').innerText = `${currentDay}/90 Days`;
+            const todayData = courseData.find(d => d.day === currentDay);
 
-            courseData.forEach((dayObj) => {
-                const isLocked = dayObj.day > maxUnlockedDay;
-                
-                const dayHeader = document.createElement('h3');
-                dayHeader.style.gridColumn = "1 / -1";
-                dayHeader.style.marginTop = "15px";
-                dayHeader.style.color = "var(--text-light)";
-                dayHeader.innerText = `Day ${dayObj.day} ${isLocked ? '🔒' : ''}`;
-                grid.appendChild(dayHeader);
-
-                dayObj.words.forEach((word, index) => {
+            if(todayData) {
+                todayData.words.forEach((word, index) => {
                     const card = document.createElement('div');
-                    card.className = `card ${isLocked ? 'locked' : ''}`;
-                    
+                    card.className = 'card';
                     card.innerHTML = `
-                        <div class="arabic" onclick="speakText('${word.arabic}', 'ar')">${word.arabic}</div>
-                        <div class="roman">${word.roman}</div>
-                        <div class="urdu" onclick="speakText('${word.urdu}', 'ur')">${word.urdu}</div>
-                        <div class="mashq-box"><b>Mashq:</b> ${word.mashq}</div>
-                        <button class="tafseel-btn" onclick="showTafseel('${word.arabic}', '${word.urdu}', '${word.tafseel}')">📖 Tafseel Padhein</button>
+                        <div class="arabic" onclick="speakText('${word.a}', 'ar')">${word.a}</div>
+                        <div class="roman">${word.r}</div>
+                        <div class="urdu" onclick="speakText('${word.u}', 'ur')">${word.u}</div>
+                        <div class="mashq-box"><b>Mashq:</b> ${word.m}</div>
+                        <button class="tafseel-btn" onclick="showTafseel('${word.a}', '${word.u}', '${word.t}')">📖 Tafseel Padhein</button>
                     `;
                     grid.appendChild(card);
                 });
-            });
 
-            const examBtn = document.getElementById('startExamBtn');
-            if(currentDay > courseData.length && userRole !== 'admin') {
-                 examBtn.innerText = "🎉 Abhi Aur Data Nahi Hai!";
-                 examBtn.disabled = true;
-            } else {
-                 examBtn.innerText = `📝 Day ${currentDay} Exam Start Karein`;
-                 examBtn.disabled = false;
+                const nextDayData = courseData.find(d => d.day === currentDay + 1);
+                if(nextDayData && userRole !== 'admin') {
+                    const lockedCard = document.createElement('div');
+                    lockedCard.className = 'locked-page';
+                    lockedCard.style.gridColumn = "1 / -1";
+                    lockedCard.innerHTML = `<div class="lock-icon">🔒</div><h2>Day ${currentDay + 1} Locked Hai</h2><p>Aaj ka exam pass karein tabhi kal ka sabaq khulega!</p>`;
+                    grid.appendChild(lockedCard);
+                }
+
+                const examBtn = document.getElementById('startExamBtn');
+                examBtn.innerText = `📝 Day ${currentDay} Exam Start Karein`;
+                examBtn.disabled = false;
+                examBtn.classList.remove('hidden');
             }
         }
 
-        function renderListData(data, containerId) {
+        function changeAdminDay(day) { currentDay = parseInt(day); renderCourse(); }
+
+        function renderListData(data, containerId, aKey, uKey, tKey) {
             const grid = document.getElementById(containerId);
             grid.innerHTML = '';
             data.forEach(word => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div class="arabic" onclick="speakText('${word.arabic}', 'ar')">${word.arabic}</div>
-                    <div class="roman">${word.roman}</div>
-                    <div class="urdu" onclick="speakText('${word.urdu}', 'ur')">${word.urdu}</div>
-                    <button class="tafseel-btn" onclick="showTafseel('${word.arabic}', '${word.urdu}', '${word.tafseel}')">📖 Tafseel Padhein</button>
+                    <div class="arabic" onclick="speakText('${word[aKey]}', 'ar')">${word[aKey]}</div>
+                    <div class="urdu" onclick="speakText('${word[uKey]}', 'ur')">${word[uKey]}</div>
+                    <button class="tafseel-btn" onclick="showTafseel('${word[aKey]}', '${word[uKey]}', '${word[tKey]}')">📖 Tafseel Padhein</button>
                 `;
                 grid.appendChild(card);
             });
@@ -435,25 +374,18 @@
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = lang === 'ar' ? 'ar-SA' : 'ur-PK';
-            utterance.rate = 0.8;
-            window.speechSynthesis.speak(utterance);
+            utterance.rate = 0.8; window.speechSynthesis.speak(utterance);
         }
 
         function showTafseel(arabic, urdu, tafseel) {
             document.getElementById('modalTitle').innerText = "Tafseel / Fazilat";
             document.getElementById('modalText').innerText = tafseel;
             document.getElementById('infoModal').classList.remove('hidden');
-            
             document.getElementById('speakBtn').onclick = () => speakText(tafseel, 'ur');
-            
-            shareTextContext = `${arabic}\n\n${urdu}\n\n${tafseel}\n\n- Quraan Ustad App`;
+            const shareTxt = `${arabic}\n\n${urdu}\n\n${tafseel}\n\n- Quraan Ustad App`;
             document.getElementById('shareBtn').onclick = () => {
-                if (navigator.share) {
-                    navigator.share({ title: 'Quraan Ustad', text: shareTextContext }).catch(console.error);
-                } else {
-                    navigator.clipboard.writeText(shareTextContext);
-                    showToast("📋 Copy ho gaya!");
-                }
+                if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: shareTxt }).catch(console.error);
+                else { navigator.clipboard.writeText(shareTxt); showToast("📋 Copy ho gaya!"); }
             };
         }
 
@@ -461,112 +393,68 @@
             const filter = document.getElementById(inputId).value.toLowerCase();
             const cards = document.getElementById(gridId).getElementsByClassName('card');
             for (let i = 0; i < cards.length; i++) {
-                const txt = cards[i].textContent || cards[i].innerText;
-                cards[i].style.display = txt.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+                cards[i].style.display (cards[i].textContent.toLowerCase().indexOf(filter) > -1) ? "" : "none";
             }
         }
 
         function startWordExam() {
             let targetDayObj = courseData.find(d => d.day === currentDay);
             if(!targetDayObj) return;
-
-            let currentExamQuestions = targetDayObj.words.map(word => {
-                let wrongOpts = courseData.flatMap(d => d.words)
-                    .filter(w => w.urdu !== word.urdu)
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, 3).map(w => w.urdu);
-                let opts = [word.urdu, ...wrongOpts].sort(() => 0.5 - Math.random());
-                return { arabic: word.arabic, options: opts, correct: word.urdu };
+            let qs = targetDayObj.words.map(word => {
+                let wrong = courseData.flatMap(d => d.words).filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w.u);
+                return { a: word.a, opts: [word.u, ...wrong].sort(() => 0.5 - Math.random()), c: word.u };
             });
-
             document.getElementById('examQuestions').innerHTML = '';
             document.getElementById('examResult').innerText = '';
             document.getElementById('submitExamBtn').style.display = 'block';
             document.getElementById('examModal').classList.remove('hidden');
-
-            currentExamQuestions.forEach((q, idx) => {
-                let html = `<div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
-                    <p style="font-family:'Amiri'; font-size:24px; text-align:center; color:var(--secondary);">${q.arabic}</p>`;
-                q.options.forEach(opt => {
-                    html += `<button class="option-btn" onclick="selectOption(this, '${opt}', '${q.correct}')">${opt}</button>`;
-                });
-                html += `</div>`;
-                document.getElementById('examQuestions').innerHTML += html;
+            qs.forEach(q => {
+                let html = `<div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;"><p style="font-family:'Amiri'; font-size:24px; text-align:center; color:var(--secondary);">${q.a}</p>`;
+                q.opts.forEach(o => html += `<button class="option-btn" onclick="selectOption(this, '${o}', '${q.c}')">${o}</button>`);
+                document.getElementById('examQuestions').innerHTML += html + `</div>`;
             });
         }
 
         function selectOption(btn, selected, correct) {
-            const parent = btn.parentElement;
-            parent.querySelectorAll('.option-btn').forEach(b => {
-                b.classList.remove('selected', 'correct', 'wrong');
-                b.style.borderColor = 'var(--border)';
-            });
-            btn.classList.add('selected');
-            btn.style.borderColor = 'var(--primary)';
+            btn.parentElement.querySelectorAll('.option-btn').forEach(b => { b.classList.remove('selected'); b.style.borderColor = 'var(--border)'; });
+            btn.classList.add('selected'); btn.style.borderColor = 'var(--primary)';
             btn.dataset.isCorrect = (selected === correct).toString();
         }
 
         function submitExam() {
-            let score = 0;
-            const questions = document.querySelectorAll('#examQuestions > div');
-            let allAnswered = true;
-
-            questions.forEach(qDiv => {
-                const selectedBtn = qDiv.querySelector('.selected');
-                if (!selectedBtn) { allAnswered = false; return; }
-                if (selectedBtn.dataset.isCorrect === 'true') {
-                    selectedBtn.classList.add('correct');
-                    score++;
-                } else {
-                    selectedBtn.classList.add('wrong');
-                }
+            let score = 0, all = true;
+            document.querySelectorAll('#examQuestions > div').forEach(d => {
+                const sel = d.querySelector('.selected');
+                if (!sel) { all = false; return; }
+                if (sel.dataset.isCorrect === 'true') { sel.classList.add('correct'); score++; } 
+                else { sel.classList.add('wrong'); }
             });
-
-            if(!allAnswered) {
-                document.getElementById('examResult').innerText = "⚠️ Kripya sabhi sawalon ke jawab dein!";
-                document.getElementById('examResult').style.color = "orange";
-                return;
-            }
-
+            if(!all) { document.getElementById('examResult').innerText = "⚠️ Sabhi sawalon ke jawab dein!"; document.getElementById('examResult').style.color = "orange"; return; }
+            
             document.getElementById('submitExamBtn').style.display = 'none';
-
+            const res = document.getElementById('examResult');
             if (score >= 8) {
-                document.getElementById('examResult').innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`;
-                document.getElementById('examResult').style.color = "green";
-                if(userRole !== 'admin') {
-                    currentDay++;
-                    localStorage.setItem('currentDay', currentDay);
-                }
-                setTimeout(() => {
-                    document.getElementById('examModal').classList.add('hidden');
-                    renderCourse();
-                }, 2000);
+                res.innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`; res.style.color = "green";
+                if(userRole !== 'admin') { currentDay++; localStorage.setItem('currentDay', currentDay); }
+                setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
             } else {
-                document.getElementById('examResult').innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye.`;
-                document.getElementById('examResult').style.color = "red";
+                res.innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye.`; res.style.color = "red";
                 document.getElementById('submitExamBtn').style.display = 'block';
             }
         }
 
         function loadRandomGK() {
-            const randomQ = gkQuestions[Math.floor(Math.random() * gkQuestions.length)];
-            let html = `<h3 style="margin-bottom:15px;">${randomQ.q}</h3>`;
-            randomQ.options.forEach((opt, i) => {
-                html += `<button class="option-btn" onclick="checkGK(this, ${i}, ${randomQ.correct})">${opt}</button>`;
-            });
+            const q = gkQuestions[Math.floor(Math.random() * gkQuestions.length)];
+            let html = `<h3 style="margin-bottom:15px;">${q.q}</h3>`;
+            q.options.forEach((o, i) => html += `<button class="option-btn" onclick="checkGK(this, ${i}, ${q.correct})">${o}</button>`);
             document.getElementById('quizContainer').innerHTML = html;
             document.getElementById('nextGkBtn').classList.add('hidden');
         }
 
-        function checkGK(btn, selected, correct) {
-            const allBtns = document.querySelectorAll('#quizContainer .option-btn');
-            allBtns.forEach(b => b.disabled = true);
-            if(selected === correct) {
-                btn.classList.add('correct');
-            } else {
-                btn.classList.add('wrong');
-                allBtns[correct].classList.add('correct');
-            }
+        function checkGK(btn, sel, cor) {
+            document.querySelectorAll('#quizContainer .option-btn').forEach(b => b.disabled = true);
+            if(sel === cor) btn.classList.add('correct');
+            else { btn.classList.add('wrong'); document.querySelectorAll('#quizContainer .option-btn')[cor].classList.add('correct'); }
             document.getElementById('nextGkBtn').classList.remove('hidden');
         }
 
@@ -578,48 +466,21 @@
         }
 
         function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-            document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDarkMode);
+            isDarkMode = !isDarkMode; document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; localStorage.setItem('darkMode', isDarkMode);
         }
 
-        function openFeedback() {
-            document.getElementById('feedbackModal').classList.remove('hidden');
-        }
-
-        function shareApp() {
-            const shareData = {
-                title: 'Quraan and Duaa Ustad',
-                text: 'Maine yeh bohot achi Islamic App banayi hai! Aap bhi try karein.',
-                url: window.location.href
-            };
-            if (navigator.share) navigator.share(shareData).catch(console.error);
-            else alert("Link Copy karein: " + window.location.href);
-        }
+        function openFeedback() { document.getElementById('feedbackModal').classList.remove('hidden'); }
+        function shareApp() { if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: 'Maine yeh bohot achi Islamic App banayi hai!', url: window.location.href }).catch(console.error); else alert("Link Copy karein: " + window.location.href); }
 
         function updateStreak() {
-            const today = new Date().toDateString();
-            const lastLogin = localStorage.getItem('lastLoginDate');
-            let streak = parseInt(localStorage.getItem('streak')) || 0;
-
-            if (lastLogin !== today) {
-                if(lastLogin) streak++;
-                else streak = 1;
-                localStorage.setItem('streak', streak);
-                localStorage.setItem('lastLoginDate', today);
-            }
-            const badge = document.getElementById('streakBadge');
-            badge.innerText = `🔥 ${streak}`;
-            badge.classList.remove('hidden');
+            const today = new Date().toDateString(), last = localStorage.getItem('lastLoginDate');
+            let s = parseInt(localStorage.getItem('streak')) || 0;
+            if (last !== today) { if(last) s++; else s = 1; localStorage.setItem('streak', s); localStorage.setItem('lastLoginDate', today); }
+            document.getElementById('streakBadge').innerText = `🔥 ${s}`; document.getElementById('streakBadge').classList.remove('hidden');
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
     </script>
 </body>
 </html>
