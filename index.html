@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quraan and Duaa Ustad</title>
-    <link rel="manifest" href="manifest.json">
+    
+    <!-- ICON SETUP (Ye aapki photo ko icon banayega) -->
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link id="my-manifest-placeholder" rel="manifest">
     <meta name="theme-color" content="#0F4C3A">
+    
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -90,7 +95,6 @@
 </head>
 <body>
 
-    <!-- LOGIN -->
     <div id="loginScreen" class="login-container">
         <div class="login-box">
             <h1>🔐 Quraan and Duaa Ustad</h1>
@@ -101,7 +105,6 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-top">
@@ -202,8 +205,26 @@
     <div id="toast" class="toast">Message</div>
 
     <script>
+        // YAHAN MANIFEST DYNAMICALLY BANTA HAI (Taki alag file na chahiye)
+        const manifest = {
+            name: "Quraan and Duaa Ustad",
+            short_name: "Quran Ustad",
+            start_url: "./index.html",
+            display: "standalone",
+            background_color: "#0F4C3A",
+            theme_color: "#0F4C3A",
+            icons: [
+                { src: "icon.png", sizes: "192x192", type: "image/png" },
+                { src: "icon.png", sizes: "512x512", type: "image/png" }
+            ]
+        };
+        const stringManifest = JSON.stringify(manifest);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        document.querySelector('#my-manifest-placeholder').setAttribute('href', manifestURL);
+
         // ==========================================
-        // --- 1. DATA (From Your PDFs - Day 1 to 15) ---
+        // --- DATA (Day 1 to 5 with Ayrab from PDFs) ---
         // ==========================================
         const courseData = [
             {
@@ -281,7 +302,6 @@
                     { arabic: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", roman: "Subhana Rabbiyal Azeem", urdu: "میرا رب بہت عظمت والا ہے", mashq: "سُبْحَانَ رَبِّيَ الْعَظِيمِ (رکوع میں)", tafseel: "رکوع کی تسبیح۔" }
                 ]
             }
-            // YAHAN AGLE DIN (Day 6 se 15) KA DATA AAYEGA
         ];
 
         const namazDuaData = [
@@ -310,7 +330,7 @@
         ];
 
         // ==========================================
-        // --- 2. APP LOGIC ---
+        // --- APP LOGIC ---
         // ==========================================
         const ADMIN_PASS = "Fauzan8087";
         const GUEST_PASS = "quran123"; 
