@@ -1,21 +1,128 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, sans-serif; background: #0a0a1a; color: #eee; min-height: 100vh; padding: 16px; }
-.app { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; align-items: flex-start; max-width: 1400px; margin: 0 auto; }
-.panel { background: #1a1a2e; padding: 22px; border-radius: 14px; width: 360px; max-height: 92vh; overflow-y: auto; border: 1px solid #252540; }
-.panel h1 { font-size: 18px; color: #6ee7b7; margin-bottom: 4px; }
-.subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
-label { display: block; font-size: 13px; font-weight: 600; margin: 14px 0 6px; color: #a5b4fc; }
-input, textarea, select { width: 100%; padding: 9px 11px; border-radius: 8px; border: 1px solid #333; background: #252540; color: #fff; font-size: 14px; outline: none; }
-textarea { resize: vertical; min-height: 75px; }
-button { width: 100%; padding: 12px; border: none; border-radius: 9px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-.btn-primary { background: #6ee7b7; color: #0f0f23; margin-top: 18px; }
-.btn-primary:disabled { background: #444; color: #999; cursor: not-allowed; }
-.color-row { display: flex; gap: 8px; }
-.color-row input { flex: 1; height: 44px; cursor: pointer; }
-input[type="color"] { padding: 2px; cursor: pointer; }
-input[type="file"] { background: #252540; padding: 8px; font-size: 12px; cursor: pointer; }
-.preview { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-canvas { border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); max-height: 90vh; max-width: 100%; }
-.preview-note { font-size: 12px; color: #666; }
-.hint { font-size: 11.5px; color: #888; margin-top: 14px; }
-@media (max-width: 800px) { .app { flex-direction: column; align-items: center; } .panel { width: 100%; max-width: 400px; max-height: none; } canvas { max-height: 60vh; } }
+// ==========================================
+// DATA (Aapke PDFs se nikala gaya sample data)
+// ==========================================
+const appData = {
+    namaz: [
+        { arabic: "أَشْهَدُ أَنْ لَّا إِلَهَ إِلَّا اللَّهُ", roman: "Ashhadu an la ilaha illallah", urdu: "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں" },
+        { arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", roman: "La hawla wa la quwwata illa billah", urdu: "گناہ سے بچنے کی کوئی طاقت اور نیکی کی کوئی قوت نہیں مگر اللہ کی مدد سے" },
+        { arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", roman: "Allahummaftah li abwaba rahmatik", urdu: "اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے" },
+        { arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", roman: "Subhanaka Allahumma wa bihamdika", urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے" },
+        { arabic: "رَبِّ اغْفِرْ لِي، رَبِّ اغْفِرْ لِي", roman: "Rabbighfir li, Rabbighfir li", urdu: "اے میرے رب! مجھے بخش دے، اے میرے رب! مجھے بخش دے" }
+    ],
+    quran326: [
+        { arabic: "بَعُوضَة", roman: "Ba'oodah", urdu: "مچھر" },
+        { arabic: "قِثَّاء", roman: "Qiththa'a", urdu: "ککڑی" },
+        { arabic: "فُوم", roman: "Fuum", urdu: "گیہوں یا لہسن" },
+        { arabic: "عَدَس", roman: "Adas", urdu: "مسور کی دال" },
+        { arabic: "بَصَل", roman: "Basal", urdu: "پیاز" },
+        { arabic: "هَارُوت", roman: "Haaroot", urdu: "ہاروت (ایک فرشتہ)" },
+        { arabic: "مَارُوت", roman: "Maaroot", urdu: "ماروت (دوسرا فرشتہ)" }
+    ],
+    quran650: [
+        { arabic: "اللَّهُ", roman: "Allah", urdu: "اللہ، سب کا رب اور مالک" },
+        { arabic: "رَبِّ", roman: "Rabb", urdu: "پالنے والا، مالک" },
+        { arabic: "رَحْمَن", roman: "Rahmaan", urdu: "بہت مہربان" },
+        { arabic: "رَحِيم", roman: "Raheem", urdu: "نہایت رحم والا" },
+        { arabic: "غَفُور", roman: "Ghafoor", urdu: "بخشنی والا" },
+        { arabic: "عَزِيز", roman: "Azeez", urdu: "زبردست" },
+        { arabic: "حَكِيم", roman: "Hakeem", urdu: "حکمت والا" },
+        { arabic: "عَلِيم", roman: "Aleem", urdu: "سب کچھ جاننے والا" }
+    ]
+};
+
+// ==========================================
+// APP LOGIC
+// ==========================================
+let currentCategory = 'namaz';
+const grid = document.getElementById('wordGrid');
+const searchBar = document.getElementById('searchBar');
+const toast = document.getElementById('toast');
+
+// 1. Render Cards
+function renderCards(data) {
+    grid.innerHTML = '';
+    
+    if(data.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color:#888;">Koi lafz nahi mila.</p>';
+        return;
+    }
+
+    data.forEach(word => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="play-icon">🔊</div>
+            <div class="arabic">${word.arabic}</div>
+            <div class="roman">${word.roman}</div>
+            <div class="urdu">${word.urdu}</div>
+        `;
+        
+        // Touch/Click Event
+        card.addEventListener('click', () => speakWord(word.arabic, card));
+        grid.appendChild(card);
+    });
+}
+
+// 2. Speak Function (Web Speech API)
+function speakWord(text, cardElement) {
+    // Stop if already speaking
+    window.speechSynthesis.cancel();
+
+    // Remove highlight from all cards
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('speaking'));
+    
+    // Add highlight to clicked card
+    cardElement.classList.add('speaking');
+    showToast("Aawaz play ho rahi hai...");
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar-SA'; // Arabic voice (Saudi Arabia)
+    utterance.rate = 0.8; // Thoda dheere taaki samajh aaye
+
+    // Event fires when speech ends
+    utterance.onend = () => {
+        cardElement.classList.remove('speaking');
+    };
+
+    // Event fires if speech errors out
+    utterance.onerror = () => {
+        cardElement.classList.remove('speaking');
+        showToast("⚠️ Aapke browser me Arabic voice nahi hai.");
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
+
+// 3. Toast Notification
+let toastTimeout;
+function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// 4. Search Filter
+searchBar.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const filteredData = appData[currentCategory].filter(word => 
+        word.arabic.includes(query) || 
+        word.roman.toLowerCase().includes(query) || 
+        word.urdu.includes(query)
+    );
+    renderCards(filteredData);
+});
+
+// 5. Tab Switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCategory = e.target.dataset.category;
+        searchBar.value = ''; // Clear search
+        renderCards(appData[currentCategory]);
+    });
+});
+
+// 6. Initialize App
+renderCards(appData['namaz']);
