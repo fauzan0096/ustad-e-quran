@@ -1,15 +1,22 @@
 {
+  "id": "./index.html",
   "name": "Quraan and Duaa Ustad",
   "short_name": "Quran Ustad",
+  "description": "Quran ke alfaz, namaz ki duaen aur azkar seekhein",
+  "lang": "ur",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0F4C3A",
   "theme_color": "#0F4C3A",
+  "categories": ["education", "lifestyle"],
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Masnoon Duaein", "short_name": "Duaein", "url": "./dua.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
   ]
 }

@@ -19,9 +19,13 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 ```
 .
 ├── index.html      # Poori app (HTML + CSS + JS + data)
+├── dua.html        # Masnoon duaein (line-wise)
 ├── manifest.json   # PWA settings
+├── sw.js           # Service worker (offline)
+├── install.js      # Install popup (upar banner)
 ├── icon.png        # App icon 512x512
 ├── icon-192.png    # App icon 192x192
+├── icon-maskable.png # Android maskable icon
 └── README.md
 ```
 
