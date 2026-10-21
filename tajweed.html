@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tajweed ke Qawaid - Quraan Ustad</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0F4C3A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="install.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #ffffff; --text: #333333; --text-light: #666; --shadow: 0 4px 15px rgba(0,0,0,0.05); --border: #ddd; --arabic: #0B3D2E; --gold: #C9A227; --chip-bg: rgba(15,76,58,0.08); --scale: 1; }
+        [data-theme="dark"] { --primary: #1a1a2e; --secondary: #6ee7b7; --bg: #0f0f23; --card-bg: #1e1e36; --text: #eee; --text-light: #aaa; --shadow: 0 4px 15px rgba(0,0,0,0.3); --border: #333; --arabic: #F3E3A0; --gold: #E5C158; --chip-bg: rgba(110,231,183,0.10); }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 80px; background-image: radial-gradient(circle at 20% 0%, rgba(201,162,39,0.10), transparent 40%); }
+        header { background: linear-gradient(135deg, #0F4C3A 0%, #17695171 60%, #0F4C3A 100%); background-color: var(--primary); color: white; text-align: center; padding: 15px; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 18px rgba(0,0,0,0.18); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .header-controls { display: flex; gap: 10px; align-items: center; }
+        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: white; }
+        .size-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35); color: #fff; border-radius: 8px; padding: 3px 9px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .main-nav { display: flex; justify-content: flex-start; overflow-x: auto; gap: 10px; margin: 15px auto; padding: 0 15px; max-width: 1200px; scrollbar-width: none; }
+        .main-nav::-webkit-scrollbar { display: none; }
+        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 14px; font-weight: 600; background: var(--card-bg); color: var(--text); box-shadow: var(--shadow); cursor: pointer; white-space: nowrap; }
+        .nav-btn.active { background: var(--primary); color: #fff; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .card { background: var(--card-bg); border-radius: 18px; padding: 22px 18px 18px; border-top: 4px solid var(--gold); box-shadow: 0 8px 26px rgba(0,0,0,0.07); margin-bottom: 26px; position: relative; overflow: hidden; }
+        .card::before { content: "۞"; position: absolute; top: -14px; right: -6px; font-size: 90px; color: var(--gold); opacity: .07; pointer-events: none; }
+        .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .num-badge { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #8f7312); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+        .card-title { color: var(--primary); font-size: 16px; line-height: 1.4; font-weight: 600; }
+        [data-theme="dark"] .card-title { color: var(--secondary); }
+        .sec { border-radius: 14px; padding: 14px 14px 10px; margin-bottom: 14px; }
+        .sec-ar { background: linear-gradient(180deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03)); border: 1px solid rgba(201,162,39,0.35); }
+        .sec-ur { background: transparent; border: 1px solid var(--border); }
+        .chip { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .6px; padding: 3px 12px; border-radius: 20px; background: var(--primary); color: #fff; margin-bottom: 10px; }
+        [data-theme="dark"] .chip { background: rgba(110,231,183,0.18); color: var(--secondary); }
+        .sec-ar .chip { background: var(--gold); font-family: 'Amiri', serif; font-size: 14px; }
+        .arabic-text { font-family: 'Amiri', serif; font-size: calc(30px * var(--scale)); line-height: 2.0; color: var(--arabic); direction: rtl; text-align: center; font-weight: 700; }
+        .urdu-text { font-family: 'Noto Nastaliq Urdu', serif; font-size: calc(18px * var(--scale)); line-height: 2.2; color: var(--text); direction: rtl; text-align: right; }
+        .roman-text { font-size: calc(14px * var(--scale)); line-height: 1.7; color: var(--text-light); font-weight: 500; text-align: left; }
+        .search-box { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 20px; background: var(--card-bg); color: var(--text); outline: none; font-size: 16px; }
+        .hidden { display: none !important; }
+        
+        /* Example Box */
+        .example-box { background: linear-gradient(135deg, rgba(212,175,55,0.14), rgba(212,175,55,0.04)); border: 1px solid rgba(201,162,39,0.4); border-radius: 14px; padding: 14px; margin-top: 10px; }
+        .example-title { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 8px; display: block; }
+        [data-theme="dark"] .example-title { color: var(--secondary); }
+        .example-ar { font-family: 'Amiri', serif; font-size: calc(26px * var(--scale)); color: var(--arabic); direction: rtl; text-align: center; line-height: 1.9; font-weight: 700; margin-bottom: 8px; }
+        .example-ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: calc(16px * var(--scale)); color: var(--text); direction: rtl; text-align: right; line-height: 1.8; }
+        .example-ro { font-size: calc(13px * var(--scale)); color: var(--text-light); font-weight: 500; text-align: left; margin-top: 5px; }
+        
+        /* Audio Button */
+        .audio-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 7px 14px; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 3px 8px rgba(15,76,58,0.3); transition: transform 0.15s; }
+        .audio-btn:active { transform: scale(0.95); }
+        .audio-btn.playing { background: #ff5722; }
+        .audio-btn.playing::after { content: " ⏸"; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <h1>📖 Tajweed ke Qawaid</h1>
+            <div class="header-controls">
+                <button class="size-btn" onclick="changeScale(-0.1)" title="Chhota">A-</button>
+                <button class="size-btn" onclick="changeScale(0.1)" title="Bada">A+</button>
+                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <a href="index.html" style="color:white; text-decoration:none; font-size:20px;" title="Back to App">🏠</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <input type="text" class="search-box" id="searchInput" placeholder="🔍 Qaida Search Karein..." onkeyup="filterCards()">
+        
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="filterCategory('all', this)">Sab Kuch</button>
+            <button class="nav-btn" onclick="filterCategory('basic', this)">Basic (Ibtidai)</button>
+            <button class="nav-btn" onclick="filterCategory('intermediate', this)">Intermediate</button>
+            <button class="nav-btn" onclick="filterCategory('high', this)">High (Mukammal)</button>
+        </nav>
+
+        <div id="tajweedContainer"></div>
+    </div>
+
+    <script>
+        // --- Theme & Scale ---
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) document.body.setAttribute('data-theme', 'dark');
+        function toggleTheme() {
+            isDarkMode = !isDarkMode; 
+            document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; 
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+        if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
+
+        let textScale = parseFloat(localStorage.getItem('textScale') || '1');
+        function applyScale() { document.documentElement.style.setProperty('--scale', textScale); }
+        function changeScale(d) {
+            textScale = Math.min(1.6, Math.max(0.8, Math.round((textScale + d) * 10) / 10));
+            localStorage.setItem('textScale', textScale); applyScale();
+        }
+        applyScale();
+
+        // --- Audio Function (TTS) ---
+        let currentAudioBtn = null;
+        function speakArabic(text, btn) {
+            // Purani awaaz band karein
+            window.speechSynthesis.cancel();
+            if (currentAudioBtn) { currentAudioBtn.classList.remove('playing'); currentAudioBtn = null; }
+            
+            if (!text || text.trim() === '') return;
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ar-SA';  // Arabic accent
+            utterance.rate = 0.7;      // Thoda slow, samajhne ke liye
+            utterance.pitch = 1.0;
+            
+            // Agar pehle se playing hai toh stop
+            if (btn && btn.classList.contains('playing')) {
+                btn.classList.remove('playing');
+                return;
+            }
+            
+            if (btn) {
+                btn.classList.add('playing');
+                currentAudioBtn = btn;
+            }
+            
+            utterance.onend = () => {
+                if (btn) btn.classList.remove('playing');
+                currentAudioBtn = null;
+            };
+            
+            utterance.onerror = () => {
+                if (btn) btn.classList.remove('playing');
+                currentAudioBtn = null;
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- Tajweed Data (Har Qaide ki 2 Misaalein) ---
+        const tajweedData = [
+            // ============ BASIC ============
+            { 
+                cat: "basic", 
+                title: "1. Makharij (Huroof ka nikalna)", 
+                arabic: "مَخَارِجُ الْحُرُوفِ", 
+                urdu: "مخارج کا مطلب ہے حروف کو ان کی صحیح جگہ سے ادا کرنا۔ عربی حروف کے 17 یا 29 مخرج ہیں: حلق، زبان، ہونٹ، ناک وغیرہ۔", 
+                roman: "Makharij means to pronounce letters from their correct place. Arabic letters have 17 or 29 articulation points: throat, tongue, lips, nose etc.",
+                examples: [
+                    { ar: "قُلْ هُوَ اللَّهُ أَحَدٌ", ur: "قُلْ — 'ق' زبان کی جڑ سے، 'ل' زبان کے کنارے سے", ro: "Qul — 'Q' from back of tongue, 'L' from side of tongue" },
+                    { ar: "الْحَمْدُ لِلَّهِ", ur: "الْحَمْدُ — 'ح' حلق کے درمیان سے، 'م' ہونٹوں سے", ro: "Al-Hamdu — 'H' from middle of throat, 'M' from lips" }
+                ]
+            },
+            { 
+                cat: "basic", 
+                title: "2. Harakat (Zabar, Zer, Pesh)", 
+                arabic: "الْحَرَكَاتُ", 
+                urdu: "زبر (ﹷ) سے 'ا' کی آواز، زیر (ﹻ) سے 'اِ' کی آواز، اور پیش (ﹹ) سے 'اُ' کی آواز نکلتی ہے۔", 
+                roman: "Fatha gives 'a' sound, Kasra gives 'i' sound, and Damma gives 'u' sound.",
+                examples: [
+                    { ar: "بَ بِ بُ", ur: "بَ (با)، بِ (بِ)، بُ (بُ)", ro: "Ba, Bi, Bu" },
+                    { ar: "كَ كِ كُ", ur: "كَ (کا)، كِ (کِ)، كُ (کُ)", ro: "Ka, Ki, Ku" }
+                ]
+            },
+            { 
+                cat: "basic", 
+                title: "3. Sukoon (Jazm)", 
+                arabic: "السُّكُونُ", 
+                urdu: "جس حرف پر سکون ہو، وہ اپنی آواز نہیں دیتا بلکہ پچھلے حرف سے مل کر ادا ہوتا ہے۔", 
+                roman: "The letter with Sukoon does not have its own voice; it is joined with the previous letter.",
+                examples: [
+                    { ar: "اَبْ اِنْ اُمْ", ur: "اب (ab)، اِن (in)، اُم (um)", ro: "Ab, In, Um" },
+                    { ar: "قُلْ هُوَ", ur: "قُلْ — 'ل' ساکن، 'ہُ' سے نہیں ملایا جاتا", ro: "Qul — 'L' is sakin, not joined with 'Hu'" }
+                ]
+            },
+            { 
+                cat: "basic", 
+                title: "4. Tanween (Dohri Harakat)", 
+                arabic: "التَّنْوِينُ", 
+                urdu: "دہرے زبر (ً)، دہرے زیر (ٍ)، دہرے پیش (ٌ) کو تنوین کہتے ہیں۔ یہ نون کی آواز دیتا ہے۔", 
+                roman: "Double Fatha, double Kasra, double Damma are called Tanween. It gives the sound of 'n'.",
+                examples: [
+                    { ar: "كِتَابًا", ur: "كِتَابًا (kitaaban) — دہرے زبر سے 'ن' کی آواز", ro: "Kitaaban — double Fatha gives 'n' sound" },
+                    { ar: "رَحِيمٌ", ur: "رَحِيمٌ (raheemun) — دہرے پیش سے 'ن' کی آواز", ro: "Raheemun — double Damma gives 'n' sound" }
+                ]
+            },
+            { 
+                cat: "basic", 
+                title: "5. Madd Asli (Tabee'i)", 
+                arabic: "الْمَدُّ الْأَصْلِيُّ", 
+                urdu: "جب حرفِ مد (ا، و، ی) پر کوئی ہمزہ یا سکون نہ ہو تو اسے ایک الف (2 حرکات) تک کھینچ کر پڑھا جاتا ہے۔", 
+                roman: "When the letter of Madd has no Hamza or Sukoon after it, it is stretched for one Alif (2 Harakat).",
+                examples: [
+                    { ar: "قَالَ", ur: "قَالَ (qaala) — 'ا' کو 2 حرکات تک کھینچیں", ro: "Qaala — 'ا' stretched for 2 Harakat" },
+                    { ar: "يَقُولُ", ur: "يَقُولُ (yaqoolu) — 'و' کو 2 حرکات تک کھینچیں", ro: "Yaqoolu — 'و' stretched for 2 Harakat" }
+                ]
+            },
+            { 
+                cat: "basic", 
+                title: "6. Qalqalah (Halka Uchhalna)", 
+                arabic: "الْقَلْقَلَةُ", 
+                urdu: "پانچ حروف (ق، ط، ب، ج، د) پر جب سکون آئے تو انہیں ہلکا سا اچھال کر پڑھا جاتا ہے۔", 
+                roman: "When the five letters (ق, ط, ب, ج, د) have Sukoon, they are pronounced with a slight echo.",
+                examples: [
+                    { ar: "يَقْطَعُونَ", ur: "يَقْطَعُونَ (yaqta'oon) — 'ق' پر ہلکا سا اچھال", ro: "Yaqta'oon — 'ق' with slight bounce" },
+                    { ar: "أَبْصَارُهُمْ", ur: "أَبْصَارُهُمْ (absaaruhum) — 'ب' پر ہلکا سا اچھال", ro: "Absaaruhum — 'ب' with slight bounce" }
+                ]
+            },
+            
+            // ============ INTERMEDIATE ============
+            { 
+                cat: "intermediate", 
+                title: "7. Noon Sakin - Izhar", 
+                arabic: "الْإِظْهَارُ", 
+                urdu: "اگر نون ساکن یا تنوین کے بعد حروفِ حلق (ء، ہ، ع، ح، غ، خ) میں سے کوئی آئے تو نون کو صاف پڑھا جاتا ہے۔", 
+                roman: "If after Noon Sakin or Tanween, any throat letter (ء, ه, ع, ح, غ, خ) comes, the Noon is pronounced clearly.",
+                examples: [
+                    { ar: "مَنْ آمَنَ", ur: "مَنْ آمَنَ (man aamana) — 'ن' صاف، 'آ' سے الگ", ro: "Man aamana — 'n' clear, separate from 'aa'" },
+                    { ar: "عَنْ حَرْثٍ", ur: "عَنْ حَرْثٍ ('an harthin) — 'ن' صاف، 'ح' سے الگ", ro: "'An harthin — 'n' clear, separate from 'ح'" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "8. Noon Sakin - Idgham", 
+                arabic: "الْإِدْغَامُ", 
+                urdu: "اگر نون ساکن یا تنوین کے بعد حروف (ی، ر، م، ل، و، ن) آئیں تو نون کو اگلے حرف میں ملا کر پڑھا جاتا ہے۔", 
+                roman: "If after Noon Sakin or Tanween, any of (ي, ر, م, ل, و, ن) comes, the Noon is merged into the next letter.",
+                examples: [
+                    { ar: "مَن يَعْمَلْ", ur: "مَن يَعْمَلْ (may ya'mal) — 'ن' 'ی' میں مل گیا", ro: "May ya'mal — 'n' merged into 'ي'" },
+                    { ar: "مِن رَّبِّهِمْ", ur: "مِن رَّبِّهِمْ (mir-rabbihim) — 'ن' 'ر' میں مل گیا", ro: "Mir-rabbihim — 'n' merged into 'ر'" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "9. Noon Sakin - Iqlab", 
+                arabic: "الْإِقْلَابُ", 
+                urdu: "اگر نون ساکن یا تنوین کے بعد حرف 'ب' آئے تو نون کو 'م' میں بدل کر ہلکی غنہ کے ساتھ پڑھا جاتا ہے۔", 
+                roman: "If after Noon Sakin or Tanween, the letter 'ب' comes, the Noon is changed to 'م' with light Ghunnah.",
+                examples: [
+                    { ar: "مِنْ بَعْدِ", ur: "مِنْ بَعْدِ (mim ba'di) — 'ن' 'م' بن گیا", ro: "Mim ba'di — 'n' becomes 'م'" },
+                    { ar: "أَنْبِئْهُمْ", ur: "أَنْبِئْهُمْ (ambihum) — 'ن' 'م' بن گیا", ro: "Ambihum — 'n' becomes 'م'" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "10. Noon Sakin - Ikhfa", 
+                arabic: "الْإِخْفَاءُ", 
+                urdu: "اگر نون ساکن یا تنوین کے بعد باقی 15 حروف میں سے کوئی آئے تو نون کی آواز چھپا کر غنہ کے ساتھ پڑھی جاتی ہے۔", 
+                roman: "If after Noon Sakin or Tanween, any of the remaining 15 letters comes, the sound of Noon is hidden with Ghunnah.",
+                examples: [
+                    { ar: "مِن قَبْلِ", ur: "مِن قَبْلِ (ming qabli) — 'ن' چھپی، غنہ کے ساتھ", ro: "Ming qabli — 'n' hidden with Ghunnah" },
+                    { ar: "أَنْتُمْ", ur: "أَنْتُمْ (antum) — 'ن' چھپی، غنہ کے ساتھ", ro: "Antum — 'n' hidden with Ghunnah" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "11. Meem Sakin - Ikhfa-e-Shafawi", 
+                arabic: "الْإِخْفَاءُ الشَّفَوِيُّ", 
+                urdu: "اگر میم ساکن کے بعد حرف 'ب' آئے تو میم کو چھپا کر غنہ کے ساتھ پڑھا جاتا ہے۔", 
+                roman: "If after Meem Sakin, the letter 'ب' comes, the Meem is hidden with Ghunnah.",
+                examples: [
+                    { ar: "تَرْمِيهِم بِحِجَارَةٍ", ur: "تَرْمِيهِم بِحِجَارَةٍ (tarmeehim bihijarah) — 'م' چھپی، غنہ", ro: "Tarmeehim bihijarah — 'م' hidden with Ghunnah" },
+                    { ar: "رَبَّهُم بِهِمْ", ur: "رَبَّهُم بِهِمْ (rabbahum bihim) — 'م' چھپی، غنہ", ro: "Rabbahum bihim — 'م' hidden with Ghunnah" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "12. Meem Sakin - Idgham-e-Shafawi", 
+                arabic: "الْإِدْغَامُ الشَّفَوِيُّ", 
+                urdu: "اگر میم ساکن کے بعد دوسری 'م' آئے تو دونوں میم ملا کر غنہ کے ساتھ پڑھی جاتی ہیں۔", 
+                roman: "If after Meem Sakin, another 'م' comes, both Meems are merged with Ghunnah.",
+                examples: [
+                    { ar: "لَهُم مَّا", ur: "لَهُم مَّا (lahum-maa) — دونوں 'م' مل گئے", ro: "Lahum-maa — both 'م' merged" },
+                    { ar: "كَم مِّن", ur: "كَم مِّن (kam-min) — دونوں 'م' مل گئے", ro: "Kam-min — both 'م' merged" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "13. Meem Sakin - Izhar-e-Shafawi", 
+                arabic: "الْإِظْهَارُ الشَّفَوِيُّ", 
+                urdu: "اگر میم ساکن کے بعد 'م' اور 'ب' کے علاوہ کوئی حرف آئے تو میم صاف پڑھی جاتی ہے۔", 
+                roman: "If after Meem Sakin, any letter other than 'م' and 'ب' comes, the Meem is pronounced clearly.",
+                examples: [
+                    { ar: "أَمْ لَمْ", ur: "أَمْ لَمْ (am lam) — 'م' صاف", ro: "Am lam — 'م' clear" },
+                    { ar: "هُمْ فِيهَا", ur: "هُمْ فِيهَا (hum feeha) — 'م' صاف", ro: "Hum feeha — 'م' clear" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "14. Madd-e-Muttasil", 
+                arabic: "الْمَدُّ الْمُتَّصِلُ", 
+                urdu: "جب حرفِ مد کے بعد اسی کلمہ میں ہمزہ آئے تو اسے 4 سے 5 حرکات تک کھینچا جاتا ہے۔", 
+                roman: "When the letter of Madd is followed by Hamza in the same word, it is stretched for 4 to 5 Harakat.",
+                examples: [
+                    { ar: "جَاءَ", ur: "جَاءَ (jaa'a) — 'ا' کو 4-5 حرکات", ro: "Jaa'a — 'ا' stretched 4-5 Harakat" },
+                    { ar: "السَّمَاءِ", ur: "السَّمَاءِ (as-samaa'i) — 'ا' کو 4-5 حرکات", ro: "As-samaa'i — 'ا' stretched 4-5 Harakat" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "15. Madd-e-Munfasil", 
+                arabic: "الْمَدُّ الْمُنْفَصِلُ", 
+                urdu: "جب حرفِ مد ایک کلمہ کے آخر میں اور ہمزہ اگلے کلمہ کے شروع میں آئے تو 4 سے 5 حرکات تک کھینچا جاتا ہے۔", 
+                roman: "When the letter of Madd is at the end of one word and Hamza at the beginning of the next, it is stretched for 4 to 5 Harakat.",
+                examples: [
+                    { ar: "يَا أَيُّهَا", ur: "يَا أَيُّهَا (yaa ayyuha) — 'ا' کو 4-5 حرکات", ro: "Yaa ayyuha — 'ا' stretched 4-5 Harakat" },
+                    { ar: "بِمَا أُنزِلَ", ur: "بِمَا أُنزِلَ (bimaa unzila) — 'ا' کو 4-5 حرکات", ro: "Bimaa unzila — 'ا' stretched 4-5 Harakat" }
+                ]
+            },
+            { 
+                cat: "intermediate", 
+                title: "16. Madd-e-Lazim", 
+                arabic: "الْمَدُّ اللَّازِمُ", 
+                urdu: "جب حرفِ مد کے بعد سکونِ لازم (اصل) ہو تو اسے 6 حرکات تک کھینچا جاتا ہے۔", 
+                roman: "When the letter of Madd is followed by a permanent Sukoon, it is stretched for 6 Harakat.",
+                examples: [
+                    { ar: "الضَّالِّينَ", ur: "الضَّالِّينَ (ad-daalleen) — 'ا' کو 6 حرکات", ro: "Ad-daalleen — 'ا' stretched 6 Harakat" },
+                    { ar: "الْمَلَائِكَةِ", ur: "الْمَلَائِكَةِ (al-malaa'ikati) — 'ا' کو 6 حرکات", ro: "Al-malaa'ikati — 'ا' stretched 6 Harakat" }
+                ]
+            },
+            
+            // ============ HIGH ============
+            { 
+                cat: "high", 
+                title: "17. Waqf ke Qawaid (Rukna)", 
+                arabic: "أَحْكَامُ الْوَقْفِ", 
+                urdu: "وقف کا مطلب ہے پڑھتے ہوئے رکنا۔ علامات: (م) وقف لازم ہے، (ط) وقف جائز ہے، (لا) وقف نہ کریں۔", 
+                roman: "Waqf means to stop while reciting. Symbols: (م) compulsory stop, (ط) permissible stop, (لا) do not stop.",
+                examples: [
+                    { ar: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", ur: "یہاں (م) نہیں ہے، مگر آخر میں رکنا جائز ہے", ro: "Here no (م), but stopping at end is permissible" },
+                    { ar: "وَلَا تَقْرَبُوا الزِّنَا إِنَّهُ كَانَ فَاحِشَةً", ur: "یہاں (لا) ہے — 'الزِّنَا' پر نہ رکیں، 'فَاحِشَةً' پر رکیں", ro: "Here (لا) — do not stop at 'الزِّنَا', stop at 'فَاحِشَةً'" }
+                ]
+            },
+            { 
+                cat: "high", 
+                title: "18. Ghunnah (Nakiyan awaaz)", 
+                arabic: "الْغُنَّةُ", 
+                urdu: "غنہ کا مطلب ہے ناک سے آواز نکالنا۔ یہ نون مشدد (نّ) اور میم مشدد (مّ) پر واجب ہے۔", 
+                roman: "Ghunnah means to produce a nasal sound. It is obligatory on Noon Mushaddad (نّ) and Meem Mushaddad (مّ).",
+                examples: [
+                    { ar: "إِنَّ", ur: "إِنَّ (inna) — 'ن' مشدد پر غنہ، 2 حرکات", ro: "Inna — Ghunnah on 'نّ', 2 Harakat" },
+                    { ar: "ثُمَّ", ur: "ثُمَّ (thumma) — 'م' مشدد پر غنہ، 2 حرکات", ro: "Thumma — Ghunnah on 'مّ', 2 Harakat" }
+                ]
+            },
+            { 
+                cat: "high", 
+                title: "19. Huroof-e-Muqatta'at", 
+                arabic: "الْحُرُوفُ الْمُقَطَّعَاتُ", 
+                urdu: "یہ سورتوں کے شروع میں آنے والے مقطعات ہیں، جیسے: الم، حم، كهيعص۔ انہیں ہجے کر کے پڑھا جاتا ہے۔", 
+                roman: "These are the disjointed letters at the beginning of some Surahs, like: الم, حم. They are recited by spelling them out.",
+                examples: [
+                    { ar: "الٓمٓ", ur: "الٓمٓ (Alif-Laam-Meem) — ہجے کر کے پڑھیں", ro: "Alif-Laam-Meem — recite by spelling" },
+                    { ar: "يٰسٓ", ur: "يٰسٓ (Yaa-Seen) — ہجے کر کے پڑھیں", ro: "Yaa-Seen — recite by spelling" }
+                ]
+            },
+            { 
+                cat: "high", 
+                title: "20. Rasm-e-Uthmani", 
+                arabic: "الرَّسْمُ الْعُثْمَانِيُّ", 
+                urdu: "قرآن مجید کی کتابت کا وہ طریقہ جو حضرت عثمان غنی (رضی اللہ عنہ) کے دور میں مرتب ہوا۔", 
+                roman: "The method of writing the Quran compiled during the era of Hazrat Uthman Ghani (RA).",
+                examples: [
+                    { ar: "الصَّلَاة", ur: "الصَّلَاة — اصل میں 'الصلوة' لکھا جاتا ہے، مگر پڑھا 'الصلوة' جاتا ہے", ro: "As-Salaah — written as 'الصلوة', read as 'As-Salaah'" },
+                    { ar: "الزَّكَاة", ur: "الزَّكَاة — اصل میں 'الزكوة' لکھا جاتا ہے", ro: "Az-Zakaah — written as 'الزكوة'" }
+                ]
+            }
+        ];
+
+        // --- Render ---
+        function renderCards(filterText = "", category = "all") {
+            const container = document.getElementById('tajweedContainer');
+            container.innerHTML = '';
+            const filtered = tajweedData.filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(filterText.toLowerCase()) || item.urdu.includes(filterText) || item.roman.toLowerCase().includes(filterText.toLowerCase());
+                const matchesCategory = category === 'all' || item.cat === category;
+                return matchesSearch && matchesCategory;
+            });
+            if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Koi Qaida nahi mila.</p>'; return; }
+            
+            filtered.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                // Examples HTML
+                let examplesHTML = '';
+                item.examples.forEach((ex, i) => {
+                    const btnId = `audio-${index}-${i}`;
+                    examplesHTML += `
+                        <div class="example-box">
+                            <span class="example-title">📌 Misaal ${i + 1}</span>
+                            <div class="example-ar">${ex.ar}</div>
+                            <div class="example-ur">${ex.ur}</div>
+                            <div class="example-ro">${ex.ro}</div>
+                            <button class="audio-btn" id="${btnId}" onclick="speakArabic('${ex.ar.replace(/'/g, "\\'")}', this)">
+                                🔊 Suno (Qaari ki Awaaz)
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                card.innerHTML = `
+                    <div class="card-head">
+                        <div class="num-badge">${index + 1}</div>
+                        <div class="card-title">${item.title}</div>
+                    </div>
+                    <div class="sec sec-ar">
+                        <span class="chip">عربی</span>
+                        <div class="arabic-text">${item.arabic}</div>
+                    </div>
+                    <div class="sec sec-ur">
+                        <span class="chip">اردو ترجمہ / وضاحت</span>
+                        <div class="urdu-text">${item.urdu}</div>
+                    </div>
+                    <div class="sec sec-ur" style="background: var(--chip-bg); border:none; margin-top:10px;">
+                        <span class="chip">English / Roman</span>
+                        <div class="roman-text">${item.roman}</div>
+                    </div>
+                    <div class="sec sec-ar" style="background: linear-gradient(180deg, rgba(201,162,39,0.15), rgba(201,162,39,0.05)); margin-top:10px;">
+                        <span class="chip" style="background: var(--gold);">📚 Misaalein (Examples)</span>
+                        ${examplesHTML}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        let currentCategory = 'all';
+        function filterCards() {
+            const query = document.getElementById('searchInput').value;
+            renderCards(query, currentCategory);
+        }
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const query = document.getElementById('searchInput').value;
+            renderCards(query, cat);
+        }
+        renderCards();
+    </script>
+</body>
+</html>
