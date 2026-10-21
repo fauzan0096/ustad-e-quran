@@ -61,6 +61,44 @@
 
         .search-box { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 20px; background: var(--card-bg); color: var(--text); outline: none; font-size: 16px; }
         .hidden { display: none !important; }
+
+        /* ===== Designer look ===== */
+        :root { --arabic: #0B3D2E; --gold: #C9A227; --chip-bg: rgba(15,76,58,0.08); --scale: 1; }
+        [data-theme="dark"] { --arabic: #F3E3A0; --gold: #E5C158; --chip-bg: rgba(110,231,183,0.10); }
+        body { background: var(--bg) radial-gradient(circle at 20% 0%, rgba(201,162,39,0.10), transparent 40%); }
+        header { background: linear-gradient(135deg, #0F4C3A 0%, #17695171 60%, #0F4C3A 100%); background-color: var(--primary); border-bottom: 3px solid var(--gold); box-shadow: 0 4px 18px rgba(0,0,0,0.18); }
+        header h1 { font-size: 20px; letter-spacing: .3px; }
+        .size-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.35); color: #fff; border-radius: 8px; padding: 3px 9px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .nav-btn.active { background: linear-gradient(135deg, #0F4C3A, #1a7a5c); box-shadow: 0 3px 10px rgba(15,76,58,0.35); }
+
+        .card { position: relative; border: 1px solid var(--border); border-left: none; border-top: 4px solid var(--gold); border-radius: 18px; padding: 22px 18px 18px; box-shadow: 0 8px 26px rgba(0,0,0,0.07); margin-bottom: 26px; overflow: hidden; }
+        .card::before { content: "۞"; position: absolute; top: -14px; right: -6px; font-size: 90px; color: var(--gold); opacity: .07; pointer-events: none; }
+        .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .num-badge { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #8f7312); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+        .card-title { color: var(--primary); font-size: 16px; line-height: 1.4; font-weight: 600; }
+        [data-theme="dark"] .card-title { color: var(--secondary); }
+
+        .sec { border-radius: 14px; padding: 14px 14px 10px; margin-bottom: 14px; }
+        .sec-ar { background: linear-gradient(180deg, rgba(201,162,39,0.10), rgba(201,162,39,0.03)); border: 1px solid rgba(201,162,39,0.35); }
+        .sec-ro { background: var(--chip-bg); }
+        .sec-ur { background: transparent; border: 1px solid var(--border); }
+        .chip { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .6px; padding: 3px 12px; border-radius: 20px; background: var(--primary); color: #fff; margin-bottom: 10px; }
+        [data-theme="dark"] .chip { background: rgba(110,231,183,0.18); color: var(--secondary); }
+        .sec-ar .chip { background: var(--gold); font-family: 'Amiri', serif; font-size: 14px; }
+
+        .lines .ln { padding: 7px 4px; border-bottom: 1px dashed rgba(128,128,128,0.25); }
+        .lines .ln:last-child { border-bottom: none; }
+        .lines-ar .ln { font-family: 'Amiri', serif; font-size: calc(30px * var(--scale)); line-height: 2.0; color: var(--arabic); direction: rtl; text-align: center; font-weight: 700; }
+        .lines-ro .ln { font-size: calc(15px * var(--scale)); line-height: 1.7; color: var(--text); font-weight: 500; text-align: left; }
+        .lines-ur .ln { font-family: 'Noto Nastaliq Urdu', serif; font-size: calc(20px * var(--scale)); line-height: 2.4; color: var(--text); direction: rtl; text-align: right; }
+
+        .play-row { display: flex; justify-content: center; margin-top: 8px; }
+        .play-btn { margin-top: 0; padding: 8px 16px; font-size: 12px; box-shadow: 0 3px 8px rgba(15,76,58,0.3); }
+        .play-btn:active { transform: scale(.96); }
+
+        .tafseel-box { background: linear-gradient(135deg, rgba(212,175,55,0.14), rgba(212,175,55,0.04)); border: 1px solid rgba(201,162,39,0.4); border-radius: 14px; }
+        .tafseel-text { font-size: calc(17px * var(--scale)); line-height: 2.2; color: var(--text); }
+        .hawala { display: inline-block; font-style: normal; border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; margin-top: 14px; background: var(--chip-bg); }
     </style>
 </head>
 <body>
@@ -69,6 +107,8 @@
         <div class="header-top">
             <h1>🤲 Masnoon Duaein</h1>
             <div class="header-controls">
+                <button class="size-btn" onclick="changeScale(-0.1)" title="Chhota">A-</button>
+                <button class="size-btn" onclick="changeScale(0.1)" title="Bada">A+</button>
                 <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                 <a href="index.html" style="color:white; text-decoration:none; font-size:20px;" title="Back to App">🏠</a>
             </div>
@@ -118,7 +158,7 @@
             { cat: "namaz", title: "1. Wudu ke baad ki dua", arabic: "أَشْهَدُ أَن لَّ إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", roman: "Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluh", urdu: "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں، اور میں گواہی دیتا ہوں کہ محمد اس کے بندے اور رسول ہیں۔", tafseel: "جو شخص اچھی طرح وضو کر کے یہ دعا پڑھے، اس کے لیے جنت کے آٹھوں دروازے کھول دیے جاتے ہیں۔", hawala: "Sahih Muslim 234" },
             { cat: "namaz", title: "2. Azan ka jawab", arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", roman: "La hawla wa la quwwata illa billah", urdu: "گناہ سے بچنے کی کوئی طاقت اور نیکی کی کوئی قوت نہیں مگر اللہ کی مدد سے۔", tafseel: "موذن کے کلمات دہرائیں؛ صرف 'حی علی الصلاۃ' اور 'حی علی الفلاح' کے جواب میں یہ کہیں۔", hawala: "Sahih al-Bukhari 611; Sahih Muslim 385" },
             { cat: "namaz", title: "3. Azan ke baad shahadat aur raza ka iqrar", arabic: "وَأَنَا أَشْهَدُ أَن لَّا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ، رَضِيتُ بِاللَّهِ رَبَّا، وَبِمُحَمَّدٍ رَسُولًا، وَبِالْإِسْلَامِ دِينًا", roman: "Wa ana ashhadu an la ilaha illallahu wahdahu la sharika lah, wa anna Muhammadan 'abduhu wa rasuluh, raditu billahi rabban wa bi Muhammadin rasulan wa bil-Islami dinan", urdu: "اور میں بھی گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں، اور یہ کہ محمد ﷺ اس کے بندے اور رسول ہیں۔ میں اللہ کے رب ہونے، محمد ﷺ کے رسول ہونے اور اسلام کے دین ہونے پر راضی ہوں۔", tafseel: "جو موذن کو سن کر یہ کہے، اس کے گناہ معاف کر دیے جاتے ہیں۔", hawala: "Sahih Muslim 386" },
-            { cat: "namaz", title: "4. Azan ke baad darood aur wasila ki dua", arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ۔ ثُمَّ: اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ", roman: "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid. Allahumma barik 'ala Muhammadin wa 'ala ali Muhammad, kama barakta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid. Phir: Allahumma Rabba hadhihid-da'watit-tammati was-salatil-qa'imah, ati Muhammadanil-wasilata wal-fadilah, wab'athhu maqamam-mahmudanil-ladhi wa'adtah.", urdu: "اے اللہ! محمد ﷺ اور آلِ محمد پر رحمت نازل فرما جیسے تو نے ابراہیم اور آلِ ابراہیم پر رحمت نازل فرمائی، بے شک تو تعریف کے لائق، بزرگی والا ہے۔ اے اللہ! محمد ﷺ اور آلِ محمد پر برکت نازل فرما جیسے تو نے ابراہیم اور آلِ ابراہیم پر برکت نازل فرمائی، بے شک تو تعریف کے لائق، بزرگی والا ہے۔ پھر وسیلہ کی دعا: اے اللہ! اس مکمل پکار اور قائم ہونے والی نماز کے رب! محمد ﷺ کو وسیلہ اور فضیلت عطا فرما، اور انہیں اس مقامِ محمود پر پہنچا جس کا تو نے ان سے وعدہ کیا ہے۔", tafseel: "جو شخص یہ دعا پڑھے، اس کے لیے قیامت کے دن نبی ﷺ کی شفاعت واجب ہو جاتی ہے۔", hawala: "Sahih Muslim 384; Sahih al-Bukhari 614" },
+            { cat: "namaz", title: "4. Azan ke baad darood aur wasila ki dua", arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. ثُمَّ: اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ", roman: "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid. Allahumma barik 'ala Muhammadin wa 'ala ali Muhammad, kama barakta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid. Phir: Allahumma Rabba hadhihid-da'watit-tammati was-salatil-qa'imah, ati Muhammadanil-wasilata wal-fadilah, wab'athhu maqamam-mahmudanil-ladhi wa'adtah.", urdu: "اے اللہ! محمد ﷺ اور آلِ محمد پر رحمت نازل فرما جیسے تو نے ابراہیم اور آلِ ابراہیم پر رحمت نازل فرمائی، بے شک تو تعریف کے لائق، بزرگی والا ہے۔ اے اللہ! محمد ﷺ اور آلِ محمد پر برکت نازل فرما جیسے تو نے ابراہیم اور آلِ ابراہیم پر برکت نازل فرمائی، بے شک تو تعریف کے لائق، بزرگی والا ہے۔ پھر وسیلہ کی دعا: اے اللہ! اس مکمل پکار اور قائم ہونے والی نماز کے رب! محمد ﷺ کو وسیلہ اور فضیلت عطا فرما، اور انہیں اس مقامِ محمود پر پہنچا جس کا تو نے ان سے وعدہ کیا ہے۔", tafseel: "جو شخص یہ دعا پڑھے، اس کے لیے قیامت کے دن نبی ﷺ کی شفاعت واجب ہو جاتی ہے۔", hawala: "Sahih Muslim 384; Sahih al-Bukhari 614" },
             { cat: "namaz", title: "5. Masjid mein dakhil hote waqt", arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتَكَ", roman: "Allahummaf tah li abwaba rahmatik", urdu: "اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے۔", tafseel: "مسجد میں داخل ہوتے وقت یہ پڑھنا سنت ہے۔", hawala: "Sahih Muslim 713" },
             { cat: "namaz", title: "6. Masjid se nikalte waqt", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", roman: "Allahumma inni as'aluka min fadlik", urdu: "اے اللہ! میں تجھ سے تیرے فضل کا سوال کرتا ہوں۔", tafseel: "مسجد سے نکلتے وقت یہ دعا پڑھی جاتی ہے۔", hawala: "Sahih Muslim 713" },
             { cat: "namaz", title: "7. Istiftah (1) - Allahumma ba'id bayni", arabic: "اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ، اللَّهُمَّ نَقِّنِي مِنَ الْخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الْأَبْيَضُ مِنَ الدَّنَسِ، اللَّهُمَّ اغْسِلْنِي مِنْ خَطَايَايَ بِالثَّلْجِ وَالْمَاءِ وَالْبَرَدِ", roman: "Allahumma ba'id bayni wa bayna khatayaya kama ba'adta baynal-mashriqi wal-maghrib. Allahumma naqqini minal-khataya kama yunaqqath-thawbul-abyadu minad-danas. Allahummaghsilni min khatayaya bith-thalji wal-ma'i wal-barad.", urdu: "اے اللہ! میرے اور میرے گناہوں کے درمیان اتنی دوری کر دے جتنی تو نے مشرق اور مغرب کے درمیان رکھی ہے۔ اے اللہ! مجھے گناہوں سے ایسے پاک کر دے جیسے سفید کپڑا میل سے صاف کیا جاتا ہے۔ اے اللہ! میرے گناہوں کو برف، پانی اور اولوں سے دھو دے۔", tafseel: "نماز شروع کرنے کی دعاؤں میں سے ایک ہے۔", hawala: "Sahih al-Bukhari 744; Sahih Muslim 598" },
@@ -218,6 +258,34 @@
             { cat: "sone", title: "5. Tasbeeh-e-Fatima RA", arabic: "سُبْحَانَ اللَّهِ (33) الْحَمْدُ لِلَّهِ (33) اللَّهُ أَكْبَرُ (34)", roman: "Subhanallah (33), Alhamdulillah (33), Allahu Akbar (34)", urdu: "اللہ پاک ہے (33 بار)۔ سب تعریف اللہ کے لیے ہے (33 بار)۔ اللہ سب سے بڑا ہے (34 بار)۔", tafseel: "فاطمہ RA نے خادم مانگا تو نبی ﷺ نے یہ بتایا کہ یہ خادم سے بہتر ہے۔", hawala: "Sahih al-Bukhari 3113; Sahih Muslim 2727" }
         ];
 
+
+        // ---------- Line-wise display helpers ----------
+        function splitLines(text, kind) {
+            let t = (text || '').trim();
+            if (kind === 'ar') t = t.replace(/(﴿[^﴾]*﴾|[،۔:]|\.)\s*/g, '$1\n');
+            else if (kind === 'ur') t = t.replace(/([۔،؛!؟]|\.)\s*/g, '$1\n');
+            else t = t.replace(/([.,;:?])\s+/g, '$1\n');
+            const minLen = kind === 'ar' ? 16 : (kind === 'ur' ? 10 : 18);
+            const out = []; let buf = '';
+            t.split('\n').forEach(part => {
+                part = part.trim(); if (!part) return;
+                buf = buf ? buf + ' ' + part : part;
+                if (buf.length >= minLen) { out.push(buf); buf = ''; }
+            });
+            if (buf) { if (out.length) out[out.length - 1] += ' ' + buf; else out.push(buf); }
+            return out;
+        }
+        function linesHTML(text, kind) {
+            return '<div class="lines lines-' + kind + '">' + splitLines(text, kind).map(l => '<div class="ln">' + l + '</div>').join('') + '</div>';
+        }
+        let textScale = parseFloat(localStorage.getItem('textScale') || '1');
+        function applyScale() { document.documentElement.style.setProperty('--scale', textScale); }
+        function changeScale(d) {
+            textScale = Math.min(1.6, Math.max(0.8, Math.round((textScale + d) * 10) / 10));
+            localStorage.setItem('textScale', textScale); applyScale();
+        }
+        applyScale();
+
         function renderDuas(filterText = "", category = "all") {
             const container = document.getElementById('duaContainer');
             container.innerHTML = '';
@@ -236,30 +304,43 @@
             }
 
             filtered.forEach((dua, index) => {
+                const m = dua.title.match(/^(\d+)\.\s*(.*)$/);
+                const num = m ? m[1] : (index + 1);
+                const ttl = m ? m[2] : dua.title;
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">${dua.title}</h3>
-                    
-                    ${dua.arabic ? `<div class="arabic" onclick="speakText('${dua.arabic.replace(/'/g, "\\'")}', 'ar')">
-                        ${dua.arabic}
-                        <button class="play-btn">🔊 AI Awaz</button>
-                    </div>` : ''}
-                    
-                    <div class="roman">${dua.roman}</div>
-                    
-                    <div class="urdu" onclick="speakText('${dua.urdu.replace(/'/g, "\\'")}', 'ur')">
-                        ${dua.urdu}
-                        <button class="play-btn">🔊 AI Awaz</button>
+                    <div class="card-head">
+                        <div class="num-badge">${num}</div>
+                        <div class="card-title">${ttl}</div>
                     </div>
-                    
+
+                    ${dua.arabic ? `<div class="sec sec-ar">
+                        <span class="chip">عربی متن</span>
+                        ${linesHTML(dua.arabic, 'ar')}
+                        <div class="play-row"><button class="play-btn play-ar">🔊 Arabic Suno</button></div>
+                    </div>` : ''}
+
+                    <div class="sec sec-ro">
+                        <span class="chip">ROMAN</span>
+                        ${linesHTML(dua.roman, 'ro')}
+                    </div>
+
+                    <div class="sec sec-ur">
+                        <span class="chip">اردو ترجمہ</span>
+                        ${linesHTML(dua.urdu, 'ur')}
+                        <div class="play-row"><button class="play-btn play-ur">🔊 Urdu Suno</button></div>
+                    </div>
+
                     <div class="tafseel-box">
-                        <span class="tafseel-title">📖 Tafseel / Faida:</span>
+                        <span class="tafseel-title">📖 Tafseel / Faida</span>
                         <div class="tafseel-text">${dua.tafseel}</div>
                     </div>
-                    
+
                     <div class="hawala">📍 Hawala: ${dua.hawala}</div>
                 `;
+                const pa = card.querySelector('.play-ar'); if (pa) pa.onclick = () => speakText(dua.arabic, 'ar');
+                const pu = card.querySelector('.play-ur'); if (pu) pu.onclick = () => speakText(dua.urdu, 'ur');
                 container.appendChild(card);
             });
         }
