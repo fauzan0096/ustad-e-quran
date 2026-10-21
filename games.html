@@ -27,6 +27,21 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
         
+
+        /* ============ JEET CELEBRATION ============ */
+        .cele-layer { position: fixed; inset: 0; pointer-events: none; z-index: 99998; overflow: hidden; }
+        .cele-conf { position: absolute; top: -20px; width: 10px; height: 14px; opacity: .95; animation: celeFall linear forwards; }
+        @keyframes celeFall { to { transform: translateY(110vh) rotate(720deg); opacity: .9; } }
+        .cele-balloon { position: absolute; bottom: -80px; font-size: 44px; animation: celeRise ease-in forwards; }
+        @keyframes celeRise { to { transform: translateY(-115vh) translateX(var(--dx)); } }
+        .cele-pop { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.55); }
+        .cele-card { background: linear-gradient(135deg,#0F4C3A,#14735a); color: #fff; border: 3px solid #D4AF37; border-radius: 22px; padding: 26px 30px; text-align: center; max-width: 85%; box-shadow: 0 15px 50px rgba(0,0,0,.5); animation: celePop .5s cubic-bezier(.2,1.6,.4,1); }
+        .cele-card .big { font-size: 56px; }
+        .cele-card h2 { color: #f5c518; margin: 8px 0; font-size: 26px; }
+        .cele-card p { font-size: 15px; margin-bottom: 14px; }
+        .cele-card button { background: #D4AF37; color: #000; border: none; padding: 10px 26px; border-radius: 22px; font-weight: bold; font-size: 15px; cursor: pointer; }
+        @keyframes celePop { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
         /* ============ KBC STYLES ============ */
         #kbc { background: var(--kbc-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
         #kbc::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(245,197,24,0.15), transparent 60%); pointer-events: none; }
@@ -123,6 +138,80 @@
         if (isDarkMode) document.body.setAttribute('data-theme', 'dark');
         function toggleTheme() { isDarkMode = !isDarkMode; document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light'); document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; localStorage.setItem('darkMode', isDarkMode); }
         if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
+
+
+        // ==========================================
+        // 🎉 JEET CELEBRATION: sound + confetti + ghubare + popup
+        // ==========================================
+        function celeSound() {
+            try {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return;
+                const ctx = new AC();
+                const t0 = ctx.currentTime + 0.05;
+                const note = (f, t, d, type, vol) => {
+                    const o = ctx.createOscillator(), g = ctx.createGain();
+                    o.type = type || 'triangle'; o.frequency.value = f;
+                    g.gain.setValueAtTime(0.0001, t0 + t);
+                    g.gain.exponentialRampToValueAtTime(vol || 0.25, t0 + t + 0.02);
+                    g.gain.exponentialRampToValueAtTime(0.0001, t0 + t + d);
+                    o.connect(g); g.connect(ctx.destination);
+                    o.start(t0 + t); o.stop(t0 + t + d + 0.05);
+                };
+                // fanfare: C E G C(high) phir chord
+                [[523, 0], [659, 0.15], [784, 0.3], [1047, 0.45]].forEach(n => note(n[0], n[1], 0.25));
+                [523, 659, 784, 1047].forEach(f => note(f, 0.7, 1.0, 'sine', 0.18));
+                // taaliyan (clapping noise bursts)
+                const len = ctx.sampleRate * 1.6, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+                for (let i = 0; i < len; i++) {
+                    const beat = Math.floor(i / (ctx.sampleRate * 0.09));
+                    d[i] = (Math.random() * 2 - 1) * (i % Math.floor(ctx.sampleRate * 0.09) < ctx.sampleRate * 0.02 ? 1 : 0.12) * (beat % 2 ? 0.8 : 1);
+                }
+                const ns = ctx.createBufferSource(), ng = ctx.createGain(), bp = ctx.createBiquadFilter();
+                bp.type = 'bandpass'; bp.frequency.value = 2200;
+                ng.gain.setValueAtTime(0.0001, t0 + 0.6); ng.gain.exponentialRampToValueAtTime(0.35, t0 + 0.8); ng.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
+                ns.buffer = buf; ns.connect(bp); bp.connect(ng); ng.connect(ctx.destination); ns.start(t0 + 0.6);
+                setTimeout(() => ctx.close && ctx.close(), 3500);
+            } catch (e) {}
+        }
+
+        function celebrate(title, msg) {
+            celeSound();
+            const layer = document.createElement('div');
+            layer.className = 'cele-layer';
+            const colors = ['#f5c518', '#ff4d6d', '#4ade80', '#38bdf8', '#c084fc', '#fb923c'];
+            for (let i = 0; i < 90; i++) {
+                const c = document.createElement('i');
+                c.className = 'cele-conf';
+                c.style.left = Math.random() * 100 + '%';
+                c.style.background = colors[i % colors.length];
+                c.style.animationDuration = (2.2 + Math.random() * 2.2) + 's';
+                c.style.animationDelay = (Math.random() * 0.8) + 's';
+                c.style.borderRadius = i % 3 ? '2px' : '50%';
+                layer.appendChild(c);
+            }
+            const balloons = ['🎈', '🎈', '🎈', '🎉', '🎊', '✨'];
+            for (let i = 0; i < 14; i++) {
+                const b = document.createElement('span');
+                b.className = 'cele-balloon';
+                b.textContent = balloons[i % balloons.length];
+                b.style.left = (Math.random() * 90) + '%';
+                b.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
+                b.style.animationDuration = (3.5 + Math.random() * 2.5) + 's';
+                b.style.animationDelay = (Math.random() * 1.2) + 's';
+                layer.appendChild(b);
+            }
+            document.body.appendChild(layer);
+            const pop = document.createElement('div');
+            pop.className = 'cele-pop';
+            pop.innerHTML = `<div class="cele-card"><div class="big">🏆</div><h2>${title || 'Mubarak Ho!'}</h2><p>${msg || 'Aap jeet gaye! Allah aap ko aur ilm de.'}</p><button>Shukriya 🤲</button></div>`;
+            const close = () => { pop.remove(); };
+            pop.querySelector('button').onclick = close;
+            pop.onclick = e => { if (e.target === pop) close(); };
+            document.body.appendChild(pop);
+            setTimeout(close, 4500);
+            setTimeout(() => layer.remove(), 7500);
+        }
 
         function switchGame(game, btn) {
             document.querySelectorAll('.game-section').forEach(v => v.classList.remove('active'));
@@ -345,7 +434,7 @@
             ["Jang-e-Badr mein kitne sahaba?","313","300","500","1000",0],
             ["Jang-e-Badr kis saal hui?","1 AH","2 AH","3 AH","4 AH",1],
             ["Ahle Suffa kya the?","Masjid ke bahar rehne wale sahaba","Namaz","Shaheed","Khatib",0],
-            ["Sahaba ka matlab kya hai?","Nabi ke sathii","Nabi ke dost","Nabi ke ghulam","Nabi ke dushman",0],
+            ["Sahaba ka matlab kya hai?","Nabi ﷺ ke sathi","Nabi ﷺ ke dost","Nabi ﷺ ke ghulam","Nabi ﷺ ke dushman",0],
             ["Asharah Mubasharah kitne sahaba?","5","8","9","10",3],
             ["Hazrat Salman Farsi (RA) kis mulk ke?","Iran","Arab","Yemen","Egypt",0],
             ["Hazrat Suhaib (RA) kis mulk ke?","Rome","Arab","Yemen","Egypt",0]
@@ -354,12 +443,12 @@
         [
             ["Hazrat Abu Ubaida (RA) ka laqab?","Amin-ul-Ummat","Siddiq","Farooq","Saifullah",0],
             ["Hazrat Khalid bin Waleed (RA) ka laqab?","Saifullah","Siddiq","Farooq","Zul Noorain",0],
-            ["Hazrat Anas (RA) kitne saal Nabi ki khidmat mein?","5","10","15","20",1],
+            ["Hazrat Anas (RA) kitne saal Nabi ﷺ ki khidmat mein?","5","10","15","20",1],
             ["Mu'adh bin Jabal (RA) ko kahan bheja?","Yemen","Sham","Iraq","Egypt",0],
             ["Hazrat Bilal (RA) ka pura naam?","Bilal bin Rabah","Bilal bin Abdullah","Bilal bin Umar","Bilal bin Abu Bakr",0],
-            ["Hazrat Zaid bin Haritha (RA) kis rishte se Nabi se jude?","Muta bhai","Chacha","Betta","Sahabi",0],
+            ["Hazrat Zaid bin Haritha (RA) kis rishte se Nabi ﷺ se jude?","Muta bhai","Chacha","Betta","Sahabi",0],
             ["Hazrat Usama bin Zaid (RA) kitni umar mein commander bane?","18","20","25","30",0],
-            ["Hazrat Zubair bin Awwam (RA) ka rishta Nabi se?","Phuphi ka betta","Chacha ka betta","Mamu ka betta","Bhai",0],
+            ["Hazrat Zubair bin Awwam (RA) ka rishta Nabi ﷺ se?","Phuphi ka betta","Chacha ka betta","Mamu ka betta","Bhai",0],
             ["Hawari kis sahaba ka laqab?","Zubair bin Awwam","Abul Hasan","Saad","Talha",0],
             ["Fatah Misr kis sahaba ne kiya?","Amr bin Al-Aas","Saad bin Abi Waqqas","Khalid bin Waleed","Abu Ubaida",0]
         ],
@@ -417,12 +506,12 @@
         ],
         // ===== DAY 22 (MEDIUM - AHLE SUNNAT) =====
         [
-            ["Jashn-e-Wiladat (Eid Milad-un-Nabi) ka hukm?","Jaiz aur Mustahab","Najaiz","Wajib","Haram",0],
+            ["Jashn-e-Wiladat (Eid Milad-un-Nabi ﷺ) ka hukm?","Jaiz aur Mustahab","Najaiz","Wajib","Haram",0],
             ["Durood Sharif padhna?","Sunnat","Wajib","Farz","Haram",0],
             ["Ziyarat-e-Quboor ka hukm?","Sunnat","Farz","Wajib","Haram",0],
             ["Tawassul ka hukm?","Jaiz","Najaiz","Farz","Haram",0],
             ["Fateha padhna ka hukm?","Jaiz","Najaiz","Wajib","Haram",0],
-            ["Ishq-e-Rasool kya hai?","Imaan ki nishani","Zyada","Sunnat","Farz",0],
+            ["Ishq-e-Rasool ﷺ kya hai?","Imaan ki nishani","Zyada","Sunnat","Farz",0],
             ["Bid'at-e-Hasana ka hukm?","Jaiz","Najaiz","Wajib","Haram",0],
             ["Bid'at-e-Sayyia ka hukm?","Najaiz","Jaiz","Wajib","Farz",0],
             ["Naat padhna?","Jaiz","Najaiz","Wajib","Haram",0],
@@ -500,7 +589,7 @@
             ["Sajdah Tilawat ke kitne sajde?","13","14","15","16",1],
             ["Quran mein kitne Surah Bismillah se shuru hain?","112","113","114","115",1],
             ["Quran mein lafz Allah kitni baar (approx)?","2000","2697","3000","5000",1],
-            ["Quran mein lafz Muhammad kitni baar?","1","2","3","4",3],
+            ["Quran mein lafz Muhammad ﷺ kitni baar?","1","2","3","4",3],
             ["Quran mein lafz Ahmad kitni baar?","1","2","3","4",0],
             ["Surah Yaseen ka doosra naam?","Quran ka dil","Quran ka noor","Quran ka taaj","Quran ki jaan",0],
             ["Ayatul Kursi kis Surah mein?","Baqarah","Imran","Nisa","Maidah",0],
@@ -541,15 +630,28 @@
         let kbcState = null;
         let kbcData = null;
 
-        function initKBC() {
-            const today = new Date().getDate();
-            const dayIndex = Math.min(today, 30) - 1;
+        // Din ki progress: Day 1 se shuru, jeetne par agla din khulta hai
+        const KBC_KEY = 'kbcUnlockedDay';
+        let kbcDayIdx = null;
+        function kbcUnlocked() {
+            const n = parseInt(localStorage.getItem(KBC_KEY), 10) || 1;
+            return Math.min(Math.max(n, 1), KBC.length);
+        }
+
+        function initKBC(dayNum) {
+            const unlocked = kbcUnlocked();
+            if (typeof dayNum === 'number' && dayNum >= 1 && dayNum <= unlocked) kbcDayIdx = dayNum - 1;
+            else if (kbcDayIdx === null || kbcDayIdx >= unlocked) kbcDayIdx = unlocked - 1;
+            const dayIndex = kbcDayIdx;
             kbcData = KBC[dayIndex];
             kbcState = { qIndex: 0, used5050: false, usedAudience: false, usedPhone: false, currentPrize: 0 };
-            
+            let dayOpts = '';
+            for (let d = 1; d <= unlocked; d++) dayOpts += `<option value="${d}" ${d === dayIndex + 1 ? 'selected' : ''}>📅 Day ${d}</option>`;
+            const daySelect = `<select class="kbc-day" style="border:none;color:var(--kbc-gold);font-weight:bold;font-size:13px;" onchange="initKBC(parseInt(this.value,10))">${dayOpts}</select>`;
+
             document.getElementById('kbc').innerHTML = `
                 <div class="kbc-top">
-                    <span class="kbc-day">📅 Day ${dayIndex + 1} / 30</span>
+                    ${daySelect}
                     <span class="kbc-prize" id="kbcPrizeDisplay">₹0</span>
                 </div>
                 <div class="kbc-qnum" id="kbcQNum">Question 1 / 10</div>
@@ -667,12 +769,20 @@
 
         function kbcFinish(win) {
             const earned = win ? PRIZES[PRIZES.length-1] : (kbcState.qIndex >= 5 ? PRIZES[4] : 0);
+            const cur = kbcDayIdx + 1;
+            let nextBtn = '';
+            if (win && cur < KBC.length) {
+                if (kbcUnlocked() < cur + 1) localStorage.setItem(KBC_KEY, String(cur + 1));
+                nextBtn = `<button class="kbc-btn" onclick="initKBC(${cur + 1})">➡️ Agla Din (Day ${cur + 1})</button><br>`;
+            }
+            if (win) celebrate('Mubarak Ho! 🎉', `Day ${cur} mukammal! ₹${earned.toLocaleString('en-IN')} jeet liye.`);
             document.getElementById('kbc').innerHTML = `
                 <div class="kbc-result">
                     <h2>${win ? '🏆 Mubarak Ho!' : '😢 Game Over'}</h2>
                     <div class="prize">₹${earned.toLocaleString('en-IN')}</div>
-                    <p style="color:#aaa; margin-bottom:15px;">${win ? 'Aapne saare 10 sawal sahi kiye!' : `Aap Q${kbcState.qIndex+1} par ruk gaye`}</p>
-                    <button class="kbc-btn" onclick="initKBC()">🔄 Dobara Khelein</button>
+                    <p style="color:#aaa; margin-bottom:15px;">${win ? (cur < KBC.length ? `Day ${cur} mukammal! Day ${cur + 1} khul gaya.` : 'Aapne saare 30 din mukammal kar liye!') : `Aap Q${kbcState.qIndex+1} par ruk gaye`}</p>
+                    ${nextBtn}
+                    <button class="kbc-btn" onclick="initKBC(${cur})">🔄 Dobara Khelein</button>
                 </div>
             `;
         }
@@ -714,6 +824,7 @@
             if (!sahabaState) return;
             const box = document.getElementById('sahaba');
             if (sahabaState.index >= sahabaState.questions.length) {
+                celebrate('Mubarak Ho!', 'Aapne saare Sahaba ke sawal mukammal kiye.');
                 box.innerHTML = `<div class="sahaba-box" style="text-align:center;"><h2 style="color:var(--primary);">🎉 Mubarak Ho!</h2><p style="margin:15px 0;">Aapne saare Sahaba ke sawal complete kiye.</p><div class="sahaba-score" style="font-size:18px; padding:10px 20px;">Score: ${sahabaState.score} / ${sahabaState.questions.length}</div><button class="btn-primary" onclick="initSahaba()" style="margin-top:20px;">🔄 Dobara Khelein</button></div>`;
                 return;
             }
@@ -787,6 +898,7 @@
             const box = document.getElementById('memory');
             if (memoryState.matched === MEMORY_PAIRS.length) {
                 setTimeout(() => {
+                    celebrate('Shabash!', 'Saare cards match ho gaye.');
                     box.innerHTML = `<div class="memory-box" style="text-align:center;"><h2 style="color:var(--primary);">🎉 Sab Match Ho Gaye!</h2><p style="margin:15px 0;">Total Moves: ${memoryState.moves}</p><button class="btn-primary" onclick="initMemory()">🔄 Dobara Khelein</button></div>`;
                 }, 500);
                 return;
@@ -857,7 +969,7 @@
             { emoji: "🔄🕋", q: "Yeh kya hai?", o: ["Tawaf", "Sai", "Rami", "Qurbani"], c: 0 },
             { emoji: "⛰️🏃", q: "Yeh kya hai?", o: ["Tawaf", "Sai", "Rami", "Qurbani"], c: 1 },
             { emoji: "🐑🔪", q: "Yeh kya hai?", o: ["Aqiqah", "Qurbani", "Zakat", "Sadaqah"], c: 1 },
-            { emoji: "🌙⭐", q: "Yeh kis raat ki nishani hai?", o: ["Shab-e-Barat", "Shab-e-Miraj", "Lailatul Qadr", "Shab-e-Qadr"], c: 2 },
+            { emoji: "🌙⭐", q: "Yeh kis raat ki nishani hai?", o: ["Shab-e-Barat", "Shab-e-Miraj", "Lailatul Qadr", "Eid ki raat"], c: 2 },
             { emoji: "🍬🎉", q: "Yeh kya hai?", o: ["Eid", "Shaadi", "Aqiqah", "Bismillah"], c: 0 },
             { emoji: "🕌🎤", q: "Yeh kya hai?", o: ["Azan", "Khutbah", "Naat", "Bayaan"], c: 0 },
             { emoji: "🙏📿", q: "Yeh kya hai?", o: ["Namaz", "Dua", "Tasbeeh", "Tilawat"], c: 1 },
@@ -871,24 +983,66 @@
             { emoji: "🌇🍽️", q: "Yeh kya hai?", o: ["Iftar", "Sehri", "Nashta", "Dinner"], c: 0 },
             { emoji: "👶🕋", q: "Yeh kya rasam hai?", o: ["Aqiqah", "Nikah", "Janaza", "Bismillah"], c: 0 },
             { emoji: "🕊️☪️", q: "Yeh kis cheez ki nishani hai?", o: ["Islam", "Jannat", "Farishta", "Nabi"], c: 0 },
-            { emoji: "🐑💧", q: "Yeh kya hai?", o: ["Zamzam", "Qurbani", "Aqiqah", "Sadaqah"], c: 0 },
-            { emoji: "🕌🚶", q: "Yeh kya hai?", o: ["Azan", "Namaz ke liye jana", "Tawaf", "Sai"], c: 1 },
             { emoji: "📖✨", q: "Yeh kya hai?", o: ["Quran", "Kitaab", "Naat", "Hadees"], c: 0 },
-            { emoji: "🌙🕋🔄", q: "Yeh kya hai?", o: ["Hajj", "Umrah", "Tawaf", "Sai"], c: 2 },
-            { emoji: "🚶🚶🚶", q: "Yeh kya hai?", o: ["Jamarat", "Tawaf", "Sai", "Azan"], c: 0 },
-            { emoji: "🌙👶", q: "Yeh kya hai?", o: ["Eid Milad-un-Nabi", "Eid ul Fitr", "Eid ul Adha", "Shab-e-Barat"], c: 0 }
+            { emoji: "🌙🕋🔄", q: "Yeh kya hai?", o: ["Hajj", "Umrah", "Tawaf", "Sai"], c: 2 },,
+            { emoji: "🔥❄️🧱", q: "Yeh kis Nabi ka waqia hai? (aag thandi hui)", o: ["Ibrahim (AS)", "Nuh (AS)", "Musa (AS)", "Isa (AS)"], c: 0 },
+            { emoji: "🌊🪄", q: "Yeh kis Nabi ka mojza hai? (samandar phata)", o: ["Yunus (AS)", "Musa (AS)", "Nuh (AS)", "Yusuf (AS)"], c: 1 },
+            { emoji: "🚢🌧️", q: "Yeh kis Nabi ka waqia hai?", o: ["Nuh (AS)", "Ibrahim (AS)", "Salih (AS)", "Hud (AS)"], c: 0 },
+            { emoji: "🐺🕳️👕", q: "Yeh kis Nabi ka waqia hai?", o: ["Yusuf (AS)", "Yaqub (AS)", "Musa (AS)", "Dawud (AS)"], c: 0 },
+            { emoji: "🐪⛰️", q: "Yeh kis Nabi ki qaum ki oontni ka waqia hai?", o: ["Salih (AS)", "Hud (AS)", "Lut (AS)", "Shuaib (AS)"], c: 0 },
+            { emoji: "🤒🙏", q: "Sabr ke liye mashhoor Nabi kaun hain?", o: ["Ayyub (AS)", "Zakariyya (AS)", "Idris (AS)", "Ilyas (AS)"], c: 0 },
+            { emoji: "🕳️😴", q: "Yeh kis Surah ke waqie ka ishara hai?", o: ["Al-Kahf", "Al-Fil", "Al-Baqarah", "Yusuf"], c: 0 },
+            { emoji: "🕷️📖", q: "Yeh kis Surah ka ishara hai?", o: ["Al-Ankabut", "An-Naml", "An-Nahl", "Al-Baqarah"], c: 0 },
+            { emoji: "🐄📖", q: "Quran ki sabse badi Surah kaun si hai?", o: ["Al-Baqarah", "Al-Fatiha", "Al-Ikhlas", "Yasin"], c: 0 },
+            { emoji: "⭐📖", q: "Yeh kis Surah ka ishara hai?", o: ["An-Najm", "Al-Qamar", "Ash-Shams", "At-Tariq"], c: 0 },
+            { emoji: "🌴👩", q: "Yeh kis khatoon ka waqia hai? (Surah Maryam)", o: ["Maryam (AS)", "Hajra (AS)", "Asiya (AS)", "Khadija (RA)"], c: 0 },
+            { emoji: "🔥🌿⛰️", q: "Yeh kis Nabi ka waqia hai? (Koh-e-Tur)", o: ["Musa (AS)", "Ibrahim (AS)", "Dawud (AS)", "Harun (AS)"], c: 0 },
+            { emoji: "1️⃣📖", q: "Quran ki pehli Surah kaun si hai?", o: ["Al-Fatiha", "Al-Baqarah", "Al-Ikhlas", "An-Naas"], c: 0 },
+            { emoji: "3️⃣0️⃣📖", q: "Quran ke kitne para (juz) hain?", o: ["20", "30", "40", "114"], c: 1 },
+            { emoji: "1️⃣1️⃣4️⃣📖", q: "Quran mein kitni Surah hain?", o: ["99", "100", "114", "124"], c: 2 },
+            { emoji: "🕌5️⃣", q: "Roz ki farz namazein kitni hain?", o: ["3", "4", "5", "6"], c: 2 },
+            { emoji: "🌅🕌", q: "Fajr ki farz kitni rakat hain?", o: ["2", "3", "4", "5"], c: 0 },
+            { emoji: "🌇🕌", q: "Maghrib ki farz kitni rakat hain?", o: ["2", "3", "4", "5"], c: 1 },
+            { emoji: "🧎🕌", q: "Namaz mein zameen par maathha rakhna kya kehlata hai?", o: ["Ruku", "Sajda", "Qiyam", "Qa'da"], c: 1 },
+            { emoji: "🕌📅", q: "Hafte ka muqaddas din kaun sa hai?", o: ["Jumma", "Peer", "Itwaar", "Budh"], c: 0 },
+            { emoji: "🌙9️⃣", q: "Ramzan Islami saal ka kaunsa mahina hai?", o: ["7wan", "8wan", "9wan", "10wan"], c: 2 },
+            { emoji: "🌙👀", q: "Ramzan aur Eid ki shuruaat kis se hoti hai?", o: ["Chand dekhne se", "Sooraj dekhne se", "Taaron se", "Mausam se"], c: 0 },
+            { emoji: "⛰️🤲☀️", q: "Hajj ka sabse bada rukn kis maidan mein hota hai?", o: ["Arafat", "Muzdalifa", "Mina", "Badr"], c: 0 },
+            { emoji: "⚫🕋", q: "Kaaba ke kone mein lagay jannati pathar ka naam?", o: ["Hajar-e-Aswad", "Maqam-e-Ibrahim", "Hateem", "Zamzam"], c: 0 },
+            { emoji: "💧🏜️👶", q: "Yeh kis mubarak pani ka ishara hai?", o: ["Zamzam", "Kausar", "Furat", "Nil"], c: 0 },
+            { emoji: "🌃🐎🕌", q: "Yeh kis mojze ka ishara hai?", o: ["Isra wal Meraj", "Hijrat", "Fatah Makkah", "Hajjatul Wida"], c: 0 },
+            { emoji: "⛰️📖✨", q: "Pehli wahi kis jagah utri?", o: ["Ghar-e-Hira", "Ghar-e-Saur", "Jabal-e-Uhud", "Arafat"], c: 0 },
+            { emoji: "🐫🌙🏜️", q: "Nabi ﷺ ka Makkah se Madinah safar kya kehlata hai?", o: ["Hijrat", "Hajj", "Umrah", "Meraj"], c: 0 },
+            { emoji: "🟢🕌", q: "Yeh kis masjid ki pehchan hai? (Gumbad-e-Khizra)", o: ["Masjid-e-Nabawi", "Masjid-e-Quba", "Masjid-e-Haram", "Masjid-e-Aqsa"], c: 0 },
+            { emoji: "⚔️3️⃣1️⃣3️⃣", q: "Nabi ﷺ ke 313 saathi kis jang mein the?", o: ["Badr", "Uhud", "Khandaq", "Tabuk"], c: 0 },
+            { emoji: "⛏️🛡️", q: "Madinah ke gird khandaq kis jang mein khodi gayi?", o: ["Badr", "Uhud", "Khandaq", "Hunain"], c: 2 },
+            { emoji: "🌿🦷", q: "Nabi ﷺ ki yeh sunnat kya hai?", o: ["Miswak", "Surma", "Itr", "Kangha"], c: 0 },
+            { emoji: "👋🕊️", q: "Assalamu Alaikum ka jawab kya hai?", o: ["Walaikum Assalam", "Shukriya", "Khuda Hafiz", "Subhanallah"], c: 0 },
+            { emoji: "🍽️🤲", q: "Khana shuru karne se pehle kya kehte hain?", o: ["Bismillah", "Alhamdulillah", "Allahu Akbar", "Astaghfirullah"], c: 0 },
+            { emoji: "🍽️✅🤲", q: "Khana khane ke baad kya kehna chahiye?", o: ["Alhamdulillah", "Bismillah", "La ilaha illallah", "Inna lillah"], c: 0 },
+            { emoji: "🌧️🤲🕌", q: "Barish ki dua ke liye jo namaz padhi jaati hai?", o: ["Istisqa", "Tahajjud", "Ishraq", "Taraweeh"], c: 0 },
+            { emoji: "⚰️🤲", q: "Marhoom ke liye jo namaz padhi jaati hai?", o: ["Namaz-e-Janaza", "Namaz-e-Eid", "Namaz-e-Jumma", "Tahajjud"], c: 0 },
+            { emoji: "💍🕌", q: "Yeh kya hai?", o: ["Nikah", "Aqiqah", "Walima ki dawat", "Bismillah"], c: 0 },
+            { emoji: "🌙🌙", q: "Islami saal ka pehla mahina kaun sa hai?", o: ["Muharram", "Safar", "Rajab", "Ramzan"], c: 0 }
         ];
 
         let emojiState = null;
         function initEmoji() {
-            emojiState = { questions: [...EMOJI_DATA].sort(() => Math.random() - 0.5).slice(0, 15), index: 0, score: 0, answered: false };
+            const picked = [...EMOJI_DATA].sort(() => Math.random() - 0.5).slice(0, 20).map(q => {
+                const idx = q.o.map((_, k) => k).sort(() => Math.random() - 0.5);
+                return { emoji: q.emoji, q: q.q, o: idx.map(k => q.o[k]), c: idx.indexOf(q.c) };
+            });
+            emojiState = { questions: picked, index: 0, score: 0, answered: false };
             emojiRender();
         }
         function emojiRender() {
             if (!emojiState) return;
             const box = document.getElementById('emoji');
             if (emojiState.index >= emojiState.questions.length) {
-                box.innerHTML = `<div class="emoji-box"><h2 style="color:var(--primary);">🎉 Mubarak Ho!</h2><div class="emoji-display">🏆</div><p style="margin:15px 0;">Aapne saare emoji complete kiye!</p><div class="emoji-score" style="font-size:18px; padding:10px 20px;">Score: ${emojiState.score} / ${emojiState.questions.length}</div><button class="btn-primary" onclick="initEmoji()" style="margin-top:20px;">🔄 Dobara Khelein</button></div>`;
+                const sc = emojiState.score, tot = emojiState.questions.length, good = sc >= Math.ceil(tot * 0.6);
+                if (good) celebrate(sc === tot ? 'Mashaallah! Full Marks!' : 'Mubarak Ho!', `Aap ne ${tot} mein se ${sc} sahi bataye.`);
+                const stars = sc === tot ? '🌟🌟🌟' : (good ? '🌟🌟' : '🌟');
+                box.innerHTML = `<div class="emoji-box"><h2 style="color:var(--primary);">${good ? '🎉 Mubarak Ho!' : '💪 Achi Koshish!'}</h2><div class="emoji-display">${good ? '🏆' : '📚'}</div><div style="font-size:30px;">${stars}</div><p style="margin:15px 0;">${good ? 'Bahut khoob!' : 'Thodi aur mashq karein, agli baar behtar hoga.'}</p><div class="emoji-score" style="font-size:18px; padding:10px 20px;">Score: ${sc} / ${tot}</div><button class="btn-primary" onclick="initEmoji()" style="margin-top:20px;">🔄 Dobara Khelein (naye sawal)</button></div>`;
                 return;
             }
             const q = emojiState.questions[emojiState.index];

@@ -12,89 +12,180 @@
     <meta name="apple-mobile-web-app-title" content="Quran Ustad">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="install.js" defer></script>
+    <script src="speech.js"></script>
     <meta name="theme-color" content="#0F4C3A">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #ffffff; --text: #333333; --text-light: #666; --shadow: 0 4px 15px rgba(0,0,0,0.05); --border: #ddd; }
-        [data-theme="dark"] { --primary: #1a1a2e; --secondary: #6ee7b7; --bg: #0f0f23; --card-bg: #1e1e36; --text: #eee; --text-light: #aaa; --shadow: 0 4px 15px rgba(0,0,0,0.3); --border: #333; }
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 70px; }
-        
-        /* Login Screen */
-        .login-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 9999; }
-        .login-box { background: var(--card-bg); padding: 40px 30px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 90%; max-width: 400px; border-top: 5px solid var(--secondary); }
-        .login-box h1 { color: var(--primary); margin-bottom: 10px; font-size: 22px; }
-        .login-box p { color: var(--text-light); font-size: 13px; margin-bottom: 10px; }
-        .login-box input { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid var(--border); border-radius: 8px; font-size: 16px; background: var(--bg); color: var(--text); text-align: center; }
-        .login-box button { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        /* =====================================================
+           DESIGN SYSTEM — Mushaf-inspired
+           Zumurrud (emerald) + sona (gold) + kaghaz (paper)
+           ===================================================== */
+        :root {
+            --primary: #0F4C3A;
+            --primary-deep: #0A2E24;
+            --secondary: #B8923A;
+            --gold-bright: #D9B65A;
+            --rubric: #9C3B2E;
+            --ink: #0A2E24;
+            --bg: #EDF0E7;
+            --card-bg: #FFFDF6;
+            --soft-bg: #F4F1E3;
+            --text: #1F2A25;
+            --text-light: #55645C;
+            --border: #D9D6C3;
+            --shadow: 0 1px 2px rgba(10,46,36,.08), 0 8px 24px rgba(10,46,36,.08);
+            --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23D9B65A' stroke-opacity='.2' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        [data-theme="dark"] {
+            --primary: #0C3A2C;
+            --primary-deep: #07211A;
+            --secondary: #D9B65A;
+            --ink: #F0E9D0;
+            --bg: #0A1411;
+            --card-bg: #12211B;
+            --soft-bg: #182A22;
+            --text: #E8E3D0;
+            --text-light: #A5B3AA;
+            --border: #27403A;
+            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Figtree', system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 86px; line-height: 1.5; transition: background .3s, color .3s; }
+        button, input, select { font-family: inherit; }
+        a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, .arabic:focus-visible, .urdu:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
 
-        /* Header */
-        header { background-color: var(--primary); color: white; text-align: center; padding: 15px; border-bottom: 4px solid var(--secondary); }
-        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-        .header-controls { display: flex; gap: 10px; align-items: center; }
-        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: white; }
-        .streak-badge { background: #ff5722; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        /* ---------- Login ---------- */
+        .login-container { position: fixed; inset: 0; background: radial-gradient(120% 90% at 50% 0%, #17614B 0%, var(--primary-deep) 70%); display: flex; justify-content: center; align-items: center; z-index: 9999; overflow-y: auto; padding: 56px 16px 24px; }
+        .login-container::before { content: ""; position: absolute; inset: 0; background-image: var(--star); opacity: .9; pointer-events: none; }
+        .login-box { position: relative; background: var(--card-bg); padding: 56px 24px 26px; border-radius: 24px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,.45); width: 100%; max-width: 380px; border: 1px solid rgba(217,182,90,.55); }
+        .login-box::after { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184,146,58,.35); border-radius: 19px; pointer-events: none; }
+        .login-logo { position: absolute; top: -42px; left: 50%; transform: translateX(-50%); width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--gold-bright); background: var(--primary-deep); object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
+        .login-bismillah { font-family: 'Amiri', serif; font-size: 22px; color: var(--secondary); line-height: 1.8; }
+        .login-box h1 { font-family: 'Amiri', serif; color: var(--ink); margin: 2px 0 4px; font-size: 32px; font-weight: 700; line-height: 1.2; }
+        .login-box p { color: var(--text-light); font-size: 14px; margin-bottom: 8px; }
+        .login-label { display: block; text-align: left; font-size: 13px; font-weight: 600; margin: 14px 0 6px; color: var(--text); }
+        .login-box input, .login-select { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); text-align: left; }
+        .login-box input:focus, .login-select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(15,76,58,.18); }
+        .pwd-wrap { position: relative; }
+        .pwd-wrap input { padding-right: 52px; }
+        .login-box .pwd-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; margin: 0; padding: 0; background: transparent; border: none; box-shadow: none; font-size: 18px; color: var(--text); border-radius: 12px; }
+        .login-box > button { width: 100%; background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 14px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; margin-top: 20px; box-shadow: 0 6px 16px rgba(15,76,58,.35); min-height: 50px; }
+        .login-box > button:active { transform: translateY(1px); }
 
-        /* Top Links (Tajweed, Games, Duaein) */
-        .top-links { display: flex; justify-content: center; gap: 10px; margin: 12px auto; max-width: 1200px; padding: 0 15px; flex-wrap: wrap; }
-        .top-link-btn { padding: 9px 16px; border-radius: 25px; background: var(--primary); color: white; text-decoration: none; font-weight: bold; font-size: 13px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: inline-flex; align-items: center; gap: 5px; }
-        .top-link-btn.gold { background: var(--secondary); color: #000; }
-        .top-link-btn.green { background: #25D366; }
+        /* ---------- Header ---------- */
+        header { position: relative; background: linear-gradient(180deg, #14614A 0%, var(--primary) 100%); color: white; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); }
+        header::before { content: ""; position: absolute; inset: 0; background-image: var(--star); pointer-events: none; }
+        header::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-bright) 20%, var(--gold-bright) 80%, transparent); }
+        .header-top { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; gap: 10px; }
+        .brand { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+        .brand-logo { width: 38px; height: 38px; border-radius: 11px; border: 1.5px solid var(--gold-bright); object-fit: cover; flex-shrink: 0; }
+        .header-top h1 { font-family: 'Amiri', serif; font-size: 24px; font-weight: 700; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .header-controls { display: flex; gap: 8px; align-items: center; }
+        .icon-btn { background: rgba(255,255,255,.14); border: none; font-size: 18px; cursor: pointer; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+        .icon-btn:active { background: rgba(255,255,255,.28); }
+        .streak-badge { background: linear-gradient(180deg, #f08a3c, #d9602a); color: white; white-space: nowrap; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+        .user-menu { position: relative; }
+        .user-chip { width: auto !important; height: 40px; padding: 0 12px !important; border-radius: 20px !important; font-size: 13px !important; font-weight: 600; white-space: nowrap; gap: 4px; }
+        .user-drop { position: absolute; right: 0; top: calc(100% + 10px); min-width: 200px; background: var(--card-bg); color: var(--text); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.35); padding: 14px; z-index: 500; text-align: left; border: 1px solid var(--border); }
+        .user-drop.hidden { display: none; }
+        .user-drop-info { font-size: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+        .user-drop-info small { color: var(--text-light); }
+        .user-drop button { width: 100%; background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; min-height: 44px; }
 
-        /* Main Nav */
-        .main-nav { display: flex; justify-content: flex-start; overflow-x: auto; gap: 10px; margin: 15px auto; padding: 0 15px; max-width: 1200px; scrollbar-width: none; }
-        .main-nav::-webkit-scrollbar { display: none; }
-        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--card-bg); color: var(--text); box-shadow: var(--shadow); cursor: pointer; white-space: nowrap; }
+        /* ---------- Quick links (Tajweed, Games, Duaein) ---------- */
+        .top-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px auto 4px; max-width: 1200px; padding: 0 16px; }
+        .top-link-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border-radius: 16px; background: var(--card-bg); color: var(--text); text-decoration: none; font-weight: 600; font-size: 13px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .top-link-btn:active { transform: scale(.97); }
+        .top-link-btn .ti { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: rgba(15,76,58,.12); }
+        .top-link-btn.gold .ti { background: rgba(184,146,58,.2); }
+        .top-link-btn.green .ti { background: rgba(31,143,78,.16); }
+
+        /* ---------- Main nav ---------- */
+        .main-nav { display: none; }
+        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--card-bg); color: var(--text); cursor: pointer; }
         .nav-btn.active { background: var(--primary); color: #fff; }
 
-        /* Views */
-        .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-        .view-section.active { display: block; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* ---------- Views ---------- */
+        .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+        .view-section.active { display: block; }
 
-        /* Day Header */
-        .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;}
-        .day-header h2 { color: var(--primary); font-size: 18px; }
-        .admin-select { padding: 8px; border-radius: 8px; border: 2px solid var(--primary); background: var(--card-bg); color: var(--text); font-weight: bold; }
-        
-        /* Course Cards */
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; box-shadow: var(--shadow); border-left: 5px solid var(--primary); text-align: center; }
-        .arabic { font-family: 'Amiri', serif; font-size: 28px; color: var(--secondary); margin-bottom: 5px; direction: rtl; cursor: pointer; }
-        .roman { font-weight: 600; font-size: 14px; margin-bottom: 5px; }
-        .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; color: var(--text-light); direction: rtl; cursor: pointer; }
-        .mashq-box { background: #fff8e1; border: 1px dashed var(--secondary); padding: 8px; margin-top: 10px; border-radius: 6px; font-size: 13px; color: #333; text-align: right; direction: rtl;}
-        [data-theme="dark"] .mashq-box { background: #2a2a40; color: #eee; }
-        .tafseel-btn { background: var(--primary); color: white; border: none; padding: 8px; width: 100%; border-radius: 6px; margin-top: 10px; cursor: pointer; font-size: 12px; }
+        /* ---------- Day heading ---------- */
+        .day-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 22px 0 26px; flex-wrap: wrap; gap: 12px; }
+        .day-title-wrap { flex: 1; min-width: 200px; }
+        .day-header h2 { font-family: 'Amiri', serif; color: var(--ink); font-size: 38px; font-weight: 700; line-height: 1.05; }
+        .day-progress { margin-top: 10px; }
+        .day-progress span { font-size: 13px; color: var(--text-light); font-weight: 600; }
+        .day-progress .bar { height: 6px; background: var(--border); border-radius: 6px; margin-top: 6px; overflow: hidden; max-width: 320px; }
+        .day-progress .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary), var(--gold-bright)); border-radius: 6px; transition: width .5s; }
+        .admin-select { padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--primary); background: var(--card-bg); color: var(--text); font-weight: 700; min-height: 44px; }
 
-        /* Locked Page */
-        .locked-page { background: var(--card-bg); padding: 40px 20px; border-radius: 15px; box-shadow: var(--shadow); text-align: center; margin: 20px 0; border: 2px dashed var(--border); grid-column: 1 / -1; }
-        .locked-page h2 { color: var(--text-light); margin-bottom: 10px; font-size: 22px; }
-        .locked-page p { color: var(--text-light); font-size: 14px; margin-bottom: 20px; }
-        .lock-icon { font-size: 60px; margin-bottom: 15px; }
+        /* ---------- Word cards (Mushaf page) ---------- */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 30px 16px; margin-bottom: 24px; counter-reset: word; }
+        .card { position: relative; counter-increment: word; background: var(--card-bg); border-radius: 16px; padding: 30px 18px 18px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
+        .card::after { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(184,146,58,.4); border-radius: 12px; pointer-events: none; }
+        .card::before { content: counter(word); position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; background: var(--card-bg); border: 1.5px solid var(--secondary); color: var(--secondary); font-family: 'Amiri', serif; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 0 0 4px var(--bg); }
+        .arabic { font-family: 'Amiri', serif; font-size: 42px; line-height: 1.7; color: var(--ink); direction: rtl; cursor: pointer; border-radius: 12px; padding: 0 8px; }
+        .roman { position: relative; font-weight: 700; font-size: 16px; letter-spacing: .3px; color: var(--secondary); padding-top: 14px; margin: 6px 0 4px; }
+        .roman::before { content: ""; position: absolute; top: 0; left: 50%; width: 44px; height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
+        .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 21px; line-height: 2.2; color: var(--text); direction: rtl; cursor: pointer; border-radius: 12px; padding: 0 8px; }
+        .mashq-box { background: var(--soft-bg); border: none; border-right: 4px solid var(--rubric); padding: 10px 12px; margin-top: 12px; border-radius: 10px; font-size: 15px; line-height: 1.9; color: var(--text); text-align: right; direction: rtl; font-family: 'Amiri', serif; }
+        .tafseel-btn { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); padding: 10px; width: 100%; border-radius: 12px; margin-top: 14px; cursor: pointer; font-size: 14px; font-weight: 700; min-height: 44px; }
+        .tafseel-btn:active { background: var(--primary); color: #fff; }
+        [data-theme="dark"] .tafseel-btn { color: var(--gold-bright); border-color: var(--gold-bright); }
+        [data-theme="dark"] .tafseel-btn:active { background: var(--gold-bright); color: #07211A; }
+        .qs-text { background: rgba(217,182,90,.25) !important; }
 
-        /* Buttons */
-        .exam-btn { background: var(--secondary); color: #000; padding: 12px 20px; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; width: 100%; margin-top: 10px; cursor: pointer; }
+        /* ---------- Locked page ---------- */
+        .locked-page { background: transparent; padding: 28px 20px; border-radius: 16px; text-align: center; margin: 4px 0; border: 2px dashed var(--border); grid-column: 1 / -1; }
+        .locked-page h2 { font-family: 'Amiri', serif; color: var(--text); margin-bottom: 6px; font-size: 24px; }
+        .locked-page p { color: var(--text-light); font-size: 14px; }
+        .lock-icon { font-size: 40px; margin-bottom: 8px; }
 
-        /* Modals */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--card-bg); padding: 20px; border-radius: 15px; width: 100%; max-width: 500px; border-top: 5px solid var(--secondary); position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: var(--text-light); }
-        .modal-text { margin-top: 15px; font-size: 18px; line-height: 1.8; text-align: right; font-family: 'Noto Nastaliq Urdu', serif; }
+        /* ---------- Buttons ---------- */
+        .exam-btn { background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 13px 20px; border: none; border-radius: 14px; font-weight: 700; font-size: 16px; width: 100%; margin-top: 10px; cursor: pointer; min-height: 52px; box-shadow: 0 6px 16px rgba(15,76,58,.3); }
+        .exam-btn:active { transform: translateY(1px); box-shadow: 0 3px 8px rgba(15,76,58,.3); }
+        .exam-btn + .exam-btn { margin-top: 12px; }
+        .exam-btn.gold { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; box-shadow: 0 6px 16px rgba(184,146,58,.35); }
+        .exam-btn.share { background: linear-gradient(180deg, #27a05a, #1f8a4c); box-shadow: 0 6px 16px rgba(31,138,76,.3); }
 
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
-        .bottom-nav button, .bottom-nav a { background: none; border: none; color: var(--text-light); font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 12px; gap: 4px; text-decoration: none; }
-        .bottom-nav button.active { color: var(--primary); font-weight: bold; }
-        
-        /* Toast */
-        .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 10px 20px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 3000; font-size: 14px;}
+        /* ---------- Modals ---------- */
+        .modal { position: fixed; inset: 0; background: rgba(4,16,12,.72); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 18px; }
+        .modal-content { background: var(--card-bg); padding: 24px 20px 20px; border-radius: 22px; width: 100%; max-width: 520px; border: 1px solid var(--border); border-top: 4px solid var(--secondary); position: relative; max-height: 88vh; overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+        .modal-content h2 { font-family: 'Amiri', serif; font-size: 26px; }
+        .close-btn { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background: var(--soft-bg); display: flex; align-items: center; justify-content: center; font-size: 24px; line-height: 1; cursor: pointer; color: var(--text-light); }
+        .modal-text { margin-top: 16px; font-size: 19px; line-height: 2.2; text-align: right; font-family: 'Noto Nastaliq Urdu', serif; color: var(--text); }
+
+        /* ---------- Exam ---------- */
+        .exam-q { margin-bottom: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 16px; background: var(--soft-bg); }
+        .exam-ar { font-family: 'Amiri', serif; font-size: 34px; line-height: 1.7; text-align: center; color: var(--ink); margin-bottom: 6px; }
+        .option-btn { padding: 12px 14px; margin: 6px 0; width: 100%; text-align: left; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; font-size: 18px; min-height: 48px; font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; text-align: center; }
+        .option-btn.selected { border-color: var(--primary); background: rgba(15,76,58,.1); font-weight: 700; box-shadow: inset 4px 0 0 var(--primary); }
+        [data-theme="dark"] .option-btn.selected { border-color: var(--gold-bright); box-shadow: inset 4px 0 0 var(--gold-bright); background: rgba(217,182,90,.12); }
+
+        /* ---------- Bottom nav ---------- */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); box-shadow: 0 -6px 20px rgba(10,46,36,.08); z-index: 1000; }
+        .bottom-nav button, .bottom-nav a { background: none; border: none; color: var(--text-light); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; line-height: 1.3; gap: 2px; text-decoration: none; min-width: 60px; min-height: 48px; border-radius: 12px; }
+        .bottom-nav button.active { color: var(--primary); font-weight: 700; }
+
+        /* ---------- Toast & utility ---------- */
+        .toast { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); background: var(--primary-deep); color: white; padding: 12px 22px; border-radius: 24px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 3000; font-size: 14px; border: 1px solid var(--gold-bright); }
         .toast.show { opacity: 1; }
         .hidden { display: none !important; }
-        
-        /* Option Buttons (Exam) */
-        .option-btn { padding: 10px; margin: 5px 0; width: 100%; text-align: left; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; }
-        .option-btn.selected { border-color: var(--primary); }
+
+        @media (max-width: 420px) {
+            header { padding-left: 12px; padding-right: 12px; }
+            .brand { gap: 8px; }
+            .brand-logo { width: 34px; height: 34px; }
+            .header-top h1 { font-size: 20px; }
+            .header-controls { gap: 6px; }
+            .icon-btn { width: 36px; height: 36px; font-size: 16px; }
+            .user-chip { height: 36px; padding: 0 10px !important; font-size: 12px !important; max-width: 104px; overflow: hidden; text-overflow: ellipsis; }
+        }
+        @media (min-width: 720px) {
+            .day-header h2 { font-size: 46px; }
+            .top-link-btn { flex-direction: row; justify-content: center; gap: 10px; padding: 14px; font-size: 15px; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
     </style>
 </head>
 <body>
@@ -102,9 +193,17 @@
     <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="login-container">
         <div class="login-box">
-            <h1>🔐 Quraan Ustad</h1>
-            <p>App ko access karne ke liye password daalein</p>
-            <input type="password" id="passwordInput" placeholder="Enter Password">
+            <img class="login-logo" src="icon-192.png" alt="">
+            <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <h1>Quraan Ustad</h1>
+            <p>Apni ID chunein aur password daalein</p>
+            <label class="login-label" for="userIdSelect">User ID</label>
+            <select id="userIdSelect" class="login-select"></select>
+            <label class="login-label" for="passwordInput">Password</label>
+            <div class="pwd-wrap">
+                <input type="password" id="passwordInput" placeholder="Password daalein" autocomplete="current-password">
+                <button type="button" class="pwd-eye" id="pwdEye" onclick="togglePwd()" aria-label="Password dikhao">👁️</button>
+            </div>
             <button onclick="handleLogin()">Login</button>
             <p id="loginError" style="color: #ff4d4d; margin-top: 10px; font-size: 13px;"></p>
         </div>
@@ -114,20 +213,26 @@
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-top">
-                <h1>📖 Quraan Ustad</h1>
+                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
                 <div class="header-controls">
                     <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                    <button class="icon-btn" onclick="logout()">🚪</button>
+                    <div class="user-menu">
+                        <button class="icon-btn user-chip" id="userChip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span> ▾</button>
+                        <div class="user-drop hidden" id="userDrop">
+                            <div class="user-drop-info">User ID: <b id="userDropId">-</b><br><small id="userDropRole"></small></div>
+                            <button onclick="logout()">🚪 Logout</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
 
         <!-- Top Links -->
         <div class="top-links">
-            <a href="tajweed.html" class="top-link-btn">📖 Tajweed</a>
-            <a href="games.html" class="top-link-btn gold">🎮 Games & GK</a>
-            <a href="dua.html" class="top-link-btn green">🤲 Duaein</a>
+            <a href="tajweed.html" class="top-link-btn"><span class="ti">📖</span>Tajweed</a>
+            <a href="games.html" class="top-link-btn gold"><span class="ti">🎮</span>Games &amp; GK</a>
+            <a href="dua.html" class="top-link-btn green"><span class="ti">🤲</span>Duaein</a>
         </div>
 
         <!-- Main Nav -->
@@ -138,12 +243,15 @@
         <!-- Course Tab -->
         <div id="courseTab" class="view-section active">
             <div class="day-header">
-                <h2 id="dayTitle">Day 1</h2>
+                <div class="day-title-wrap">
+                    <h2 id="dayTitle">Day 1</h2>
+                    <div class="day-progress"><span id="dayProgressText"></span><div class="bar"><i id="dayProgressFill"></i></div></div>
+                </div>
                 <select id="adminDaySelect" class="admin-select hidden" onchange="changeAdminDay(this.value)"></select>
             </div>
             <div class="grid-container" id="courseGrid"></div>
             <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam</button>
-            <button id="grandTestBtn" class="exam-btn hidden" onclick="startGrandExam()" style="background: #ff5722; color: white; margin-top: 15px;">🏆 Grand Test (50 Words)</button>
+            <button id="grandTestBtn" class="exam-btn gold hidden" onclick="startGrandExam()">🏆 Grand Test (50 Words)</button>
         </div>
 
         <!-- Bottom Nav -->
@@ -160,12 +268,12 @@
     <!-- Info Modal -->
     <div id="infoModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close-btn" onclick="document.getElementById('infoModal').classList.add('hidden')">&times;</span>
-            <h2 id="modalTitle" style="color: var(--primary); text-align: center;">Tafseel</h2>
+            <span class="close-btn" onclick="QSpeech.stop(); document.getElementById('infoModal').classList.add('hidden')">&times;</span>
+            <h2 id="modalTitle" style="color: var(--ink); text-align: center;">Tafseel</h2>
             <div id="modalText" class="modal-text"></div>
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="exam-btn" id="speakBtn" style="flex:1; background:var(--primary); color:white; margin-top:0;">🔊 Suno</button>
-                <button class="exam-btn" id="shareBtn" style="flex:1; background:#25D366; color:white; margin-top:0;">📤 Share</button>
+                <button class="exam-btn" id="speakBtn" style="flex:1; margin-top:0;">🔊 Suno</button>
+                <button class="exam-btn share" id="shareBtn" style="flex:1; margin-top:0;">📤 Share</button>
             </div>
         </div>
     </div>
@@ -174,7 +282,7 @@
     <div id="examModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('examModal').classList.add('hidden')">&times;</span>
-            <h2 id="examTitle" style="text-align: center; color: var(--primary);">Exam</h2>
+            <h2 id="examTitle" style="text-align: center; color: var(--ink);">Exam</h2>
             <p style="text-align: center; font-size: 12px; margin-bottom: 15px;">Sahi Urdu Meaning Select Karein</p>
             <div id="examQuestions"></div>
             <button class="exam-btn" onclick="submitExam()" id="submitExamBtn">Submit Exam</button>
@@ -186,12 +294,12 @@
     <div id="feedbackModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('feedbackModal').classList.add('hidden')">&times;</span>
-            <h2 style="text-align: center; color: var(--primary);">✉️ Feedback</h2>
+            <h2 style="text-align: center; color: var(--ink);">✉️ Feedback</h2>
             <p style="text-align: center; font-size: 14px; margin: 10px 0;">App kaisi lagi, zaroor batayein.</p>
             <a href="mailto:fauzan0096@gmail.com?subject=Feedback%20from%20Quran%20Ustad%20App" style="text-decoration: none; display: block;">
-                <button class="exam-btn" style="background: var(--primary); color: white; margin-top: 10px;">📧 Email Karein</button>
+                <button class="exam-btn" style="margin-top:10px;">📧 Email Karein</button>
             </a>
-            <button class="exam-btn" onclick="shareApp()" style="background: #25D366; color: white; margin-top: 10px;">📤 App Share Karein</button>
+            <button class="exam-btn share" onclick="shareApp()" style="margin-top:10px;">📤 App Share Karein</button>
         </div>
     </div>
 
@@ -208,23 +316,43 @@
         const ADMIN_PASSWORD = "Fauzan8087";
         const GUEST_PASSWORD = "quran123";
 
+        // 👤 USER IDs — naya user jodna ho to ek line badhayein
+        const USERS = [
+            { id: "guest", name: "Mehmaan (Guest)", password: GUEST_PASSWORD, role: "guest" },
+            { id: "admin", name: "Admin", password: ADMIN_PASSWORD, role: "admin" }
+        ];
+
         let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
         let userRole = localStorage.getItem('userRole') || 'guest';
+        let userId = localStorage.getItem('userId') || userRole;
+
+        // --- User ID menu bharo (pichli ID yaad rehti hai) ---
+        (function fillUserMenu() {
+            const sel = document.getElementById('userIdSelect');
+            const last = localStorage.getItem('lastUserId') || USERS[0].id;
+            sel.innerHTML = USERS.map(u => `<option value="${u.id}" ${u.id === last ? 'selected' : ''}>👤 ${u.name}</option>`).join('');
+        })();
+
+        function togglePwd() {
+            const i = document.getElementById('passwordInput');
+            i.type = i.type === 'password' ? 'text' : 'password';
+            document.getElementById('pwdEye').innerText = i.type === 'password' ? '👁️' : '🙈';
+        }
 
         // --- Login Function ---
         function handleLogin() {
+            const id = document.getElementById('userIdSelect').value;
             const pwd = document.getElementById('passwordInput').value.trim();
-            if (pwd === ADMIN_PASSWORD) {
+            const user = USERS.find(u => u.id === id);
+            if (user && pwd === user.password) {
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userRole', 'admin');
-                location.reload();
-            } else if (pwd === GUEST_PASSWORD) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userRole', 'guest');
+                localStorage.setItem('userRole', user.role);
+                localStorage.setItem('userId', user.id);
+                localStorage.setItem('lastUserId', user.id);
                 location.reload();
             } else {
-                document.getElementById('loginError').innerText = "❌ Galat Password!";
+                document.getElementById('loginError').innerText = "❌ Galat Password! Dobara koshish karein.";
             }
         }
 
@@ -236,21 +364,41 @@
         function logout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userRole');
+            localStorage.removeItem('userId');
             location.reload();
         }
 
+        // --- Header ka user menu ---
+        function toggleUserMenu(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('userDrop').classList.toggle('hidden');
+        }
+        document.addEventListener('click', function () {
+            const d = document.getElementById('userDrop');
+            if (d) d.classList.add('hidden');
+        });
+        function showUserInfo() {
+            const u = USERS.find(x => x.id === userId);
+            document.getElementById('userChipName').innerText = userId;
+            document.getElementById('userDropId').innerText = userId;
+            document.getElementById('userDropRole').innerText = (u ? u.name : '') + (userRole === 'admin' ? ' • Admin' : '');
+        }
+
         // --- App Init ---
+        // Dark mode ab reload par bhi yaad rehta hai
+        document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+        document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙';
         if (localStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
-            if (isDarkMode) toggleTheme();
             initApp();
         }
 
-        function initApp() { renderCourse(); updateStreak(); }
+        function initApp() { showUserInfo(); renderCourse(); updateStreak(); }
 
         // --- Render Course ---
         function renderCourse() {
+            if (window.QSpeech) QSpeech.stop();
             if (typeof courseData === 'undefined') {
                 document.getElementById('courseGrid').innerHTML = '<p style="text-align:center; color:red; padding:20px;">⚠️ courseData.js load nahi hua. File check karein.</p>';
                 return;
@@ -268,6 +416,9 @@
             }
 
             document.getElementById('dayTitle').innerText = `Day ${currentDay}`;
+            const _total = courseData.length || 40;
+            document.getElementById('dayProgressText').innerText = `${Math.min(currentDay, _total)} / ${_total} din`;
+            document.getElementById('dayProgressFill').style.width = (Math.min(currentDay, _total) / _total * 100) + '%';
             const todayData = courseData.find(d => d.day === currentDay);
 
             if(todayData) {
@@ -275,9 +426,9 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <div class="arabic" onclick="speakText('${word.a}', 'ar')">${word.a}</div>
+                        <div class="arabic" onclick="speakText('${word.a}', 'ar', this)">${word.a}</div>
                         <div class="roman">${word.r}</div>
-                        <div class="urdu" onclick="speakText('${word.u}', 'ur')">${word.u}</div>
+                        <div class="urdu" onclick="speakText('${word.u}', 'ur', this)">${word.u}</div>
                         <div class="mashq-box"><b>Mashq:</b> ${word.m}</div>
                         <button class="tafseel-btn" onclick="showTafseel('${word.a}', '${word.u}', '${word.t}')">📖 Tafseel Padhein</button>
                     `;
@@ -309,11 +460,8 @@
         function changeAdminDay(day) { currentDay = parseInt(day); renderCourse(); }
 
         // --- Text to Speech ---
-        function speakText(text, lang) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = lang === 'ar' ? 'ar-SA' : 'ur-PK';
-            utterance.rate = 0.8; window.speechSynthesis.speak(utterance);
+        function speakText(text, lang, btn) {
+            QSpeech.speak(text, { lang: lang, rate: 0.8, btn: btn });
         }
 
         // --- Tafseel Modal ---
@@ -321,7 +469,8 @@
             document.getElementById('modalTitle').innerText = "Tafseel / Fazilat";
             document.getElementById('modalText').innerText = tafseel;
             document.getElementById('infoModal').classList.remove('hidden');
-            document.getElementById('speakBtn').onclick = () => speakText(tafseel, 'ur');
+            QSpeech.stop();
+            document.getElementById('speakBtn').onclick = function () { speakText(tafseel, 'ur', this); };
             const shareTxt = `${arabic}\n\n${urdu}\n\n${tafseel}\n\n- Quraan Ustad App`;
             document.getElementById('shareBtn').onclick = () => {
                 if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: shareTxt }).catch(console.error);
@@ -368,7 +517,7 @@
             document.getElementById('submitExamBtn').style.display = 'block';
             document.getElementById('examModal').classList.remove('hidden');
             qs.forEach(q => {
-                let html = `<div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;"><p style="font-family:'Amiri'; font-size:24px; text-align:center; color:var(--secondary);">${q.a}</p>`;
+                let html = `<div class="exam-q"><p class="exam-ar">${q.a}</p>`;
                 q.opts.forEach(o => html += `<button class="option-btn" onclick="selectOption(this, '${o}', '${q.c}')">${o}</button>`);
                 document.getElementById('examQuestions').innerHTML += html + `</div>`;
             });
@@ -410,6 +559,7 @@
 
         // --- UI Helpers ---
         function switchTab(tabId, btn) {
+            if (window.QSpeech) QSpeech.stop();
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');

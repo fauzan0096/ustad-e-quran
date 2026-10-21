@@ -9,6 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0F4C3A">
     <script src="install.js" defer></script>
+    <script src="speech.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #ffffff; --text: #333333; --text-light: #666; --shadow: 0 4px 15px rgba(0,0,0,0.05); --border: #ddd; --arabic: #0B3D2E; --gold: #C9A227; --chip-bg: rgba(15,76,58,0.08); --scale: 1; }
@@ -84,18 +85,8 @@
         function changeScale(d) { textScale = Math.min(1.6, Math.max(0.8, Math.round((textScale + d) * 10) / 10)); localStorage.setItem('textScale', textScale); applyScale(); }
         applyScale();
 
-        let currentAudioBtn = null;
         function speakArabic(text, btn) {
-            window.speechSynthesis.cancel();
-            if (currentAudioBtn) { currentAudioBtn.classList.remove('playing'); currentAudioBtn = null; }
-            if (!text || text.trim() === '') return;
-            if (btn && btn.classList.contains('playing')) { btn.classList.remove('playing'); return; }
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ar-SA'; utterance.rate = 0.7; utterance.pitch = 1.0;
-            if (btn) { btn.classList.add('playing'); currentAudioBtn = btn; }
-            utterance.onend = () => { if (btn) btn.classList.remove('playing'); currentAudioBtn = null; };
-            utterance.onerror = () => { if (btn) btn.classList.remove('playing'); currentAudioBtn = null; };
-            window.speechSynthesis.speak(utterance);
+            QSpeech.speak(text, { lang: 'ar', rate: 0.7, btn: btn });
         }
 
         const tajweedData = [
