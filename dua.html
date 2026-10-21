@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masnoon Duaein & Azkar</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary: #0F4C3A; 
+            --secondary: #D4AF37; 
+            --bg: #F4F7F6; 
+            --card-bg: #ffffff; 
+            --text: #333333; 
+            --text-light: #666;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            --border: #ddd; 
+        }
+        [data-theme="dark"] { 
+            --primary: #1a1a2e; 
+            --secondary: #6ee7b7; 
+            --bg: #0f0f23; 
+            --card-bg: #1e1e36; 
+            --text: #eee; 
+            --text-light: #aaa; 
+            --shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            --border: #333; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
+        
+        header { background-color: var(--primary); color: white; text-align: center; padding: 15px; border-bottom: 4px solid var(--secondary); position: sticky; top: 0; z-index: 100; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .header-controls { display: flex; gap: 10px; align-items: center; }
+        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: white; }
+
+        .main-nav { display: flex; justify-content: flex-start; overflow-x: auto; gap: 10px; margin: 15px auto; padding: 0 15px; max-width: 1200px; scrollbar-width: none; }
+        .main-nav::-webkit-scrollbar { display: none; }
+        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 14px; font-weight: 600; background: var(--card-bg); color: var(--text); box-shadow: var(--shadow); cursor: pointer; white-space: nowrap; }
+        .nav-btn.active { background: var(--primary); color: #fff; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        
+        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); border-left: 5px solid var(--primary); margin-bottom: 20px; }
+        
+        .arabic { font-family: 'Amiri', serif; font-size: 30px; color: var(--secondary); margin-bottom: 15px; direction: rtl; text-align: right; cursor: pointer; line-height: 1.6; }
+        .arabic:hover { opacity: 0.8; }
+        
+        .roman { font-weight: 600; font-size: 15px; margin-bottom: 10px; color: var(--text); }
+        .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 20px; color: var(--text); direction: rtl; text-align: right; margin-bottom: 15px; cursor: pointer; line-height: 2; }
+        
+        .tafseel-box { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--secondary); padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .tafseel-title { font-weight: bold; color: var(--primary); margin-bottom: 5px; display: block; font-size: 14px;}
+        .tafseel-text { font-family: 'Noto Nastaliq Urdu', serif; font-size: 16px; direction: rtl; text-align: right; color: var(--text-light); line-height: 1.8; }
+        .hawala { font-size: 12px; color: var(--text-light); margin-top: 10px; font-style: italic; border-top: 1px solid var(--border); padding-top: 10px; }
+        
+        .play-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; }
+        .play-btn:hover { opacity: 0.9; }
+
+        .search-box { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 20px; background: var(--card-bg); color: var(--text); outline: none; font-size: 16px; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <h1>🤲 Masnoon Duaein</h1>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <a href="index.html" style="color:white; text-decoration:none; font-size:20px;" title="Back to App">🏠</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <input type="text" class="search-box" id="searchInput" placeholder="🔍 Dua Search Karein (Urdu ya Roman)..." onkeyup="filterCards()">
+        
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="filterCategory('all', this)">Sab Kuch</button>
+            <button class="nav-btn" onclick="filterCategory('namaz', this)">Namaz ki Duaein</button>
+            <button class="nav-btn" onclick="filterCategory('subah', this)">Subah-Sham Azkar</button>
+            <button class="nav-btn" onclick="filterCategory('mushkil', this)">Mushkil & Pareshani</button>
+            <button class="nav-btn" onclick="filterCategory('bimari', this)">Bimari & Shifa</button>
+            <button class="nav-btn" onclick="filterCategory('sone', this)">Sone se Pehle</button>
+        </nav>
+
+        <div id="duaContainer"></div>
+    </div>
+
+    <script>
+        // PWA / Theme logic
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) document.body.setAttribute('data-theme', 'dark');
+        
+        function toggleTheme() {
+            isDarkMode = !isDarkMode; 
+            document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; 
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+        if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
+
+        // AI Voice Function
+        function speakText(text, lang) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang === 'ar' ? 'ar-SA' : 'ur-PK';
+            utterance.rate = 0.85; // Thoda slow for better understanding
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Data from PDFs
+        const allDuas = [
+            // --- NAMAZ KI DUAEN (Hissa 1-4) ---
+            {
+                category: "namaz",
+                title: "Wudu ke baad ki dua",
+                arabic: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ",
+                roman: "Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluh",
+                urdu: "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے، اس کا کوئی شریک نہیں، اور میں گواہی دیتا ہوں کہ محمد اس کے بندے اور رسول ہیں۔",
+                tafseel: "جو شخص اچھی طرح وضو کر کے یہ دعا پڑھے، اس کے لیے جنت کے آٹھوں دروازے کھول دیے جاتے ہیں، جس سے چاہے داخل ہو۔",
+                hawala: "Sahih Muslim 234 (Umar bin al-Khattab RA)"
+            },
+            {
+                category: "namaz",
+                title: "Sana (Istiftah) - Subhanaka Allahumma",
+                arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمَكَ، وَتَعَالَى جُدُّكَ، وَلَا إِلَهَ غَيْرُكَ",
+                roman: "Subhanaka Allahumma wa bihamdika, wa tabarakasmuka, wa ta'ala jadduka, wa la ilaha ghayruk",
+                urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے، تیرا نام بابرکت ہے، تیری شان بلند ہے اور تیرے سوا کوئی معبود نہیں۔",
+                tafseel: "یہ نماز شروع کرنے کی دعا ہے۔ نبی کریم ﷺ نماز شروع کرتے وقت یہ پڑھتے تھے۔",
+                hawala: "Sunan Abi Dawud 776 (Aisha RA) - Sahih by Albani"
+            },
+            {
+                category: "namaz",
+                title: "Ruku ki Tasbeeh",
+                arabic: "سُبْحَانَ رَبِّيَ الْعَظِيمِ",
+                roman: "Subhana Rabbiyal-'Azim",
+                urdu: "میرا رب پاک ہے، بہت عظمت والا۔",
+                tafseel: "رکوع میں کم از کم تین بار یہ تسبیح پڑھنی چاہیے۔ یہ اللہ کی عظمت کا اقرار ہے۔",
+                hawala: "Sahih Muslim 772 (Hudhayfah RA)"
+            },
+            {
+                category: "namaz",
+                title: "Sajde ki Tasbeeh",
+                arabic: "سُبْحَانَ رَبِّيَ الْأَعْلَى",
+                roman: "Subhana Rabbiyal-A'la",
+                urdu: "میرا رب پاک ہے، سب سے بلند۔",
+                tafseel: "سجدے میں کم از کم تین بار یہ تسبیح پڑھی جاتی ہے۔ بندہ سجدے میں اپنے رب کے سب سے قریب ہوتا ہے، اس لیے اس میں دعا کی کثرت کرنی چاہیے۔",
+                hawala: "Sahih Muslim 772 (Hudhayfah RA)"
+            },
+            {
+                category: "namaz",
+                title: "Tashahhud (At-Tahiyyat)",
+                arabic: "التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ",
+                roman: "At-tahiyyatu lillahi was-salawatu wat-tayyibat, as-salamu 'alayka ayyuhan-nabiyyu wa rahmatullahi wa barakatuh, as-salamu 'alayna wa 'ala 'ibadillahis-salihin, ashhadu an la ilaha illallah wa ashhadu anna Muhammadan 'abduhu wa rasuluh",
+                urdu: "تمام قولی، فعلی اور مالی عبادتیں اللہ کے لیے ہیں۔ اے نبی! آپ پر سلام ہو اور اللہ کی رحمت اور برکتیں ہوں۔ ہم پر اور اللہ کے نیک بندوں پر بھی سلام ہو۔ میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں اور میں گواہی دیتا ہوں کہ محمد ﷺ اس کے بندے اور رسول ہیں۔",
+                tafseel: "یہ نماز کی قعدہ (بیٹھک) کی دعا ہے۔ جب یہ پڑھی جاتی ہے تو آسمان و زمین کے ہر نیک بندے کو اس کا سلام پہنچتا ہے۔",
+                hawala: "Sahih al-Bukhari 831; Sahih Muslim 402"
+            },
+            {
+                category: "namaz",
+                title: "Darood Ibrahim",
+                arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ",
+                roman: "Allahumma salli 'ala Muhammadin wa 'ala aali Muhammad, kama sallayta 'ala Ibrahima wa 'ala aali Ibrahim, innaka Hamidum Majid. Allahumma barik 'ala Muhammadin wa 'ala aali Muhammad, kama barakta 'ala Ibrahima wa 'ala aali Ibrahim, innaka Hamidum Majid.",
+                urdu: "اے اللہ! محمد ﷺ اور آل محمد پر رحمت نازل فرما جیسے تو نے ابراہیم اور آل ابراہیم پر رحمت نازل فرمائی، بے شک تو تعریف کے لائق، بزرگی والا ہے۔ اے اللہ! محمد اور آل محمد پر برکت نازل فرما جیسے تو نے ابراہیم اور آل ابراہیم پر برکت نازل فرمائی، بے شک تو تعریف کے لائق، بزرگی والا ہے۔",
+                tafseel: "نماز کے آخری قعدے میں درود پڑھنا فرض یا واجب ہے۔ اس سے نماز مکمل ہوتی ہے اور اللہ کی رحمتیں نازل ہوتی ہیں۔",
+                hawala: "Sahih al-Bukhari 3370; Sahih Muslim 406"
+            },
+            {
+                category: "namaz",
+                title: "Salam ke baad Istighfar aur Dua",
+                arabic: "أَسْتَغْفِرُ اللَّهَ (3 بار) اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
+                roman: "Astaghfirullah (3 times) Allahumma antas-salamu wa minkas-salam, tabarakta ya dhal-jalali wal-ikram.",
+                urdu: "میں اللہ سے معافی مانگتا ہوں (3 بار)۔ اے اللہ! تو سلامتی والا ہے اور تجھ ہی سے سلامتی ہے، تو برکت والا ہے، اے جلال اور اکرام والے!",
+                tafseel: "نماز کے بعد بندہ اپنی کوتاہی کا اعتراف کرتا ہے۔ نبی کریم ﷺ ہر نماز کے بعد یہ پڑھتے تھے۔",
+                hawala: "Sahih Muslim 591 (Thawban RA)"
+            },
+
+            // --- SUBAH SHAM AZKAR (Hissa 1, 2 & 3) ---
+            {
+                category: "subah",
+                title: "Neend se uthne ki dua",
+                arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+                roman: "Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur",
+                urdu: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں (نیند کی) موت کے بعد زندہ کیا، اور اسی کی طرف اٹھ کر جانا ہے۔",
+                tafseel: "نیند کو ایک قسم کی موت کہا گیا ہے۔ صبح جاگنا ایک نئی زندگی ہے۔ دن کا پہلا کام اللہ کا شکر ہے۔",
+                hawala: "Sahih al-Bukhari 6312 (Hudhayfah RA)"
+            },
+            {
+                category: "subah",
+                title: "Ghar se nikalte waqt ki dua",
+                arabic: "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+                roman: "Bismillah, tawakkaltu 'alallah, wa la hawla wa la quwwata illa billah",
+                urdu: "اللہ کے نام کے ساتھ، میں نے اللہ پر بھروسا کیا، اور گناہ سے بچنے کی کوئی طاقت اور نیکی کی کوئی قوت نہیں مگر اللہ کی مدد سے۔",
+                tafseel: "گھر سے نکلتے وقت یہ پڑھنے سے اللہ کی طرف سے ہدایت، کفایت اور حفاظت کا وعدہ ہے۔",
+                hawala: "Sunan Abi Dawud 5095; Tirmidhi 3426 (Anas RA) - Sahih"
+            },
+            {
+                category: "subah",
+                title: "Subah ki jaame dua (Din ki bhalai)",
+                arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدُهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدُهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ",
+                roman: "Asbahna wa asbahal-mulku lillah... (Full dua)",
+                urdu: "ہم نے صبح کی اور بادشاہی اللہ ہی کی ہے، تمام تعریف اللہ کے لیے ہے... اے میرے رب! میں تجھ سے اس دن کی بھلائی اور اس کے بعد کی بھلائی مانگتا ہوں، اور اس دن کے شر اور اس کے بعد کے شر سے تیری پناہ چاہتا ہوں...",
+                tafseel: "یہ دعا اللہ کی بادشاہی کا اقرار ہے اور دن بھر کی بھلائی اور برائی سے پناہ کا ذریعہ ہے۔ شام کو 'أمسينا' (Amsayna) سے شروع کریں۔",
+                hawala: "Sahih Muslim 2723 (Abdullah bin Mas'ud RA)"
+            },
+            {
+                category: "subah",
+                title: "Har nuqsan se hifazat ki dua",
+                arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+                roman: "Bismillahil-ladhi la yadurru ma'asmihi shay'un fil-ardi wa la fis-sama'i wa huwas-Sami'ul-'Alim",
+                urdu: "اللہ کے نام کے ساتھ، جس کے نام کی موجودگی میں زمین و آسمان کی کوئی چیز نقصان نہیں پہنچا سکتی، اور وہ خوب سننے والا، خوب جاننے والا ہے۔",
+                tafseel: "صبح و شام 3 بار پڑھنے سے کوئی چیز نقصان نہیں پہنچا سکتی۔",
+                hawala: "Sunan Abi Dawud 5088 (Uthman RA) - Sahih"
+            },
+            {
+                category: "subah",
+                title: "Surah Ikhlas, Falaq, Nas (Teeno Qul)",
+                arabic: "قُلْ هُوَ اللَّهُ أَحَدٌ... قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ... قُلْ أَعُوذُ بِرَبِّ النَّاسِ...",
+                roman: "Qul huwallahu ahad... Qul a'udhu bi rabbil-falaq... Qul a'udhu bi rabbin-nas...",
+                urdu: "کہو وہ اللہ ایک ہے... کہو میں صبح کے رب کی پناہ میں آتا ہوں... کہو میں لوگوں کے رب کی پناہ میں آتا ہوں...",
+                tafseel: "صبح و شام 3-3 بار پڑھنا ہر چیز سے کافی ہے اور حفاظت کا ذریعہ ہے۔",
+                hawala: "Sunan Abi Dawud 5082 (Abdullah bin Khubayb RA) - Sahih"
+            },
+
+            // --- MUSHKIL & PARESHANI (Hissa 5) ---
+            {
+                category: "mushkil",
+                title: "Pareshani aur Takleef ki dua (Dua-ul-Karb)",
+                arabic: "لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ",
+                roman: "La ilaha illallahul-'Azimul-Halim, la ilaha illallahu Rabbul-'Arshil-'Azim, la ilaha illallahu Rabbus-samawati wa Rabbul-ardi wa Rabbul-'Arshil-Karim",
+                urdu: "اللہ کے سوا کوئی معبود نہیں جو عظمت والا، بردبار ہے۔ اللہ کے سوا کوئی معبود نہیں جو عرش عظیم کا رب ہے۔ اللہ کے سوا کوئی معبود نہیں جو آسمانوں کا رب، زمین کا رب اور عزت والے عرش کا رب ہے۔",
+                tafseel: "پریشانی کے وقت یہ پڑھنے سے دل کو سکون ملتا ہے اور اللہ کی عظمت یاد آتی ہے۔",
+                hawala: "Sahih al-Bukhari 6345; Sahih Muslim 2730"
+            },
+            {
+                category: "mushkil",
+                title: "Yunus AS ki dua (Har hajat ke liye)",
+                arabic: "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+                roman: "La ilaha illa anta subhanaka inni kuntu minaz-zalimin",
+                urdu: "تیرے سوا کوئی معبود نہیں، تو پاک ہے، بے شک میں ظالموں میں سے ہوں۔",
+                tafseel: "مچھلی کے پیٹ میں یونس AS نے یہ دعا کی اور نجات پائی۔ ہر مشکل اور حاجت کے لیے یہ پڑھی جا سکتی ہے۔",
+                hawala: "Sunan at-Tirmidhi 3505 - Sahih; Surah Al-Anbiya 21:87"
+            },
+            {
+                category: "mushkil",
+                title: "Gham, Fikr aur Qarz se panah",
+                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
+                roman: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal",
+                urdu: "اے اللہ! میں تیری پناہ مانگتا ہوں فکر اور غم سے، عاجزی اور سستی سے، بخل اور بزدلی سے، قرض کے بوجھ سے اور لوگوں کے غلبے سے۔",
+                tafseel: "نبی ﷺ اکثر یہ دعا پڑھتے تھے کیونکہ یہ وہ مشکلات ہیں جو انسان کو سب سے زیادہ توڑتی ہیں۔",
+                hawala: "Sahih al-Bukhari 6369 (Anas RA)"
+            },
+            {
+                category: "mushkil",
+                title: "Dushman ya Khauf ke waqt",
+                arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+                roman: "Hasbunallahu wa ni'mal-wakil",
+                urdu: "ہمیں اللہ کافی ہے اور وہ بہترین کارساز ہے۔",
+                tafseel: "حضرت ابراہیم AS نے آگ میں ڈالے جانے کے وقت یہ کہا تھا، اور نبی ﷺ نے بھی جنگ کے موقع پر یہ پڑھی۔",
+                hawala: "Sahih al-Bukhari 4563; Surah Aal-e-Imran 3:173"
+            },
+
+            // --- BIMARI & SHIFA (Hissa 5 & 6) ---
+            {
+                category: "bimari",
+                title: "Bimar ke liye shifa ki dua",
+                arabic: "اللَّهُمَّ رَبَّ النَّاسِ، أَذْهِبِ الْبَأْسَ، اشْفِ أَنْتَ الشَّافِي، لَا شِفَاءَ إِلَّا شِفَاؤُكَ، شِفَاءً لَا يُغَادِرُ سَقَمًا",
+                roman: "Allahumma Rabban-nas, adhhibil-ba's, ishfi antash-Shafi, la shifa'a illa shifa'uk, shifa'an la yughadiru saqama",
+                urdu: "اے اللہ! لوگوں کے رب! تکلیف دور فرما، شفا دے، تو ہی شفا دینے والا ہے، تیری شفا کے سوا کوئی شفا نہیں، ایسی شفا دے جو کوئی بیماری نہ چھوڑے۔",
+                tafseel: "نبی ﷺ بیمار پر اپنا دایاں ہاتھ پھیرتے اور یہ دعا پڑھتے تھے۔ شفا دینے والا صرف اللہ ہے۔",
+                hawala: "Sahih al-Bukhari 5675; Sahih Muslim 2191 (Aisha RA)"
+            },
+            {
+                category: "bimari",
+                title: "Jism mein dard ho to",
+                arabic: "بِسْمِ اللَّهِ (3 بار) أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ (7 بار)",
+                roman: "Bismillah (3 times). A'udhu billahi wa qudratihi min sharri ma ajidu wa uhadhir (7 times).",
+                urdu: "اللہ کے نام سے (3 بار)۔ میں اللہ اور اس کی قدرت کی پناہ مانگتا ہوں اس چیز کے شر سے جو میں محسوس کرتا ہوں اور جس سے ڈرتا ہوں (7 بار)۔",
+                tafseel: "درد کی جگہ پر ہاتھ رکھ کر یہ مسنون علاج کریں۔ یہ ایک بہترین روحانی علاج ہے۔",
+                hawala: "Sahih Muslim 2202 (Uthman bin Abil-'As RA)"
+            },
+            {
+                category: "bimari",
+                title: "Ayyub AS ki dua (Sakht bimari mein)",
+                arabic: "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنْتَ أَرْحَمُ الرَّاحِمِينَ",
+                roman: "Anni massaniyad-durru wa anta arhamur-rahimin",
+                urdu: "مجھے تکلیف پہنچی ہے اور تو سب رحم کرنے والوں سے زیادہ رحم کرنے والا ہے۔",
+                tafseel: "حضرت ایوب AS نے لمبی بیماری میں صبر کیا اور یہ دعا کی۔ اللہ نے انہیں شفا دی۔",
+                hawala: "Surah Al-Anbiya 21:83"
+            },
+
+            // --- SONE SE PEHLE (Hissa 6) ---
+            {
+                category: "sone",
+                title: "Sone se pehle Ayatul Kursi",
+                arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ... (Full Ayat)",
+                roman: "Allahu la ilaha illa huwal-Hayyul-Qayyum...",
+                urdu: "اللہ کے سوا کوئی معبود نہیں، وہ زندہ ہے، سب کو تھامنے والا ہے...",
+                tafseel: "سوتے وقت پڑھنے سے اللہ کی طرف سے ایک نگہبان مقرر ہوتا ہے اور شیطان قریب نہیں آتا۔",
+                hawala: "Sahih al-Bukhari 2311 (Abu Hurayrah RA)"
+            },
+            {
+                category: "sone",
+                title: "Sone ki dua",
+                arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+                roman: "Bismika Allahumma amutu wa ahya",
+                urdu: "اے اللہ! تیرے ہی نام کے ساتھ میں مرتا ہوں (سوتا ہوں) اور جیتا ہوں (جاگتا ہوں)۔",
+                tafseel: "نیند کو موت کا بھائی کہا گیا ہے، اس لیے سوتے وقت اپنی جان اللہ کے سپرد کرنا۔",
+                hawala: "Sahih al-Bukhari 6324 (Hudhayfah RA)"
+            },
+            {
+                category: "sone",
+                title: "Tasbeeh-e-Fatima RA (Sone se pehle)",
+                arabic: "سُبْحَانَ اللَّهِ (33) الْحَمْدُ لِلَّهِ (33) اللَّهُ أَكْبَرُ (34)",
+                roman: "Subhanallah (33), Alhamdulillah (33), Allahu Akbar (34)",
+                urdu: "اللہ پاک ہے (33 بار)۔ سب تعریف اللہ کے لیے ہے (33 بار)۔ اللہ سب سے بڑا ہے (34 بار)۔",
+                tafseel: "فاطمہ RA نے کام کے لیے خادم مانگا تو نبی ﷺ نے یہ بتایا کہ یہ خادم سے بہتر ہے۔",
+                hawala: "Sahih al-Bukhari 3113; Sahih Muslim 2727"
+            }
+        ];
+
+        // Render Function
+        function renderDuas(filterText = "", category = "all") {
+            const container = document.getElementById('duaContainer');
+            container.innerHTML = '';
+
+            const filtered = allDuas.filter(dua => {
+                const matchesSearch = dua.title.toLowerCase().includes(filterText.toLowerCase()) || 
+                                      dua.roman.toLowerCase().includes(filterText.toLowerCase()) || 
+                                      dua.urdu.includes(filterText);
+                const matchesCategory = category === 'all' || dua.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Koi Dua nahi mili.</p>';
+                return;
+            }
+
+            filtered.forEach((dua, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">${dua.title}</h3>
+                    
+                    <div class="arabic" onclick="speakText('${dua.arabic.replace(/'/g, "\\'")}', 'ar')">
+                        ${dua.arabic}
+                        <button class="play-btn">🔊 AI Awaz</button>
+                    </div>
+                    
+                    <div class="roman">${dua.roman}</div>
+                    
+                    <div class="urdu" onclick="speakText('${dua.urdu.replace(/'/g, "\\'")}', 'ur')">
+                        ${dua.urdu}
+                        <button class="play-btn">🔊 AI Awaz</button>
+                    </div>
+                    
+                    <div class="tafseel-box">
+                        <span class="tafseel-title">📖 Tafseel / Faida:</span>
+                        <div class="tafseel-text">${dua.tafseel}</div>
+                    </div>
+                    
+                    <div class="hawala">📍 Hawala: ${dua.hawala}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Search Logic
+        let currentCategory = 'all';
+        function filterCards() {
+            const query = document.getElementById('searchInput').value;
+            renderDuas(query, currentCategory);
+        }
+
+        // Category Logic
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const query = document.getElementById('searchInput').value;
+            renderDuas(query, cat);
+        }
+
+        // Initialize
+        renderDuas();
+    </script>
+</body>
+</html>

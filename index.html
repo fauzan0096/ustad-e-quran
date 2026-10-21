@@ -77,6 +77,8 @@
         .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 10px 20px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 3000; font-size: 14px;}
         .toast.show { opacity: 1; }
         .hidden { display: none !important; }
+        
+        .score-badge { display: inline-block; background: var(--secondary); color: #000; padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -103,12 +105,14 @@
             </div>
         </header>
 
+        <!-- Main Nav Updated -->
         <nav class="main-nav">
             <button class="nav-btn active" onclick="switchTab('courseTab', this)">📚 Sabaq (50 Days)</button>
-            <button class="nav-btn" onclick="switchTab('dictTab', this)">📖 Dictionary</button>
-            <button class="nav-btn" onclick="switchTab('gamesTab', this)">🎮 Games</button>
+            <button class="nav-btn" onclick="window.location.href='dua.html'">🤲 Duaein</button>
+            <button class="nav-btn" onclick="switchTab('gamesTab', this)">🎮 Games (100 GK)</button>
         </nav>
 
+        <!-- Course Tab -->
         <div id="courseTab" class="view-section active">
             <div class="day-header">
                 <h2 id="dayTitle">Day 1 - Learn 10 Words</h2>
@@ -118,28 +122,27 @@
             <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam Start Karein</button>
         </div>
 
-        <div id="dictTab" class="view-section">
-            <input type="text" class="search-box" id="dictSearch" placeholder="🔍 Unlocked Words Search Karein..." onkeyup="searchData('dictSearch', 'dictGrid')">
-            <div class="grid-container" id="dictGrid"></div>
-        </div>
-
+        <!-- Games Tab (100 GK) -->
         <div id="gamesTab" class="view-section">
             <div class="game-box">
-                <h2>🎮 Islamic GK Quiz</h2>
-                <p style="margin: 10px 0;">Apna ilm azmayein!</p>
+                <div class="score-badge" id="gkScore">Score: 0 / 0</div>
+                <h2>🎮 Islamic GK Quiz (100 Sawal)</h2>
+                <p style="margin: 10px 0; font-size: 14px;">Apna ilm azmayein!</p>
                 <div id="quizContainer"></div>
                 <button id="nextGkBtn" class="exam-btn hidden" onclick="loadRandomGK()">Next Sawal ➡️</button>
             </div>
         </div>
 
+        <!-- Bottom Nav -->
         <div class="bottom-nav">
             <button onclick="switchTab('courseTab', document.querySelectorAll('.nav-btn')[0])">📚<br>Sabaq</button>
-            <button onclick="switchTab('dictTab', document.querySelectorAll('.nav-btn')[1])">📖<br>Dict</button>
+            <button onclick="window.location.href='dua.html'">🤲<br>Duaein</button>
             <button onclick="switchTab('gamesTab', document.querySelectorAll('.nav-btn')[2])">🎮<br>Games</button>
             <button onclick="openFeedback()">✉️<br>Support</button>
         </div>
     </div>
 
+    <!-- Modals -->
     <div id="infoModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('infoModal').classList.add('hidden')">&times;</span>
@@ -239,26 +242,110 @@
         ];
 
         // ==========================================
-        // --- FIXED DATA FOR TABS (Duas & Azkar) ---
+        // --- 100 GK QUESTIONS ---
         // ==========================================
-        const namazDuaData = [
-            { arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", roman: "Subhanaka Allahumma wa bihamdika", urdu: "اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے", tafseel: "نماز کی پہلی دعا (استفتاح)۔ (سنن ابی داؤد 776)" },
-            { arabic: "رَبِّ اغْفِرْ لِي", roman: "Rabbighfir li", urdu: "اے میرے رب! مجھے بخش دے", tafseel: "دو سجدوں کے درمیان دعا۔ (ابن ماجہ 897)" },
-            { arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", roman: "Rabbana atina fid-dunya hasanah", urdu: "اے ہمارے رب! ہمیں دنیا میں بھلائی دے", tafseel: "سب سے زیادہ پڑھی جانے والی جامع دعا۔ (بخاری 6389)" },
-            { arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ", roman: "Allahumma antas-salam", urdu: "اے اللہ! تو سلامتی والا ہے", tafseel: "نماز کے بعد کی دعا۔ (مسلم 591)" }
-        ];
-        const azkarData = [
-            { arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا", roman: "Alhamdulillahil-ladhi ahyana", urdu: "تمام تعریف اللہ کے لیے ہے جس نے زندہ کیا", tafseel: "نیند سے بیدار ہونے کی دعا۔ (بخاری 6312)" },
-            { arabic: "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ", roman: "Bismillah, tawakkaltu 'alallah", urdu: "اللہ کے نام سے، میں نے اللہ پر بھروسہ کیا", tafseel: "گھر سے نکلنے کی دعا۔ (ابو داؤد 5095)" }
-        ];
-        const quranWordsData = [
-            { arabic: "بَعُوضَة", roman: "Ba'oodah", urdu: "مچھر", tafseel: "قرآن میں مچھر کی مثال (البقرہ 26)۔" },
-            { arabic: "قِثَّاء", roman: "Qiththa'a", urdu: "ککڑی", tafseel: "بنی اسرائیل کی خوراک۔" }
-        ];
         const gkQuestions = [
             { q: "Islam mein kitne Arkaan (pillars) hain?", options: ["3", "5", "7", "10"], correct: 1 },
             { q: "Quran kis Nabi par nazil hua?", options: ["Musa (AS)", "Isa (AS)", "Muhammad (SAW)", "Ibrahim (AS)"], correct: 2 },
-            { q: "Pehle Nabi kaun the?", options: ["Nuh (AS)", "Aadam (AS)", "Ibrahim (AS)", "Musa (AS)"], correct: 1 }
+            { q: "Pehle Nabi kaun the?", options: ["Nuh (AS)", "Aadam (AS)", "Ibrahim (AS)", "Musa (AS)"], correct: 1 },
+            { q: "Quran mein kitni Surah hain?", options: ["100", "114", "120", "99"], correct: 1 },
+            { q: "Quran ki sabse lambi Surah kaun si hai?", options: ["Al-Fatiha", "Al-Baqarah", "Al-Imran", "An-Nisa"], correct: 1 },
+            { q: "Quran ki sabse choti Surah kaun si hai?", options: ["Al-Ikhlas", "Al-Kawthar", "Al-Asr", "An-Nas"], correct: 1 },
+            { q: "Namaz mein kitni rak'at Fajr ki farz hain?", options: ["2", "3", "4", "5"], correct: 0 },
+            { q: "Namaz mein kitni rak'at Maghrib ki farz hain?", options: ["2", "3", "4", "5"], correct: 1 },
+            { q: "Namaz mein kitni rak'at Isha ki farz hain?", options: ["2", "3", "4", "5"], correct: 2 },
+            { q: "Namaz mein kitni rak'at Zuhr ki farz hain?", options: ["2", "3", "4", "5"], correct: 2 },
+            { q: "Namaz mein kitni rak'at Asr ki farz hain?", options: ["2", "3", "4", "5"], correct: 2 },
+            { q: "Roza kis mahine mein farz hai?", options: ["Shaban", "Ramzan", "Rajab", "Muharram"], correct: 1 },
+            { q: "Hajj kis mahine mein ada kiya jata hai?", options: ["Ramzan", "Muharram", "Zil-Hijjah", "Shawwal"], correct: 2 },
+            { q: "Zakat kitne hisse par farz hai?", options: ["1%", "2.5%", "5%", "10%"], correct: 1 },
+            { q: "Qibla kahan hai?", options: ["Madinah", "Makkah", "Jerusalem", "Taif"], correct: 1 },
+            { q: "Kaaba kis sheher mein hai?", options: ["Madinah", "Makkah", "Jeddah", "Taif"], correct: 1 },
+            { q: "Masjid-e-Nabvi kis sheher mein hai?", options: ["Makkah", "Madinah", "Jerusalem", "Damascus"], correct: 1 },
+            { q: "Quran kis zaban mein nazil hua?", options: ["Urdu", "Farsi", "Arabic", "Hebrew"], correct: 2 },
+            { q: "Pehli wahy kis ghare mein hui?", options: ["Hira", "Safa", "Marwa", "Arafat"], correct: 0 },
+            { q: "Kis Nabi ko 'Khalilullah' kaha jata hai?", options: ["Musa (AS)", "Ibrahim (AS)", "Isa (AS)", "Nuh (AS)"], correct: 1 },
+            { q: "Kis Nabi ko 'Kalimullah' kaha jata hai?", options: ["Musa (AS)", "Ibrahim (AS)", "Isa (AS)", "Nuh (AS)"], correct: 0 },
+            { q: "Kis Nabi ko 'Ruhullah' kaha jata hai?", options: ["Musa (AS)", "Ibrahim (AS)", "Isa (AS)", "Nuh (AS)"], correct: 2 },
+            { q: "Kis Nabi ko 'Zabihullah' kaha jata hai?", options: ["Ismail (AS)", "Ishaq (AS)", "Yaqub (AS)", "Yusuf (AS)"], correct: 0 },
+            { q: "Kis Nabi ki qaum par pathar barsaye gaye?", options: ["Nuh (AS)", "Lut (AS)", "Hud (AS)", "Salih (AS)"], correct: 1 },
+            { q: "Kis Nabi ne kashti banai?", options: ["Nuh (AS)", "Musa (AS)", "Ibrahim (AS)", "Isa (AS)"], correct: 0 },
+            { q: "Kis Nabi ko machhli ne nigal liya?", options: ["Yunus (AS)", "Ayyub (AS)", "Yusuf (AS)", "Musa (AS)"], correct: 0 },
+            { q: "Kis Nabi ne sabr ki misaal di?", options: ["Yunus (AS)", "Ayyub (AS)", "Yusuf (AS)", "Musa (AS)"], correct: 1 },
+            { q: "Kis Nabi ko putron ne kuwein mein dala?", options: ["Yusuf (AS)", "Yunus (AS)", "Musa (AS)", "Isa (AS)"], correct: 0 },
+            { q: "Kis Nabi ka naam Quran mein sabse zyada baar aaya?", options: ["Musa (AS)", "Ibrahim (AS)", "Isa (AS)", "Muhammad (SAW)"], correct: 0 },
+            { q: "Muhammad (SAW) ki walida ka naam kya tha?", options: ["Amina", "Khadija", "Fatima", "Halima"], correct: 0 },
+            { q: "Muhammad (SAW) ke walid ka naam kya tha?", options: ["Abdullah", "Abdul Muttalib", "Abu Talib", "Hamza"], correct: 0 },
+            { q: "Nabi (SAW) ka pehla nikah kis se hua?", options: ["Aisha (RA)", "Khadija (RA)", "Hafsa (RA)", "Zainab (RA)"], correct: 1 },
+            { q: "Nabi (SAW) ko kis umar mein Nabuwat mili?", options: ["30", "35", "40", "45"], correct: 2 },
+            { q: "Nabi (SAW) ki wafat kis umar mein hui?", options: ["60", "63", "65", "70"], correct: 1 },
+            { q: "Nabi (SAW) ki wafat kis saal mein hui?", options: ["10 AH", "11 AH", "12 AH", "13 AH"], correct: 1 },
+            { q: "Hijrat kis saal hui?", options: ["1 AH", "5 AH", "10 AH", "13 Nabuwat"], correct: 3 },
+            { q: "Hijrat e Madinah ke baad pehli masjid kaun si banai?", options: ["Masjid-e-Quba", "Masjid-e-Nabvi", "Masjid-e-Aqsa", "Masjid-e-Haram"], correct: 0 },
+            { q: "Jang-e-Badr kis saal hui?", options: ["1 AH", "2 AH", "3 AH", "4 AH"], correct: 1 },
+            { q: "Jang-e-Uhud kis saal hui?", options: ["1 AH", "2 AH", "3 AH", "4 AH"], correct: 2 },
+            { q: "Jang-e-Khandaq kis saal hui?", options: ["3 AH", "4 AH", "5 AH", "6 AH"], correct: 2 },
+            { q: "Fatah Makkah kis saal hui?", options: ["6 AH", "7 AH", "8 AH", "9 AH"], correct: 2 },
+            { q: "Quran ka pehla kalima kya hai?", options: ["Bismillah", "Alhamdulillah", "La ilaha illallah", "Allahu Akbar"], correct: 0 },
+            { q: "Quran ki pehli Surah kaun si hai?", options: ["Al-Baqarah", "Al-Fatiha", "Al-Ikhlas", "An-Nas"], correct: 1 },
+            { q: "Quran ki aakhri Surah kaun si hai?", options: ["Al-Fatiha", "Al-Baqarah", "Al-Ikhlas", "An-Nas"], correct: 3 },
+            { q: "Quran mein kitne Sajde hain?", options: ["13", "14", "15", "16"], correct: 1 },
+            { q: "Quran mein kitne Nabiyon ka zikr hai?", options: ["20", "25", "30", "35"], correct: 1 },
+            { q: "Quran mein kitne Jannat ke darwaze hain?", options: ["5", "6", "7", "8"], correct: 3 },
+            { q: "Quran mein kitne Jahannam ke darwaze hain?", options: ["5", "6", "7", "8"], correct: 2 },
+            { q: "Farz namaz ke baad kitni sunnat padhna afzal hai?", options: ["2", "4", "6", "8"], correct: 1 },
+            { q: "Juma ki namaz kis din farz hai?", options: ["Somwar", "Mangal", "Juma", "Itwar"], correct: 2 },
+            { q: "Eid ki namaz kitni rak'at hoti hai?", options: ["2", "4", "6", "8"], correct: 0 },
+            { q: "Janaza ki namaz mein kitni takbiren hoti hain?", options: ["2", "3", "4", "5"], correct: 2 },
+            { q: "Taraweeh ki namaz kis mahine mein padhi jati hai?", options: ["Shaban", "Ramzan", "Rajab", "Muharram"], correct: 1 },
+            { q: "Aitkaf kis mahine mein hota hai?", options: ["Shaban", "Ramzan", "Rajab", "Muharram"], correct: 1 },
+            { q: "Lailatul Qadr kis mahine mein hoti hai?", options: ["Shaban", "Ramzan", "Rajab", "Muharram"], correct: 1 },
+            { q: "Qurbani kis mahine mein hoti hai?", options: ["Ramzan", "Muharram", "Zil-Hijjah", "Shawwal"], correct: 2 },
+            { q: "Ashura kis mahine mein hota hai?", options: ["Ramzan", "Muharram", "Rajab", "Shaban"], correct: 1 },
+            { q: "Shab-e-Barat kis mahine mein hoti hai?", options: ["Rajab", "Shaban", "Ramzan", "Shawwal"], correct: 1 },
+            { q: "Shab-e-Miraj kis mahine mein hoti hai?", options: ["Rajab", "Shaban", "Ramzan", "Shawwal"], correct: 0 },
+            { q: "Islam mein kitni kitaben nazil hui hain?", options: ["2", "3", "4", "5"], correct: 2 },
+            { q: "Taurat kis Nabi par nazil hui?", options: ["Musa (AS)", "Isa (AS)", "Dawud (AS)", "Muhammad (SAW)"], correct: 0 },
+            { q: "Injeel kis Nabi par nazil hui?", options: ["Musa (AS)", "Isa (AS)", "Dawud (AS)", "Muhammad (SAW)"], correct: 1 },
+            { q: "Zabur kis Nabi par nazil hui?", options: ["Musa (AS)", "Isa (AS)", "Dawud (AS)", "Muhammad (SAW)"], correct: 2 },
+            { q: "Quran kis Nabi par nazil hua?", options: ["Musa (AS)", "Isa (AS)", "Dawud (AS)", "Muhammad (SAW)"], correct: 3 },
+            { q: "Sahaba ki tadad kitni thi Jang-e-Badr mein?", options: ["313", "300", "500", "1000"], correct: 0 },
+            { q: "Sahaba ki tadad kitni thi Fatah Makkah ke waqt?", options: ["1000", "5000", "10000", "20000"], correct: 2 },
+            { q: "Pehle Khalifa kaun the?", options: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], correct: 1 },
+            { q: "Doosre Khalifa kaun the?", options: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], correct: 0 },
+            { q: "Teesre Khalifa kaun the?", options: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], correct: 2 },
+            { q: "Chauthe Khalifa kaun the?", options: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], correct: 3 },
+            { q: "Nabi (SAW) ke chacha ka naam kya tha jo Badr mein shaheed hue?", options: ["Abu Talib", "Hamza", "Abbas", "Abu Lahab"], correct: 1 },
+            { q: "Nabi (SAW) ki phuphi ka naam kya tha?", options: ["Safiya", "Amina", "Halima", "Sumayya"], correct: 0 },
+            { q: "Pehli shaheeda aurat kaun thi?", options: ["Khadija (RA)", "Sumayya (RA)", "Aisha (RA)", "Fatima (RA)"], correct: 1 },
+            { q: "Nabi (SAW) ke sahaba mein sabse zyada hadees riwayat karne wale kaun hain?", options: ["Abu Hurayrah (RA)", "Aisha (RA)", "Ibn Umar (RA)", "Anas (RA)"], correct: 0 },
+            { q: "Quran ki sabse azeem aayat kaun si hai?", options: ["Ayatul Kursi", "Ayatul Birr", "Ayatul Noor", "Ayatul Rahma"], correct: 0 },
+            { q: "Surah Yaseen ko Quran ka kya kaha jata hai?", options: ["Dil", "Noor", "Hidayat", "Shifa"], correct: 0 },
+            { q: "Surah Fatiha ko kya kaha jata hai?", options: ["Ummul Quran", "Quran ka dil", "Quran ka noor", "Quran ki jaan"], correct: 0 },
+            { q: "Quran mein kitne Manzil hain?", options: ["5", "6", "7", "8"], correct: 2 },
+            { q: "Quran mein kitne Ruku hain?", options: ["500", "540", "558", "600"], correct: 2 },
+            { q: "Quran mein kitne Ayaat hain?", options: ["5000", "6000", "6236", "7000"], correct: 2 },
+            { q: "Quran mein kitne Juz hain?", options: ["20", "25", "30", "40"], correct: 2 },
+            { q: "Namaz mein kitne Farz hain?", options: ["5", "6", "7", "8"], correct: 0 },
+            { q: "Wudu mein kitne Farz hain?", options: ["3", "4", "5", "6"], correct: 1 },
+            { q: "Ghusl mein kitne Farz hain?", options: ["2", "3", "4", "5"], correct: 1 },
+            { q: "Tayammum mein kitne Farz hain?", options: ["2", "3", "4", "5"], correct: 0 },
+            { q: "Zakat kis par farz hai?", options: ["Har musalman par", "Sahib-e-Nisab par", "Bachon par", "Buzurgon par"], correct: 1 },
+            { q: "Hajj kis par farz hai?", options: ["Har musalman par", "Sahib-e-Istitaat par", "Ameeron par", "Buzurgon par"], correct: 1 },
+            { q: "Roza kis par farz hai?", options: ["Har musalman par", "Baligh aur sehatmand par", "Bachon par", "Buzurgon par"], correct: 1 },
+            { q: "Nabi (SAW) ne kitne Hajj kiye?", options: ["1", "2", "3", "4"], correct: 0 },
+            { q: "Nabi (SAW) ne kitne Umrah kiye?", options: ["1", "2", "3", "4"], correct: 3 },
+            { q: "Nabi (SAW) ki kitni biwiyan thi?", options: ["9", "11", "13", "15"], correct: 1 },
+            { q: "Nabi (SAW) ke kitne bachche the?", options: ["5", "6", "7", "8"], correct: 2 },
+            { q: "Nabi (SAW) ke kitne sahaba ko Jannat ki khushkhabri di gayi?", options: ["8", "9", "10", "11"], correct: 2 },
+            { q: "Quran mein sabse pehle kis Surah ki aayat nazil hui?", options: ["Al-Fatiha", "Al-Alaq", "Al-Baqarah", "Al-Muddassir"], correct: 1 },
+            { q: "Quran ki sabse aakhri aayat kis Surah mein hai?", options: ["Al-Baqarah", "Al-Nas", "Al-Fatiha", "Al-Ikhlas"], correct: 0 },
+            { q: "Nabi (SAW) ka mubarak naam 'Ahmad' kis Surah mein aaya hai?", options: ["Al-Baqarah", "Al-Imran", "As-Saff", "Al-Fath"], correct: 2 },
+            { q: "Nabi (SAW) ka mubarak naam 'Muhammad' kis Surah mein aaya hai?", options: ["Al-Baqarah", "Al-Imran", "Al-Fath", "Al-Ahzab"], correct: 1 },
+            { q: "Quran mein kitne Surah Makki hain?", options: ["86", "28", "50", "60"], correct: 0 },
+            { q: "Quran mein kitne Surah Madani hain?", options: ["86", "28", "50", "60"], correct: 1 },
+            { q: "Jannat ka doosra naam kya hai?", options: ["Jahannam", "Firdaws", "Naar", "Saqar"], correct: 1 },
+            { q: "Jahannam ka doosra naam kya hai?", options: ["Jannat", "Firdaws", "Naar", "Saqar"], correct: 2 }
         ];
 
         // ==========================================
@@ -269,6 +356,9 @@
         let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
         let userRole = localStorage.getItem('userRole') || 'guest';
+        
+        let gkScoreCount = 0;
+        let gkTotalCount = 0;
 
         function handleLogin() {
             const pass = document.getElementById('passwordInput').value;
@@ -290,7 +380,6 @@
 
         function initApp() {
             renderCourse();
-            renderDictionary();
             loadRandomGK();
             updateStreak();
         }
@@ -342,34 +431,7 @@
             }
         }
 
-        function renderDictionary() {
-            const grid = document.getElementById('dictGrid');
-            grid.innerHTML = '';
-            let allWords = [];
-            // Show all unlocked words
-            for(let i=0; i < currentDay && i < courseData.length; i++) {
-                allWords = allWords.concat(courseData[i].words);
-            }
-
-            if(allWords.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:gray;">Koi lafz unlock nahi hua.</p>';
-                return;
-            }
-
-            allWords.forEach(word => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="arabic" onclick="speakText('${word.a}', 'ar')">${word.a}</div>
-                    <div class="roman">${word.r}</div>
-                    <div class="urdu" onclick="speakText('${word.u}', 'ur')">${word.u}</div>
-                    <button class="tafseel-btn" onclick="showTafseel('${word.a}', '${word.u}', '${word.t}')">📖 Tafseel Padhein</button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function changeAdminDay(day) { currentDay = parseInt(day); renderCourse(); renderDictionary(); }
+        function changeAdminDay(day) { currentDay = parseInt(day); renderCourse(); }
 
         function speakText(text, lang) {
             window.speechSynthesis.cancel();
@@ -388,14 +450,6 @@
                 if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: shareTxt }).catch(console.error);
                 else { navigator.clipboard.writeText(shareTxt); showToast("📋 Copy ho gaya!"); }
             };
-        }
-
-        function searchData(inputId, gridId) {
-            const filter = document.getElementById(inputId).value.toLowerCase();
-            const cards = document.getElementById(gridId).getElementsByClassName('card');
-            for (let i = 0; i < cards.length; i++) {
-                cards[i].style.display (cards[i].textContent.toLowerCase().indexOf(filter) > -1) ? "" : "none";
-            }
         }
 
         function startWordExam() {
@@ -437,26 +491,39 @@
             if (score >= 8) {
                 res.innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`; res.style.color = "green";
                 if(userRole !== 'admin') { currentDay++; localStorage.setItem('currentDay', currentDay); }
-                setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); renderDictionary(); }, 2000);
+                setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
             } else {
                 res.innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye.`; res.style.color = "red";
                 document.getElementById('submitExamBtn').style.display = 'block';
             }
         }
 
+        // GK Logic
         function loadRandomGK() {
             const q = gkQuestions[Math.floor(Math.random() * gkQuestions.length)];
-            let html = `<h3 style="margin-bottom:15px;">${q.q}</h3>`;
+            let html = `<h3 style="margin-bottom:15px; min-height: 50px;">${q.q}</h3>`;
             q.options.forEach((o, i) => html += `<button class="option-btn" onclick="checkGK(this, ${i}, ${q.correct})">${o}</button>`);
             document.getElementById('quizContainer').innerHTML = html;
             document.getElementById('nextGkBtn').classList.add('hidden');
+            updateGkScore();
         }
 
         function checkGK(btn, sel, cor) {
             document.querySelectorAll('#quizContainer .option-btn').forEach(b => b.disabled = true);
-            if(sel === cor) btn.classList.add('correct');
-            else { btn.classList.add('wrong'); document.querySelectorAll('#quizContainer .option-btn')[cor].classList.add('correct'); }
+            if(sel === cor) {
+                btn.classList.add('correct');
+                gkScoreCount++;
+            } else { 
+                btn.classList.add('wrong'); 
+                document.querySelectorAll('#quizContainer .option-btn')[cor].classList.add('correct'); 
+            }
+            gkTotalCount++;
+            updateGkScore();
             document.getElementById('nextGkBtn').classList.remove('hidden');
+        }
+
+        function updateGkScore() {
+            document.getElementById('gkScore').innerText = `Score: ${gkScoreCount} / ${gkTotalCount}`;
         }
 
         function switchTab(tabId, btn) {
