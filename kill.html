@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Reset - Quraan Ustad</title>
+    <style>
+        body { font-family: sans-serif; background: #0F4C3A; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; padding: 20px; margin: 0; }
+        .box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; max-width: 400px; width: 100%; }
+        h1 { margin-bottom: 15px; }
+        p { margin: 10px 0; }
+        .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #D4AF37; border-radius: 50%; width: 40px; height: 40px; margin: 20px auto; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .success { color: #6ee7b7; font-weight: bold; }
+        .error { color: #ff6b6b; }
+        .log { font-size: 12px; text-align: left; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-top: 15px; max-height: 150px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🔄 App Reset</h1>
+        <div class="spinner" id="spinner"></div>
+        <p id="status">Purana cache clear ho raha hai...</p>
+        <div class="log" id="log"></div>
+    </div>
+    <script>
+        async function resetApp() {
+            const status = document.getElementById('status');
+            const log = document.getElementById('log');
+            const spinner = document.getElementById('spinner');
+            let steps = [];
+            const addLog = (msg) => { steps.push(msg); log.innerHTML = steps.join('<br>'); };
+
+            try {
+                // 1. Unregister all Service Workers
+                if ('serviceWorker' in navigator) {
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    for (const reg of regs) await reg.unregister();
+                    addLog(`✅ ${regs.length} Service Worker(s) deleted`);
+                }
+
+                // 2. Delete all caches
+                if ('caches' in window) {
+                    const names = await caches.keys();
+                    for (const name of names) await caches.delete(name);
+                    addLog(`✅ ${names.length} Cache(s) deleted`);
+                }
+
+                // 3. Clear ONLY login state (keep progress)
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userRole');
+                try { sessionStorage.clear(); } catch(e) {}
+                addLog('✅ Login state reset (Progress safe hai)');
+
+                status.textContent = '✅ Reset Complete! Redirecting...';
+                status.className = 'success';
+                spinner.style.display = 'none';
+                addLog('⏳ index.html load ho raha hai...');
+
+                setTimeout(() => {
+                    window.location.href = 'index.html?v=' + Date.now();
+                }, 2000);
+            } catch (e) {
+                status.textContent = '❌ Error: ' + e.message;
+                status.className = 'error';
+                spinner.style.display = 'none';
+                addLog('❌ ' + e.message);
+            }
+        }
+        resetApp();
+    </script>
+</body>
+</html>
