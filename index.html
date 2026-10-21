@@ -351,8 +351,12 @@
         // ==========================================
         // --- APP LOGIC ---
         // ==========================================
-        const ADMIN_PASS = "Fauzan8087";
-        const GUEST_PASS = "quran123"; 
+        const ADMIN_HASH = "6ca505f99c1a064bed41ab770728c4c85211f9f3d87f144f23d6384f456342ee";
+        const GUEST_HASH = "1f2974518d71b5483b9a2e8db93b52f0799d3ad4485ad644c592b846f4450079";
+        async function sha256(text) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
         let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
         let userRole = localStorage.getItem('userRole') || 'guest';
@@ -360,11 +364,11 @@
         let gkScoreCount = 0;
         let gkTotalCount = 0;
 
-        function handleLogin() {
-            const pass = document.getElementById('passwordInput').value;
-            if (pass === ADMIN_PASS || pass === GUEST_PASS) {
+        async function handleLogin() {
+            const h = await sha256(document.getElementById('passwordInput').value);
+            if (h === ADMIN_HASH || h === GUEST_HASH) {
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userRole', pass === ADMIN_PASS ? 'admin' : 'guest');
+                localStorage.setItem('userRole', h === ADMIN_HASH ? 'admin' : 'guest');
                 location.reload();
             } else { document.getElementById('loginError').innerText = "Galat Password!"; }
         }
