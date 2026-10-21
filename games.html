@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games & GK - Quraan Ustad</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0F4C3A">
+    <script src="install.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #ffffff; --text: #333333; --text-light: #666; --shadow: 0 4px 15px rgba(0,0,0,0.05); --border: #ddd; }
+        [data-theme="dark"] { --primary: #1a1a2e; --secondary: #6ee7b7; --bg: #0f0f23; --card-bg: #1e1e36; --text: #eee; --text-light: #aaa; --shadow: 0 4px 15px rgba(0,0,0,0.3); --border: #333; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
+        header { background: linear-gradient(135deg, #0F4C3A 0%, #17695171 60%, #0F4C3A 100%); background-color: var(--primary); color: white; text-align: center; padding: 15px; border-bottom: 3px solid var(--secondary); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 18px rgba(0,0,0,0.18); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .header-controls { display: flex; gap: 10px; align-items: center; }
+        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: white; }
+        .main-nav { display: flex; justify-content: flex-start; overflow-x: auto; gap: 10px; margin: 15px auto; padding: 0 15px; max-width: 1200px; scrollbar-width: none; }
+        .main-nav::-webkit-scrollbar { display: none; }
+        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 14px; font-weight: 600; background: var(--card-bg); color: var(--text); box-shadow: var(--shadow); cursor: pointer; white-space: nowrap; }
+        .nav-btn.active { background: var(--primary); color: #fff; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .game-box { background: var(--card-bg); padding: 20px; border-radius: 18px; box-shadow: var(--shadow); text-align: center; max-width: 600px; margin: 0 auto 20px; border-top: 4px solid var(--secondary); }
+        .option-btn { padding: 12px; border: 2px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; margin-bottom: 10px; width: 100%; text-align: left; cursor: pointer; font-size: 15px; }
+        .option-btn.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+        .option-btn.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.9; }
+        .score-badge { display: inline-block; background: var(--secondary); color: #000; padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; width: 100%; }
+        .btn-gold { background: var(--secondary); color: #000; }
+        .hidden { display: none !important; }
+        .step-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .step-item { background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; text-align: left; transition: 0.2s; }
+        .step-item:hover { border-color: var(--primary); }
+        .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .match-item { padding: 15px; border-radius: 10px; border: 2px solid var(--border); cursor: pointer; font-weight: bold; text-align: center; font-size: 14px; }
+        .match-item.selected { border-color: var(--primary); background: rgba(15,76,58,0.1); }
+        .match-item.matched { border-color: #28a745; background: #d4edda; color: #155724; cursor: not-allowed; }
+        .surah-list { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+        .surah-item { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; text-align: right; font-size: 16px; font-family: 'Noto Nastaliq Urdu', serif; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <h1>🎮 Games & GK</h1>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <a href="index.html" style="color:white; text-decoration:none; font-size:20px;">🏠</a>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <nav class="main-nav">
+            <button class="nav-btn active" onclick="switchGame('wudu', this)">🚿 Wudu Steps</button>
+            <button class="nav-btn" onclick="switchGame('namaz', this)">🕌 Namaz</button>
+            <button class="nav-btn" onclick="switchGame('kalima', this)">📜 Kalima Match</button>
+            <button class="nav-btn" onclick="switchGame('surah', this)">📖 Surah Order</button>
+            <button class="nav-btn" onclick="switchGame('gk', this)">🧠 GK Quiz</button>
+        </nav>
+
+        <div id="wuduGame" class="game-box view-game">
+            <h2>🚿 Wudu ka Sahi Tareeqa</h2>
+            <p style="font-size: 14px; margin: 10px 0;">Steps ko sahi order mein lagayein.</p>
+            <div id="wuduSteps" class="step-list"></div>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn" onclick="checkWudu()">Check Karein</button>
+                <button class="btn btn-gold" onclick="resetWudu()">Reset</button>
+            </div>
+            <div id="wuduResult" style="margin-top:15px; font-weight:bold;"></div>
+        </div>
+
+        <div id="namazGame" class="game-box view-game hidden">
+            <h2>🕌 Namaz ke Arkaan</h2>
+            <p style="font-size: 14px; margin: 10px 0;">Arkaan ko sahi order mein lagayein.</p>
+            <div id="namazSteps" class="step-list"></div>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button class="btn" onclick="checkNamaz()">Check Karein</button>
+                <button class="btn btn-gold" onclick="resetNamaz()">Reset</button>
+            </div>
+            <div id="namazResult" style="margin-top:15px; font-weight:bold;"></div>
+        </div>
+
+        <div id="kalimaGame" class="game-box view-game hidden">
+            <h2>📜 Kalima Match</h2>
+            <p style="font-size: 14px; margin: 10px 0;">Kalima ko uske tarjume se match karein.</p>
+            <div id="kalimaGrid" class="match-grid"></div>
+            <div style="margin-top:15px;"><button class="btn btn-gold" onclick="resetKalima()">Reset Game</button></div>
+            <div id="kalimaResult" style="margin-top:15px; font-weight:bold;"></div>
+        </div>
+
+        <div id="surahGame" class="game-box view-game hidden">
+            <h2>📖 Surah Order</h2>
+            <p style="font-size: 14px; margin: 10px 0;">Surahs ko Quran ke order mein lagayein.</p>
+            <div id="surahList" class="surah-list"></div>
+            <div style="margin-top:15px;">
+                <button class="btn" onclick="checkSurah()">Check Karein</button>
+                <button class="btn btn-gold" onclick="resetSurah()">Reset</button>
+            </div>
+            <div id="surahResult" style="margin-top:15px; font-weight:bold;"></div>
+        </div>
+
+        <div id="gkGame" class="game-box view-game hidden">
+            <div class="score-badge" id="gkScore">Score: 0 / 0</div>
+            <h2>🧠 Islamic GK Quiz</h2>
+            <p style="margin: 10px 0; font-size: 14px;">Rasool, Sahaba, Quran, Allah</p>
+            <div id="quizContainer"></div>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button id="nextGkBtn" class="btn btn-gold hidden" onclick="nextGK()">Next ➡️</button>
+                <button id="gkExamBtn" class="btn" onclick="startGKExam()" style="display:none;">📝 25 Ka Exam</button>
+            </div>
+            <div id="gkExamContainer" class="hidden" style="margin-top:20px; text-align:left;">
+                <h3 style="color: var(--primary); margin-bottom:10px;">📝 Exam</h3>
+                <div id="gkExamQuestions"></div>
+                <button class="btn" onclick="submitGKExam()" style="margin-top:10px;">Submit Exam</button>
+                <div id="gkExamResult" style="margin-top:10px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) document.body.setAttribute('data-theme', 'dark');
+        function toggleTheme() { isDarkMode = !isDarkMode; document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light'); document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; localStorage.setItem('darkMode', isDarkMode); }
+        if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
+
+        function switchGame(game, btn) {
+            document.querySelectorAll('.view-game').forEach(v => v.classList.add('hidden'));
+            document.getElementById(game + 'Game').classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (game === 'wudu') initWudu();
+            else if (game === 'namaz') initNamaz();
+            else if (game === 'kalima') initKalima();
+            else if (game === 'surah') initSurah();
+            else if (game === 'gk') initGK();
+        }
+
+        // Wudu
+        const wuduCorrectOrder = ["Niyyat karein", "Haath dhoyein (3 bar)", "Kulli karein (3 bar)", "Naak mein paani dalein (3 bar)", "Munh dhoyein (3 bar)", "Kohniyon tak haath dhoyein (3 bar)", "Sar ka masah karein", "Kaanon ka masah karein", "Takhnon tak paun dhoyein (3 bar)"];
+        let wuduCurrentOrder = [];
+        function initWudu() { wuduCurrentOrder = [...wuduCorrectOrder].sort(() => Math.random() - 0.5); renderWudu(); document.getElementById('wuduResult').innerText = ''; }
+        function renderWudu() { const c = document.getElementById('wuduSteps'); c.innerHTML = ''; wuduCurrentOrder.forEach((s, i) => { const d = document.createElement('div'); d.className = 'step-item'; d.innerText = (i + 1) + '. ' + s; d.onclick = () => { if (i > 0) { [wuduCurrentOrder[i-1], wuduCurrentOrder[i]] = [wuduCurrentOrder[i], wuduCurrentOrder[i-1]]; renderWudu(); } }; c.appendChild(d); }); }
+        function checkWudu() { const ok = wuduCurrentOrder.every((s, i) => s === wuduCorrectOrder[i]); const r = document.getElementById('wuduResult'); if (ok) { r.innerText = "🎉 Mubarak ho! Sahi order."; r.style.color = "green"; } else { r.innerText = "❌ Galat order!"; r.style.color = "red"; } }
+        function resetWudu() { initWudu(); }
+
+        // Namaz
+        const namazCorrectOrder = ["Takbeer-e-Tahreema", "Qiyam", "Qirat", "Ruku", "Qaumah", "Sajdah", "Jalsa", "Sajdah (2)", "Qa'ada", "Salam"];
+        let namazCurrentOrder = [];
+        function initNamaz() { namazCurrentOrder = [...namazCorrectOrder].sort(() => Math.random() - 0.5); renderNamaz(); document.getElementById('namazResult').innerText = ''; }
+        function renderNamaz() { const c = document.getElementById('namazSteps'); c.innerHTML = ''; namazCurrentOrder.forEach((s, i) => { const d = document.createElement('div'); d.className = 'step-item'; d.innerText = (i + 1) + '. ' + s; d.onclick = () => { if (i > 0) { [namazCurrentOrder[i-1], namazCurrentOrder[i]] = [namazCurrentOrder[i], namazCurrentOrder[i-1]]; renderNamaz(); } }; c.appendChild(d); }); }
+        function checkNamaz() { const ok = namazCurrentOrder.every((s, i) => s === namazCorrectOrder[i]); const r = document.getElementById('namazResult'); if (ok) { r.innerText = "🎉 Mubarak ho!"; r.style.color = "green"; } else { r.innerText = "❌ Galat order!"; r.style.color = "red"; } }
+        function resetNamaz() { initNamaz(); }
+
+        // Kalima
+        const kalimaPairs = [
+            { kalima: "لَا إِلَهَ إِلَّا اللَّهُ", meaning: "اللہ کے سوا کوئی معبود نہیں" },
+            { kalima: "مُحَمَّدٌ رَسُولُ اللَّهِ", meaning: "محمد ﷺ اللہ کے رسول ہیں" },
+            { kalima: "سُبْحَانَ اللَّهِ", meaning: "اللہ پاک ہے" },
+            { kalima: "الْحَمْدُ لِلَّهِ", meaning: "تمام تعریف اللہ کے لیے ہے" },
+            { kalima: "اللَّهُ أَكْبَرُ", meaning: "اللہ سب سے بڑا ہے" }
+        ];
+        let selectedKalima = null, matchedCount = 0;
+        function initKalima() {
+            selectedKalima = null; matchedCount = 0;
+            const all = [];
+            kalimaPairs.forEach((p, i) => { all.push({ id: i, type: 'kalima', text: p.kalima }); all.push({ id: i, type: 'meaning', text: p.meaning }); });
+            const shuffled = all.sort(() => Math.random() - 0.5);
+            const c = document.getElementById('kalimaGrid'); c.innerHTML = '';
+            shuffled.forEach(item => { const d = document.createElement('div'); d.className = 'match-item'; d.innerText = item.text; d.dataset.id = item.id; d.dataset.type = item.type; d.onclick = () => selectKalima(d); c.appendChild(d); });
+            document.getElementById('kalimaResult').innerText = '';
+        }
+        function selectKalima(el) {
+            if (el.classList.contains('matched')) return;
+            if (!selectedKalima) { selectedKalima = el; el.classList.add('selected'); return; }
+            if (selectedKalima === el) { selectedKalima.classList.remove('selected'); selectedKalima = null; return; }
+            if (selectedKalima.dataset.id === el.dataset.id && selectedKalima.dataset.type !== el.dataset.type) {
+                selectedKalima.classList.remove('selected'); selectedKalima.classList.add('matched'); el.classList.add('matched'); matchedCount++; selectedKalima = null;
+                if (matchedCount === kalimaPairs.length) { document.getElementById('kalimaResult').innerText = "🎉 Sab match ho gaye!"; document.getElementById('kalimaResult').style.color = "green"; }
+            } else { selectedKalima.classList.remove('selected'); selectedKalima = null; }
+        }
+        function resetKalima() { initKalima(); }
+
+        // Surah
+        const surahCorrect = ["سورۃ الفاتحۃ", "سورۃ البقرۃ", "سورۃ آل عمران", "سورۃ النساء", "سورۃ المائدۃ", "سورۃ الانعام"];
+        let surahCurrent = [];
+        function initSurah() { surahCurrent = [...surahCorrect].sort(() => Math.random() - 0.5); renderSurah(); document.getElementById('surahResult').innerText = ''; }
+        function renderSurah() { const c = document.getElementById('surahList'); c.innerHTML = ''; surahCurrent.forEach((s, i) => { const d = document.createElement('div'); d.className = 'surah-item'; d.innerText = (i + 1) + '. ' + s; d.onclick = () => { if (i > 0) { [surahCurrent[i-1], surahCurrent[i]] = [surahCurrent[i], surahCurrent[i-1]]; renderSurah(); } }; c.appendChild(d); }); }
+        function checkSurah() { const ok = surahCurrent.every((s, i) => s === surahCorrect[i]); const r = document.getElementById('surahResult'); if (ok) { r.innerText = "🎉 Sahi order!"; r.style.color = "green"; } else { r.innerText = "❌ Galat order!"; r.style.color = "red"; } }
+        function resetSurah() { initSurah(); }
+
+        // GK
+        const gkQuestions = [
+            { q: "Quran kis Nabi par nazil hua?", options: ["Musa (AS)", "Isa (AS)", "Muhammad (SAW)", "Ibrahim (AS)"], correct: 2, cat: "Rasool" },
+            { q: "Pehle Nabi kaun the?", options: ["Nuh (AS)", "Aadam (AS)", "Ibrahim (AS)", "Musa (AS)"], correct: 1, cat: "Rasool" },
+            { q: "Nabi (SAW) ki wafat kis umar mein hui?", options: ["60", "63", "65", "70"], correct: 1, cat: "Rasool" },
+            { q: "Quran mein kitni Surah hain?", options: ["100", "114", "120", "99"], correct: 1, cat: "Quran" },
+            { q: "Quran ki sabse lambi Surah kaun si hai?", options: ["Al-Fatiha", "Al-Baqarah", "Al-Imran", "An-Nisa"], correct: 1, cat: "Quran" },
+            { q: "Quran ka pehla kalima kya hai?", options: ["Bismillah", "Alhamdulillah", "La ilaha illallah", "Allahu Akbar"], correct: 0, cat: "Quran" },
+            { q: "Pehle Khalifa kaun the?", options: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], correct: 1, cat: "Sahaba" },
+            { q: "Doosre Khalifa kaun the?", options: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], correct: 0, cat: "Sahaba" },
+            { q: "Nabi (SAW) ke chacha ka naam kya tha jo Badr mein shaheed hue?", options: ["Abu Talib", "Hamza", "Abbas", "Abu Lahab"], correct: 1, cat: "Sahaba" },
+            { q: "Allah ka 99 naam kya kehlate hain?", options: ["Asma-ul-Husna", "Asma-ul-Nabi", "Asma-ul-Quran", "Asma-ul-Sahaba"], correct: 0, cat: "Allah" },
+            { q: "Surah Al-Ikhlas mein Allah ki kitni sifaat bayan hui hain?", options: ["3", "4", "5", "6"], correct: 1, cat: "Allah" },
+            { q: "Allah ka naam 'Ar-Rahman' ka matlab kya hai?", options: ["Bohot Mehrban", "Bohot Bara", "Bohot Azeem", "Bohot Qadir"], correct: 0, cat: "Allah" },
+            { q: "Quran mein kitne Juz hain?", options: ["20", "25", "30", "40"], correct: 2, cat: "Quran" },
+            { q: "Hazrat Aisha (RA) ke walid ka naam kya tha?", options: ["Abu Bakr (RA)", "Umar (RA)", "Uthman (RA)", "Ali (RA)"], correct: 0, cat: "Sahaba" },
+            { q: "Nabi (SAW) ki pehli biwi kaun thi?", options: ["Aisha (RA)", "Khadija (RA)", "Hafsa (RA)", "Zainab (RA)"], correct: 1, cat: "Rasool" },
+            { q: "Quran ki sabse choti Surah kaun si hai?", options: ["Al-Ikhlas", "Al-Kawthar", "Al-Asr", "An-Nas"], correct: 1, cat: "Quran" },
+            { q: "Allah ne kitne din mein zameen aur aasman banaye?", options: ["3", "5", "6", "7"], correct: 2, cat: "Allah" },
+            { q: "Jannat ke darwaze kitne hain?", options: ["5", "6", "7", "8"], correct: 3, cat: "Allah" },
+            { q: "Nabi (SAW) ke kitne bachche the?", options: ["5", "6", "7", "8"], correct: 2, cat: "Rasool" },
+            { q: "Quran mein kitne Sahaba ka zikr hai?", options: ["1", "2", "3", "Bohot se"], correct: 3, cat: "Sahaba" },
+            { q: "Surah Al-Fatiha ko kya kaha jata hai?", options: ["Ummul Quran", "Quran ka dil", "Quran ka noor", "Quran ki jaan"], correct: 0, cat: "Quran" },
+            { q: "Allah ka naam 'Al-Malik' ka matlab kya hai?", options: ["Badshah", "Rahman", "Kareem", "Ghafoor"], correct: 0, cat: "Allah" },
+            { q: "Nabi (SAW) ko Nabuwat kis umar mein mili?", options: ["30", "35", "40", "45"], correct: 2, cat: "Rasool" },
+            { q: "Hazrat Umar (RA) ka daur-e-khilafat kitne saal raha?", options: ["5", "10", "12", "15"], correct: 1, cat: "Sahaba" },
+            { q: "Quran mein kitne Nabiyon ka zikr hai?", options: ["20", "25", "30", "35"], correct: 1, cat: "Rasool" },
+            { q: "Surah Yaseen ko Quran ka kya kaha jata hai?", options: ["Dil", "Noor", "Hidayat", "Shifa"], correct: 0, cat: "Quran" },
+            { q: "Allah ki kitni sifaat (attributes) hain jo Quran mein bayan hui hain?", options: ["50", "99", "100", "Beshumar"], correct: 3, cat: "Allah" },
+            { q: "Hazrat Uthman (RA) ko kya kaha jata hai?", options: ["Zul Noorain", "Siddiq", "Farooq", "Sher-e-Khuda"], correct: 0, cat: "Sahaba" },
+            { q: "Nabi (SAW) ka mubarak naam 'Ahmad' kis Surah mein aaya hai?", options: ["Al-Baqarah", "Al-Imran", "As-Saff", "Al-Fath"], correct: 2, cat: "Rasool" },
+            { q: "Quran mein kitne Sajde hain?", options: ["13", "14", "15", "16"], correct: 1, cat: "Quran" }
+        ];
+
+        let gkScoreCount = 0, gkTotalCount = 0, gkAskedIndices = [];
+        function initGK() { gkScoreCount = 0; gkTotalCount = 0; gkAskedIndices = []; document.getElementById('gkScore').innerText = "Score: 0 / 0"; document.getElementById('gkExamContainer').classList.add('hidden'); document.getElementById('gkExamBtn').style.display = 'none'; loadRandomGK(); }
+        function loadRandomGK() {
+            if (gkAskedIndices.length >= 25) {
+                document.getElementById('quizContainer').innerHTML = '<h3 style="color:var(--primary);">Aapne 25 sawal poore kar liye!</h3><p>Ab exam dein.</p>';
+                document.getElementById('nextGkBtn').classList.add('hidden'); document.getElementById('gkExamBtn').style.display = 'block'; return;
+            }
+            let idx; do { idx = Math.floor(Math.random() * gkQuestions.length); } while (gkAskedIndices.includes(idx) && gkAskedIndices.length < gkQuestions.length);
+            gkAskedIndices.push(idx); const q = gkQuestions[idx];
+            let html = `<h3 style="margin-bottom:15px;">${q.q}</h3>`;
+            q.options.forEach((o, i) => html += `<button class="option-btn" onclick="checkGK(this, ${i}, ${q.correct})">${o}</button>`);
+            document.getElementById('quizContainer').innerHTML = html;
+            document.getElementById('nextGkBtn').classList.add('hidden'); document.getElementById('gkExamBtn').style.display = 'none';
+        }
+        function checkGK(btn, sel, cor) {
+            document.querySelectorAll('#quizContainer .option-btn').forEach(b => b.disabled = true);
+            if(sel === cor) { btn.classList.add('correct'); gkScoreCount++; }
+            else { btn.classList.add('wrong'); document.querySelectorAll('#quizContainer .option-btn')[cor].classList.add('correct'); }
+            gkTotalCount++; document.getElementById('gkScore').innerText = `Score: ${gkScoreCount} / ${gkTotalCount}`;
+            document.getElementById('nextGkBtn').classList.remove('hidden');
+        }
+        function nextGK() { loadRandomGK(); }
+        function startGKExam() {
+            document.getElementById('quizContainer').innerHTML = '';
+            document.getElementById('gkExamContainer').classList.remove('hidden');
+            const c = document.getElementById('gkExamQuestions'); c.innerHTML = '';
+            const examQs = gkQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+            examQs.forEach((q, i) => {
+                let html = `<div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;"><p style="font-weight:bold;">${i + 1}. ${q.q}</p>`;
+                q.options.forEach((o, j) => { html += `<label style="display:block; margin:5px 0;"><input type="radio" name="gkq${i}" value="${j}"> ${o}</label>`; });
+                c.innerHTML += html + '</div>';
+            });
+            window.gkExamAnswers = examQs.map(q => q.correct);
+        }
+        function submitGKExam() {
+            let score = 0;
+            window.gkExamAnswers.forEach((ans, i) => {
+                const s = document.querySelector(`input[name="gkq${i}"]:checked`);
+                if (s && parseInt(s.value) === ans) score++;
+            });
+            const r = document.getElementById('gkExamResult');
+            if (score >= 8) { r.innerText = `🎉 Mubarak ho! ${score}/10. Aap GK expert hain!`; r.style.color = "green"; document.getElementById('gkExamBtn').style.display = 'none'; }
+            else { r.innerText = `😢 ${score}/10. 8 chahiye. Dobara koshish karein.`; r.style.color = "red"; }
+        }
+
+        initWudu();
+    </script>
+</body>
+</html>
