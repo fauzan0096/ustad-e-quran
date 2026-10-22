@@ -324,10 +324,16 @@
         let isCertExam = false;
 
         // --- Profiles (har naam ki alag history) ---
-        let profiles = lsJSONSafe('profiles', []);
+        let profiles = lsJSONSafe('profiles', []).filter(p => p && p.id !== 'p1' && p.name !== 'Meri Profile'); // purani default profile hatao
+        localStorage.setItem('profiles', JSON.stringify(profiles));
         let activeProfile = localStorage.getItem('activeProfile');
 
         function lsJSONSafe(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return Array.isArray(v) ? v : d; } catch(e) { return d; } }
+        // Abhi login user ka asli naam (certificate isi se banega)
+        function currentUserName() {
+            const p = profiles.find(x => x.id === activeProfile);
+            return p ? p.name : '';
+        }
         function pk(key) { return 'p_' + activeProfile + '_' + key; }
         function lsJSON(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e) { return d; } }
         function lsSave(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
@@ -650,12 +656,12 @@
                 if (score >= 40) {
                     if(window.QSSFX) QSSFX.win(); addXP(500);
                     document.getElementById('examResult').innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/50. Certificate tayyar hai!</span>`;
-                    const p = profiles.find(p => p.id === activeProfile);
+                    const certName = currentUserName() || 'Student';
                     setTimeout(() => { 
                         document.getElementById('examModal').classList.add('hidden'); 
-                        drawCertificateCanvas(p.name, currentDay >= 90, score, (canvas) => {
+                        drawCertificateCanvas(certName, currentDay >= 90, score, (canvas) => {
                             window.currentCertCanvas = canvas;
-                            window.currentCertName = p.name;
+                            window.currentCertName = certName;
                             window.currentCertIsGold = currentDay >= 90;
                             document.getElementById('certPreviewImg').src = canvas.toDataURL('image/png');
                             document.getElementById('certPreviewModal').classList.remove('hidden');
@@ -779,14 +785,18 @@
 
                 ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
                 ctx.fillText('Date / تاریخ: ' + dateStr, 150, 935);
-                const sx = W - 300;
+                const sx = W - 330; // signature block thoda andar, frame se bahar na jaye
                 if (sigImg.naturalWidth > 0) {
                     const sh = 120, sw = Math.min(sh * sigImg.naturalWidth / sigImg.naturalHeight, 260);
                     ctx.drawImage(sigImg, sx - sw / 2, 935 - sh - 4, sw, sh);
                 }
                 ctx.strokeStyle = '#55645C'; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.moveTo(sx - 170, 940); ctx.lineTo(sx + 170, 940); ctx.stroke();
-                ctx.textAlign = 'center'; ctx.direction = 'rtl'; ctx.fillStyle = '#0F4C3A'; ctx.font = '700 36px "Amiri", serif';
+                ctx.beginPath(); ctx.moveTo(sx - 210, 940); ctx.lineTo(sx + 210, 940); ctx.stroke();
+                ctx.textAlign = 'center'; ctx.direction = 'rtl'; ctx.fillStyle = '#0F4C3A';
+                // Lamba arabi naam: width ke hisab se font chhota, taaki frame ke andar rahe
+                let aSize = 36; const maxAW = 420;
+                ctx.font = `700 ${aSize}px "Amiri", serif`;
+                while (ctx.measureText(arabicName).width > maxAW && aSize > 18) { aSize -= 1; ctx.font = `700 ${aSize}px "Amiri", serif`; }
                 ctx.fillText(arabicName, sx, 985);
                 ctx.direction = 'ltr'; ctx.fillStyle = '#55645C'; ctx.font = '400 22px "Figtree", sans-serif';
                 ctx.fillText('Founder, Quraan Ustad', sx, 1025);
@@ -960,7 +970,10 @@
         document.addEventListener('click', function() { document.getElementById('userDrop').classList.add('hidden'); });
         function updateStreak() { document.getElementById('streakBadge').innerText = `🔥 ${parseInt(localStorage.getItem(pk('streak'))) || 1}`; document.getElementById('streakBadge').classList.remove('hidden'); }
         
-        if (localStorage.getItem('isLoggedIn') === 'true') { enterApp(); }
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            if (currentUserName()) { enterApp(); }
+            else { ['isLoggedIn', 'userRole', 'userId', 'activeProfile'].forEach(k => localStorage.removeItem(k)); } // purana login: naam ke saath dobara login karein
+        }
     </script>
     <script src="progress.js"></script>
 <script>
