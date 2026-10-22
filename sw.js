@@ -5,7 +5,7 @@
 // Cache-First + Range support for Audio (nasheed.mp3)
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v12';
+const CACHE_NAME = 'quran-ustad-auto-v13';
 // Audio ka alag cache: app update par bhaari mp3 dobara download na ho
 const AUDIO_CACHE = 'quran-ustad-audio-v1';
 
