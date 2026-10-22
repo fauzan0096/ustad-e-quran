@@ -5,9 +5,9 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
-// v20: naya login (pura naam + multi-user profiles) aur certificate naam fix — cache badalna zaroori hai
+// v21: naya login (pura naam + multi-user profiles) aur certificate naam fix — cache badalna zaroori hai
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v20';
+const CACHE_NAME = 'quran-ustad-auto-v21';
 
 const ASSETS = [
     './',

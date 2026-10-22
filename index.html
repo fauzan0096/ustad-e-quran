@@ -378,7 +378,7 @@
 
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userRole', role);
-            localStorage.setItem('userId', id);
+            localStorage.setItem('userId', role === 'admin' ? 'admin' : 'guest'); // purane scripts (progress.js/ui.js) isi ko padhte hain
             localStorage.setItem('activeProfile', id);
             location.reload();
         }
@@ -517,7 +517,7 @@
             const map = document.getElementById('journeyMap');
             let html = '<div class="j-line"></div>';
             courseData.forEach((d, i) => {
-                const isUnlocked = i + 1 <= currentDay;
+                const isUnlocked = userRole === 'admin' || i + 1 <= currentDay;
                 const isCurrent = i + 1 === currentDay;
                 html += `<div class="j-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCurrent ? 'current' : ''}" onclick="goToDay(${i+1})">
                     ${isUnlocked ? 'Day ' + (i+1) : '🔒'}
@@ -527,7 +527,7 @@
         }
 
         function goToDay(day) {
-            if (day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
+            if (userRole !== 'admin' && day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
             currentDay = day; localStorage.setItem(pk('currentDay'), day); renderCourse();
         }
 
@@ -754,10 +754,10 @@
                 while (ctx.measureText(userName).width > maxNameW && nameSize > 34) { nameSize -= 2; ctx.font = `700 ${nameSize}px "Amiri", serif`; }
                 ctx.textBaseline = 'alphabetic';
                 ctx.direction = /[\u0600-\u06FF\u0900-\u097F]/.test(userName) && /[\u0600-\u06FF]/.test(userName) ? 'rtl' : 'ltr';
-                ctx.fillText(userName, CX, 468);
+                ctx.fillText(userName, CX, 452);
                 ctx.direction = 'ltr'; ctx.textBaseline = 'middle';
                 ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 3;
-                ctx.beginPath(); ctx.moveTo(CX - 380, 508); ctx.lineTo(CX + 380, 508); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(CX - 380, 515); ctx.lineTo(CX + 380, 515); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(CX, 545); ctx.lineTo(CX, 810); ctx.stroke();
 
                 const sc = (typeof score === 'number') ? ` (Score: ${score}/50)` : '';
@@ -784,22 +784,22 @@
                 drawMultilineText(ctx, urText, W - 150, yU + 60, 600, 54);
 
                 ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
-                ctx.fillText('Date / تاریخ: ' + dateStr, 150, 935);
+                ctx.fillText('Date / تاریخ: ' + dateStr, 150, 905);
                 const sx = W - 330; // signature block thoda andar, frame se bahar na jaye
                 if (sigImg.naturalWidth > 0) {
                     const sh = 120, sw = Math.min(sh * sigImg.naturalWidth / sigImg.naturalHeight, 260);
-                    ctx.drawImage(sigImg, sx - sw / 2, 935 - sh - 4, sw, sh);
+                    ctx.drawImage(sigImg, sx - sw / 2, 905 - sh - 4, sw, sh);
                 }
                 ctx.strokeStyle = '#55645C'; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.moveTo(sx - 210, 940); ctx.lineTo(sx + 210, 940); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(sx - 210, 910); ctx.lineTo(sx + 210, 910); ctx.stroke();
                 ctx.textAlign = 'center'; ctx.direction = 'rtl'; ctx.fillStyle = '#0F4C3A';
                 // Lamba arabi naam: width ke hisab se font chhota, taaki frame ke andar rahe
                 let aSize = 36; const maxAW = 420;
                 ctx.font = `700 ${aSize}px "Amiri", serif`;
                 while (ctx.measureText(arabicName).width > maxAW && aSize > 18) { aSize -= 1; ctx.font = `700 ${aSize}px "Amiri", serif`; }
-                ctx.fillText(arabicName, sx, 985);
+                ctx.textBaseline = 'alphabetic'; ctx.fillText(arabicName, sx, 975); ctx.textBaseline = 'middle'; // line se neeche, saaf jagah
                 ctx.direction = 'ltr'; ctx.fillStyle = '#55645C'; ctx.font = '400 22px "Figtree", sans-serif';
-                ctx.fillText('Founder, Quraan Ustad', sx, 1025);
+                ctx.fillText('Founder, Quraan Ustad', sx, 1020);
 
                 callback(canvas);
             }
