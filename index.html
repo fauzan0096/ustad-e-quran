@@ -128,6 +128,15 @@
         .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
         .view-section.active { display: block; }
 
+        /* ---------- Stats strip ---------- */
+        .stats-strip { display: flex; gap: 8px; align-items: stretch; max-width: 1200px; margin: 14px auto 0; padding: 0 16px; }
+        .stats-strip .xp-badge, .stats-strip .streak-badge { display: flex; align-items: center; justify-content: center; min-height: 42px; border-radius: 14px; font-size: 14px; padding: 0 12px; }
+        .stats-strip .xp-badge { flex: 1.6; }
+        .stats-strip .streak-badge { flex: 1; }
+        .strip-btn { flex: 0 0 52px; min-height: 42px; border-radius: 14px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); }
+        .strip-btn:active { transform: scale(.96); }
+        .top-links { margin-top: 10px; }
+
         /* ---------- Journey map ---------- */
         .journey-wrap { overflow-x: auto; padding: 22px 4px 16px; margin: 6px 0 0; scrollbar-width: none; }
         .journey-wrap::-webkit-scrollbar { display: none; }
@@ -346,10 +355,6 @@
             <div class="header-top">
                 <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
                 <div class="header-controls">
-                    <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
-                    <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
-                    <button class="icon-btn lang-btn" onclick="cycleMeaningLang()" id="langBtn" title="Matlab ki zubaan: Urdu / Roman / Hindi">اردو</button>
-                    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                     <div class="user-menu">
                         <button class="icon-btn user-chip" id="userChip" onclick="toggleUserMenu(event)"><span id="userChipAv">👤</span> <span id="userChipName">ID</span> ▾</button>
                         <div class="user-drop hidden" id="userDrop">
@@ -363,6 +368,14 @@
                 </div>
             </div>
         </header>
+
+        <!-- Stats strip: XP, streak, zubaan, theme -->
+        <div class="stats-strip">
+            <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
+            <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
+            <button class="strip-btn" onclick="cycleMeaningLang()" id="langBtn" title="Matlab ki zubaan: Urdu / Roman / Hindi">اردو</button>
+            <button class="strip-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Theme badlein">🌙</button>
+        </div>
 
         <!-- Top Links -->
         <div class="top-links">
@@ -385,7 +398,6 @@
 
         <!-- Course Tab -->
         <div id="courseTab" class="view-section active">
-            <div id="todayCard"></div>
             <div id="dailyCard"></div>
 
             <!-- Daily Goal -->
@@ -520,6 +532,9 @@
             { id: "admin", name: "Admin", password: ADMIN_PASSWORD, role: "admin" }
         ];
 
+        const BLOCK_DAYS = 5;          // har 5 din (= 50 lafz) ke baad imtihan
+        const BLOCK_QUESTIONS = 25;    // imtihan mein kitne sawal (50 lafz mein se)
+        const BLOCK_PASS = 0.8;        // paas hone ke liye 80%
         let currentDay = 1;   // sabse aage ka khula hua din (progress)
         let viewDay = 1;      // jo din abhi screen par dekh rahe hain
         // Theme: light / dark / midnight / royal (purana darkMode bhi samjha jata hai)
@@ -758,7 +773,7 @@
             }
 
             document.getElementById('dayTitle').innerText = `Day ${viewDay}`;
-            renderJourneyMap(); renderToday(); updateReviseBtn(); updateFavCount();
+            renderJourneyMap(); updateReviseBtn(); updateFavCount();
             if (window.QSProgress) QSProgress.refresh();
             const _total = courseData.length || 40;
             document.getElementById('dayProgressText').innerText = `${Math.min(currentDay, _total)} / ${_total} din`;
@@ -784,19 +799,19 @@
                 if(nextDayData && userRole !== 'admin' && viewDay === currentDay) {
                     const lockedCard = document.createElement('div');
                     lockedCard.className = 'locked-page';
-                    lockedCard.innerHTML = `<div class="lock-icon">🔒</div><h2>Day ${currentDay + 1} Locked Hai</h2><p>Aaj ka exam pass karein tabhi kal ka sabaq khulega!</p>`;
+                    const blockDay = currentDay % BLOCK_DAYS === 0;
+                lockedCard.innerHTML = `<div class="lock-icon">🔒</div><h2>Day ${currentDay + 1} Locked Hai</h2><p>${blockDay ? `Pehle Day ${currentDay - BLOCK_DAYS + 1}-${currentDay} ke ${BLOCK_DAYS * 10} lafz ka imtihan pass karein.` : 'Aaj ka exam pass karein tabhi kal ka sabaq khulega!'}</p>`;
                     grid.appendChild(lockedCard);
                 }
 
                 document.getElementById('startExamBtn').innerText = `📝 Day ${viewDay} Exam`;
-                document.getElementById('startExamBtn').classList.remove('hidden');
-
+                // 5-din ke aakhri din par: din ka exam pass hone ke baad 50 lafz ka imtihan aata hai
+                const blockPending = userRole !== 'admin' && viewDay === currentDay && currentDay % BLOCK_DAYS === 0
+                    && localStorage.getItem(pk('dayPassed')) === String(currentDay);
+                document.getElementById('startExamBtn').classList.toggle('hidden', blockPending);
                 const grandTestBtn = document.getElementById('grandTestBtn');
-                if (currentDay >= 5 && currentDay % 5 === 0 && userRole !== 'admin' && viewDay === currentDay) {
-                    grandTestBtn.classList.remove('hidden');
-                } else {
-                    grandTestBtn.classList.add('hidden');
-                }
+                grandTestBtn.innerText = `🏆 ${BLOCK_DAYS * 10} Lafz ka Imtihan (Day ${currentDay - BLOCK_DAYS + 1}-${currentDay})`;
+                grandTestBtn.classList.toggle('hidden', !blockPending);
             } else {
                 grid.innerHTML = '<p style="text-align:center; color:gray; padding:20px;">Yeh Day abhi available nahi.</p>';
             }
@@ -837,7 +852,7 @@
         function updateXPUI() {
             const b = document.getElementById('xpBadge'); if (!b) return;
             const xp = getXP();
-            b.innerText = `⭐ Lvl ${Math.floor(xp / 100) + 1} • ${xp}`;
+            b.innerText = `⭐ Lvl ${Math.floor(xp / 100) + 1} • ${xp} XP`;
             b.classList.remove('hidden');
         }
 
@@ -963,20 +978,19 @@
 
         function startGrandExam() {
             examType = 'grand';
-            let startDay = Math.max(1, currentDay - 4);
-            document.getElementById('examTitle').innerText = "🏆 Grand Test (Day " + startDay + " - " + currentDay + ")";
+            const startDay = Math.max(1, currentDay - BLOCK_DAYS + 1);
+            document.getElementById('examTitle').innerText = "🏆 " + (BLOCK_DAYS * 10) + " Lafz ka Imtihan (Day " + startDay + " - " + currentDay + ")";
             let pastWords = [];
             for (let i = startDay; i <= currentDay; i++) {
-                let dayData = courseData.find(d => d.day === i);
-                if(dayData) pastWords.push(...dayData.words);
+                const dayData = courseData.find(d => d.day === i);
+                if (dayData) pastWords.push(...dayData.words);
             }
             if (pastWords.length === 0) return;
-            let selectedWords = pastWords.sort(() => 0.5 - Math.random()).slice(0, 10);
-            let qs = selectedWords.map(word => {
-                let wrong = pastWords.filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => mw(w));
-                return { a: word.a, opts: [mw(word), ...wrong].sort(() => 0.5 - Math.random()), c: mw(word) };
-            });
-            displayExam(qs);
+            const selectedWords = shuffled(pastWords).slice(0, BLOCK_QUESTIONS);
+            displayExam(selectedWords.map(word => {
+                const wrong = shuffled(pastWords.filter(w => w.u !== word.u)).slice(0, 3).map(w => mw(w));
+                return { a: word.a, opts: shuffled([mw(word), ...wrong]), c: mw(word) };
+            }));
         }
 
         function displayExam(qs) {
@@ -1015,28 +1029,38 @@
                 setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2500);
                 return;
             }
-            if (score >= 8) {
+            const total = document.querySelectorAll('#examQuestions > div').length;
+            const need = Math.ceil(total * (examType === 'grand' ? BLOCK_PASS : 0.8));
+            if (score >= need) {
                 if (window.QSSFX) QSSFX.win();
+                res.style.color = "green";
                 if (examType === 'grand') {
-                    res.innerText = `🏆 Mubarak ho! Grand Test mein ${score}/10. Aapne 50 words yaad kar liye!`; 
-                    res.style.color = "green";
-                    currentDay += 5; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
-                    addXP(100, '🏆 +100 XP! Grand Test pass');
+                    res.innerText = `🏆 Mubarak ho! ${score}/${total} sahi. ${BLOCK_DAYS * 10} lafz yaad ho gaye, agla din khul gaya!`;
+                    currentDay++; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
+                    localStorage.removeItem(pk('dayPassed'));
+                    addXP(100, '🏆 +100 XP! Imtihan pass');
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 3000);
                 } else {
-                    res.innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`; 
-                    res.style.color = "green";
-                    if (userRole !== 'admin') {
-                        if (viewDay === currentDay) {
-                            currentDay++; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
-                            addXP(50, '+50 XP! Naya din khul gaya');
-                        } else addXP(10, '+10 XP! Dohrai achi rahi');
+                    const atFrontier = userRole !== 'admin' && viewDay === currentDay;
+                    const blockDay = currentDay % BLOCK_DAYS === 0;
+                    if (atFrontier && blockDay) {
+                        // 5vein din ka exam pass: agla din abhi band, pehle 50 lafz ka imtihan
+                        localStorage.setItem(pk('dayPassed'), String(currentDay));
+                        res.innerText = `🎉 Mubarak ho! ${score}/${total}. Ab ${BLOCK_DAYS * 10} lafz ka imtihan dein, tabhi agla din khulega.`;
+                        addXP(30, '+30 XP! Ab 50 lafz ka imtihan');
+                    } else if (atFrontier) {
+                        res.innerText = `🎉 Mubarak ho! Aapne ${score}/${total} score kiya. Day Unlocked!`;
+                        currentDay++; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
+                        addXP(50, '+50 XP! Naya din khul gaya');
+                    } else {
+                        res.innerText = `🎉 Mubarak ho! Aapne ${score}/${total} score kiya.`;
+                        if (userRole !== 'admin') addXP(10, '+10 XP! Dohrai achi rahi');
                     }
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
                 }
             } else {
                 if (window.QSSFX) QSSFX.wrong();
-                res.innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye.`; 
+                res.innerText = `😢 Aapne ${score}/${total} score kiya. Aapko ${need} chahiye.`;
                 res.style.color = "red";
                 document.getElementById('submitExamBtn').style.display = 'block';
             }
