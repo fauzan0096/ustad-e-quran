@@ -9,6 +9,7 @@
     <script src="ui.js"></script>
     <meta name="theme-color" content="#0F4C3A">
     <script src="install.js" defer></script>
+    <script src="games-audio.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #fff; --text: #333; --text-light: #666; --border: #ddd; --kbc-bg: #0a0e1a; --kbc-gold: #f5c518; --kbc-blue: #0c1e3c; }
@@ -27,9 +28,7 @@
         .game-section.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
-        
 
-        /* ============ JEET CELEBRATION ============ */
         .cele-layer { position: fixed; inset: 0; pointer-events: none; z-index: 99998; overflow: hidden; }
         .cele-conf { position: absolute; top: -20px; width: 10px; height: 14px; opacity: .95; animation: celeFall linear forwards; }
         @keyframes celeFall { to { transform: translateY(110vh) rotate(720deg); opacity: .9; } }
@@ -43,13 +42,13 @@
         .cele-card button { background: #D4AF37; color: #000; border: none; padding: 10px 26px; border-radius: 22px; font-weight: bold; font-size: 15px; cursor: pointer; }
         @keyframes celePop { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* ============ KBC STYLES ============ */
         #kbc { background: var(--kbc-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
         #kbc::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(245,197,24,0.15), transparent 60%); pointer-events: none; }
-        .kbc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; position: relative; z-index: 1; color: var(--kbc-gold); font-weight: bold; font-size: 13px; }
+        .kbc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; position: relative; z-index: 1; color: var(--kbc-gold); font-weight: bold; font-size: 13px; gap: 8px; }
         .kbc-day { background: rgba(245,197,24,0.2); padding: 5px 12px; border-radius: 15px; }
         .kbc-prize { background: rgba(245,197,24,0.2); padding: 5px 12px; border-radius: 15px; }
         .kbc-qnum { text-align: center; color: #aaa; font-size: 12px; margin-bottom: 10px; position: relative; z-index: 1; }
+        .kbc-qnum b { color: var(--kbc-gold); }
         .kbc-question { color: #fff; font-size: 17px; font-weight: 600; text-align: center; padding: 20px 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(245,197,24,0.3); margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; line-height: 1.5; position: relative; z-index: 1; }
         .kbc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative; z-index: 1; }
         .kbc-opt { background: linear-gradient(135deg, #1a2a4a, #0c1e3c); color: #fff; border: 2px solid #2a4a7a; padding: 12px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; text-align: left; display: flex; gap: 8px; align-items: center; }
@@ -57,9 +56,10 @@
         .kbc-opt.correct { background: linear-gradient(135deg, #1a5c2a, #0c3c1a); border-color: #2ea14a; }
         .kbc-opt.wrong { background: linear-gradient(135deg, #5c1a1a, #3c0c0c); border-color: #a12e2e; }
         .kbc-opt.disabled { opacity: 0.4; cursor: not-allowed; }
-        .kbc-lifelines { display: flex; justify-content: center; gap: 10px; margin-top: 15px; position: relative; z-index: 1; }
+        .kbc-lifelines { display: flex; justify-content: center; gap: 8px; margin-top: 15px; position: relative; z-index: 1; flex-wrap: wrap; }
         .kbc-life { background: rgba(245,197,24,0.15); color: var(--kbc-gold); border: 1px solid var(--kbc-gold); padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .kbc-life:disabled { opacity: 0.3; cursor: not-allowed; }
+        .kbc-life.on { background: var(--kbc-gold); color: #000; }
         .kbc-result { text-align: center; padding: 25px 15px; color: #fff; position: relative; z-index: 1; }
         .kbc-result h2 { color: var(--kbc-gold); margin-bottom: 15px; font-size: 22px; }
         .kbc-result .prize { font-size: 28px; color: #4ade80; font-weight: bold; margin: 15px 0; }
@@ -68,8 +68,8 @@
         .kbc-ladder span { background: rgba(255,255,255,0.08); color: #aaa; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
         .kbc-ladder span.active { background: var(--kbc-gold); color: #000; }
         .kbc-ladder span.safe { border: 1px solid var(--kbc-gold); color: var(--kbc-gold); }
+        .kbc-ladder span.done { background: rgba(74,222,128,0.25); color: #4ade80; }
 
-        /* ============ SAHABA STYLES ============ */
         .sahaba-box { background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid var(--secondary); }
         .sahaba-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .sahaba-score { background: var(--secondary); color: #000; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; }
@@ -84,21 +84,19 @@
         .btn-primary { background: var(--primary); color: #fff; border: none; padding: 12px 20px; border-radius: 25px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 12px; width: 100%; }
         .btn-gold { background: var(--secondary); color: #000; }
 
-        /* ============ MEMORY STYLES ============ */
         .memory-box { background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
         .memory-info { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px; font-weight: bold; }
         .memory-info span { background: var(--secondary); color: #000; padding: 5px 12px; border-radius: 15px; }
         .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .mem-card { aspect-ratio: 1; background: linear-gradient(135deg, #0F4C3A, #1a7a5c); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; color: transparent; user-select: none; position: relative; transition: all 0.3s; }
+        .mem-card { aspect-ratio: 1; background: linear-gradient(135deg, #0F4C3A, #1a7a5c); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; color: transparent; user-select: none; position: relative; transition: all 0.3s; padding: 4px; text-align: center; }
         .mem-card::before { content: "؟"; color: #D4AF37; font-size: 24px; position: absolute; }
         .mem-card.flipped { background: var(--card-bg); border: 2px solid var(--secondary); color: var(--text); }
         .mem-card.flipped::before { content: none; }
         .mem-card.matched { background: #d4edda; border: 2px solid #28a745; color: #155724; cursor: default; }
         .mem-card.matched::before { content: "✓"; color: #28a745; font-size: 20px; }
-        .mem-card .ar { font-family: 'Amiri', serif; font-size: 18px; direction: rtl; }
-        .mem-card .ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 13px; direction: rtl; }
+        .mem-card .ar { font-family: 'Amiri', serif; font-size: 17px; direction: rtl; }
+        .mem-card .ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 12px; direction: rtl; line-height: 1.4; }
 
-        /* ============ EMOJI STYLES ============ */
         .emoji-box { background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid var(--secondary); }
         .emoji-display { font-size: 60px; line-height: 1.4; margin: 20px 0; padding: 20px; background: var(--bg); border-radius: 15px; }
         .emoji-score { display: inline-block; background: var(--secondary); color: #000; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
@@ -132,6 +130,11 @@
         <div id="emoji" class="game-section"></div>
     </div>
 
+    <!-- Background Nasheed (Ahle Hadees: no music, only vocals) -->
+    <audio id="kbcNasheed" loop preload="none">
+        <source src="nasheed.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         // ==========================================
         // THEME
@@ -141,9 +144,8 @@
         function toggleTheme() { isDarkMode = !isDarkMode; document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light'); document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; localStorage.setItem('darkMode', isDarkMode); }
         if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
 
-
         // ==========================================
-        // 🎉 JEET CELEBRATION: sound + confetti + ghubare + popup
+        // CELEBRATION
         // ==========================================
         function celeSound() {
             try {
@@ -160,23 +162,11 @@
                     o.connect(g); g.connect(ctx.destination);
                     o.start(t0 + t); o.stop(t0 + t + d + 0.05);
                 };
-                // fanfare: C E G C(high) phir chord
                 [[523, 0], [659, 0.15], [784, 0.3], [1047, 0.45]].forEach(n => note(n[0], n[1], 0.25));
                 [523, 659, 784, 1047].forEach(f => note(f, 0.7, 1.0, 'sine', 0.18));
-                // taaliyan (clapping noise bursts)
-                const len = ctx.sampleRate * 1.6, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
-                for (let i = 0; i < len; i++) {
-                    const beat = Math.floor(i / (ctx.sampleRate * 0.09));
-                    d[i] = (Math.random() * 2 - 1) * (i % Math.floor(ctx.sampleRate * 0.09) < ctx.sampleRate * 0.02 ? 1 : 0.12) * (beat % 2 ? 0.8 : 1);
-                }
-                const ns = ctx.createBufferSource(), ng = ctx.createGain(), bp = ctx.createBiquadFilter();
-                bp.type = 'bandpass'; bp.frequency.value = 2200;
-                ng.gain.setValueAtTime(0.0001, t0 + 0.6); ng.gain.exponentialRampToValueAtTime(0.35, t0 + 0.8); ng.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
-                ns.buffer = buf; ns.connect(bp); bp.connect(ng); ng.connect(ctx.destination); ns.start(t0 + 0.6);
-                setTimeout(() => ctx.close && ctx.close(), 3500);
+                setTimeout(() => ctx.close && ctx.close(), 2500);
             } catch (e) {}
         }
-
         function celebrate(title, msg) {
             celeSound();
             const layer = document.createElement('div');
@@ -220,420 +210,442 @@
             document.getElementById(game).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
-            if (game === 'kbc' && !document.getElementById('kbc').hasChildNodes()) initKBC();
-            else if (game === 'kbc') initKBC();
+            if (game === 'kbc') initKBC();
             else if (game === 'sahaba') initSahaba();
             else if (game === 'memory') initMemory();
             else if (game === 'emoji') initEmoji();
         }
 
         // ==========================================
-        // ===== KBC DATA: 300 QUESTIONS (30 DAYS) =====
-        // Format: [question, optA, optB, optC, optD, correctIndex]
-        // Day 1-10: Aasaan | Day 11-20: Darmiyani | Day 21-30: Mushkil
+        // NASHEED TOGGLE
+        // (games-audio.js isko behtar version se replace kar deta hai)
+        // ==========================================
+        function toggleNasheed() {
+            const audio = document.getElementById('kbcNasheed');
+            const btn = document.getElementById('nasheedBtn');
+            if (!audio) return;
+            if (audio.paused) {
+                audio.volume = 0.25;
+                audio.play().then(() => {
+                    if (btn) { btn.textContent = '🔇 Nasheed Off'; btn.classList.add('on'); }
+                }).catch(() => {
+                    alert('Nasheed file nahi mili.\n"nasheed.mp3" file games.html ke saath isi folder mein rakhein.');
+                });
+            } else {
+                audio.pause();
+                if (btn) { btn.textContent = '🎵 Nasheed'; btn.classList.remove('on'); }
+            }
+        }
+
+        // ==========================================
+        // KBC DATA — 30 DAYS × 10 QUESTIONS
+        // Format: [question, A, B, C, D, correctIdx, difficulty(1-3)]
+        // Har din ke andar difficulty 1→3 badhti hai
+        // SAARE SAWALAT AHLE HADEES MANHAJ KE MUTABIQ
         // ==========================================
         const KBC = [
-        // ===== DAY 1 (AASAAN) =====
+        // ===== DAY 1 =====
         [
-            ["Islam ke kitne arkaan hain?","3","5","7","10",1],
-            ["Namaz din mein kitni baar farz hai?","3","4","5","6",2],
-            ["Quran kis Nabi par nazil hua?","Musa (AS)","Isa (AS)","Muhammad ﷺ","Ibrahim (AS)",2],
-            ["Roza kis mahine mein farz hai?","Ramzan","Shaban","Rajab","Muharram",0],
-            ["Qibla kahan hai?","Madinah","Makkah","Jerusalem","Taif",1],
-            ["Zakat kitne hisse par farz hai?","1%","2.5%","5%","10%",1],
-            ["Pehle Nabi kaun the?","Nuh (AS)","Aadam (AS)","Ibrahim (AS)","Musa (AS)",1],
-            ["Fajr ki farz rak'at kitni hain?","2","3","4","5",0],
-            ["Quran mein kitni Surah hain?","100","114","120","99",1],
-            ["Kaaba kis shehar mein hai?","Madinah","Makkah","Jeddah","Taif",1]
+            ["Islam ke kitne arkaan hain?","3","5","7","10",1,1],
+            ["Namaz din mein kitni baar farz hai?","3","4","5","6",2,1],
+            ["Quran kis Nabi par nazil hua?","Musa (AS)","Isa (AS)","Muhammad ﷺ","Ibrahim (AS)",2,1],
+            ["Roza kis mahine mein farz hai?","Ramzan","Shaban","Rajab","Muharram",0,1],
+            ["Qibla kahan hai?","Madinah","Makkah","Jerusalem","Taif",1,1],
+            ["Kaaba kis shehar mein hai?","Madinah","Makkah","Jeddah","Taif",1,2],
+            ["Zakat kitne hisse par farz hai?","1%","2.5%","5%","10%",1,2],
+            ["Pehle Nabi kaun the?","Nuh (AS)","Aadam (AS)","Ibrahim (AS)","Musa (AS)",1,2],
+            ["Fajr ki farz rak'at kitni hain?","2","3","4","5",0,3],
+            ["Quran mein kitni Surah hain?","100","114","120","99",1,3]
         ],
-        // ===== DAY 2 (AASAAN) =====
+        // ===== DAY 2 =====
         [
-            ["Quran ki pehli Surah kaun si hai?","Al-Baqarah","Al-Fatiha","Al-Ikhlas","An-Nas",1],
-            ["Maghrib ki farz rak'at kitni?","2","3","4","5",1],
-            ["Bismillah mein Allah ke kitne naam hain?","1","2","3","4",1],
-            ["Eid ki namaz kitni rak'at hoti hai?","2","4","6","8",0],
-            ["Kashti kis Nabi ne banai?","Nuh (AS)","Musa (AS)","Ibrahim (AS)","Isa (AS)",0],
-            ["Zuhr ki farz rak'at kitni?","2","3","4","5",2],
-            ["Quran kis zaban mein nazil hua?","Urdu","Farsi","Arabic","Hebrew",2],
-            ["Juma ki namaz kis din farz hai?","Somwar","Mangal","Juma","Itwar",2],
-            ["Pehle Khalifa kaun the?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1],
-            ["Asr ki farz rak'at kitni?","2","3","4","5",2]
+            ["Quran ki pehli Surah kaun si hai?","Al-Baqarah","Al-Fatiha","Al-Ikhlas","An-Nas",1,1],
+            ["Bismillah mein Allah ke kitne naam hain?","1","2","3","4",1,1],
+            ["Quran kis zaban mein nazil hua?","Urdu","Farsi","Arabic","Hebrew",2,1],
+            ["Juma ki namaz kis din farz hai?","Somwar","Mangal","Juma","Itwar",2,1],
+            ["Maghrib ki farz rak'at kitni?","2","3","4","5",1,2],
+            ["Eid ki namaz kitni rak'at hoti hai?","2","4","6","8",0,2],
+            ["Kashti kis Nabi ne banai?","Nuh (AS)","Musa (AS)","Ibrahim (AS)","Isa (AS)",0,2],
+            ["Zuhr ki farz rak'at kitni?","2","3","4","5",2,3],
+            ["Pehle Khalifa kaun the?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1,3],
+            ["Asr ki farz rak'at kitni?","2","3","4","5",2,3]
         ],
-        // ===== DAY 3 (AASAAN) =====
+        // ===== DAY 3 =====
         [
-            ["Isha ki farz rak'at kitni?","2","3","4","5",2],
-            ["Nabi ﷺ ki pehli biwi kaun thin?","Aisha (RA)","Khadija (RA)","Hafsa (RA)","Zainab (RA)",1],
-            ["Pehli Wahy kis ghar mein hui?","Hira","Safa","Marwa","Arafat",0],
-            ["Quran ki sabse choti Surah?","Al-Ikhlas","Al-Kawthar","Al-Asr","An-Nas",1],
-            ["Machhli ne kis Nabi ko nigal liya?","Yunus (AS)","Ayyub (AS)","Yusuf (AS)","Musa (AS)",0],
-            ["Hazrat Fatima (RA) ke walid kaun?","Abu Bakr (RA)","Nabi ﷺ","Umar (RA)","Ali (RA)",1],
-            ["Hazrat Fatima (RA) ke shauhar kaun?","Abu Bakr (RA)","Umar (RA)","Ali (RA)","Uthman (RA)",2],
-            ["Pehli Wahy mein kaunsi Surah ki aayat?","Fatiha","Alaq","Baqarah","Nas",1],
-            ["Fajr ki sunnat rak'at kitni?","2","3","4","5",0],
-            ["Hazrat Hamza (RA) Nabi ﷺ ke kya the?","Bhai","Chacha","Mamu","Beta",1]
+            ["Isha ki farz rak'at kitni?","2","3","4","5",2,1],
+            ["Nabi ﷺ ki pehli biwi kaun thin?","Aisha (RA)","Khadija (RA)","Hafsa (RA)","Zainab (RA)",1,1],
+            ["Pehli Wahy kis ghar mein hui?","Hira","Safa","Marwa","Arafat",0,1],
+            ["Machhli ne kis Nabi ko nigal liya?","Yunus (AS)","Ayyub (AS)","Yusuf (AS)","Musa (AS)",0,1],
+            ["Quran ki sabse choti Surah?","Al-Ikhlas","Al-Kawthar","Al-Asr","An-Nas",1,2],
+            ["Hazrat Fatima (RA) ke walid kaun?","Abu Bakr (RA)","Nabi ﷺ","Umar (RA)","Ali (RA)",1,2],
+            ["Hazrat Fatima (RA) ke shauhar kaun?","Abu Bakr (RA)","Umar (RA)","Ali (RA)","Uthman (RA)",2,2],
+            ["Pehli Wahy mein kaunsi Surah ki aayat?","Fatiha","Alaq","Baqarah","Nas",1,3],
+            ["Fajr ki sunnat rak'at kitni?","2","3","4","5",0,3],
+            ["Hazrat Hamza (RA) Nabi ﷺ ke kya the?","Bhai","Chacha","Mamu","Beta",1,3]
         ],
-        // ===== DAY 4 (AASAAN) =====
+        // ===== DAY 4 =====
         [
-            ["Hazrat Abbas (RA) Nabi ﷺ ke kya the?","Bhai","Chacha","Mamu","Beta",1],
-            ["Maghrib ki sunnat rak'at kitni?","1","2","3","4",1],
-            ["Zakat kis par farz hai?","Har musalman","Sahib-e-Nisab","Bachon","Buzurgon",1],
-            ["Hajj kis par farz hai?","Har musalman","Sahib-e-Istitaat","Ameeron","Buzurgon",1],
-            ["Roza kis par farz hai?","Bachon","Baligh sehatmand","Buzurgon","Kisi par nahi",1],
-            ["Pehli azan kisne di?","Abu Bakr (RA)","Bilal (RA)","Umar (RA)","Ali (RA)",1],
-            ["Nabi ﷺ ki wafat kis umar mein hui?","60","63","65","70",1],
-            ["Nabi ﷺ ko Nabuwat kis umar mein mili?","30","35","40","45",2],
-            ["Hazrat Aisha (RA) ke walid kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1],
-            ["Wudu ka pehla farz kya hai?","Niyyat","Munh dhona","Haath dhona","Sar ka masah",0]
+            ["Hazrat Abbas (RA) Nabi ﷺ ke kya the?","Bhai","Chacha","Mamu","Beta",1,1],
+            ["Maghrib ki sunnat rak'at kitni?","1","2","3","4",1,1],
+            ["Pehli azan kisne di?","Abu Bakr (RA)","Bilal (RA)","Umar (RA)","Ali (RA)",1,1],
+            ["Zakat kis par farz hai?","Har musalman","Sahib-e-Nisab","Bachon","Buzurgon",1,2],
+            ["Hajj kis par farz hai?","Har musalman","Sahib-e-Istitaat","Ameeron","Buzurgon",1,2],
+            ["Roza kis par farz hai?","Bachon","Baligh sehatmand","Buzurgon","Kisi par nahi",1,2],
+            ["Nabi ﷺ ki wafat kis umar mein hui?","60","63","65","70",1,3],
+            ["Nabi ﷺ ko Nabuwat kis umar mein mili?","30","35","40","45",2,3],
+            ["Hazrat Aisha (RA) ke walid kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1,3],
+            ["Wudu ka pehla farz kya hai?","Niyyat","Munh dhona","Haath dhona","Sar ka masah",0,3]
         ],
-        // ===== DAY 5 (AASAAN - QURAN) =====
+        // ===== DAY 5 (QURAN) =====
         [
-            ["Surah Al-Fatiha mein kitni aayat?","5","6","7","8",2],
-            ["Surah Al-Ikhlas mein kitni aayat?","3","4","5","6",1],
-            ["Surah An-Nas mein kitni aayat?","5","6","7","8",1],
-            ["Quran mein kitne Juz hain?","20","25","30","40",2],
-            ["Quran mein kitne Manzil hain?","5","6","7","8",2],
-            ["Quran ki sabse badi Surah?","Fatiha","Baqarah","Imran","Nisa",1],
-            ["Quran mein kitne Sajde?","13","14","15","16",1],
-            ["Quran ki pehli nazil aayat kis Surah ki?","Fatiha","Baqarah","Alaq","Muddassir",2],
-            ["Quran ki aakhri Surah kaun si?","Fatiha","Baqarah","Ikhlas","An-Nas",3],
-            ["Surah Fatiha ko kya kaha jata hai?","Ummul Quran","Quran ka dil","Quran ka noor","Quran ki jaan",0]
+            ["Surah Al-Fatiha mein kitni aayat?","5","6","7","8",2,1],
+            ["Surah Al-Ikhlas mein kitni aayat?","3","4","5","6",1,1],
+            ["Quran mein kitne Juz hain?","20","25","30","40",2,1],
+            ["Quran ki sabse badi Surah?","Fatiha","Baqarah","Imran","Nisa",1,2],
+            ["Quran mein kitne Manzil hain?","5","6","7","8",2,2],
+            ["Surah An-Nas mein kitni aayat?","5","6","7","8",1,2],
+            ["Quran mein kitne Sajde?","13","14","15","16",1,3],
+            ["Quran ki pehli nazil aayat kis Surah ki?","Fatiha","Baqarah","Alaq","Muddassir",2,3],
+            ["Quran ki aakhri Surah kaun si?","Fatiha","Baqarah","Ikhlas","An-Nas",3,3],
+            ["Surah Fatiha ko kya kaha jata hai?","Ummul Quran","Quran ka dil","Quran ka noor","Quran ki jaan",0,3]
         ],
-        // ===== DAY 6 (AASAAN - PROPHETS) =====
+        // ===== DAY 6 (PROPHETS) =====
         [
-            ["Kis Nabi ne kashti banai?","Nuh (AS)","Musa (AS)","Ibrahim (AS)","Isa (AS)",0],
-            ["Kis Nabi ko machhli ne nigla?","Yunus (AS)","Ayyub (AS)","Yusuf (AS)","Musa (AS)",0],
-            ["Kis Nabi ka sabr misaal hai?","Yunus (AS)","Ayyub (AS)","Yusuf (AS)","Musa (AS)",1],
-            ["Kis Nabi ko bhaiyon ne kuwein mein dala?","Yusuf (AS)","Yunus (AS)","Musa (AS)","Isa (AS)",0],
-            ["Kis Nabi ko Khalilullah kaha jata?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)",1],
-            ["Kis Nabi ko Kalimullah kaha jata?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)",0],
-            ["Kis Nabi ko Ruhullah kaha jata?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)",2],
-            ["Kis Nabi ne Fir'aun ka muqabla kiya?","Musa (AS)","Yusuf (AS)","Haroon (AS)","Isa (AS)",0],
-            ["Kis Nabi ke paas jinn ka control tha?","Sulayman (AS)","Dawud (AS)","Musa (AS)","Isa (AS)",0],
-            ["Kis Nabi ko Zabur di gayi?","Sulayman (AS)","Dawud (AS)","Musa (AS)","Isa (AS)",1]
+            ["Kis Nabi ne kashti banai?","Nuh (AS)","Musa (AS)","Ibrahim (AS)","Isa (AS)",0,1],
+            ["Kis Nabi ka sabr misaal hai?","Yunus (AS)","Ayyub (AS)","Yusuf (AS)","Musa (AS)",1,1],
+            ["Kis Nabi ko machhli ne nigla?","Yunus (AS)","Ayyub (AS)","Yusuf (AS)","Musa (AS)",0,1],
+            ["Kis Nabi ko bhaiyon ne kuwein mein dala?","Yusuf (AS)","Yunus (AS)","Musa (AS)","Isa (AS)",0,2],
+            ["Kis Nabi ko Khalilullah kaha jata?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)",1,2],
+            ["Kis Nabi ko Kalimullah kaha jata?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)",0,2],
+            ["Kis Nabi ko Ruhullah kaha jata?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)",2,3],
+            ["Kis Nabi ne Fir'aun ka muqabla kiya?","Musa (AS)","Yusuf (AS)","Haroon (AS)","Isa (AS)",0,3],
+            ["Kis Nabi ke paas jinn ka control tha?","Sulayman (AS)","Dawud (AS)","Musa (AS)","Isa (AS)",0,3],
+            ["Kis Nabi ko Zabur di gayi?","Sulayman (AS)","Dawud (AS)","Musa (AS)","Isa (AS)",1,3]
         ],
-        // ===== DAY 7 (AASAAN - PROPHETS) =====
+        // ===== DAY 7 (PROPHETS) =====
         [
-            ["Kis Nabi ko Injeel di gayi?","Musa (AS)","Isa (AS)","Dawud (AS)","Muhammad ﷺ",1],
-            ["Kis Nabi ko Tawraat di gayi?","Musa (AS)","Isa (AS)","Dawud (AS)","Muhammad ﷺ",0],
-            ["Kis Nabi ki walida Hazrat Maryam thin?","Musa (AS)","Isa (AS)","Dawud (AS)","Yahya (AS)",1],
-            ["Kis Nabi ke walid Zakariya (AS) the?","Musa (AS)","Isa (AS)","Yahya (AS)","Yusuf (AS)",2],
-            ["Kis Nabi ne chunti ki baat suni?","Sulayman (AS)","Dawud (AS)","Musa (AS)","Isa (AS)",0],
-            ["Aakhri Nabi kaun hain?","Isa (AS)","Musa (AS)","Muhammad ﷺ","Ibrahim (AS)",2],
-            ["Quran mein kitne Nabiyon ka zikr?","20","25","30","35",1],
-            ["Kis Nabi ka naam Quran mein sabse zyada?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Muhammad ﷺ",0],
-            ["Kis Nabi ki qaum par pathar barse?","Nuh (AS)","Lut (AS)","Hud (AS)","Salih (AS)",1],
-            ["Kis Nabi ki qaum ko Aad kaha jata?","Nuh (AS)","Hud (AS)","Lut (AS)","Salih (AS)",1]
+            ["Kis Nabi ko Injeel di gayi?","Musa (AS)","Isa (AS)","Dawud (AS)","Muhammad ﷺ",1,1],
+            ["Kis Nabi ko Tawraat di gayi?","Musa (AS)","Isa (AS)","Dawud (AS)","Muhammad ﷺ",0,1],
+            ["Aakhri Nabi kaun hain?","Isa (AS)","Musa (AS)","Muhammad ﷺ","Ibrahim (AS)",2,1],
+            ["Kis Nabi ki walida Hazrat Maryam thin?","Musa (AS)","Isa (AS)","Dawud (AS)","Yahya (AS)",1,2],
+            ["Kis Nabi ke walid Zakariya (AS) the?","Musa (AS)","Isa (AS)","Yahya (AS)","Yusuf (AS)",2,2],
+            ["Kis Nabi ne chunti ki baat suni?","Sulayman (AS)","Dawud (AS)","Musa (AS)","Isa (AS)",0,2],
+            ["Quran mein kitne Nabiyon ka zikr?","20","25","30","35",1,3],
+            ["Kis Nabi ka naam Quran mein sabse zyada?","Musa (AS)","Ibrahim (AS)","Isa (AS)","Muhammad ﷺ",0,3],
+            ["Kis Nabi ki qaum par pathar barse?","Nuh (AS)","Lut (AS)","Hud (AS)","Salih (AS)",1,3],
+            ["Kis Nabi ki qaum ko Aad kaha jata?","Nuh (AS)","Hud (AS)","Lut (AS)","Salih (AS)",1,3]
         ],
-        // ===== DAY 8 (AASAAN - SAHABA) =====
+        // ===== DAY 8 (SAHABA) =====
         [
-            ["Pehle Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1],
-            ["Doosre Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",0],
-            ["Teesre Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",2],
-            ["Chauthe Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",3],
-            ["Siddiq kis sahaba ka laqab?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1],
-            ["Farooq kis sahaba ka laqab?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",0],
-            ["Zul Noorain kis sahaba ka laqab?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",2],
-            ["Sher-e-Khuda kis sahaba ka laqab?","Hamza (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",3],
-            ["Hazrat Bilal (RA) kis ke ghulam the?","Abu Bakr (RA)","Umayya bin Khalaf","Abu Jahl","Abu Lahab",1],
-            ["Pehli shaheeda aurat kaun?","Khadija (RA)","Sumayya (RA)","Aisha (RA)","Fatima (RA)",1]
+            ["Pehle Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1,1],
+            ["Doosre Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",0,1],
+            ["Teesre Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",2,1],
+            ["Chauthe Khalifa kaun?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",3,2],
+            ["Siddiq kis sahaba ka laqab?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",1,2],
+            ["Farooq kis sahaba ka laqab?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",0,2],
+            ["Zul Noorain kis sahaba ka laqab?","Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",2,3],
+            ["Sher-e-Khuda kis sahaba ka laqab?","Hamza (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)",3,3],
+            ["Hazrat Bilal (RA) kis ke ghulam the?","Abu Bakr (RA)","Umayya bin Khalaf","Abu Jahl","Abu Lahab",1,3],
+            ["Pehli shaheeda aurat kaun?","Khadija (RA)","Sumayya (RA)","Aisha (RA)","Fatima (RA)",1,3]
         ],
-        // ===== DAY 9 (AASAAN - SAHABA) =====
+        // ===== DAY 9 (SAHABA) =====
         [
-            ["Hazrat Hamza (RA) kis jang mein shaheed?","Badr","Uhud","Khandaq","Khyber",1],
-            ["Saifullah kis sahaba ka laqab?","Hamza (RA)","Abu Bakr (RA)","Khalid bin Waleed (RA)","Umar (RA)",2],
-            ["Zul Janahain kis sahaba ka laqab?","Jafar Tayyar (RA)","Hamza (RA)","Ali (RA)","Umar (RA)",0],
-            ["Ameer-ul-Mu'mineen pehla kisko kaha?","Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)",1],
-            ["Sabse zyada hadees riwayat karne wale?","Abu Hurayrah (RA)","Aisha (RA)","Umar (RA)","Ali (RA)",0],
-            ["Nabi ﷺ ki phuphi kaun?","Safiya (RA)","Amina (RA)","Halima (RA)","Sumayya (RA)",0],
-            ["Nabi ﷺ ki razai maa kaun?","Amina (RA)","Halima (RA)","Khadija (RA)","Fatima (RA)",1],
-            ["Nabi ﷺ ki walida ka naam?","Amina (RA)","Khadija (RA)","Halima (RA)","Safiya (RA)",0],
-            ["Nabi ﷺ ke walid ka naam?","Abdullah","Abdul Muttalib","Abu Talib","Hamza",0],
-            ["Nabi ﷺ ke dada ka naam?","Abdullah","Abdul Muttalib","Abu Talib","Hamza",1]
+            ["Hazrat Hamza (RA) kis jang mein shaheed?","Badr","Uhud","Khandaq","Khyber",1,1],
+            ["Saifullah kis sahaba ka laqab?","Hamza (RA)","Abu Bakr (RA)","Khalid bin Waleed (RA)","Umar (RA)",2,1],
+            ["Nabi ﷺ ki razai maa kaun?","Amina (RA)","Halima (RA)","Khadija (RA)","Fatima (RA)",1,1],
+            ["Zul Janahain kis sahaba ka laqab?","Jafar Tayyar (RA)","Hamza (RA)","Ali (RA)","Umar (RA)",0,2],
+            ["Ameer-ul-Mu'mineen pehla kisko kaha?","Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)",1,2],
+            ["Sabse zyada hadees riwayat karne wale?","Abu Hurayrah (RA)","Aisha (RA)","Umar (RA)","Ali (RA)",0,2],
+            ["Nabi ﷺ ki walida ka naam?","Amina (RA)","Khadija (RA)","Halima (RA)","Safiya (RA)",0,3],
+            ["Nabi ﷺ ke walid ka naam?","Abdullah","Abdul Muttalib","Abu Talib","Hamza",0,3],
+            ["Nabi ﷺ ke dada ka naam?","Abdullah","Abdul Muttalib","Abu Talib","Hamza",1,3],
+            ["Nabi ﷺ ki phuphi kaun?","Safiya (RA)","Amina (RA)","Halima (RA)","Sumayya (RA)",0,3]
         ],
-        // ===== DAY 10 (AASAAN - ISLAMIC) =====
+        // ===== DAY 10 (ISLAMIC BASICS) =====
         [
-            ["Jannat ke darwaze kitne?","5","6","7","8",3],
-            ["Jahannam ke darwaze kitne?","5","6","7","8",2],
-            ["Asma-ul-Husna mein kitne naam?","50","99","100","101",1],
-            ["Farishton ka kaam kya hai?","Khaana","Allah ki ibadat","Neend","Shaadi",1],
-            ["Wahi kya hai?","Kitaab","Allah ka paigham","Ilm","Namaz",1],
-            ["Imaan ke arkaan kitne hain?","3","5","7","10",2],
-            ["Quran ki tilawat ka sawab (har harf)?","1 neki","10 neki","100 neki","1000 neki",1],
-            ["Wudu kis cheez ke liye zaroori?","Khaane","Namaz","Sone","Padhne",1],
-            ["Namaz mein kis ki taraf munh hota hai?","Pur","Paschim","Uttara","Qibla",3],
-            ["Paak hone ka amal kya kehlata hai?","Taharat","Salah","Roza","Hajj",0]
+            ["Jannat ke darwaze kitne?","5","6","7","8",3,1],
+            ["Asma-ul-Husna mein kitne naam?","50","99","100","101",1,1],
+            ["Farishton ka kaam kya hai?","Khaana","Allah ki ibadat","Neend","Shaadi",1,1],
+            ["Jahannam ke darwaze kitne?","5","6","7","8",2,2],
+            ["Wahi kya hai?","Kitaab","Allah ka paigham","Ilm","Namaz",1,2],
+            ["Imaan ke arkaan kitne hain?","3","5","7","10",2,2],
+            ["Quran ki tilawat ka sawab (har harf)?","1 neki","10 neki","100 neki","1000 neki",1,3],
+            ["Wudu kis cheez ke liye zaroori?","Khaane","Namaz","Sone","Padhne",1,3],
+            ["Namaz mein kis ki taraf munh hota hai?","Pur","Paschim","Uttara","Qibla",3,3],
+            ["Paak hone ka amal kya kehlata hai?","Taharat","Salah","Roza","Hajj",0,3]
         ],
-        // ===== DAY 11 (AASAAN - MONTHS) =====
+        // ===== DAY 11 (MEDIUM - MONTHS) =====
         [
-            ["Islami calendar mein pehla mahina?","Ramzan","Muharram","Shawwal","Rajab",1],
-            ["Ramzan ke baad ka mahina?","Shaban","Shawwal","Rajab","Muharram",1],
-            ["Islami saal mein kitne mahine?","10","11","12","13",2],
-            ["Ashura kis mahine mein?","Ramzan","Muharram","Rajab","Shaban",1],
-            ["Shab-e-Barat kis mahine mein?","Rajab","Shaban","Ramzan","Shawwal",1],
-            ["Shab-e-Miraj kis mahine mein?","Rajab","Shaban","Ramzan","Shawwal",0],
-            ["Lailatul Qadr kis mahine mein?","Shaban","Ramzan","Rajab","Muharram",1],
-            ["Qurbani kis mahine mein?","Ramzan","Muharram","Zil-Hijjah","Shawwal",2],
-            ["Hijri calendar kis sahaba ne muqarrar kiya?","Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)",1],
-            ["Ayyam-e-Tashreeq kis mahine mein?","Ramzan","Muharram","Zil-Hijjah","Shawwal",2]
+            ["Islami calendar mein pehla mahina?","Ramzan","Muharram","Shawwal","Rajab",1,1],
+            ["Islami saal mein kitne mahine?","10","11","12","13",2,1],
+            ["Ramzan ke baad ka mahina?","Shaban","Shawwal","Rajab","Muharram",1,2],
+            ["Ashura kis mahine mein?","Ramzan","Muharram","Rajab","Shaban",1,2],
+            ["Shab-e-Barat kis mahine mein?","Rajab","Shaban","Ramzan","Shawwal",1,2],
+            ["Shab-e-Miraj kis mahine mein?","Rajab","Shaban","Ramzan","Shawwal",0,2],
+            ["Lailatul Qadr kis mahine mein?","Shaban","Ramzan","Rajab","Muharram",1,3],
+            ["Qurbani kis mahine mein?","Ramzan","Muharram","Zil-Hijjah","Shawwal",2,3],
+            ["Hijri calendar kis sahaba ne muqarrar kiya?","Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)",1,3],
+            ["Ayyam-e-Tashreeq kis mahine mein?","Ramzan","Muharram","Zil-Hijjah","Shawwal",2,3]
         ],
-        // ===== DAY 12 (AASAAN - NAMAZ) =====
+        // ===== DAY 12 (MEDIUM - NAMAZ) =====
         [
-            ["Fajr ki namaz kitni rak'at?","2","3","4","5",0],
-            ["Zuhr ki namaz ki farz kitni?","2","3","4","5",2],
-            ["Asr ki namaz ki farz kitni?","2","3","4","5",2],
-            ["Maghrib ki namaz ki farz kitni?","2","3","4","5",1],
-            ["Isha ki namaz ki farz kitni?","2","3","4","5",2],
-            ["Juma ki namaz kitni rak'at?","2","3","4","5",0],
-            ["Taraweeh kis mahine mein?","Rajab","Shaban","Ramzan","Muharram",2],
-            ["Witr kab padhi jati hai?","Fajr","Zuhr","Isha ke baad","Fajr ke pehle",2],
-            ["Eidain ki namaz kitni rak'at?","2","4","6","8",0],
-            ["Janaza ki namaz mein kitni takbiren?","2","3","4","5",2]
+            ["Fajr ki namaz kitni rak'at farz?","2","3","4","5",0,1],
+            ["Zuhr ki namaz ki farz kitni?","2","3","4","5",2,1],
+            ["Asr ki namaz ki farz kitni?","2","3","4","5",2,1],
+            ["Maghrib ki namaz ki farz kitni?","2","3","4","5",1,2],
+            ["Isha ki namaz ki farz kitni?","2","3","4","5",2,2],
+            ["Juma ki namaz kitni rak'at farz?","2","3","4","5",0,2],
+            ["Taraweeh kis mahine mein?","Rajab","Shaban","Ramzan","Muharram",2,3],
+            ["Witr kab padhi jati hai?","Fajr ke baad","Zuhr ke baad","Isha ke baad","Fajr ke pehle",2,3],
+            ["Eidain ki namaz kitni rak'at?","2","4","6","8",0,3],
+            ["Janaza ki namaz mein kitni takbiren?","2","3","4","5",2,3]
         ],
         // ===== DAY 13 (MEDIUM - QURAN) =====
         [
-            ["Quran mein kitni aayat hain?","5000","6000","6236","7000",2],
-            ["Quran ka pehla kalima kya hai?","Bismillah","Alhamdulillah","La ilaha illallah","Allahu Akbar",0],
-            ["Ayatul Kursi kis Surah mein?","Baqarah","Imran","Nisa","Maidah",0],
-            ["Ummul Quran kis Surah ko kaha?","Baqarah","Fatiha","Imran","Yaseen",1],
-            ["Quran ka dil kis Surah ko kaha?","Fatiha","Yaseen","Baqarah","Ikhlas",1],
-            ["Surah Yaseen mein kitni aayat?","83","84","85","86",0],
-            ["Surah Ar-Rahman mein kitni aayat?","76","77","78","79",2],
-            ["Surah Al-Kahf mein kitni aayat?","110","111","112","113",0],
-            ["Surah Al-Mulk mein kitni aayat?","30","31","32","33",0],
-            ["Aayatul Kursi kis aayat number?","255","256","257","258",0]
+            ["Quran ka pehla kalima kya hai?","Bismillah","Alhamdulillah","La ilaha illallah","Allahu Akbar",0,1],
+            ["Ayatul Kursi kis Surah mein?","Baqarah","Imran","Nisa","Maidah",0,1],
+            ["Ummul Quran kis Surah ko kaha?","Baqarah","Fatiha","Imran","Yaseen",1,2],
+            ["Quran ka dil kis Surah ko kaha?","Fatiha","Yaseen","Baqarah","Ikhlas",1,2],
+            ["Quran mein kitni aayat hain?","5000","6000","6236","7000",2,2],
+            ["Surah Yaseen mein kitni aayat?","83","84","85","86",0,2],
+            ["Surah Ar-Rahman mein kitni aayat?","76","77","78","79",2,3],
+            ["Surah Al-Kahf mein kitni aayat?","110","111","112","113",0,3],
+            ["Surah Al-Mulk mein kitni aayat?","30","31","32","33",0,3],
+            ["Aayatul Kursi kis aayat number?","255","256","257","258",0,3]
         ],
         // ===== DAY 14 (MEDIUM - QURAN) =====
         [
-            ["Quran kitne saal mein nazil hua?","20","23","25","27",1],
-            ["Quran mein kitne Makki Surah?","86","28","50","60",0],
-            ["Quran mein kitne Madani Surah?","86","28","50","60",1],
-            ["Pehli Wahy kis umar mein hui?","35","40","45","50",1],
-            ["Surah Al-Falaq ka matlab?","Subah","Raat","Din","Andhera",0],
-            ["Surah An-Nas ka matlab?","Log","Dushman","Dost","Malik",0],
-            ["Surah Al-Ikhlas ka matlab?","Ekdum","Aakhri","Pehla","Khaas",0],
-            ["Surah Al-Kawthar ka matlab?","Kaserat-e-Khair","Sabr","Noor","Rahmat",0],
-            ["Surah Al-Asr mein kitni aayat?","3","4","5","6",0],
-            ["Surah Al-Kawthar mein kitni aayat?","2","3","4","5",1]
+            ["Quran kitne saal mein nazil hua?","20","23","25","27",1,1],
+            ["Pehli Wahy kis umar mein hui?","35","40","45","50",1,1],
+            ["Surah Al-Falaq ka matlab?","Subah","Raat","Din","Andhera",0,2],
+            ["Surah An-Nas ka matlab?","Log","Dushman","Dost","Malik",0,2],
+            ["Surah Al-Ikhlas ka matlab?","Ekdum","Aakhri","Pehla","Khaas",0,2],
+            ["Surah Al-Kawthar ka matlab?","Kaserat-e-Khair","Sabr","Noor","Rahmat",0,2],
+            ["Quran mein kitne Makki Surah?","86","28","50","60",0,3],
+            ["Quran mein kitne Madani Surah?","86","28","50","60",1,3],
+            ["Surah Al-Asr mein kitni aayat?","3","4","5","6",0,3],
+            ["Surah Al-Kawthar mein kitni aayat?","2","3","4","5",1,3]
         ],
         // ===== DAY 15 (MEDIUM - PROPHETS) =====
         [
-            ["Hazrat Aadam (AS) ki biwi ka naam?","Hawwa","Maryam","Aisha","Khadija",0],
-            ["Hazrat Nuh (AS) ki kashti kis pahar par ruki?","Toor","Juddi","Arafat","Safa",1],
-            ["Hazrat Ibrahim (AS) ko kis ne aag mein dala?","Fir'aun","Namrud","Qaroon","Abu Jahl",1],
-            ["Hazrat Ibrahim (AS) ke walid ka naam?","Aazar","Namrud","Abu Talib","Abdullah",0],
-            ["Hazrat Yusuf (AS) ke walid?","Yaqub (AS)","Ishaq (AS)","Ibrahim (AS)","Musa (AS)",0],
-            ["Hazrat Musa (AS) ke bhai?","Haroon (AS)","Isa (AS)","Yahya (AS)","Yusuf (AS)",0],
-            ["Hazrat Musa (AS) ka muqabla kis se?","Fir'aun","Namrud","Qaroon","Abu Jahl",0],
-            ["Hazrat Sulayman (AS) ke walid?","Dawud (AS)","Yaqub (AS)","Ibrahim (AS)","Isa (AS)",0],
-            ["Hazrat Isa (AS) ne kya kamaal dikhaya?","Murda zinda karna","Aag bujhani","Kashti chalana","Pahad hatana",0],
-            ["Hazrat Isa (AS) ke walid kaun?","Yusuf bin Yaqub","Koi nahi","Aazar","Haroon",1]
+            ["Hazrat Aadam (AS) ki biwi ka naam?","Hawwa","Maryam","Aisha","Khadija",0,1],
+            ["Hazrat Yusuf (AS) ke walid?","Yaqub (AS)","Ishaq (AS)","Ibrahim (AS)","Musa (AS)",0,1],
+            ["Hazrat Musa (AS) ke bhai?","Haroon (AS)","Isa (AS)","Yahya (AS)","Yusuf (AS)",0,1],
+            ["Hazrat Nuh (AS) ki kashti kis pahar par ruki?","Toor","Juddi","Arafat","Safa",1,2],
+            ["Hazrat Ibrahim (AS) ko kis ne aag mein dala?","Fir'aun","Namrud","Qaroon","Abu Jahl",1,2],
+            ["Hazrat Sulayman (AS) ke walid?","Dawud (AS)","Yaqub (AS)","Ibrahim (AS)","Isa (AS)",0,2],
+            ["Hazrat Ibrahim (AS) ke walid ka naam?","Aazar","Namrud","Abu Talib","Abdullah",0,3],
+            ["Hazrat Musa (AS) ka muqabla kis se?","Fir'aun","Namrud","Qaroon","Abu Jahl",0,3],
+            ["Hazrat Isa (AS) ne kya kamaal dikhaya?","Murda zinda karna","Aag bujhani","Kashti chalana","Pahad hatana",0,3],
+            ["Hazrat Isa (AS) ke walid kaun?","Yusuf bin Yaqub","Koi nahi","Aazar","Haroon",1,3]
         ],
         // ===== DAY 16 (MEDIUM - SAHABA) =====
         [
-            ["Hazrat Ali (RA) ki kuniyat?","Abul Hasan","Abu Hurayrah","Abu Bakr","Abu Ubaida",0],
-            ["Hazrat Umar (RA) ke khilafat ke saal?","5","10","12","15",1],
-            ["Hazrat Uthman (RA) ke khilafat ke saal?","5","10","12","15",2],
-            ["Jang-e-Badr mein kitne sahaba?","313","300","500","1000",0],
-            ["Jang-e-Badr kis saal hui?","1 AH","2 AH","3 AH","4 AH",1],
-            ["Ahle Suffa kya the?","Masjid ke bahar rehne wale sahaba","Namaz","Shaheed","Khatib",0],
-            ["Sahaba ka matlab kya hai?","Nabi ﷺ ke sathi","Nabi ﷺ ke dost","Nabi ﷺ ke ghulam","Nabi ﷺ ke dushman",0],
-            ["Asharah Mubasharah kitne sahaba?","5","8","9","10",3],
-            ["Hazrat Salman Farsi (RA) kis mulk ke?","Iran","Arab","Yemen","Egypt",0],
-            ["Hazrat Suhaib (RA) kis mulk ke?","Rome","Arab","Yemen","Egypt",0]
+            ["Jang-e-Badr mein kitne sahaba?","313","300","500","1000",0,1],
+            ["Asharah Mubasharah kitne sahaba?","5","8","9","10",3,1],
+            ["Hazrat Ali (RA) ki kuniyat?","Abul Hasan","Abu Hurayrah","Abu Bakr","Abu Ubaida",0,1],
+            ["Hazrat Umar (RA) ke khilafat ke saal?","5","10","12","15",1,2],
+            ["Hazrat Uthman (RA) ke khilafat ke saal?","5","10","12","15",2,2],
+            ["Jang-e-Badr kis saal hui?","1 AH","2 AH","3 AH","4 AH",1,2],
+            ["Ahle Suffa kya the?","Masjid ke bahar rehne wale sahaba","Namaz","Shaheed","Khatib",0,3],
+            ["Sahaba ka matlab kya hai?","Nabi ﷺ ke sathi","Nabi ﷺ ke dost","Nabi ﷺ ke ghulam","Nabi ﷺ ke dushman",0,3],
+            ["Hazrat Salman Farsi (RA) kis mulk ke?","Iran","Arab","Yemen","Egypt",0,3],
+            ["Hazrat Suhaib (RA) kis mulk ke?","Rome","Arab","Yemen","Egypt",0,3]
         ],
         // ===== DAY 17 (MEDIUM - SAHABA) =====
         [
-            ["Hazrat Abu Ubaida (RA) ka laqab?","Amin-ul-Ummat","Siddiq","Farooq","Saifullah",0],
-            ["Hazrat Khalid bin Waleed (RA) ka laqab?","Saifullah","Siddiq","Farooq","Zul Noorain",0],
-            ["Hazrat Anas (RA) kitne saal Nabi ﷺ ki khidmat mein?","5","10","15","20",1],
-            ["Mu'adh bin Jabal (RA) ko kahan bheja?","Yemen","Sham","Iraq","Egypt",0],
-            ["Hazrat Bilal (RA) ka pura naam?","Bilal bin Rabah","Bilal bin Abdullah","Bilal bin Umar","Bilal bin Abu Bakr",0],
-            ["Hazrat Zaid bin Haritha (RA) kis rishte se Nabi ﷺ se jude?","Muta bhai","Chacha","Betta","Sahabi",0],
-            ["Hazrat Usama bin Zaid (RA) kitni umar mein commander bane?","18","20","25","30",0],
-            ["Hazrat Zubair bin Awwam (RA) ka rishta Nabi ﷺ se?","Phuphi ka betta","Chacha ka betta","Mamu ka betta","Bhai",0],
-            ["Hawari kis sahaba ka laqab?","Zubair bin Awwam","Abul Hasan","Saad","Talha",0],
-            ["Fatah Misr kis sahaba ne kiya?","Amr bin Al-Aas","Saad bin Abi Waqqas","Khalid bin Waleed","Abu Ubaida",0]
+            ["Hazrat Abu Ubaida (RA) ka laqab?","Amin-ul-Ummat","Siddiq","Farooq","Saifullah",0,1],
+            ["Hazrat Khalid bin Waleed (RA) ka laqab?","Saifullah","Siddiq","Farooq","Zul Noorain",0,1],
+            ["Hazrat Bilal (RA) ka pura naam?","Bilal bin Rabah","Bilal bin Abdullah","Bilal bin Umar","Bilal bin Abu Bakr",0,1],
+            ["Hazrat Anas (RA) kitne saal Nabi ﷺ ki khidmat mein?","5","10","15","20",1,2],
+            ["Mu'adh bin Jabal (RA) ko kahan bheja?","Yemen","Sham","Iraq","Egypt",0,2],
+            ["Hazrat Usama bin Zaid (RA) kitni umar mein commander bane?","18","20","25","30",0,2],
+            ["Hazrat Zaid bin Haritha (RA) kis rishte se Nabi ﷺ se jude?","Muta bhai","Chacha","Beta (adopted)","Sahabi",2,3],
+            ["Hazrat Zubair bin Awwam (RA) ka laqab?","Hawari","Siddiq","Farooq","Saifullah",0,3],
+            ["Fatah Misr kis sahaba ne kiya?","Amr bin Al-Aas","Saad bin Abi Waqqas","Khalid bin Waleed","Abu Ubaida",0,3],
+            ["Hazrat Saad bin Abi Waqqas (RA) ki dua kis liye mashhoor?","Qabool hona","Rizq","Shifa","Ilm",0,3]
         ],
         // ===== DAY 18 (MEDIUM - AHLE BAIT) =====
         [
-            ["Hazrat Fatima (RA) ki walida?","Khadija (RA)","Aisha (RA)","Hafsa (RA)","Zainab (RA)",0],
-            ["Nabi ﷺ ke kitne bachche the?","4","5","6","7",3],
-            ["Hazrat Hassan (RA) kis ke bette?","Ali (RA)","Abu Bakr (RA)","Umar (RA)","Uthman (RA)",0],
-            ["Hazrat Hussain (RA) kis jang mein shaheed?","Karbala","Badr","Uhud","Khyber",0],
-            ["Syed-ush-Shuhada kis ko kaha jata?","Hamza (RA)","Hussain (RA)","Ali (RA)","Bilal (RA)",0],
-            ["Hazrat Ali (RA) ki kuniyat?","Abul Hasan","Abu Hurayrah","Abu Bakr","Abu Ubaida",0],
-            ["Hazrat Ali (RA) kis masjid mein shaheed?","Kufa","Masjid Nabawi","Masjid Quba","Masjid Aqsa",0],
-            ["Panjetan Pak mein kaun shamil hain?","Muhammad ﷺ, Ali, Fatima, Hassan, Hussain","Abu Bakr, Umar, Uthman, Ali","Umar, Uthman, Ali, Talha","Zubair, Ali, Hamza, Salman",0],
-            ["Hazrat Fatima (RA) ke kitne bete the?","1","2","3","4",1],
-            ["Azwaj-e-Mutahharaat (Ummahat-ul-Mu'mineen) kitni?","9","11","13","15",1]
+            ["Hazrat Fatima (RA) ki walida?","Khadija (RA)","Aisha (RA)","Hafsa (RA)","Zainab (RA)",0,1],
+            ["Hazrat Hassan (RA) kis ke bette?","Ali (RA)","Abu Bakr (RA)","Umar (RA)","Uthman (RA)",0,1],
+            ["Azwaj-e-Mutahharaat (Ummahat-ul-Mu'mineen) kitni?","9","11","13","15",1,1],
+            ["Hazrat Hussain (RA) kis jang mein shaheed?","Karbala","Badr","Uhud","Khyber",0,2],
+            ["Nabi ﷺ ke kitne bachche the?","4","5","6","7",3,2],
+            ["Hazrat Ali (RA) kis masjid mein shaheed?","Kufa","Masjid Nabawi","Masjid Quba","Masjid Aqsa",0,2],
+            ["Hazrat Fatima (RA) ke kitne bete the?","1","2","3","4",1,3],
+            ["Syed-ush-Shuhada kis ko kaha jata?","Hamza (RA)","Hussain (RA)","Ali (RA)","Bilal (RA)",0,3],
+            ["Hazrat Fatima (RA) ki kuniyat kya thi?","Umm-e-Hassan","Umm-e-Kulthum","Umm-e-Salma","Umm-e-Ayman",0,3],
+            ["Hazrat Hussain (RA) ki walida kaun?","Fatima (RA)","Aisha (RA)","Khadija (RA)","Hafsa (RA)",0,3]
         ],
         // ===== DAY 19 (MEDIUM - FIQH) =====
         [
-            ["Wudu ke farz kitne hain?","3","4","5","6",1],
-            ["Ghusl ke farz kitne hain?","2","3","4","5",1],
-            ["Tayammum ke farz kitne hain?","2","3","4","5",0],
-            ["Namaz ke arkaan (farz) kitne?","5","6","7","9",1],
-            ["Zakat nisab sona?","5 tola","7.5 tola","10 tola","12 tola",1],
-            ["Zakat nisab chandi?","40 tola","52.5 tola","60 tola","70 tola",1],
-            ["Roza kis waqt iftar?","Suraj ghuroob","Zawal","Asr","Fajr",0],
-            ["Roza kis waqt se shuru?","Fajr","Zawal","Zuhr","Asr",0],
-            ["Talbiyah kab padhi jati hai?","Ihram ke baad","Ihram se pehle","Tawaf ke baad","Sai ke baad",0],
-            ["Qurbani bakri ki umar?","6 mahine","1 saal","2 saal","3 saal",1]
+            ["Wudu ke farz kitne hain?","3","4","5","6",1,1],
+            ["Ghusl ke farz kitne hain?","2","3","4","5",1,1],
+            ["Roza kis waqt iftar?","Suraj ghuroob","Zawal","Asr","Fajr",0,1],
+            ["Tayammum ke farz kitne hain?","2","3","4","5",0,2],
+            ["Namaz ke arkaan (farz) kitne?","5","6","7","9",1,2],
+            ["Zakat nisab sona?","5 tola","7.5 tola","10 tola","12 tola",1,2],
+            ["Zakat nisab chandi?","40 tola","52.5 tola","60 tola","70 tola",1,3],
+            ["Roza kis waqt se shuru?","Fajr","Zawal","Zuhr","Asr",0,3],
+            ["Talbiyah kab padhi jati hai?","Ihram ke baad","Ihram se pehle","Tawaf ke baad","Sai ke baad",0,3],
+            ["Qurbani bakri ki umar?","6 mahine","1 saal","2 saal","3 saal",1,3]
         ],
-        // ===== DAY 20 (MEDIUM - AHLE SUNNAT) =====
+        // ===== DAY 20 (AHLE HADEES HISTORY) =====
         [
-            ["Ahle Sunnat Wal Jamaat ka doosra naam?","Barelvi","Salfi","Deobandi","Shia",0],
-            ["Imam Ahmad Raza Khan (RA) ka wisaal kis saal?","1918","1921","1930","1940",1],
-            ["Imam Ahmad Raza Khan (RA) ki wiladat kis saal?","1856","1858","1860","1862",0],
-            ["Aala Hazrat kis ko kaha jata?","Imam Ahmad Raza Khan","Imam Ahmad Bin Hanbal","Imam Bukhari","Imam Muslim",0],
-            ["Ghaus-e-Azam ka asal naam?","Abdul Qadir Jilani","Abdul Qadir Baghdadi","Moinuddin Chishti","Nizamuddin Auliya",0],
-            ["Ghaus-e-Azam ka mazaar kahan?","Baghdad","Delhi","Ajmer","Multan",0],
-            ["Khwaja Moinuddin Chishti ka mazaar?","Ajmer","Delhi","Baghdad","Multan",0],
-            ["Khwaja Nizamuddin Auliya ka mazaar?","Delhi","Ajmer","Baghdad","Multan",0],
-            ["Ahle Sunnat mein kitne Fiqh imam?","2","3","4","5",2],
-            ["Chautha imam fiqh kaun?","Imam Ahmad bin Hanbal","Imam Malik","Imam Shafi","Imam Abu Hanifa",0]
+            ["Sheikh Muhammad bin Abdul Wahhab ka watan?","Najd","Makkah","Egypt","Yemen",0,1],
+            ["Imam Bukhari ka asal naam?","Muhammad bin Ismail","Muhammad bin Ishaq","Muhammad bin Idris","Muhammad bin Ahmad",0,1],
+            ["Sheikh Muhammad bin Abdul Wahhab ki mashhoor kitab?","Kitab at-Tawheed","Fatawa","Tafsir","Risala",0,1],
+            ["Imam Ahmad bin Hanbal ki kitab?","Musnad","Muwatta","Sahih","Sunan",0,2],
+            ["Muwatta kis imam ki kitab?","Imam Ahmad","Imam Bukhari","Imam Muslim","Imam Malik",3,2],
+            ["Sheikh Nasiruddin Albani ka taluq kis ilm se?","Hadith","Tafsir","Fiqh","Aqeedah",0,2],
+            ["Sheikh Ibn Baz kis mulk ke mufti the?","Saudi Arabia","Egypt","Jordan","Kuwait",0,3],
+            ["Ahle Hadees ka manhaj kya hai?","Quran aur Sahih Hadith par amal","Sirf Fiqh","Sirf Tafsir","Sirf Ijma",0,3],
+            ["Behtareen daur kis ko kaha jata hai?","Khair-ul-Quroon","Sahaba ke baad","Tabi'in ke baad","Kisi ko nahi",0,3],
+            ["Imam Bukhari ki mashhoor kitab?","Sahih Bukhari","Sahih Muslim","Sunan","Musnad",0,3]
         ],
         // ===== DAY 21 (MEDIUM - HISTORY) =====
         [
-            ["Hijrat kis saal hui?","1 AH","5 AH","10 AH","13 Nabuwat",3],
-            ["Pehli masjid kaun si banai?","Masjid Quba","Masjid Nabawi","Masjid Aqsa","Masjid Haram",0],
-            ["Fatah Makkah kis saal?","6 AH","7 AH","8 AH","9 AH",2],
-            ["Jang-e-Uhud kis saal?","1 AH","2 AH","3 AH","4 AH",2],
-            ["Jang-e-Khandaq kis saal?","3 AH","4 AH","5 AH","6 AH",2],
-            ["Jang-e-Khyber kis saal?","5 AH","6 AH","7 AH","8 AH",2],
-            ["Sulah Hudaibiya kis saal?","4 AH","5 AH","6 AH","7 AH",2],
-            ["Hajjatul Wida kis saal?","9 AH","10 AH","11 AH","12 AH",1],
-            ["Nabi ﷺ ki wafat kis saal?","9 AH","10 AH","11 AH","12 AH",2],
-            ["Pehle Khalifa ka daur-e-khilafat?","1 saal","2 saal","3 saal","4 saal",1]
+            ["Hijrat kis saal hui?","1 AH","5 AH","10 AH","13 Nabuwat",3,1],
+            ["Pehli masjid kaun si banai?","Masjid Quba","Masjid Nabawi","Masjid Aqsa","Masjid Haram",0,1],
+            ["Jang-e-Uhud kis saal?","1 AH","2 AH","3 AH","4 AH",2,1],
+            ["Fatah Makkah kis saal?","6 AH","7 AH","8 AH","9 AH",2,2],
+            ["Jang-e-Khandaq kis saal?","3 AH","4 AH","5 AH","6 AH",2,2],
+            ["Jang-e-Khyber kis saal?","5 AH","6 AH","7 AH","8 AH",2,2],
+            ["Sulah Hudaibiya kis saal?","4 AH","5 AH","6 AH","7 AH",2,3],
+            ["Hajjatul Wida kis saal?","9 AH","10 AH","11 AH","12 AH",1,3],
+            ["Nabi ﷺ ki wafat kis saal?","9 AH","10 AH","11 AH","12 AH",2,3],
+            ["Pehle Khalifa ka daur-e-khilafat?","1 saal","2 saal","3 saal","4 saal",1,3]
         ],
-        // ===== DAY 22 (MEDIUM - AHLE SUNNAT) =====
+        // ===== DAY 22 (AQEEDAH - AHLE HADEES) =====
         [
-            ["Jashn-e-Wiladat (Eid Milad-un-Nabi ﷺ) ka hukm?","Jaiz aur Mustahab","Najaiz","Wajib","Haram",0],
-            ["Durood Sharif padhna?","Sunnat","Wajib","Farz","Haram",0],
-            ["Ziyarat-e-Quboor ka hukm?","Sunnat","Farz","Wajib","Haram",0],
-            ["Tawassul ka hukm?","Jaiz","Najaiz","Farz","Haram",0],
-            ["Fateha padhna ka hukm?","Jaiz","Najaiz","Wajib","Haram",0],
-            ["Ishq-e-Rasool ﷺ kya hai?","Imaan ki nishani","Zyada","Sunnat","Farz",0],
-            ["Bid'at-e-Hasana ka hukm?","Jaiz","Najaiz","Wajib","Haram",0],
-            ["Bid'at-e-Sayyia ka hukm?","Najaiz","Jaiz","Wajib","Farz",0],
-            ["Naat padhna?","Jaiz","Najaiz","Wajib","Haram",0],
-            ["Peer-mureedi (Tasawwuf) Ahle Sunnat mein?","Jaiz","Najaiz","Farz","Haram",0]
+            ["Tawheed ki kitni qismein hain?","2","3","4","5",1,1],
+            ["Dua kisko karein?","Sirf Allah se","Pir se","Wali se","Nabi se",0,1],
+            ["Tawheed ar-Rububiyyah kya hai?","Allah ko yakta maanna (Rab mein)","Sirf ibadat","Sirf naam","Sirf sifaat",0,2],
+            ["Tawheed al-Uluhiyyah kya hai?","Sirf Allah ki ibadat","Rabb maanna","Naam maanna","Sifaat maanna",0,2],
+            ["Ghaib ka ilm kisko hai?","Sirf Allah ko","Nabi ko","Wali ko","Pir ko",0,2],
+            ["Bid'at kya hai?","Deen mein naya kaam","Neki","Sunnat","Farz",0,2],
+            ["Shirk Akbar ka hukm?","Jannat se mehroom (hamesha jahannam)","Maaf ho jayega","Sunnat","Mustahab",0,3],
+            ["Allah ki sifaat ka aqeedah?","Bila tashbeeh aur bila ta'weel","Ta'weel ke saath","Tashbeeh ke saath","Inkaar ke saath",0,3],
+            ["Quran Allah ka kalaam hai?","Haan, ghair makhlooq","Makhlooq","Kisi ne likha","Purana hai",0,3],
+            ["Sunnah ki hifazat kis ne ki?","Sahaba (RA) ne","Tabi'in ne","Imam ne","Kisi ne nahi",0,3]
         ],
         // ===== DAY 23 (MEDIUM - GEOGRAPHY) =====
         [
-            ["Kaaba kis masjid mein hai?","Masjid-e-Haram","Masjid-e-Nabawi","Masjid-e-Aqsa","Masjid-e-Quba",0],
-            ["Masjid-e-Nabawi kis shehar?","Makkah","Madinah","Jerusalem","Taif",1],
-            ["Masjid-e-Aqsa kis shehar?","Makkah","Madinah","Jerusalem","Damascus",2],
-            ["Jabal-e-Noor kahan?","Makkah","Madinah","Jerusalem","Taif",0],
-            ["Ghare Hira kahan?","Makkah","Madinah","Jerusalem","Taif",0],
-            ["Maqam-e-Ibrahim kahan?","Masjid-e-Haram","Masjid-e-Nabawi","Masjid-e-Aqsa","Masjid-e-Quba",0],
-            ["Safa aur Marwa kahan?","Masjid-e-Haram","Masjid-e-Nabawi","Masjid-e-Aqsa","Masjid-e-Quba",0],
-            ["Mina kahan?","Makkah ke qareeb","Madinah ke qareeb","Jerusalem","Damascus",0],
-            ["Muzdalifa kahan?","Makkah ke qareeb","Madinah ke qareeb","Jerusalem","Damascus",0],
-            ["Arafat kahan?","Makkah ke qareeb","Madinah ke qareeb","Jerusalem","Damascus",0]
+            ["Kaaba kis masjid mein hai?","Masjid-e-Haram","Masjid-e-Nabawi","Masjid-e-Aqsa","Masjid-e-Quba",0,1],
+            ["Masjid-e-Nabawi kis shehar?","Makkah","Madinah","Jerusalem","Taif",1,1],
+            ["Masjid-e-Aqsa kis shehar?","Makkah","Madinah","Jerusalem","Damascus",2,1],
+            ["Jabal-e-Noor kahan?","Makkah","Madinah","Jerusalem","Taif",0,2],
+            ["Ghare Hira kahan?","Makkah","Madinah","Jerusalem","Taif",0,2],
+            ["Maqam-e-Ibrahim kahan?","Masjid-e-Haram","Masjid-e-Nabawi","Masjid-e-Aqsa","Masjid-e-Quba",0,2],
+            ["Safa aur Marwa kahan?","Masjid-e-Haram","Masjid-e-Nabawi","Masjid-e-Aqsa","Masjid-e-Quba",0,3],
+            ["Mina kahan?","Makkah ke qareeb","Madinah ke qareeb","Jerusalem","Damascus",0,3],
+            ["Muzdalifa kahan?","Makkah ke qareeb","Madinah ke qareeb","Jerusalem","Damascus",0,3],
+            ["Arafat kahan?","Makkah ke qareeb","Madinah ke qareeb","Jerusalem","Damascus",0,3]
         ],
         // ===== DAY 24 (MEDIUM - HADITH) =====
         [
-            ["Hadith ke kitne hisse?","Sanad aur Matan","Sirf Sanad","Sirf Matan","Kuch nahi",0],
-            ["Sahih Bukhari ke muallif?","Imam Bukhari","Imam Muslim","Imam Abu Dawud","Imam Tirmidhi",0],
-            ["Sahih Muslim ke muallif?","Imam Bukhari","Imam Muslim","Imam Abu Dawud","Imam Tirmidhi",1],
-            ["Mishkat Sharif kaunsi hadith ki kitab?","Mishkat","Bukhari","Muslim","Tirmidhi",0],
-            ["Sahih Bukhari mein kitni ahadith (with repetition)?","7000","7563","8000","9000",1],
-            ["Sahih Muslim mein kitni ahadith (approx)?","5000","7000","7500","9000",2],
-            ["Musnad kis imam ki kitab?","Imam Ahmad bin Hanbal","Imam Bukhari","Imam Muslim","Imam Malik",0],
-            ["Muwatta kis imam ki kitab?","Imam Ahmad","Imam Bukhari","Imam Muslim","Imam Malik",3],
-            ["Tirmidhi kis imam?","Imam Tirmidhi","Imam Bukhari","Imam Muslim","Imam Malik",0],
-            ["Sunan Abu Dawud ke muallif?","Imam Tirmidhi","Imam Bukhari","Imam Muslim","Imam Abu Dawud",3]
+            ["Hadith ke kitne hisse?","Sanad aur Matan","Sirf Sanad","Sirf Matan","Kuch nahi",0,1],
+            ["Sahih Bukhari ke muallif?","Imam Bukhari","Imam Muslim","Imam Abu Dawud","Imam Tirmidhi",0,1],
+            ["Sahih Muslim ke muallif?","Imam Bukhari","Imam Muslim","Imam Abu Dawud","Imam Tirmidhi",1,1],
+            ["Mishkat Sharif kaunsi hadith ki kitab?","Mishkat","Bukhari","Muslim","Tirmidhi",0,2],
+            ["Sahih Bukhari mein kitni ahadith (with repetition)?","7000","7563","8000","9000",1,2],
+            ["Musnad kis imam ki kitab?","Imam Ahmad bin Hanbal","Imam Bukhari","Imam Muslim","Imam Malik",0,2],
+            ["Sahih Muslim mein kitni ahadith (approx)?","5000","7000","7500","9000",2,3],
+            ["Tirmidhi kis imam?","Imam Tirmidhi","Imam Bukhari","Imam Muslim","Imam Malik",0,3],
+            ["Sunan Abu Dawud ke muallif?","Imam Tirmidhi","Imam Bukhari","Imam Muslim","Imam Abu Dawud",3,3],
+            ["Muwatta kis imam ki kitab?","Imam Ahmad","Imam Bukhari","Imam Muslim","Imam Malik",3,3]
         ],
         // ===== DAY 25 (HARD - HISTORY) =====
         [
-            ["Fatah Makkah ke waqt kitne sahaba?","1000","5000","10000","20000",2],
-            ["Jang-e-Hunain kis saal?","6 AH","7 AH","8 AH","9 AH",2],
-            ["Jang-e-Taif kis saal?","6 AH","7 AH","8 AH","9 AH",2],
-            ["Jang-e-Mutah kis saal?","5 AH","6 AH","7 AH","8 AH",3],
-            ["Jang-e-Tabuk kis saal?","7 AH","8 AH","9 AH","10 AH",2],
-            ["Wafd-e-Banu Tamim kis saal?","7 AH","8 AH","9 AH","10 AH",2],
-            ["Hajjatul Wida mein kitne musalman?","10,000","50,000","1 lakh+","2 lakh+",2],
-            ["Sanatul Wufud (Delegations ka saal)?","7 AH","8 AH","9 AH","10 AH",2],
-            ["Pehli Wahy kis saal (CE)?","610","600","620","630",0],
-            ["Hijrat-e-Madinah kis saal (CE)?","622","630","610","632",0]
+            ["Fatah Makkah ke waqt kitne sahaba?","1000","5000","10000","20000",2,1],
+            ["Jang-e-Hunain kis saal?","6 AH","7 AH","8 AH","9 AH",2,1],
+            ["Jang-e-Mutah kis saal?","5 AH","6 AH","7 AH","8 AH",3,2],
+            ["Jang-e-Taif kis saal?","6 AH","7 AH","8 AH","9 AH",2,2],
+            ["Jang-e-Tabuk kis saal?","7 AH","8 AH","9 AH","10 AH",2,2],
+            ["Wafd-e-Banu Tamim kis saal?","7 AH","8 AH","9 AH","10 AH",2,3],
+            ["Hajjatul Wida mein kitne musalman?","10,000","50,000","1 lakh+","2 lakh+",2,3],
+            ["Sanatul Wufud (Delegations ka saal)?","7 AH","8 AH","9 AH","10 AH",2,3],
+            ["Pehli Wahy kis saal (CE)?","610","600","620","630",0,3],
+            ["Hijrat-e-Madinah kis saal (CE)?","622","630","610","632",0,3]
         ],
-        // ===== DAY 26 (HARD - AHLE SUNNAT) =====
+        // ===== DAY 26 (AHLE HADEES SCHOLARS) =====
         [
-            ["Fatawa-e-Razawiyyah kitni jild?","10","15","25","30",3],
-            ["Kanz-ul-Imaan kis ka Quran tarjuma?","Imam Ahmad Raza Khan","Shah Abdul Qadir","Shah Waliullah","Ashraf Ali Thanvi",0],
-            ["Hadaeq-e-Bakhshish kis ki naat ka majmua?","Imam Ahmad Raza Khan","Shah Abdul Qadir","Shah Waliullah","Ashraf Ali Thanvi",0],
-            ["Aala Hazrat ki wiladat kahan hui?","Bareilly","Delhi","Lucknow","Agra",0],
-            ["Aala Hazrat ne kitne saal ki umar pai?","48","51","55","60",1],
-            ["Ghaus-e-Azam ki wiladat kis saal (AH)?","470 AH","471 AH","472 AH","473 AH",0],
-            ["Ghaus-e-Azam ki wafat kis saal (AH)?","560 AH","561 AH","562 AH","563 AH",1],
-            ["Ghaus-e-Azam ka silsila kis sahabi tak?","Ali (RA)","Abu Bakr (RA)","Umar (RA)","Uthman (RA)",0],
-            ["Chishti silsila kis se shuru?","Khwaja Moinuddin Chishti","Abdul Qadir Jilani","Nizamuddin Auliya","Imam Rabbani",0],
-            ["Fatawa Razawiyyah kis zaban mein?","Arabic","Urdu","Farsi","Arabic + Urdu",3]
+            ["Sheikh Ibn Taymiyyah ka watan?","Harran","Makkah","Delhi","Baghdad",0,1],
+            ["Sheikh Muhammad bin Abdul Wahhab ka daur?","12th Hijri","10th Hijri","14th Hijri","15th Hijri",0,1],
+            ["Ibn al-Qayyim kis ke shagird?","Ibn Taymiyyah","Ibn Kathir","Imam Bukhari","Imam Malik",0,2],
+            ["Sheikh Albani ka laqab?","Muhaddith-ul-Asr","Faqih-ul-Ummat","Shaykh-ul-Islam","Qari-ul-Asr",0,2],
+            ["Sheikh Ibn Uthaymeen kis ilm mein mashhoor?","Fiqh","Hadith","Tafsir","Aqeedah",0,2],
+            ["Sheikh Ibn Baz ka asal naam?","Abdul Aziz bin Baz","Abdullah bin Baz","Muhammad bin Baz","Ahmad bin Baz",0,3],
+            ["Ibn Taymiyyah ki mashhoor kitab?","Fatawa Ibn Taymiyyah","Tafsir","Sahih","Sunan",0,3],
+            ["Sheikh Albani ki mashhoor kitab?","Silsilatul Ahadith as-Sahihah","Tafsir","Sahih","Sunan",0,3],
+            ["Ahle Hadees ke mukhalifeen kise kehte hain?","Ahle Bid'at","Ahle Sunnat","Sahaba","Tabi'in",0,3],
+            ["Sahaba ki ittiba kis liye zaroori?","Sunnah ki samajh ke liye","Riwayat ke liye","Fiqh ke liye","Kuch nahi",0,3]
         ],
         // ===== DAY 27 (HARD - FIQH) =====
         [
-            ["Hanafi mazhab ke imam ka naam?","Imam Abu Hanifa","Imam Shafi","Imam Malik","Imam Ahmad",0],
-            ["Hanafi mazhab mein Asr ka waqt?","Mithlain","Mithl","Ghuroob","Zawal",0],
-            ["Shafi mazhab mein Asr ka waqt?","Mithl","Mithlain","Ghuroob","Zawal",0],
-            ["Wudu mein munh dhone ka farz?","Ek baar","Do baar","Teen baar","Chaar baar",0],
-            ["Wudu mein sar ka masah?","Chauthai","Aadha","Poora","Kuch nahi",0],
-            ["Namaz mein Sutra kya hai?","Aage ki rukawat","Aage ki deewar","Aage ki kitab","Aage ka sahaba",0],
-            ["Tahiyyatul Wudu kitni rak'at?","2","3","4","5",0],
-            ["Salatul Istikhara kitni rak'at?","2","3","4","5",0],
-            ["Salatul Hajat kitni rak'at?","2","3","4","5",0],
-            ["Taraweeh ki kitni rak'at (Ahle Sunnat)?","8","20","12","16",1]
+            ["Wudu mein munh dhone ka farz?","Ek baar","Do baar","Teen baar","Chaar baar",0,1],
+            ["Wudu mein sar ka masah?","Chauthai","Aadha","Poora","Kuch nahi",0,1],
+            ["Namaz mein Sutra kya hai?","Aage ki rukawat","Aage ki deewar","Aage ki kitab","Aage ka sahaba",0,2],
+            ["Tahiyyatul Wudu kitni rak'at?","2","3","4","5",0,2],
+            ["Salatul Istikhara kitni rak'at?","2","3","4","5",0,2],
+            ["Salatul Hajat kitni rak'at?","2","3","4","5",0,3],
+            ["Hanafi mazhab ke imam ka naam?","Imam Abu Hanifa","Imam Shafi","Imam Malik","Imam Ahmad",0,3],
+            ["Hanafi mazhab mein Asr ka waqt?","Mithlain","Mithl","Ghuroob","Zawal",0,3],
+            ["Taraweeh ki kitni rak'at (Ahle Hadees riwayat)?","8","20","12","16",0,3],
+            ["Shafi mazhab mein Asr ka waqt?","Mithl","Mithlain","Ghuroob","Zawal",0,3]
         ],
         // ===== DAY 28 (HARD - QURAN DEEP) =====
         [
-            ["Bismillah kis Surah mein nahi hai?","Tawbah","Fatiha","Naml","Ikhlas",0],
-            ["Surah An-Naml mein kitne Bismillah?","1","2","3","4",1],
-            ["Sajdah Tilawat ke kitne sajde?","13","14","15","16",1],
-            ["Quran mein kitne Surah Bismillah se shuru hain?","112","113","114","115",1],
-            ["Quran mein lafz Allah kitni baar (approx)?","2000","2697","3000","5000",1],
-            ["Quran mein lafz Muhammad ﷺ kitni baar?","1","2","3","4",3],
-            ["Quran mein lafz Ahmad kitni baar?","1","2","3","4",0],
-            ["Surah Yaseen ka doosra naam?","Quran ka dil","Quran ka noor","Quran ka taaj","Quran ki jaan",0],
-            ["Ayatul Kursi kis Surah mein?","Baqarah","Imran","Nisa","Maidah",0],
-            ["Quran ki sabse aakhri aayat kis Surah mein?","Baqarah","Nas","Fatiha","Ikhlas",0]
+            ["Bismillah kis Surah mein nahi hai?","Tawbah","Fatiha","Naml","Ikhlas",0,1],
+            ["Sajdah Tilawat ke kitne sajde?","13","14","15","16",1,1],
+            ["Ayatul Kursi kis Surah mein?","Baqarah","Imran","Nisa","Maidah",0,1],
+            ["Surah An-Naml mein kitne Bismillah?","1","2","3","4",1,2],
+            ["Quran mein kitne Surah Bismillah se shuru hain?","112","113","114","115",1,2],
+            ["Quran ki sabse aakhri aayat kis Surah mein?","Baqarah","Nas","Fatiha","Ikhlas",0,2],
+            ["Quran mein lafz Muhammad ﷺ kitni baar?","1","2","3","4",3,3],
+            ["Quran mein lafz Ahmad kitni baar?","1","2","3","4",0,3],
+            ["Surah Yaseen ka doosra naam?","Quran ka dil","Quran ka noor","Quran ka taaj","Quran ki jaan",0,3],
+            ["Quran mein lafz Allah kitni baar (approx)?","2000","2697","3000","5000",1,3]
         ],
         // ===== DAY 29 (HARD - IMAMS) =====
         [
-            ["Muwatta Imam Malik mein kitni ahadith?","500","1000","1720","2000",2],
-            ["Sunan Ibn Majah ke muallif?","Imam Ibn Majah","Imam Bukhari","Imam Muslim","Imam Malik",0],
-            ["Sahifa-e-Sadiqa kis sahabi ki?","Abdullah bin Amr","Abu Hurayrah","Anas","Aisha",0],
-            ["Imam Shafi (RA) ke ustad kaun the?","Imam Malik","Imam Ahmad","Imam Bukhari","Imam Muslim",0],
-            ["Imam Ahmad bin Hanbal ki kitab?","Musnad","Muwatta","Sahih","Sunan",0],
-            ["Imam Malik ka watan?","Madinah","Makkah","Baghdad","Kufa",0],
-            ["Imam Abu Hanifa ka watan?","Kufa","Makkah","Madinah","Baghdad",0],
-            ["Imam Bukhari ka watan?","Bukhara","Makkah","Madinah","Baghdad",0],
-            ["Imam Muslim ka watan?","Nishapur","Makkah","Madinah","Baghdad",0],
-            ["Imam Tirmidhi ka watan?","Tirmiz","Makkah","Madinah","Baghdad",0]
+            ["Imam Shafi (RA) ke ustad kaun the?","Imam Malik","Imam Ahmad","Imam Bukhari","Imam Muslim",0,1],
+            ["Imam Malik ka watan?","Madinah","Makkah","Baghdad","Kufa",0,1],
+            ["Imam Abu Hanifa ka watan?","Kufa","Makkah","Madinah","Baghdad",0,1],
+            ["Imam Bukhari ka watan?","Bukhara","Makkah","Madinah","Baghdad",0,2],
+            ["Imam Muslim ka watan?","Nishapur","Makkah","Madinah","Baghdad",0,2],
+            ["Imam Tirmidhi ka watan?","Tirmiz","Makkah","Madinah","Baghdad",0,2],
+            ["Muwatta Imam Malik mein kitni ahadith?","500","1000","1720","2000",2,3],
+            ["Sunan Ibn Majah ke muallif?","Imam Ibn Majah","Imam Bukhari","Imam Muslim","Imam Malik",0,3],
+            ["Sahifa-e-Sadiqa kis sahabi ki?","Abdullah bin Amr","Abu Hurayrah","Anas","Aisha",0,3],
+            ["Imam Ahmad bin Hanbal ki kitab?","Musnad","Muwatta","Sahih","Sunan",0,3]
         ],
         // ===== DAY 30 (HARD - HADITH SCIENCES) =====
         [
-            ["Sahih Bukhari ke baad Sahih Muslim ka darja?","Doosra","Pehla","Teesra","Chautha",0],
-            ["Kutub-e-Sittah kitni hadith ki kitab?","4","5","6","7",2],
-            ["Sihah Sitta ka matlab?","Chhe sahih kitab","Paanch sahih kitab","Saat sahih kitab","Chaar sahih kitab",0],
-            ["Muwatta Imam Malik ki ahadith ki tadad?","500+","1000+","1720","2000",2],
-            ["Musnad Ahmad mein kitni ahadith (approx)?","10000","20000","27647","30000",2],
-            ["Kanz-ul-Ummal kitni ahadith?","20000","30000","46224","50000",2],
-            ["Mishkat Sharif ki ahadith?","5000","6000","7000","8000",0],
-            ["Hadith Ahad ka matlab?","Ek rawi ki","Do rawiyon ki","Teen rawiyon ki","Kai rawiyon ki",0],
-            ["Hadith Mutawatir ka matlab?","Kai rawiyon ki","Ek rawi ki","Do rawiyon ki","Teen rawiyon ki",0],
-            ["Hadith Daif ka matlab?","Kamzor","Sahi","Jhoot","Mutawatir",0]
+            ["Sahih Bukhari ke baad Sahih Muslim ka darja?","Doosra","Pehla","Teesra","Chautha",0,1],
+            ["Kutub-e-Sittah kitni hadith ki kitab?","4","5","6","7",2,1],
+            ["Mishkat Sharif ki ahadith?","5000","6000","7000","8000",0,1],
+            ["Sihah Sitta ka matlab?","Chhe sahih kitab","Paanch sahih kitab","Saat sahih kitab","Chaar sahih kitab",0,2],
+            ["Hadith Ahad ka matlab?","Ek rawi ki","Do rawiyon ki","Teen rawiyon ki","Kai rawiyon ki",0,2],
+            ["Hadith Mutawatir ka matlab?","Kai rawiyon ki","Ek rawi ki","Do rawiyon ki","Teen rawiyon ki",0,2],
+            ["Kanz-ul-Ummal kitni ahadith?","20000","30000","46224","50000",2,3],
+            ["Musnad Ahmad mein kitni ahadith (approx)?","10000","20000","27647","30000",2,3],
+            ["Hadith Daif ka matlab?","Kamzor","Sahi","Jhoot","Mutawatir",0,3],
+            ["Muwatta Imam Malik ki ahadith ki tadad?","500+","1000+","1720","2000",2,3]
         ]
         ];
 
-        const PRIZES = [1000, 2000, 3000, 5000, 10000, 20000, 40000, 80000, 160000, 320000];
-        const PRIZE_LABELS = ["₹1,000","₹2,000","₹3,000","₹5,000","₹10,000 ⭐","₹20,000","₹40,000","₹80,000","₹1,60,000","₹3,20,000 🏆"];
+        // ==========================================
+        // KBC PRIZE = STARS (₹ ke bajaye)
+        // ==========================================
+        const PRIZES = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
+        const PRIZE_LABELS = PRIZES.map((p, i) => `⭐ ${p}${i === 4 ? ' 🎯' : i === 9 ? ' 🏆' : ''}`);
 
-        // ===== KBC LOGIC =====
+        // ===== KBC STATE =====
         let kbcState = null;
         let kbcData = null;
-
-        // Din ki progress: Day 1 se shuru, jeetne par agla din khulta hai
-        const KBC_KEY = 'p_' + (localStorage.getItem('activeProfile') || 'p1') + '_kbcUnlockedDay'; // har profile ka apna KBC din
+        const KBC_KEY = 'p_' + (localStorage.getItem('activeProfile') || 'p1') + '_kbcUnlockedDay';
         let kbcDayIdx = null;
         function kbcUnlocked() {
             const n = parseInt(localStorage.getItem(KBC_KEY), 10) || 1;
@@ -645,16 +657,20 @@
             if (typeof dayNum === 'number' && dayNum >= 1 && dayNum <= unlocked) kbcDayIdx = dayNum - 1;
             else if (kbcDayIdx === null || kbcDayIdx >= unlocked) kbcDayIdx = unlocked - 1;
             const dayIndex = kbcDayIdx;
-            kbcData = KBC[dayIndex];
+
+            // Sort by difficulty ascending — Q1 easy ... Q10 hard
+            kbcData = KBC[dayIndex].slice().sort((a, b) => (a[6] || 1) - (b[6] || 1));
+
             kbcState = { qIndex: 0, used5050: false, usedAudience: false, usedPhone: false, currentPrize: 0 };
+
             let dayOpts = '';
             for (let d = 1; d <= unlocked; d++) dayOpts += `<option value="${d}" ${d === dayIndex + 1 ? 'selected' : ''}>📅 Day ${d}</option>`;
-            const daySelect = `<select class="kbc-day" style="border:none;color:var(--kbc-gold);font-weight:bold;font-size:13px;" onchange="initKBC(parseInt(this.value,10))">${dayOpts}</select>`;
+            const daySelect = `<select class="kbc-day" style="border:none;color:var(--kbc-gold);font-weight:bold;font-size:13px;background:transparent;" onchange="initKBC(parseInt(this.value,10))">${dayOpts}</select>`;
 
             document.getElementById('kbc').innerHTML = `
                 <div class="kbc-top">
                     ${daySelect}
-                    <span class="kbc-prize" id="kbcPrizeDisplay">₹0</span>
+                    <span class="kbc-prize" id="kbcPrizeDisplay">⭐ 0</span>
                 </div>
                 <div class="kbc-qnum" id="kbcQNum">Question 1 / 10</div>
                 <div class="kbc-question" id="kbcQuestion"></div>
@@ -663,29 +679,32 @@
                     <button class="kbc-life" id="life5050" onclick="kbc5050()">50:50</button>
                     <button class="kbc-life" id="lifeAud" onclick="kbcAudience()">👥 Audience</button>
                     <button class="kbc-life" id="lifePhone" onclick="kbcPhone()">📞 Phone</button>
+                    <button class="kbc-life" id="nasheedBtn" onclick="toggleNasheed()">🎵 Nasheed</button>
                 </div>
                 <div class="kbc-ladder" id="kbcLadder"></div>
             `;
-            renderLadder(dayIndex);
+            renderLadder();
             kbcLoadQuestion();
         }
 
-        function renderLadder(dayIdx) {
+        function renderLadder() {
             const ladder = document.getElementById('kbcLadder');
             if (!ladder) return;
-            ladder.innerHTML = PRIZE_LABELS.map((p, i) => `<span class="${i === 4 || i === 9 ? 'safe' : ''}" data-q="${i}">${p}</span>`).join('');
+            ladder.innerHTML = PRIZE_LABELS.map((p, i) => {
+                let cls = '';
+                if (i === 4 || i === 9) cls = 'safe';
+                return `<span class="${cls}" data-q="${i}">${p}</span>`;
+            }).join('');
         }
 
         function kbcLoadQuestion() {
             if (!kbcState) return;
-            if (kbcState.qIndex >= kbcData.length) {
-                kbcFinish(true);
-                return;
-            }
+            if (kbcState.qIndex >= kbcData.length) { kbcFinish(true); return; }
             const q = kbcData[kbcState.qIndex];
-            document.getElementById('kbcQNum').innerText = `Question ${kbcState.qIndex + 1} / 10`;
+
+            document.getElementById('kbcQNum').innerHTML = `Question <b>${kbcState.qIndex + 1}</b> / 10`;
             document.getElementById('kbcQuestion').innerText = q[0];
-            
+
             const opts = document.getElementById('kbcOptions');
             const letters = ['A','B','C','D'];
             opts.innerHTML = '';
@@ -696,8 +715,13 @@
                 btn.onclick = () => kbcAnswer(i);
                 opts.appendChild(btn);
             }
-            document.getElementById('kbcPrizeDisplay').innerText = kbcState.currentPrize > 0 ? `₹${kbcState.currentPrize.toLocaleString('en-IN')}` : '₹0';
-            document.querySelectorAll('.kbc-ladder span').forEach((s, i) => s.classList.toggle('active', i === kbcState.qIndex));
+            document.getElementById('kbcPrizeDisplay').innerText = kbcState.currentPrize > 0 ? `⭐ ${kbcState.currentPrize}` : '⭐ 0';
+
+            document.querySelectorAll('.kbc-ladder span').forEach((s, i) => {
+                s.classList.remove('active', 'done');
+                if (i < kbcState.qIndex) s.classList.add('done');
+                if (i === kbcState.qIndex) s.classList.add('active');
+            });
         }
 
         function kbcAnswer(sel) {
@@ -705,23 +729,20 @@
             const correct = q[5];
             const btns = document.querySelectorAll('.kbc-opt');
             btns.forEach(b => b.disabled = true);
-            
+
             if (sel === correct) {
                 btns[sel].classList.add('correct');
                 kbcState.currentPrize = PRIZES[kbcState.qIndex];
+                document.getElementById('kbcPrizeDisplay').innerText = `⭐ ${kbcState.currentPrize}`;
                 setTimeout(() => {
                     kbcState.qIndex++;
-                    if (kbcState.qIndex >= kbcData.length) {
-                        kbcFinish(true);
-                    } else {
-                        document.querySelectorAll('.kbc-opt').forEach(b => b.disabled = false);
-                        kbcLoadQuestion();
-                    }
+                    if (kbcState.qIndex >= kbcData.length) kbcFinish(true);
+                    else kbcLoadQuestion();
                 }, 1500);
             } else {
                 btns[sel].classList.add('wrong');
                 btns[correct].classList.add('correct');
-                setTimeout(() => kbcFinish(false), 2000);
+                setTimeout(() => kbcFinish(false), 2200);
             }
         }
 
@@ -762,11 +783,10 @@
             document.getElementById('lifePhone').disabled = true;
             const q = kbcData[kbcState.qIndex];
             const letters = ['A','B','C','D'];
-            // 70% chance phone friend says correct answer
             const correct = q[5];
             let guess = correct;
             if (Math.random() > 0.7) guess = [0,1,2,3].filter(i => i !== correct)[Math.floor(Math.random()*3)];
-            alert(`📞 Aap ke dost ka jawab:\n"Mujhe lagta hai ${letters[guess]} — ${q[guess+1]} sahi hai"`);
+            alert(`📞 Dost ka jawab:\n"Mujhe lagta hai ${letters[guess]} — ${q[guess+1]} sahi hai"`);
         }
 
         function kbcFinish(win) {
@@ -777,11 +797,11 @@
                 if (kbcUnlocked() < cur + 1) localStorage.setItem(KBC_KEY, String(cur + 1));
                 nextBtn = `<button class="kbc-btn" onclick="initKBC(${cur + 1})">➡️ Agla Din (Day ${cur + 1})</button><br>`;
             }
-            if (win) celebrate('Mubarak Ho! 🎉', `Day ${cur} mukammal! ₹${earned.toLocaleString('en-IN')} jeet liye.`);
+            if (win) celebrate('Mubarak Ho! 🎉', `Day ${cur} mukammal! ⭐ ${earned} stars jeete.`);
             document.getElementById('kbc').innerHTML = `
                 <div class="kbc-result">
                     <h2>${win ? '🏆 Mubarak Ho!' : '😢 Game Over'}</h2>
-                    <div class="prize">₹${earned.toLocaleString('en-IN')}</div>
+                    <div class="prize">⭐ ${earned}</div>
                     <p style="color:#aaa; margin-bottom:15px;">${win ? (cur < KBC.length ? `Day ${cur} mukammal! Day ${cur + 1} khul gaya.` : 'Aapne saare 30 din mukammal kar liye!') : `Aap Q${kbcState.qIndex+1} par ruk gaye`}</p>
                     ${nextBtn}
                     <button class="kbc-btn" onclick="initKBC(${cur})">🔄 Dobara Khelein</button>
@@ -790,44 +810,75 @@
         }
 
         // ==========================================
-        // ===== SAHABA KAHANI DATA =====
+        // SAHABA DATA
         // ==========================================
         const SAHABA = [
-            { q: "Hazrat Abu Bakr (RA) ka laqab kya tha?", o: ["Siddiq", "Farooq", "Zul Noorain", "Saifullah"], c: 0, name: "Hazrat Abu Bakr Siddiq (RA)", story: "Hazrat Abu Bakr (RA) Islam ke pehle Khalifa the. 'Siddiq' ka laqab unhe Meraj ki tasdeeq karne ki wajah se mila. Nabi ﷺ ne farmaya: 'Agar main kisi ko Khalil banata to Abu Bakr ko banata.' Wo Nabi ﷺ ke sabse qareebi sathi the aur gufa-e-Saur mein saath the." },
-            { q: "Hazrat Umar (RA) ka laqab kya tha?", o: ["Siddiq", "Farooq", "Zul Noorain", "Saifullah"], c: 1, name: "Hazrat Umar Farooq (RA)", story: "Hazrat Umar (RA) Islam ke doosre Khalifa the. 'Farooq' ka matlab haq aur batil mein farq karne wala. Unke daur mein Islami saltanat Misr, Sham, Iraq tak phaili. Unhe 'Ameer-ul-Mu'mineen' kaha jata hai. Unki adalat ka qissa aaj bhi mashhoor hai." },
-            { q: "Hazrat Uthman (RA) ka laqab kya tha?", o: ["Siddiq", "Farooq", "Zul Noorain", "Saifullah"], c: 2, name: "Hazrat Uthman Ghani (RA)", story: "Hazrat Uthman (RA) ko 'Zul Noorain' kaha jata hai kyunki unki nikah Nabi ﷺ ki do betiyon se hua. Unke daur mein Quran ko ek qirat par jama kiya gaya - aaj jo Quran hum padhte hain, wo unhi ki khidmat hai. 'Ghani' ka matlab sakhawat wale - unhone apna saara maal Allah ki raah mein diya." },
-            { q: "Hazrat Ali (RA) ka laqab kya tha?", o: ["Siddiq", "Farooq", "Zul Noorain", "Sher-e-Khuda"], c: 3, name: "Hazrat Ali (RA)", story: "Hazrat Ali (RA) Nabi ﷺ ke chacha-zad bhai aur damaad the. Pehli umar ke islam lane wale bachche. 'Sher-e-Khuda' ka laqab unhe Jang-e-Khandaq mein Amr bin Abd Wudd ko qatal karne par mila. Unki ilm ki gehrai mashhoor hai - 'Ana madinatul ilm wa Ali babuha' (Main ilm ka shehar hoon aur Ali uska darwaza)." },
-            { q: "Pehli shaheeda aurat kaun thi?", o: ["Khadija (RA)", "Sumayya (RA)", "Aisha (RA)", "Fatima (RA)"], c: 1, name: "Hazrat Sumayya (RA)", story: "Hazrat Sumayya (RA) Islam ki pehli shaheeda aurat hain. Wo Hazrat Ammar bin Yasir (RA) ki walida thin. Abu Jahl ne unhe sakht azab diya kyunki unhone Islam qubool kiya tha. Unhe 'Yaseer' ke ghulam hone ke bawajood Islam par qayam rahi. Aaj bhi unka naam tareekh mein sunehri harfon mein likha hai." },
-            { q: "Hazrat Bilal (RA) ko kis ne azad kiya?", o: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Hamza (RA)"], c: 1, name: "Hazrat Bilal Habshi (RA)", story: "Hazrat Bilal (RA) Habshi (Abyssinian) ghulam the. Unke maalik Umayya bin Khalaf unhe garam ret par lita kar azab deta tha - phir bhi wo 'Ahad, Ahad' (Ek Allah) kehta rehta. Hazrat Abu Bakr (RA) ne unhe khareed kar azad kiya. Nabi ﷺ ne unhe pehla Muazzin banaya - unki azan ki aawaz Madinah mein goonjti thi." },
-            { q: "Hazrat Hamza (RA) kis jang mein shaheed hue?", o: ["Badr", "Uhud", "Khandaq", "Khyber"], c: 1, name: "Hazrat Hamza (RA)", story: "Hazrat Hamza (RA) Nabi ﷺ ke chacha aur 'Syed-ush-Shuhada' (shuhada ke sardaar) hain. Wo Islam laane mein thodi der kiye the lekin jab laaye toh poore jaan se. Jang-e-Uhud mein Wahshi (Habshi) ne unhe shaheed kiya - jo baad mein musalman hua aur kehta tha 'Main ne sabse behtar insaan ko qatal kiya'." },
-            { q: "Hazrat Khalid bin Waleed (RA) ka laqab kya tha?", o: ["Saifullah", "Siddiq", "Farooq", "Zul Janahain"], c: 0, name: "Hazrat Khalid bin Waleed (RA)", story: "Hazrat Khalid bin Waleed (RA) ko 'Saifullah' (Allah ki talwar) kaha jata hai. Pehle wo Islam ke khilaf larte the, phir Islam laaye aur Nabi ﷺ ne unhe 'Saifullah' kaha. Unhone 100+ jangon mein hissa liya aur kabhi shikast nahi khayi. Unka wisaal Homs (Syria) mein hua." },
-            { q: "Hazrat Zubair bin Awwam (RA) ka laqab kya tha?", o: ["Hawari", "Siddiq", "Farooq", "Saifullah"], c: 0, name: "Hazrat Zubair bin Awwam (RA)", story: "Hazrat Zubair (RA) Nabi ﷺ ke 'Hawari' (khaas saathi) the. Wo Islam laane wale pehle 5 logon mein se hain. Asharah Mubasharah mein shamil. Unhone Badr, Uhud, Khandaq sab jangon mein hissa liya. Jang-e-Jamal mein shaheed hue." },
-            { q: "Hazrat Talha bin Ubaidullah (RA) ne kis jang mein Nabi ﷺ ko apne jism se bachaya?", o: ["Badr", "Uhud", "Khandaq", "Khyber"], c: 1, name: "Hazrat Talha (RA)", story: "Jang-e-Uhud mein jab mushrikeen ne hamla kiya, Hazrat Talha (RA) ne apna jism Nabi ﷺ ki hifazat ke liye dhaal bana liya. Unke jism par 70+ zakhm aaye aur unka haath bhi kat gaya. Nabi ﷺ ne farmaya: 'Jannat Talha par wajib hai.' Wo bhi Asharah Mubasharah mein hain." },
-            { q: "Hazrat Saad bin Abi Waqqas (RA) ki dua kis liye mashhoor thi?", o: ["Qabool hona", "Rizq", "Shifa", "Ilm"], c: 0, name: "Hazrat Saad bin Abi Waqqas (RA)", story: "Hazrat Saad (RA) un logon mein se hain jinki dua radd nahi hoti. Nabi ﷺ ne unke liye dua ki: 'Ya Allah, Saad ki dua qubool farma.' Wo Fatah Iraq ke commander the. Unke daur mein Madain (Persian capital) fatah hua." },
-            { q: "Hazrat Salman Farsi (RA) ka taluq kis mulk se tha?", o: ["Iran", "Arab", "Rome", "Egypt"], c: 0, name: "Hazrat Salman Farsi (RA)", story: "Hazrat Salman (RA) Iran ke Isfahan ke the. Unhone haq ki talash mein Rome, Sham, aur Arab tak safar kiya. Aakhri mein Madinah pooche aur Nabi ﷺ ko pehchan kar musalman hue. Jang-e-Khandaq mein unhi ki tajweez par khandaq khodi gayi. Nabi ﷺ ne farmaya: 'Salman hamare ahl-e-bait mein se hai.'" },
-            { q: "Hazrat Abu Hurayrah (RA) ka asal naam kya tha?", o: ["Abdur Rahman", "Abdullah", "Yasir", "Zaid"], c: 0, name: "Hazrat Abu Hurayrah (RA)", story: "Hazrat Abu Hurayrah (RA) ka asal naam Abdur Rahman tha, kuniyat Abu Hurayrah (billee ke baap) - kyunki wo bachpan mein billee ke bachhon se khelte the. Wo sabse zyada hadees riwayat karne wale sahaba hain - 5374 hadees. Islam laane ke sirf 4 saal baad unka wisaal hua lekin ilm mein sabse aage." },
-            { q: "Nabi ﷺ ke kitne bachche the?", o: ["4", "5", "6", "7"], c: 3, name: "Aulad-e-Nabi ﷺ", story: "Nabi ﷺ ke 7 bachche the - 3 bete (Qasim, Abdullah, Ibrahim) aur 4 betiyan (Zainab, Ruqayya, Umm-e-Kulthum, Fatima). Sabse choti Hazrat Fatima (RA) thin. Ibrahim ki walida Hazrat Maria Qibtiya (RA) thin, baqi sab Hazrat Khadija (RA) se. Sabhi bachche Nabi ﷺ ki zindagi mein inteqal kar gaye siwaye Hazrat Fatima (RA) ke." },
-            { q: "Hazrat Fatima (RA) ke shauhar kaun the?", o: ["Abu Bakr (RA)", "Umar (RA)", "Ali (RA)", "Uthman (RA)"], c: 2, name: "Hazrat Fatima (RA)", story: "Hazrat Fatima (RA) Nabi ﷺ ki sabse choti beti aur 'Syedatun-nisa-e-Aalameen' (sab aurton ki sardaar) hain. Unki shadi Hazrat Ali (RA) se hui. Unke bete Hassan (RA) aur Hussain (RA) jannat ke jawaanon ke sardar hain. Nabi ﷺ ne farmaya: 'Fatima mere jigar ka tukda hai.'" },
-            { q: "Hazrat Hassan (RA) aur Hussain (RA) ke walid kaun the?", o: ["Abu Bakr (RA)", "Umar (RA)", "Ali (RA)", "Uthman (RA)"], c: 2, name: "Hazrat Hassan aur Hussain (RA)", story: "Hazrat Hassan (RA) aur Hussain (RA) Hazrat Ali (RA) aur Hazrat Fatima (RA) ke bete - Nabi ﷺ ke nawaase. Nabi ﷺ ne farmaya: 'Hassan aur Hussain jannat ke jawaanon ke sardar hain.' Hazrat Hassan (RA) ne khilafat Umar (RA) ke liye chhod di - us saal ko 'Aam-ul-Jamaat' kaha jata hai. Hazrat Hussain (RA) Karbala mein shaheed hue." },
-            { q: "Hazrat Aisha (RA) ke walid kaun the?", o: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Ali (RA)"], c: 1, name: "Hazrat Aisha Siddiqa (RA)", story: "Hazrat Aisha (RA) Siddiqa-e-Awwal Hazrat Abu Bakr (RA) ki beti thin. Unka nikah Nabi ﷺ se hua. Wo 'Ummul Mu'mineen' hain aur Islam ki sabse badi aalima hain - 2210 hadees riwayat kiye. Unse sahaba ilm seekhte the. Wahee-e-Ilahi mein unki pakizgi ka zikr (Surah Nur) hai." },
-            { q: "Hazrat Khadija (RA) ka taluq kis qabeelay se tha?", o: ["Banu Hashim", "Banu Umayya", "Banu Asad", "Banu Tameem"], c: 2, name: "Hazrat Khadija (RA)", story: "Hazrat Khadija (RA) 'Tahira' ke laqab se mashhoor thin. Wo Makkah ki mashhoor tajir (businesswoman) thin. Unhone Nabi ﷺ ko apna maal aur dil dono diye. Pehli Wahy ke waqt unhi ne Nabi ﷺ ko tasalli di - 'Allah aapko kabhi ruswa nahi karega.' Unka wisaal 10th Nabuwat mein hua - us saal ko 'Aam-ul-Huzn' (gham ka saal) kaha jata hai." },
-            { q: "Hazrat Zaid bin Haritha (RA) kis rishte se Nabi ﷺ ke sath the?", o: ["Muta bhai", "Chacha", "Beta (adopted)", "Sahabi"], c: 2, name: "Hazrat Zaid bin Haritha (RA)", story: "Hazrat Zaid (RA) Nabi ﷺ ke godh lene wale bete (muta-banna) the. Wo pehle ghulam the, Hazrat Khadija (RA) ne unhe khareed kar Nabi ﷺ ko diya to aap ﷺ ne azad kar diya. Jab unke walid aaye unhe lene, to Hazrat Zaid ne Nabi ﷺ ke sath rehna pasand kiya. Wo pehle sahaba mein se hain jinka naam Quran mein aaya (Surah Ahzab)." },
-            { q: "Hazrat Mu'adh bin Jabal (RA) ko kis mulk ka qazi bana kar bheja?", o: ["Yemen", "Sham", "Iraq", "Egypt"], c: 0, name: "Hazrat Mu'adh bin Jabal (RA)", story: "Hazrat Mu'adh (RA) ilm aur fiqh mein mashhoor sahaba hain. Nabi ﷺ ne unhe Yemen ka qazi bana kar bheja aur farmaya: 'Aye Mu'adh, logon ko aasan karo, mushkil na karo; khushkhabri do, nafrat na dilao.' Nabi ﷺ ne unhe 'Ibn Masjid' aur 'Aalim-ul-Ummat' kaha. Unka wisaal 18 AH mein Yeman mein hua." },
-            { q: "Hazrat Abu Ubaidah bin Jarrah (RA) ka laqab kya tha?", o: ["Amin-ul-Ummat", "Saifullah", "Siddiq", "Farooq"], c: 0, name: "Hazrat Abu Ubaidah (RA)", story: "Hazrat Abu Ubaidah (RA) ko 'Amin-ul-Ummat' (ummah ke amaanatdaar) kaha jata hai. Nabi ﷺ ne unhe 'Asharah Mubasharah' mein shumar kiya. Wo Fatah-e-Sham ke commander the. Syria mein unke daur mein taoon (plague) phaila aur wo bhi shaheed hue. Unki qabr Jordan mein 'Amawas' mein hai." }
+            {"q":"Hazrat Abu Bakr (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Saifullah"],"c":0,"name":"Hazrat Abu Bakr Siddiq (RA)","story":"Hazrat Abu Bakr (RA) Islam ke pehle Khalifa the. 'Siddiq' ka laqab unhe Meraj ki tasdeeq karne ki wajah se mila. Nabi ﷺ ne farmaya: 'Agar main kisi ko Khalil banata to Abu Bakr ko banata.' Wo Nabi ﷺ ke sabse qareebi sathi the aur gufa-e-Saur mein saath the."},
+            {"q":"Hazrat Umar (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Saifullah"],"c":1,"name":"Hazrat Umar Farooq (RA)","story":"Hazrat Umar (RA) Islam ke doosre Khalifa the. 'Farooq' ka matlab haq aur batil mein farq karne wala. Unke daur mein Islami saltanat Misr, Sham, Iraq tak phaili. Unhe 'Ameer-ul-Mu'mineen' kaha jata hai. Unki adalat ka qissa aaj bhi mashhoor hai."},
+            {"q":"Hazrat Uthman (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Saifullah"],"c":2,"name":"Hazrat Uthman Ghani (RA)","story":"Hazrat Uthman (RA) ko 'Zul Noorain' kaha jata hai kyunki unki nikah Nabi ﷺ ki do betiyon se hua. Unke daur mein Quran ko ek qirat par jama kiya gaya - aaj jo Quran hum padhte hain, wo unhi ki khidmat hai. 'Ghani' ka matlab sakhawat wale - unhone apna saara maal Allah ki raah mein diya."},
+            {"q":"Hazrat Ali (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Sher-e-Khuda"],"c":3,"name":"Hazrat Ali (RA)","story":"Hazrat Ali (RA) Nabi ﷺ ke chacha-zad bhai aur damaad the. Pehli umar ke islam lane wale bachche. 'Sher-e-Khuda' ka laqab unhe Jang-e-Khandaq mein Amr bin Abd Wudd ko qatal karne par mila. Unki ilm ki gehrai mashhoor hai - 'Ana madinatul ilm wa Ali babuha' (Main ilm ka shehar hoon aur Ali uska darwaza)."},
+            {"q":"Pehli shaheeda aurat kaun thi?","o":["Khadija (RA)","Sumayya (RA)","Aisha (RA)","Fatima (RA)"],"c":1,"name":"Hazrat Sumayya (RA)","story":"Islam ki pehli shaheeda aurat. Hazrat Ammar bin Yasir (RA) ki walida. Abu Jahl ne sakht azab diya, phir bhi 'Ahad, Ahad' kehti rahi."},
+            {"q":"Hazrat Bilal (RA) ko kis ne azad kiya?","o":["Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Hamza (RA)"],"c":1,"name":"Hazrat Bilal Habshi (RA)","story":"Hazrat Bilal (RA) Habshi (Abyssinian) ghulam the. Unke maalik Umayya bin Khalaf unhe garam ret par lita kar azab deta tha - phir bhi wo 'Ahad, Ahad' (Ek Allah) kehta rehta. Hazrat Abu Bakr (RA) ne unhe khareed kar azad kiya. Nabi ﷺ ne unhe pehla Muazzin banaya - unki azan ki aawaz Madinah mein goonjti thi."},
+            {"q":"Hazrat Hamza (RA) kis jang mein shaheed hue?","o":["Badr","Uhud","Khandaq","Khyber"],"c":1,"name":"Hazrat Hamza (RA)","story":"Hazrat Hamza (RA) Nabi ﷺ ke chacha aur 'Syed-ush-Shuhada' (shuhada ke sardaar) hain. Wo Islam laane mein thodi der kiye the lekin jab laaye toh poore jaan se. Jang-e-Uhud mein Wahshi (Habshi) ne unhe shaheed kiya - jo baad mein musalman hua aur kehta tha 'Main ne sabse behtar insaan ko qatal kiya'."},
+            {"q":"Hazrat Khalid bin Waleed (RA) ka laqab kya tha?","o":["Saifullah","Siddiq","Farooq","Zul Janahain"],"c":0,"name":"Hazrat Khalid bin Waleed (RA)","story":"Hazrat Khalid bin Waleed (RA) ko 'Saifullah' (Allah ki talwar) kaha jata hai. Pehle wo Islam ke khilaf larte the, phir Islam laaye aur Nabi ﷺ ne unhe 'Saifullah' kaha. Unhone 100+ jangon mein hissa liya aur kabhi shikast nahi khayi. Unka wisaal Homs (Syria) mein hua."},
+            {"q":"Hazrat Zubair bin Awwam (RA) ka laqab kya tha?","o":["Hawari","Siddiq","Farooq","Saifullah"],"c":0,"name":"Hazrat Zubair bin Awwam (RA)","story":"Hazrat Zubair (RA) Nabi ﷺ ke 'Hawari' (khaas saathi) the. Wo Islam laane wale pehle 5 logon mein se hain. Asharah Mubasharah mein shamil. Unhone Badr, Uhud, Khandaq sab jangon mein hissa liya. Jang-e-Jamal mein shaheed hue."},
+            {"q":"Hazrat Talha bin Ubaidullah (RA) ne kis jang mein Nabi ﷺ ko bachaya?","o":["Badr","Uhud","Khandaq","Khyber"],"c":1,"name":"Hazrat Talha (RA)","story":"Jang-e-Uhud mein jab mushrikeen ne hamla kiya, Hazrat Talha (RA) ne apna jism Nabi ﷺ ki hifazat ke liye dhaal bana liya. Unke jism par 70+ zakhm aaye aur unka haath bhi kat gaya. Nabi ﷺ ne farmaya: 'Jannat Talha par wajib hai.' Wo bhi Asharah Mubasharah mein hain."},
+            {"q":"Hazrat Saad bin Abi Waqqas (RA) ki dua kis liye mashhoor thi?","o":["Qabool hona","Rizq","Shifa","Ilm"],"c":0,"name":"Hazrat Saad bin Abi Waqqas (RA)","story":"Hazrat Saad (RA) un logon mein se hain jinki dua radd nahi hoti. Nabi ﷺ ne unke liye dua ki: 'Ya Allah, Saad ki dua qubool farma.' Wo Fatah Iraq ke commander the. Unke daur mein Madain (Persian capital) fatah hua."},
+            {"q":"Hazrat Salman Farsi (RA) ka taluq kis mulk se tha?","o":["Iran","Arab","Rome","Egypt"],"c":0,"name":"Hazrat Salman Farsi (RA)","story":"Hazrat Salman (RA) Iran ke Isfahan ke the. Unhone haq ki talash mein Rome, Sham, aur Arab tak safar kiya. Aakhri mein Madinah pooche aur Nabi ﷺ ko pehchan kar musalman hue. Jang-e-Khandaq mein unhi ki tajweez par khandaq khodi gayi. Nabi ﷺ ne farmaya: 'Salman hamare ahl-e-bait mein se hai.'"},
+            {"q":"Hazrat Abu Hurayrah (RA) ka asal naam kya tha?","o":["Abdur Rahman","Abdullah","Yasir","Zaid"],"c":0,"name":"Hazrat Abu Hurayrah (RA)","story":"Asal naam Abdur Rahman. Sabse zyada hadees riwayat karne wale — 5374 hadees. Sirf 4 saal Nabi ﷺ ke saath, lekin ilm mein sabse aage."},
+            {"q":"Nabi ﷺ ke kitne bachche the?","o":["4","5","6","7"],"c":3,"name":"Aulad-e-Nabi ﷺ","story":"Nabi ﷺ ke 7 bachche the - 3 bete (Qasim, Abdullah, Ibrahim) aur 4 betiyan (Zainab, Ruqayya, Umm-e-Kulthum, Fatima). Sabse choti Hazrat Fatima (RA) thin. Ibrahim ki walida Hazrat Maria Qibtiya (RA) thin, baqi sab Hazrat Khadija (RA) se. Sabhi bachche Nabi ﷺ ki zindagi mein inteqal kar gaye siwaye Hazrat Fatima (RA) ke."},
+            {"q":"Hazrat Fatima (RA) ke shauhar kaun the?","o":["Abu Bakr (RA)","Umar (RA)","Ali (RA)","Uthman (RA)"],"c":2,"name":"Hazrat Fatima (RA)","story":"Hazrat Fatima (RA) Nabi ﷺ ki sabse choti beti aur 'Syedatun-nisa-e-Aalameen' (sab aurton ki sardaar) hain. Unki shadi Hazrat Ali (RA) se hui. Unke bete Hassan (RA) aur Hussain (RA) jannat ke jawaanon ke sardar hain. Nabi ﷺ ne farmaya: 'Fatima mere jigar ka tukda hai.'"},
+            {"q":"Hazrat Hassan (RA) aur Hussain (RA) ke walid kaun the?","o":["Abu Bakr (RA)","Umar (RA)","Ali (RA)","Uthman (RA)"],"c":2,"name":"Hazrat Hassan aur Hussain (RA)","story":"Nabi ﷺ ke nawaase. Hussain (RA) Karbala mein shaheed. Hassan (RA) ne khilafat chhod di — 'Aam-ul-Jamaat'."},
+            {"q":"Hazrat Aisha (RA) ke walid kaun the?","o":["Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Ali (RA)"],"c":1,"name":"Hazrat Aisha Siddiqa (RA)","story":"Abu Bakr (RA) ki beti, Ummul Mu'mineen. 2210 hadees riwayat. Islam ki sabse badi aalima. Surah Nur mein pakizgi ka zikr."},
+            {"q":"Hazrat Khadija (RA) ka taluq kis qabeelay se tha?","o":["Banu Hashim","Banu Umayya","Banu Asad","Banu Tameem"],"c":2,"name":"Hazrat Khadija (RA)","story":"Hazrat Khadija (RA) 'Tahira' ke laqab se mashhoor thin. Wo Makkah ki mashhoor tajir (businesswoman) thin. Unhone Nabi ﷺ ko apna maal aur dil dono diye. Pehli Wahy ke waqt unhi ne Nabi ﷺ ko tasalli di - 'Allah aapko kabhi ruswa nahi karega.' Unka wisaal 10th Nabuwat mein hua - us saal ko 'Aam-ul-Huzn' (gham ka saal) kaha jata hai."},
+            {"q":"Hazrat Zaid bin Haritha (RA) kis rishte se Nabi ﷺ ke sath the?","o":["Muta bhai","Chacha","Beta (adopted)","Sahabi"],"c":2,"name":"Hazrat Zaid bin Haritha (RA)","story":"Hazrat Zaid (RA) Nabi ﷺ ke godh lene wale bete (muta-banna) the. Wo pehle ghulam the, Hazrat Khadija (RA) ne unhe khareed kar Nabi ﷺ ko diya to aap ﷺ ne azad kar diya. Jab unke walid aaye unhe lene, to Hazrat Zaid ne Nabi ﷺ ke sath rehna pasand kiya. Wo pehle sahaba mein se hain jinka naam Quran mein aaya (Surah Ahzab)."},
+            {"q":"Hazrat Mu'adh bin Jabal (RA) ko kis mulk ka qazi bana kar bheja?","o":["Yemen","Sham","Iraq","Egypt"],"c":0,"name":"Hazrat Mu'adh bin Jabal (RA)","story":"Ilm aur fiqh mein mashhoor. Yemen ka qazi. Nabi ﷺ: 'Aye Mu'adh, logon ko aasan karo, mushkil na karo; khushkhabri do, nafrat na dilao.'"},
+            {"q":"Hazrat Abu Ubaidah bin Jarrah (RA) ka laqab kya tha?","o":["Amin-ul-Ummat","Saifullah","Siddiq","Farooq"],"c":0,"name":"Hazrat Abu Ubaidah (RA)","story":"Hazrat Abu Ubaidah (RA) ko 'Amin-ul-Ummat' (ummah ke amaanatdaar) kaha jata hai. Nabi ﷺ ne unhe 'Asharah Mubasharah' mein shumar kiya. Wo Fatah-e-Sham ke commander the. Syria mein unke daur mein taoon (plague) phaila aur wo bhi shaheed hue. Unki qabr Jordan mein 'Amawas' mein hai."},
+            {"q":"Hazrat Hafsa (RA) kis sahaba ki beti thin?","o":["Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)"],"c":1,"name":"Hazrat Hafsa (RA)","story":"Umar (RA) ki beti, Ummul Mu'mineen. Quran ki hifazat mein khaas khidmat — pehli mushaf unke paas rakhi gayi."},
+            {"q":"Hazrat Umm-e-Salama (RA) kis sifaat ki wajah se mashhoor thin?","o":["Hikmat","Shujaat","Sakhawat","Ilm"],"c":0,"name":"Hazrat Umm-e-Salama (RA)","story":"Hikmat wali Ummul Mu'mineen. Sulah Hudaibiya ke mauqe par Nabi ﷺ ko mashwara diya jo bahut kaam aaya."},
+            {"q":"Hazrat Zainab bint Jahsh (RA) ka nikah kis se hua?","o":["Nabi ﷺ","Abu Bakr (RA)","Umar (RA)","Uthman (RA)"],"c":0,"name":"Hazrat Zainab bint Jahsh (RA)","story":"Ummul Mu'mineen. Pehle Zaid bin Haritha (RA) se nikah — Quran ne iska zikr kiya. Phir Nabi ﷺ se nikah hua. 'Ummul Masakeen' — ghareebon ki maa."},
+            {"q":"Hazrat Asma bint Abu Bakr (RA) kis waqia mein mashhoor hain?","o":["Hijrat mein khana laayi","Jang mein ladi","Quran hifz","Tijarat"],"c":0,"name":"Hazrat Asma bint Abu Bakr (RA)","story":"Hijrat ke waqt gufa-e-Saur tak khana aur pani pahunchaya. 'Zaat-un-Nitaqain' — do kamarband wali. Abu Jahl ne pareshan kiya, phir bhi na bataya."},
+            {"q":"Hazrat Umm-e-Sulaym (RA) kiska walida thin?","o":["Anas bin Malik (RA)","Bilal (RA)","Hamza (RA)","Salman (RA)"],"c":0,"name":"Hazrat Umm-e-Sulaym (RA)","story":"Anas bin Malik (RA) ki walida. Islam laayi jab pati mana kiya. Bete ko Nabi ﷺ ki khidmat ke liye bheja. Bahut sabr wali."},
+            {"q":"Hazrat Nusayba bint Ka'b (RA) kis jang mein mashhoor hain?","o":["Badr","Uhud","Khandaq","Khyber"],"c":1,"name":"Hazrat Nusayba bint Ka'b (RA)","story":"'Umm-e-Umara' — Jang-e-Uhud mein talwar le kar ladi, Nabi ﷺ ko bachaya. Bahadur auraten."},
+            {"q":"Hazrat Umm-e-Ayman (RA) kiska khayal rakhti thin?","o":["Nabi ﷺ (bachpan mein)","Abu Bakr (RA)","Umar (RA)","Ali (RA)"],"c":0,"name":"Hazrat Umm-e-Ayman (RA)","story":"Nabi ﷺ ki dada ki ghulam, bachpan mein khayal rakha. 'Meri maa ke baad meri maa' — Nabi ﷺ ne farmaya. Hijrat mein paani laayi."},
+            {"q":"Hazrat Abdullah bin Masood (RA) ka kya maqam tha?","o":["Quran ka qari","Jang ke commander","Tajir","Khatib"],"c":0,"name":"Hazrat Abdullah bin Masood (RA)","story":"Quran ke qari, Nabi ﷺ: 'Jis tarah Ibn Masood padhta hai, us tarah padho.' Pehle 6 musalmanon mein se. Kufa ke qazi."},
+            {"q":"Hazrat Ubayy bin Ka'b (RA) ka kya kaam tha?","o":["Quran ka katib","Jang ke commander","Muazzin","Qazi"],"c":0,"name":"Hazrat Ubayy bin Ka'b (RA)","story":"Quran ke katib (Wahy likhne wale). Nabi ﷺ: 'Ubayy Quran ka sabse aalim hai.' Quran ki tilawat ka hukm unse seekha."},
+            {"q":"Hazrat Zaid bin Thabit (RA) ne kya bada kaam kiya?","o":["Quran jama kiya","Fatah Misr","Jang-e-Badr","Tijarat"],"c":0,"name":"Hazrat Zaid bin Thabit (RA)","story":"Wahy katib. Quran ko Abu Bakr (RA) ke daur mein jama kiya aur Uthman (RA) ke daur mein ek qirat par. 'Quran ka katib-e-azam'."},
+            {"q":"Hazrat Abdullah bin Umar (RA) kiske bete the?","o":["Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)"],"c":1,"name":"Hazrat Abdullah bin Umar (RA)","story":"Umar (RA) ke bete. Bahut zyada Sunnat ki pabandi. 2630 hadees riwayat. Nabi ﷺ ke baad unke qadmon par chalte."},
+            {"q":"Hazrat Abdullah bin Abbas (RA) kis ilm mein mashhoor the?","o":["Tafsir","Hadith","Fiqh","Tijarat"],"c":0,"name":"Hazrat Abdullah bin Abbas (RA)","story":"Tafsir ke imam, 'Tarjuman-ul-Quran'. Nabi ﷺ ne dua ki: 'Ya Allah, isko deen ki samajh de.' Bahut zyada dua karte the."},
+            {"q":"Hazrat Anas bin Malik (RA) ne kitne saal Nabi ﷺ ki khidmat ki?","o":["5","10","15","20"],"c":1,"name":"Hazrat Anas bin Malik (RA)","story":"10 saal Nabi ﷺ ki khidmat. Unki walida Umm-e-Sulaym (RA) ne bheja. Nabi ﷺ ne dua di. 100+ umar pai, 2286 hadees riwayat."},
+            {"q":"Hazrat Abu Darda (RA) kis sifaat ke liye mashhoor the?","o":["Hikmat","Shujaat","Sakhawat","Jang"],"c":0,"name":"Hazrat Abu Darda (RA)","story":"'Hakeem-ul-Ummat' — ummat ke aalim. Qazi in Damascus. Tijarat chhod kar ibadat aur ilm par lag gaye. Unki biwi Umm-e-Darda bhi aalima thin."},
+            {"q":"Hazrat Ammar bin Yasir (RA) kis waqia mein mashhoor hain?","o":["Pehli shaheeda ki bete","Jang ke commander","Tijarat","Quran hifz"],"c":0,"name":"Hazrat Ammar bin Yasir (RA)","story":"Sumayya (RA) ke bete — pehli shaheeda ke. Khud bhi azab saha. Jang-e-Siffin mein shaheed. Nabi ﷺ: 'Ammar ko baghawat karne wala giroh qatal karega.'"},
+            {"q":"Hazrat Suhaib Rumi (RA) kahan ke the?","o":["Rome","Arab","Iran","Egypt"],"c":0,"name":"Hazrat Suhaib Rumi (RA)","story":"'Rumi' — Rome (Byzantine) ke. Ghulam bane, phir azad. Hijrat ke waqt apna saara maal chhod kar gaye. 'Tijarat mein sabse aage.'"},
+            {"q":"Hazrat Abdullah bin Salam (RA) kis deen ke aalim the?","o":["Yahudi","Nasrani","Majusi","Hindu"],"c":0,"name":"Hazrat Abdullah bin Salam (RA)","story":"Yahudi aalim. Nabi ﷺ ko pehchan kar Islam laaye. Nabi ﷺ ne farmaya: 'Abdullah bin Salam jannat mein hai.'"},
+            {"q":"Hazrat Hassan bin Thabit (RA) ka kya kirdar tha?","o":["Shayar","Jang","Tijarat","Qazi"],"c":0,"name":"Hazrat Hassan bin Thabit (RA)","story":"Nabi ﷺ ke shayar. Islam ki shaan mein kalam likhte. Nabi ﷺ ne farmaya: 'Hassan ke liye ruh-ul-qudus (Jibreel) madad karta hai.'"},
+            {"q":"Hazrat Ka'ab bin Malik (RA) kis liye mashhoor hain?","o":["Shayar aur taubah ki hadees","Jang","Tijarat","Qazi"],"c":0,"name":"Hazrat Ka'ab bin Malik (RA)","story":"Shayar aur Jang-e-Tabuk mein peeche reh gaye. Nabi ﷺ ne 50 din tak inka boycott kiya. Phir taubah qubool hui — Surah Tawbah mein zikr."},
+            {"q":"Hazrat Hakeem bin Hizam (RA) kis ke bhatije the?","o":["Khadija (RA)","Aisha (RA)","Umar (RA)","Abu Bakr (RA)"],"c":0,"name":"Hazrat Hakeem bin Hizam (RA)","story":"Khadija (RA) ke bhatije. Islam se pehle bhi sach bolte. Fatah Makkah ke din Islam laaye. Nabi ﷺ ne farmaya: 'Tum pehle bhi achhe kaam karte the.'"},
+            {"q":"Hazrat Abu Ayyub Ansari (RA) kis waqia mein mashhoor hain?","o":["Nabi ﷺ ka mehman","Jang","Tijarat","Qazi"],"c":0,"name":"Hazrat Abu Ayyub Ansari (RA)","story":"Hijrat ke waqt Nabi ﷺ unke ghar mein 7 mahine thehre. Madinah mein Nabi ﷺ ka pehla qayam unhi ke ghar mein. Sakhi aur muhajir ke madadgar."},
+            {"q":"Hazrat Saad bin Mu'adh (RA) kis qabeelay ke sardar the?","o":["Ansaar (Banu Aus)","Muhajireen","Quraish","Banu Umayya"],"c":0,"name":"Hazrat Saad bin Mu'adh (RA)","story":"Ansaar ke sardar. Islam laaye to apne qabeelay ko bhi bulaya. Jang-e-Khandaq mein shaheed. Nabi ﷺ: 'Arsh unke janaze par larza mein aaya.'"},
+            {"q":"Hazrat Amr bin Al-Aas (RA) ne kis mulk ko fatah kiya?","o":["Misr (Egypt)","Iraq","Sham","Yemen"],"c":0,"name":"Hazrat Amr bin Al-Aas (RA)","story":"Fatah Misr ke commander. Pehle Islam ke mukhalif, phir musalman. Umar (RA) ne unhe Misr ka governor banaya. Bahut hikmat wale."},
+            {"q":"Hazrat Jafar Tayyar (RA) ka laqab kis liye mila?","o":["Jang-e-Mutah mein haath katne par","Hijrat","Tijarat","Quran hifz"],"c":0,"name":"Hazrat Jafar Tayyar (RA)","story":"Ali (RA) ke bhai. Jang-e-Mutah mein dono haath kat gaye, phir bhi parcham uthaye rakha. 'Tayyar' — udne wala farishta."},
+            {"q":"Hazrat Abdullah bin Rawahah (RA) kis jang mein shaheed hue?","o":["Badr","Mutah","Uhud","Khandaq"],"c":1,"name":"Hazrat Abdullah bin Rawahah (RA)","story":"Jang-e-Mutah ke teen commanders mein se ek. Shaheed hone se pehle shair padha. Bahadur aur dilair."},
+            {"q":"Hazrat Khubayb bin Adi (RA) kis waqia mein mashhoor hain?","o":["Bir Mauna ke shaheed","Badr","Uhud","Khandaq"],"c":0,"name":"Hazrat Khubayb (RA)","story":"Bir Mauna ke shaheed. Makkah walon ne pakad kar sooli par latkaya. Do rakat namaz padhi — namaz padhne ki sunnat ban gayi."},
+            {"q":"Hazrat Adi bin Hatim (RA) kis ke bete the?","o":["Hatim Tai","Abu Jahl","Abu Lahab","Abu Sufyan"],"c":0,"name":"Hazrat Adi bin Hatim (RA)","story":"Sakhi Hatim Tai ke bete. Pehle Nasrani, phir Islam laaye. Nabi ﷺ: 'Tumhare walid sakhi the, isliye unka naam baqa hai.'"},
+            {"q":"Hazrat Thumama bin Uthal (RA) kis qabeelay ke sardar the?","o":["Banu Hanifa","Quraish","Banu Aus","Banu Khazraj"],"c":0,"name":"Hazrat Thumama bin Uthal (RA)","story":"Yamama ke sardar. Pehle Nabi ﷺ ko qatal karna chahte the. Baad mein pakde gaye, phir Islam laaye. Islam ke sakht paband ban gaye."},
+            {"q":"Hazrat Abdullah bin Hudhafa (RA) ko kis badshah ke paas bheja gaya?","o":["Kisra (Iran)","Qaisar (Rome)","Muqawqis (Misr)","Najashi (Habsha)"],"c":0,"name":"Hazrat Abdullah bin Hudhafa (RA)","story":"Kisra (Iran ke badshah) ke paas Nabi ﷺ ka khat le kar gaye. Kisra ne khat phaad diya — uska mulk bhi tukde tukde ho gaya."},
+            {"q":"Hazrat Dihya al-Kalbi (RA) ke baare mein kya mashhoor hai?","o":["Jibreel unke roop mein aaye","Jang","Tijarat","Quran hifz"],"c":0,"name":"Hazrat Dihya al-Kalbi (RA)","story":"Bahut khoobsurat. Jibreel (AS) aksar unke roop mein Nabi ﷺ ke paas aate the. Rome ke Qaisar ke paas Nabi ﷺ ka khat le kar gaye."}
         ];
 
         // ===== SAHABA LOGIC =====
         let sahabaState = null;
         function initSahaba() {
-            sahabaState = { index: 0, score: 0, questions: [...SAHABA].sort(() => Math.random() - 0.5), answered: false };
+            const picked = [...SAHABA].sort(() => Math.random() - 0.5).slice(0, 20);
+            sahabaState = { index: 0, score: 0, questions: picked, answered: false };
             sahabaRender();
         }
         function sahabaRender() {
             if (!sahabaState) return;
             const box = document.getElementById('sahaba');
             if (sahabaState.index >= sahabaState.questions.length) {
-                celebrate('Mubarak Ho!', 'Aapne saare Sahaba ke sawal mukammal kiye.');
-                box.innerHTML = `<div class="sahaba-box" style="text-align:center;"><h2 style="color:var(--primary);">🎉 Mubarak Ho!</h2><p style="margin:15px 0;">Aapne saare Sahaba ke sawal complete kiye.</p><div class="sahaba-score" style="font-size:18px; padding:10px 20px;">Score: ${sahabaState.score} / ${sahabaState.questions.length}</div><button class="btn-primary" onclick="initSahaba()" style="margin-top:20px;">🔄 Dobara Khelein</button></div>`;
+                celebrate('Mubarak Ho!', 'Aapne is round ke saare Sahaba sawal mukammal kiye.');
+                box.innerHTML = `<div class="sahaba-box" style="text-align:center;"><h2 style="color:var(--primary);">🎉 Mubarak Ho!</h2><p style="margin:15px 0;">Aapne round complete kiya.</p><div class="sahaba-score" style="font-size:18px; padding:10px 20px;">Score: ${sahabaState.score} / ${sahabaState.questions.length}</div><button class="btn-primary" onclick="initSahaba()" style="margin-top:20px;">🔄 Naya Round</button></div>`;
                 return;
             }
             const q = sahabaState.questions[sahabaState.index];
@@ -850,13 +901,8 @@
             const q = sahabaState.questions[sahabaState.index];
             const opts = document.querySelectorAll('#sahabaOpts .sahaba-opt');
             opts.forEach(o => o.disabled = true);
-            if (sel === q.c) {
-                opts[sel].classList.add('correct');
-                sahabaState.score++;
-            } else {
-                opts[sel].classList.add('wrong');
-                opts[q.c].classList.add('correct');
-            }
+            if (sel === q.c) { opts[sel].classList.add('correct'); sahabaState.score++; }
+            else { opts[sel].classList.add('wrong'); opts[q.c].classList.add('correct'); }
             const box = document.getElementById('sahabaStoryBox');
             box.classList.remove('hidden');
             box.innerHTML = `
@@ -867,13 +913,10 @@
                 </div>
             `;
         }
-        function sahabaNext() {
-            sahabaState.index++;
-            sahabaRender();
-        }
+        function sahabaNext() { sahabaState.index++; sahabaRender(); }
 
         // ==========================================
-        // ===== MEMORY MATCH =====
+        // MEMORY — pool, har game mein 8 random pairs
         // ==========================================
         const MEMORY_PAIRS = [
             ["اللَّهُ", "اللہ"],
@@ -881,34 +924,77 @@
             ["إِلَه", "معبود"],
             ["رَحْمَٰن", "بہت مہربان"],
             ["رَحِيم", "نہایت رحم والا"],
-            ["غَفُور", "بخشنی والا"],
+            ["غَفُور", "بخشنے والا"],
             ["حَكِيم", "حکمت والا"],
-            ["عَلِيم", "سب جاننے والا"]
+            ["عَلِيم", "سب جاننے والا"],
+            ["سَمِيع", "سننے والا"],
+            ["بَصِير", "دیکھنے والا"],
+            ["قَدِير", "قدرت والا"],
+            ["عَزِيز", "غالب"],
+            ["خَالِق", "پیدا کرنے والا"],
+            ["رَزَّاق", "رزق دینے والا"],
+            ["مَالِك", "مالک"],
+            ["وَدُود", "محبت کرنے والا"],
+            ["حَلِيم", "بردبار"],
+            ["شَكُور", "شکر قبول کرنے والا"],
+            ["صَبُور", "صبر کرنے والا"],
+            ["قَوِيّ", "طاقت والا"],
+            ["نُور", "روشنی"],
+            ["هُدَى", "ہدایت"],
+            ["إِيمَان", "ایمان"],
+            ["إِسْلَام", "اسلام"],
+            ["تَقْوَى", "پرہیزگاری"],
+            ["صَلَاة", "نماز"],
+            ["صَوْم", "روزہ"],
+            ["زَكَاة", "زکوٰۃ"],
+            ["حَجّ", "حج"],
+            ["جِهَاد", "جہاد"],
+            ["جَنَّة", "جنت"],
+            ["نَار", "جہنم"],
+            ["قَلْب", "دل"],
+            ["عَقْل", "عقل"],
+            ["عِلْم", "علم"],
+            ["عَمَل", "عمل"],
+            ["صَبْر", "صبر"],
+            ["شُكْر", "شکر"],
+            ["تَوْبَة", "توبہ"],
+            ["دُعَاء", "دعا"],
+            ["ذِكْر", "ذکر"],
+            ["قُرْآن", "قرآن"],
+            ["حَدِيث", "حدیث"],
+            ["سُنَّة", "سنت"],
+            ["نَبِيّ", "نبی"],
+            ["رَسُول", "رسول"],
+            ["صَحَابَة", "صحابہ"],
+            ["مَلَك", "فرشتہ"],
+            ["شَيْطَان", "شیطان"],
+            ["مَسْجِد", "مسجد"]
         ];
         let memoryState = null;
         function initMemory() {
+            const picked = [...MEMORY_PAIRS].sort(() => Math.random() - 0.5).slice(0, 8);
             const cards = [];
-            MEMORY_PAIRS.forEach((p, i) => {
+            picked.forEach((p, i) => {
                 cards.push({ id: i, type: 'ar', text: p[0] });
                 cards.push({ id: i, type: 'ur', text: p[1] });
             });
             const shuffled = cards.sort(() => Math.random() - 0.5);
-            memoryState = { cards: shuffled, flipped: [], matched: 0, moves: 0, locked: false };
+            memoryState = { cards: shuffled, flipped: [], matched: 0, moves: 0, locked: false, totalPairs: picked.length };
             memoryRender();
         }
         function memoryRender() {
             const box = document.getElementById('memory');
-            if (memoryState.matched === MEMORY_PAIRS.length) {
+            if (memoryState.matched === memoryState.totalPairs) {
                 setTimeout(() => {
                     celebrate('Shabash!', 'Saare cards match ho gaye.');
-                    box.innerHTML = `<div class="memory-box" style="text-align:center;"><h2 style="color:var(--primary);">🎉 Sab Match Ho Gaye!</h2><p style="margin:15px 0;">Total Moves: ${memoryState.moves}</p><button class="btn-primary" onclick="initMemory()">🔄 Dobara Khelein</button></div>`;
+                    box.innerHTML = `<div class="memory-box" style="text-align:center;"><h2 style="color:var(--primary);">🎉 Sab Match Ho Gaye!</h2><p style="margin:15px 0;">Total Moves: ${memoryState.moves}</p><button class="btn-primary" onclick="initMemory()">🔄 Naya Round</button></div>`;
                 }, 500);
                 return;
             }
             box.innerHTML = `
                 <div class="memory-box">
                     <div class="memory-info">
-                        <span>✅ Matched: ${memoryState.matched} / ${MEMORY_PAIRS.length}</span>
+                        <span>✅ Matched: ${memoryState.matched} / ${memoryState.totalPairs}</span>
                         <span>🎯 Moves: ${memoryState.moves}</span>
                     </div>
                     <div class="memory-grid" id="memGrid"></div>
@@ -958,7 +1044,7 @@
         }
 
         // ==========================================
-        // ===== EMOJI GUESS =====
+        // EMOJI QUIZ
         // ==========================================
         const EMOJI_DATA = [
             { emoji: "🕋", q: "Yeh kya hai?", o: ["Kaaba", "Masjid-e-Nabawi", "Masjid-e-Aqsa", "Jannat"], c: 0 },
@@ -986,7 +1072,7 @@
             { emoji: "👶🕋", q: "Yeh kya rasam hai?", o: ["Aqiqah", "Nikah", "Janaza", "Bismillah"], c: 0 },
             { emoji: "🕊️☪️", q: "Yeh kis cheez ki nishani hai?", o: ["Islam", "Jannat", "Farishta", "Nabi"], c: 0 },
             { emoji: "📖✨", q: "Yeh kya hai?", o: ["Quran", "Kitaab", "Naat", "Hadees"], c: 0 },
-            { emoji: "🌙🕋🔄", q: "Yeh kya hai?", o: ["Hajj", "Umrah", "Tawaf", "Sai"], c: 2 },,
+            { emoji: "🌙🕋🔄", q: "Yeh kya hai?", o: ["Hajj", "Umrah", "Tawaf", "Sai"], c: 2 },
             { emoji: "🔥❄️🧱", q: "Yeh kis Nabi ka waqia hai? (aag thandi hui)", o: ["Ibrahim (AS)", "Nuh (AS)", "Musa (AS)", "Isa (AS)"], c: 0 },
             { emoji: "🌊🪄", q: "Yeh kis Nabi ka mojza hai? (samandar phata)", o: ["Yunus (AS)", "Musa (AS)", "Nuh (AS)", "Yusuf (AS)"], c: 1 },
             { emoji: "🚢🌧️", q: "Yeh kis Nabi ka waqia hai?", o: ["Nuh (AS)", "Ibrahim (AS)", "Salih (AS)", "Hud (AS)"], c: 0 },
@@ -1025,7 +1111,42 @@
             { emoji: "🌧️🤲🕌", q: "Barish ki dua ke liye jo namaz padhi jaati hai?", o: ["Istisqa", "Tahajjud", "Ishraq", "Taraweeh"], c: 0 },
             { emoji: "⚰️🤲", q: "Marhoom ke liye jo namaz padhi jaati hai?", o: ["Namaz-e-Janaza", "Namaz-e-Eid", "Namaz-e-Jumma", "Tahajjud"], c: 0 },
             { emoji: "💍🕌", q: "Yeh kya hai?", o: ["Nikah", "Aqiqah", "Walima ki dawat", "Bismillah"], c: 0 },
-            { emoji: "🌙🌙", q: "Islami saal ka pehla mahina kaun sa hai?", o: ["Muharram", "Safar", "Rajab", "Ramzan"], c: 0 }
+            { emoji: "🌙🌙", q: "Islami saal ka pehla mahina kaun sa hai?", o: ["Muharram", "Safar", "Rajab", "Ramzan"], c: 0 },
+            { emoji: "🕋7️⃣", q: "Tawaf mein kitne chakkar hote hain?", o: ["3", "5", "7", "9"], c: 2 },
+            { emoji: "🏃‍♂️🏃‍♀️", q: "Safa Marwa ke darmiyan daudna kya kehlata hai?", o: ["Tawaf", "Sai", "Rami", "Qurbani"], c: 1 },
+            { emoji: "🎯🪨", q: "Mina mein shaitan ko pathar maarna kya kehlata hai?", o: ["Rami", "Tawaf", "Sai", "Qurbani"], c: 0 },
+            { emoji: "🌅🌙", q: "Roza kab kholte hain?", o: ["Fajr", "Zuhr", "Maghrib", "Isha"], c: 2 },
+            { emoji: "🌃🍽️", q: "Sehri kab khaate hain?", o: ["Fajr se pehle", "Fajr ke baad", "Zuhr se pehle", "Maghrib ke baad"], c: 0 },
+            { emoji: "📖🤲", q: "Quran padhne se pehle kya padhna chahiye?", o: ["Ta'awwuz", "Durood", "Kalima", "Sana"], c: 0 },
+            { emoji: "👨‍👩‍👧💍", q: "Islam mein khandan ka asaas kya hai?", o: ["Nikah", "Dosti", "Tijarat", "Ilm"], c: 0 },
+            { emoji: "👶🏠", q: "Bachche ki paidaish par kya karte hain?", o: ["Azan", "Naat", "Tilawat", "Dua"], c: 0 },
+            { emoji: "🎓📖", q: "Ilm seekhna kis par farz hai?", o: ["Har musalman par", "Sirf ulema par", "Sirf mardon par", "Sirf bachon par"], c: 0 },
+            { emoji: "👴🧕", q: "Walidain ke saath kaisa sulook karna chahiye?", o: ["Ihsan", "Sakhti", "Doori", "Bewajah"], c: 0 },
+            { emoji: "🤲✨", q: "Dua kis ke liye karte hain?", o: ["Har cheez ke liye", "Sirf paise ke liye", "Sirf sehat ke liye", "Sirf ilm ke liye"], c: 0 },
+            { emoji: "📚🕌", q: "Deen ki taleem ka pehla markaz kya tha?", o: ["Masjid", "Maktab", "Madrasa", "Ghar"], c: 0 },
+            { emoji: "🌙💧", q: "Ramzan mein raat ki namaz kya kehlati hai?", o: ["Taraweeh", "Tahajjud", "Witr", "Ishraq"], c: 0 },
+            { emoji: "🕌👨", q: "Azan dene wale ko kya kehte hain?", o: ["Muazzin", "Imam", "Khatib", "Qari"], c: 0 },
+            { emoji: "📿🤲", q: "Namaz ke baad kya karna chahiye?", o: ["Zikr", "Khaana", "Sona", "Baatein"], c: 0 },
+            { emoji: "💀🌙", q: "Maut ke baad ki zindagi ko kya kehte hain?", o: ["Aakhirat", "Duniya", "Barzakh", "Qayamat"], c: 0 },
+            { emoji: "🌉⚖️", q: "Qayamat ke din ka faisla kis par hoga?", o: ["Mizan", "Pul Sirat", "Haudh", "Shafa'at"], c: 0 },
+            { emoji: "💧🌉", q: "Jannat ka naam kya hai jo Quran mein aaya?", o: ["Firdaus", "Duniya", "Jahannam", "Barzakh"], c: 0 },
+            { emoji: "🔥😢", q: "Jahannam ki aag se bachne ki dua kis ne ki?", o: ["Ibrahim (AS)", "Nuh (AS)", "Musa (AS)", "Isa (AS)"], c: 0 },
+            { emoji: "🧕👶", q: "Nabi ﷺ ki walida ka naam kya tha?", o: ["Amina (RA)", "Halima (RA)", "Khadija (RA)", "Fatima (RA)"], c: 0 },
+            { emoji: "🏜️🌙", q: "Makkah ka dusra naam kya hai?", o: ["Bakkah", "Madinah", "Taif", "Jeddah"], c: 0 },
+            { emoji: "🕌🐪", q: "Madinah ka purana naam kya tha?", o: ["Yathrib", "Makkah", "Taif", "Khaybar"], c: 0 },
+            { emoji: "🌴🍇", q: "Madinah mein kis cheez ki kasrat thi?", o: ["Khajoor", "Angoor", "Anaar", "Seb"], c: 0 },
+            { emoji: "🧕💎", q: "Nabi ﷺ ki pehli biwi kaun thin?", o: ["Khadija (RA)", "Aisha (RA)", "Hafsa (RA)", "Zainab (RA)"], c: 0 },
+            { emoji: "🛡️⚔️", q: "Jang-e-Uhud mein Nabi ﷺ ke chacha shaheed hue, kaun?", o: ["Hamza (RA)", "Abbas (RA)", "Abu Talib", "Ali (RA)"], c: 0 },
+            { emoji: "📖🔢", q: "Quran mein kitne Manzil hain?", o: ["5", "6", "7", "8"], c: 2 },
+            { emoji: "🌙✨", q: "Quran kis raat nazil hona shuru hua?", o: ["Lailatul Qadr", "Shab-e-Barat", "Shab-e-Miraj", "Eid ki raat"], c: 0 },
+            { emoji: "📿🤲🌙", q: "Ramzan ka aakhri ashra kya kehlata hai?", o: ["Najat ka ashra", "Rehmat", "Maghfirat", "Barkat"], c: 0 },
+            { emoji: "🕋🕋", q: "Makkah mein kitni badi masjidein hain?", o: ["1 (Masjid-e-Haram)", "2", "3", "4"], c: 0 },
+            { emoji: "🕌🕌🕌", q: "Masjid-e-Aqsa kahan hai?", o: ["Jerusalem", "Makkah", "Madinah", "Taif"], c: 0 },
+            { emoji: "👨‍🏫📖", q: "Deen seekhne ke liye kis ke paas baithna chahiye?", o: ["Aalim", "Tajir", "Sipahi", "Kisi bhi"], c: 0 },
+            { emoji: "💯📖", q: "Quran ki sabse fazilat wali Surah kaun si hai?", o: ["Al-Fatiha", "Al-Baqarah", "Al-Ikhlas", "An-Nas"], c: 0 },
+            { emoji: "🌙💤", q: "Sone se pehle kya padhna chahiye?", o: ["Dua aur Ayatul Kursi", "Naat", "Kahani", "Kuch nahi"], c: 0 },
+            { emoji: "🤲🌅", q: "Subah uthne ke baad pehli dua?", o: ["Alhamdulillah", "Bismillah", "Subhanallah", "Allahu Akbar"], c: 0 },
+            { emoji: "🧕🕌", q: "Aurton ki namaz ka kya hukm hai?", o: ["Farz", "Sunnat", "Mustahab", "Jaiz nahi"], c: 0 }
         ];
 
         let emojiState = null;
@@ -1044,7 +1165,7 @@
                 const sc = emojiState.score, tot = emojiState.questions.length, good = sc >= Math.ceil(tot * 0.6);
                 if (good) celebrate(sc === tot ? 'Mashaallah! Full Marks!' : 'Mubarak Ho!', `Aap ne ${tot} mein se ${sc} sahi bataye.`);
                 const stars = sc === tot ? '🌟🌟🌟' : (good ? '🌟🌟' : '🌟');
-                box.innerHTML = `<div class="emoji-box"><h2 style="color:var(--primary);">${good ? '🎉 Mubarak Ho!' : '💪 Achi Koshish!'}</h2><div class="emoji-display">${good ? '🏆' : '📚'}</div><div style="font-size:30px;">${stars}</div><p style="margin:15px 0;">${good ? 'Bahut khoob!' : 'Thodi aur mashq karein, agli baar behtar hoga.'}</p><div class="emoji-score" style="font-size:18px; padding:10px 20px;">Score: ${sc} / ${tot}</div><button class="btn-primary" onclick="initEmoji()" style="margin-top:20px;">🔄 Dobara Khelein (naye sawal)</button></div>`;
+                box.innerHTML = `<div class="emoji-box"><h2 style="color:var(--primary);">${good ? '🎉 Mubarak Ho!' : '💪 Achi Koshish!'}</h2><div class="emoji-display">${good ? '🏆' : '📚'}</div><div style="font-size:30px;">${stars}</div><p style="margin:15px 0;">${good ? 'Bahut khoob!' : 'Thodi aur mashq karein, agli baar behtar hoga.'}</p><div class="emoji-score" style="font-size:18px; padding:10px 20px;">Score: ${sc} / ${tot}</div><button class="btn-primary" onclick="initEmoji()" style="margin-top:20px;">🔄 Naya Round</button></div>`;
                 return;
             }
             const q = emojiState.questions[emojiState.index];
@@ -1064,13 +1185,8 @@
             const q = emojiState.questions[emojiState.index];
             const opts = document.querySelectorAll('#emojiOpts .emoji-opt');
             opts.forEach(o => o.disabled = true);
-            if (sel === q.c) {
-                opts[sel].classList.add('correct');
-                emojiState.score++;
-            } else {
-                opts[sel].classList.add('wrong');
-                opts[q.c].classList.add('correct');
-            }
+            if (sel === q.c) { opts[sel].classList.add('correct'); emojiState.score++; }
+            else { opts[sel].classList.add('wrong'); opts[q.c].classList.add('correct'); }
             setTimeout(() => { emojiState.index++; emojiRender(); }, 1200);
         }
 

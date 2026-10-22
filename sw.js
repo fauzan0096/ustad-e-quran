@@ -2,9 +2,12 @@
 // SERVICE WORKER — Auto Update Version
 // Network-First for HTML/CSS/JS
 // Cache-First for Images
+// Cache-First + Range support for Audio (nasheed.mp3)
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v9';
+const CACHE_NAME = 'quran-ustad-auto-v10';
+// Audio ka alag cache: app update par bhaari mp3 dobara download na ho
+const AUDIO_CACHE = 'quran-ustad-audio-v1';
 
 const ASSETS = [
     './',
@@ -13,6 +16,7 @@ const ASSETS = [
     './dua.html',
     './tajweed.html',
     './games.html',
+    './games-audio.js',
     './asma.html',
     './manifest.json',
     './icon.png',
@@ -44,11 +48,50 @@ self.addEventListener('activate', (e) => {
     e.waitUntil(
         caches.keys().then(keys =>
             Promise.all(
-                keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+                keys.filter(k => k !== CACHE_NAME && k !== AUDIO_CACHE).map(k => caches.delete(k))
             )
         ).then(() => self.clients.claim())
     );
 });
+
+// ===== AUDIO (nasheed): Range request support =====
+// iOS/Safari ko 206 Partial Content chahiye, warna cache se audio play nahi hota
+async function audioResponse(request) {
+    const cache = await caches.open(AUDIO_CACHE);
+    let res = await cache.match(request.url);
+    if (!res) {
+        try {
+            // Poori file mangwao (Range header ke bagair) aur cache kar lo
+            const full = await fetch(request.url);
+            if (!full.ok) return full;
+            await cache.put(request.url, full.clone());
+            res = full;
+        } catch (err) {
+            return new Response('', { status: 404, statusText: 'Audio offline' });
+        }
+    }
+    const range = request.headers.get('range');
+    if (!range) return res;
+
+    const buf = await res.arrayBuffer();
+    const size = buf.byteLength;
+    const m = /bytes=(\d*)-(\d*)/.exec(range);
+    const start = m && m[1] ? parseInt(m[1], 10) : 0;
+    let end = m && m[2] ? parseInt(m[2], 10) : size - 1;
+    if (end >= size) end = size - 1;
+    if (start > end) {
+        return new Response('', { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+    }
+    return new Response(buf.slice(start, end + 1), {
+        status: 206,
+        headers: {
+            'Content-Type': res.headers.get('Content-Type') || 'audio/mpeg',
+            'Content-Range': `bytes ${start}-${end}/${size}`,
+            'Content-Length': String(end - start + 1),
+            'Accept-Ranges': 'bytes'
+        }
+    });
+}
 
 // ===== FETCH: Smart Strategy =====
 self.addEventListener('fetch', (e) => {
@@ -57,6 +100,12 @@ self.addEventListener('fetch', (e) => {
 
     // Sirf same-origin handle karo
     if (url.origin !== location.origin) return;
+
+    // 🎵 Audio = alag handler (range support)
+    if (/\.(mp3|ogg|m4a|wav)$/i.test(url.pathname)) {
+        e.respondWith(audioResponse(request));
+        return;
+    }
 
     const isHTML = request.headers.get('accept')?.includes('text/html');
     const isJS = url.pathname.endsWith('.js');
