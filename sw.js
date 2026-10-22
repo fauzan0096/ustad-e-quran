@@ -5,7 +5,9 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v16';
+// v18: naya login (pura naam + multi-user profiles) aur certificate naam fix — cache badalna zaroori hai
+// NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
+const CACHE_NAME = 'quran-ustad-auto-v18';
 
 const ASSETS = [
     './',
@@ -85,7 +87,8 @@ self.addEventListener('fetch', (e) => {
                 })
                 .catch(() => {
                     // Internet nahi hai — cache se do (?v=... wale link bhi mil jayein)
-                    return caches.match(request, { ignoreSearch: true });
+                    return caches.match(request, { ignoreSearch: true })
+                        .then(hit => hit || (request.mode === 'navigate' ? caches.match('./index.html') : undefined));
                 })
         );
         return;

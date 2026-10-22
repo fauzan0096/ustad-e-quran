@@ -164,8 +164,8 @@
             <img class="login-logo" src="icon-192.png" alt="">
             <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <h1>Quraan Ustad</h1>
-            <label class="login-label">User ID</label>
-            <select id="userIdSelect" class="login-select"></select>
+            <label class="login-label">Aapka Pura Naam</label>
+            <input type="text" id="fullNameInput" placeholder="Jaise: Mohammad Fauzan Raza" autocomplete="name" maxlength="40">
             <label class="login-label">Password</label>
             <input type="password" id="passwordInput" placeholder="Password daalein">
             <button onclick="handleLogin()">Login</button>
@@ -316,11 +316,6 @@
     <script>
         const ADMIN_PASSWORD = "Fauzan8087";
         const GUEST_PASSWORD = "quran123";
-        const USERS = [
-            { id: "guest", name: "Mehmaan", password: GUEST_PASSWORD, role: "guest" },
-            { id: "admin", name: "Admin", password: ADMIN_PASSWORD, role: "admin" }
-        ];
-
         const APP_LINK = "https://quraan-ustad.github.io/"; 
 
         let currentDay = 1;
@@ -328,31 +323,65 @@
         let userRole = localStorage.getItem('userRole') || 'guest';
         let isCertExam = false;
 
-        // --- Profiles ---
-        let profiles = JSON.parse(localStorage.getItem('profiles')) || [{ id: 'p1', name: 'Meri Profile', avatar: '🧒' }];
+        // --- Profiles (har naam ki alag history) ---
+        let profiles = lsJSONSafe('profiles', []);
         let activeProfile = localStorage.getItem('activeProfile');
-        
+
+        function lsJSONSafe(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return Array.isArray(v) ? v : d; } catch(e) { return d; } }
         function pk(key) { return 'p_' + activeProfile + '_' + key; }
         function lsJSON(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e) { return d; } }
         function lsSave(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+        function escHTML(t) { return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-        // --- Init ---
-        document.getElementById('userIdSelect').innerHTML = USERS.map(u => `<option value="${u.id}">👤 ${u.name}</option>`).join('');
-        
-        function handleLogin() {
-            const id = document.getElementById('userIdSelect').value;
-            const pwd = document.getElementById('passwordInput').value.trim();
-            const user = USERS.find(u => u.id === id);
-            if (user && pwd === user.password) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userRole', user.role);
-                localStorage.setItem('userId', user.id);
-                location.reload();
-            } else {
-                document.getElementById('loginError').innerText = "❌ Galat Password!";
-            }
+        // Naam saaf karo: extra spaces hatao, English naam ke har lafz ka pehla harf bada
+        function cleanName(raw) {
+            return raw.replace(/\s+/g, ' ').trim().split(' ')
+                .map(w => /^[a-z]/.test(w) ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w).join(' ');
         }
-        function logout() { localStorage.clear(); location.reload(); }
+        // Naam se unique id (chhota/bada harf ka farq nahi)
+        function nameToId(name) {
+            const key = name.toLowerCase();
+            let enc; try { enc = btoa(unescape(encodeURIComponent(key))); } catch(e) { enc = key; }
+            return 'u_' + enc.replace(/[^a-zA-Z0-9]/g, '');
+        }
+
+        // --- Login ---
+        const ADMIN_DISPLAY_NAME = "Fauzan Gorme"; // admin ke andar yahi naam dikhega
+        function handleLogin() {
+            const err = document.getElementById('loginError');
+            const typed = cleanName(document.getElementById('fullNameInput').value);
+            const pwd = document.getElementById('passwordInput').value.trim();
+            const role = pwd === ADMIN_PASSWORD ? 'admin' : (pwd === GUEST_PASSWORD ? 'guest' : null);
+            if (!role) { err.innerText = "❌ Galat Password!"; return; }
+
+            let name;
+            if (role === 'admin') {
+                // Admin: samne kuch bhi likho (ya "Admin"), andar hamesha Fauzan Gorme
+                name = ADMIN_DISPLAY_NAME;
+            } else {
+                name = typed;
+                if (!name) { err.innerText = "❌ Apna pura naam likhein!"; return; }
+                if (name.length < 3 || name.split(' ').length < 2) { err.innerText = "❌ Pehla aur aakhri naam dono likhein (jaise: Mohammad Fauzan)."; return; }
+                if (name.toLowerCase() === 'admin' || nameToId(name) === nameToId(ADMIN_DISPLAY_NAME)) { err.innerText = "❌ Ye naam allowed nahi hai, apna naam likhein."; return; }
+            }
+
+            const id = nameToId(name);
+            let list = lsJSONSafe('profiles', []);
+            if (!list.some(p => p.id === id)) list.push({ id, name, avatar: '🧒' });
+            localStorage.setItem('profiles', JSON.stringify(list));
+
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userRole', role);
+            localStorage.setItem('userId', id);
+            localStorage.setItem('activeProfile', id);
+            location.reload();
+        }
+        // Logout: sirf session hatao, sabki history (profiles + progress) safe rahe
+        function logout() {
+            ['isLoggedIn', 'userRole', 'userId', 'activeProfile'].forEach(k => localStorage.removeItem(k));
+            location.reload();
+        }
+        ['fullNameInput', 'passwordInput'].forEach(i => document.getElementById(i).addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); }));
 
         function enterApp() {
             document.getElementById('loginScreen').classList.add('hidden');
@@ -448,6 +477,7 @@
         function initApp() {
             const p = profiles.find(p => p.id === activeProfile);
             document.getElementById('userChipName').innerText = p ? p.name : 'User';
+            document.getElementById('userDropProfile').innerText = p ? p.name : '-';
             document.getElementById('userDropRole').innerText = userRole === 'admin' ? 'Admin' : 'Student';
             updateXPUI(); renderCourse(); updateStreak(); checkDailyGoal();
         }
@@ -538,7 +568,7 @@
         function handleCertificateClick() {
             document.getElementById('userDrop').classList.add('hidden');
             if (userRole === 'admin') {
-                document.getElementById('adminProfileSelect').innerHTML = profiles.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                document.getElementById('adminProfileSelect').innerHTML = profiles.map(p => `<option value="${p.id}">${escHTML(p.name)}</option>`).join('');
                 document.getElementById('adminCertModal').classList.remove('hidden');
             } else {
                 if (currentDay < 50) {
@@ -711,9 +741,17 @@
                 ctx.direction = 'rtl'; ctx.font = '400 26px "Noto Nastaliq Urdu", serif';
                 ctx.fillText('یہ سند فخر کے ساتھ پیش کی جاتی ہے', CX + 330, 365); ctx.direction = 'ltr';
 
-                ctx.fillStyle = '#0A2E24'; ctx.font = '700 78px "Amiri", serif'; ctx.fillText(userName, CX, 450);
+                // Naam: line se upar, descender (g, y, j) bhi line ko na chhuye; lamba naam apne aap chhota ho jaye
+                ctx.fillStyle = '#0A2E24';
+                let nameSize = 78; const maxNameW = 740;
+                ctx.font = `700 ${nameSize}px "Amiri", serif`;
+                while (ctx.measureText(userName).width > maxNameW && nameSize > 34) { nameSize -= 2; ctx.font = `700 ${nameSize}px "Amiri", serif`; }
+                ctx.textBaseline = 'alphabetic';
+                ctx.direction = /[\u0600-\u06FF\u0900-\u097F]/.test(userName) && /[\u0600-\u06FF]/.test(userName) ? 'rtl' : 'ltr';
+                ctx.fillText(userName, CX, 468);
+                ctx.direction = 'ltr'; ctx.textBaseline = 'middle';
                 ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 3;
-                ctx.beginPath(); ctx.moveTo(CX - 380, 500); ctx.lineTo(CX + 380, 500); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(CX - 380, 508); ctx.lineTo(CX + 380, 508); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(CX, 545); ctx.lineTo(CX, 810); ctx.stroke();
 
                 const sc = (typeof score === 'number') ? ` (Score: ${score}/50)` : '';
