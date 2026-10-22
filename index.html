@@ -145,6 +145,15 @@
         
         @keyframes cardEnter { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         .card { animation: cardEnter 0.5s ease-out both; }
+
+        header { padding-bottom: 12px; }
+        .header-tools { display: flex; align-items: center; gap: 8px; max-width: 1200px; margin: 12px auto 0; padding-top: 10px; border-top: 1px solid rgba(217,182,90,.35); flex-wrap: wrap; }
+        .lang-seg { flex: 1; min-width: 190px; display: flex; height: 40px; border-radius: 20px; background: rgba(255,255,255,.14); padding: 3px; gap: 3px; }
+        .lang-seg button { flex: 1; border: none; border-radius: 17px; background: transparent; color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .lang-seg button.on { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; }
+        .urdu.lt { font-family: 'Figtree', sans-serif; direction: ltr; font-size: 19px; font-weight: 600; }
+        .header-tools .xp-badge, .header-tools .streak-badge { height: 32px; display: inline-flex; align-items: center; }
+        .login-btn { margin-left: auto; }
     </style>
 </head>
 <body>
@@ -169,21 +178,27 @@
         <header>
             <div class="header-top">
                 <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
-                <div class="header-controls">
-                    <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
-                    <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
-                    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                    <div class="user-menu">
-                        <button class="icon-btn user-chip" onclick="toggleUserMenu(event)"><span id="userChipName">ID</span> ▾</button>
-                        <div class="user-drop hidden" id="userDrop">
-                            <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small></div>
-                            <button class="ud-cert" onclick="handleCertificateClick()">🏆 Certificate (Sanad)</button>
-                            <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
-                            <button class="ud-default" onclick="resetTheme()">🔄 Default Theme</button>
-                            <button onclick="logout()" style="margin-top:8px;">🚪 Logout</button>
-                        </div>
+                <div class="user-menu">
+                    <button class="icon-btn user-chip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span> ▾</button>
+                    <div class="user-drop hidden" id="userDrop">
+                        <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small></div>
+                        <button class="ud-cert" onclick="handleCertificateClick()">🏆 Certificate (Sanad)</button>
+                        <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
+                        <button class="ud-default" onclick="resetTheme()">🔄 Default Theme</button>
+                        <button onclick="logout()" style="margin-top:8px;">🚪 Logout</button>
                     </div>
                 </div>
+            </div>
+            <div class="header-tools">
+                <div id="langSel" class="lang-seg" role="group" aria-label="Language">
+                    <button data-l="u" onclick="setMeaningLang('u')">اردو</button>
+                    <button data-l="ro" onclick="setMeaningLang('ro')">Roman</button>
+                    <button data-l="hi" onclick="setMeaningLang('hi')">हिंदी</button>
+                </div>
+                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+                <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
+                <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
+                <button class="icon-btn login-btn" onclick="logout()" title="Login / Logout">🚪</button>
             </div>
         </header>
 
@@ -437,7 +452,9 @@
             updateXPUI(); renderCourse(); updateStreak(); checkDailyGoal();
         }
 
+        function pick(w, k) { const l = localStorage.getItem('mlang'); return l === 'ro' ? (w[k + '_ro'] || w[k]) : l === 'hi' ? (w[k + '_hi'] || w[k]) : w[k]; }
         function renderCourse() {
+            const lang = localStorage.getItem('mlang') || 'u';
             const grid = document.getElementById('courseGrid'); grid.innerHTML = '';
             document.getElementById('dayTitle').innerText = `Day ${currentDay}`;
             renderJourneyMap();
@@ -450,8 +467,8 @@
                     card.innerHTML = `
                         <div class="arabic" onclick="speakText('${word.a}', 'ar', this, '${word.m}')">${word.a}</div>
                         <div class="roman">${word.r}</div>
-                        <div class="urdu" onclick="speakText('${word.u}', 'ur', this)">${word.u}</div>
-                        <div class="mashq-box"><b>Mashq:</b> ${word.m}</div>
+                        <div class="urdu ${lang==='u'?'':'lt'}" onclick="speakText('${word.u}', 'ur', this)">${pick(word,'u')}</div>
+                        <div class="mashq-box"><b>Mashq:</b> ${word.m}<div style="margin-top:4px;opacity:.85;${lang==='u'?'':'direction:ltr;text-align:right;'}">${pick(word,'t')}</div></div>
                     `;
                     grid.appendChild(card);
                 });
@@ -651,118 +668,90 @@
             return currentY;
         }
 
-        // --- 🏆 CERTIFICATE DRAWING FUNCTION (UPDATED DISCLAIMER) ---
+        // --- 🏆 CERTIFICATE (Urdu right | English left) ---
         function drawCertificateCanvas(userName, isGold, score, callback) {
-            const arabicName = "فوزان الطاف غورمي المحمدي النوري المدني"; 
+            const arabicName = "فوزان الطاف غورمي المحمدي النوري المدني";
             const dateStr = new Date().toLocaleDateString('en-GB');
-
-            const canvas = document.createElement('canvas');
-            canvas.width = 1600; canvas.height = 1131;
+            const W = 1600, H = 1131, CX = W / 2;
+            const main = isGold ? '#B8923A' : '#0F4C3A';
+            const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
             const ctx = canvas.getContext('2d');
-
-            // Background
-            const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            bgGrad.addColorStop(0, '#FFFDF6'); bgGrad.addColorStop(1, '#F4F1E3');
-            ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Borders
-            ctx.strokeStyle = isGold ? '#D4AF37' : '#0F4C3A'; ctx.lineWidth = 40;
-            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
-            ctx.strokeStyle = isGold ? '#B8923A' : '#D9B65A'; ctx.lineWidth = 10;
-            ctx.strokeRect(70, 70, canvas.width - 140, canvas.height - 140);
-
-            // Corner Designs
-            const drawCorner = (x, y, xDir, yDir) => {
-                ctx.beginPath(); ctx.moveTo(x, y + 50 * yDir);
-                ctx.quadraticCurveTo(x, y, x + 50 * xDir, y);
-                ctx.lineWidth = 8; ctx.strokeStyle = '#B8923A'; ctx.stroke();
-            };
-            drawCorner(70, 70, 1, 1); drawCorner(canvas.width - 70, 70, -1, 1);
-            drawCorner(70, canvas.height - 70, 1, -1); drawCorner(canvas.width - 70, canvas.height - 70, -1, -1);
-
-            // Top Seal
-            ctx.beginPath(); ctx.arc(canvas.width / 2, 130, 40, 0, Math.PI * 2);
-            ctx.fillStyle = isGold ? '#D4AF37' : '#0F4C3A'; ctx.fill();
-            ctx.fillStyle = '#FFF'; ctx.font = '700 30px "Amiri", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(isGold ? '🥇' : '🏅', canvas.width / 2, 130);
-
-            // Titles
-            ctx.fillStyle = isGold ? '#B8923A' : '#0F4C3A'; ctx.font = '700 55px "Amiri", serif';
-            ctx.fillText(isGold ? 'GOLD SANAD' : 'CERTIFICATE OF EXCELLENCE', canvas.width / 2, 220);
-            ctx.fillStyle = '#B8923A'; ctx.font = 'italic 400 25px "Figtree", sans-serif';
-            ctx.fillText('This Sanad is proudly presented to', canvas.width / 2, 290);
-
-            // Arabic Name
-            ctx.fillStyle = '#0A2E24'; ctx.font = '700 75px "Amiri", serif';
-            ctx.fillText(arabicName, canvas.width / 2, 400);
-            
-            // Signature & Logo Loading
-            let loadedCount = 0;
             const sigImg = new Image(); sigImg.src = 'signature.png';
             const logoImg = new Image(); logoImg.src = 'icon-192.png';
-            
-            const checkAndDraw = () => {
-                loadedCount++;
-                if (loadedCount >= 2) drawRest();
-            };
-            sigImg.onload = checkAndDraw; sigImg.onerror = checkAndDraw;
-            logoImg.onload = checkAndDraw; logoImg.onerror = checkAndDraw;
+            const wait = (im) => new Promise(r => { if (im.complete) r(); else { im.onload = r; im.onerror = r; } });
+            const fonts = Promise.all(['700 40px Amiri','400 28px "Noto Nastaliq Urdu"','400 28px Figtree'].map(f => document.fonts ? document.fonts.load(f, 'اAa').catch(()=>{}) : 0));
+            Promise.all([wait(sigImg), wait(logoImg), fonts]).then(draw);
 
-            function drawRest() {
-                if (sigImg.complete && sigImg.naturalWidth > 0) {
-                    // Sign: neeche right me, "Quraan Ustad Admin" line ke upar (aspect ratio barqarar)
-                    const sigH = 170;
-                    const sigW = sigH * (sigImg.naturalWidth / sigImg.naturalHeight);
-                    ctx.drawImage(sigImg, canvas.width - 300 - sigW / 2, 1016 - sigH, sigW, sigH);
+            function draw() {
+                const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#FFFDF6'); g.addColorStop(1, '#F4F1E3');
+                ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+                ctx.strokeStyle = main; ctx.lineWidth = 36; ctx.strokeRect(22, 22, W - 44, H - 44);
+                ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 6; ctx.strokeRect(58, 58, W - 116, H - 116);
+                ctx.strokeStyle = main; ctx.lineWidth = 2; ctx.strokeRect(72, 72, W - 144, H - 144);
+                [[72,72,1,1],[W-72,72,-1,1],[72,H-72,1,-1],[W-72,H-72,-1,-1]].forEach(([x,y,xd,yd]) => {
+                    ctx.beginPath(); ctx.moveTo(x, y + 70*yd); ctx.quadraticCurveTo(x, y, x + 70*xd, y);
+                    ctx.lineWidth = 7; ctx.strokeStyle = '#B8923A'; ctx.stroke();
+                });
+                ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.direction = 'ltr';
+
+                if (logoImg.naturalWidth > 0) {
+                    ctx.save(); ctx.beginPath(); ctx.arc(215, 215, 95, 0, Math.PI*2); ctx.clip();
+                    ctx.drawImage(logoImg, 120, 120, 190, 190); ctx.restore();
+                    ctx.beginPath(); ctx.arc(215, 215, 95, 0, Math.PI*2); ctx.lineWidth = 6; ctx.strokeStyle = '#D9B65A'; ctx.stroke();
                 }
+                ctx.fillStyle = '#B8923A'; ctx.font = '400 44px "Amiri", serif';
+                ctx.direction = 'rtl'; ctx.fillText('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', CX, 130); ctx.direction = 'ltr';
+                ctx.fillStyle = main; ctx.font = '700 62px "Amiri", serif';
+                ctx.fillText(isGold ? 'GOLD SANAD' : 'CERTIFICATE OF EXCELLENCE', CX, 215);
+                ctx.direction = 'rtl'; ctx.font = '400 50px "Noto Nastaliq Urdu", serif';
+                ctx.fillText(isGold ? 'گولڈ سند' : 'سندِ امتیاز', CX, 290); ctx.direction = 'ltr';
 
-                ctx.fillStyle = '#55645C'; ctx.font = '400 30px "Figtree", sans-serif';
-                ctx.fillText(`(Profile: ${userName})`, canvas.width / 2, 470);
-                
-                ctx.fillStyle = '#55645C'; ctx.font = '400 30px "Figtree", sans-serif';
-                ctx.fillText('has successfully completed the', canvas.width / 2, 520);
-                
-                ctx.fillStyle = isGold ? '#B8923A' : '#0F4C3A'; ctx.font = '700 40px "Figtree", sans-serif';
-                ctx.fillText(isGold ? '90 Days - 900 Quranic Words Master Course' : '50 Days - 500 Quranic Words Course', canvas.width / 2, 580);
+                ctx.fillStyle = '#8A6D2B'; ctx.font = 'italic 400 26px "Figtree", sans-serif';
+                ctx.fillText('This Sanad is proudly presented to', CX - 330, 365);
+                ctx.direction = 'rtl'; ctx.font = '400 26px "Noto Nastaliq Urdu", serif';
+                ctx.fillText('یہ سند فخر کے ساتھ پیش کی جاتی ہے', CX + 330, 365); ctx.direction = 'ltr';
 
-                // Divider Line
-                ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 4;
-                ctx.beginPath(); ctx.moveTo(canvas.width / 2 - 350, 620); ctx.lineTo(canvas.width / 2 + 350, 620); ctx.stroke();
+                ctx.fillStyle = '#0A2E24'; ctx.font = '700 78px "Amiri", serif'; ctx.fillText(userName, CX, 450);
+                ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(CX - 380, 500); ctx.lineTo(CX + 380, 500); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(CX, 545); ctx.lineTo(CX, 810); ctx.stroke();
 
-                // Disclaimer Text (UPDATED AS PER USER REQUEST)
-                let scoreDisplayU = (typeof score === 'number') ? `${score}/50` : '';
-                let scoreDisplayE = (typeof score === 'number') ? `${score}/50` : '';
+                const sc = (typeof score === 'number') ? ` (Score: ${score}/50)` : '';
+                const scU = (typeof score === 'number') ? ` (اسکور: ${score}/50)` : '';
+                const engCourse = isGold ? '90 Days – 900 Quranic Words Master Course' : '50 Days – 500 Quranic Words Course';
+                const urCourse = isGold ? '۹۰ دن – ۹۰۰ قرآنی الفاظ ماسٹر کورس' : '۵۰ دن – ۵۰۰ قرآنی الفاظ کورس';
+                const engText = isGold
+                    ? 'has successfully completed the course and memorized all 900 words well. This is only a certificate of completion. It is NOT a certificate for giving Fatwas or Alimiyat.'
+                    : `has successfully completed the course and memorized the 500 words well${sc}. This is only a certificate of completion. It is NOT a certificate for giving Fatwas or Alimiyat.`;
+                const urText = isGold
+                    ? 'طالب علم نے پورے ۹۰۰ الفاظ اچھی طرح پڑھے اور یاد کیے ہیں۔ یہ صرف ایک تصدیق نامہ ہے، فتویٰ دینے یا عالمیت کی سند نہیں ہے۔'
+                    : `طالب علم نے ۵۰۰ الفاظ اچھی طرح پڑھے اور یاد کیے ہیں${scU}۔ یہ صرف ایک تصدیق نامہ ہے، فتویٰ دینے یا عالمیت کی سند نہیں ہے۔`;
 
-                let urduText = isGold 
-                  ? `یہ صرف ایک تصدیق نامہ ہے کہ طالب علم نے پورے ۹۰۰ الفاظ (تمام کورس) کو اچھی طرح پڑھا اور یاد کیا ہے۔ یہ فتویٰ دینے یا عالمیت کی سند نہیں ہے۔`
-                  : `یہ صرف ایک تصدیق نامہ ہے کہ طالب علم نے ۵۰۰ الفاظ (اسکور: ${scoreDisplayU}) اچھی طرح پڑھے اور یاد کیے ہیں۔ یہ فتویٰ دینے یا عالمیت کی سند نہیں ہے۔`;
+                ctx.textAlign = 'left'; ctx.direction = 'ltr';
+                ctx.fillStyle = main; ctx.font = '700 31px "Figtree", sans-serif';
+                const yE = drawMultilineText(ctx, engCourse, 150, 575, 600, 40);
+                ctx.fillStyle = '#4A5568'; ctx.font = '400 25px "Figtree", sans-serif';
+                drawMultilineText(ctx, engText, 150, yE + 50, 600, 36);
 
-                let engText = isGold
-                  ? `This is only a certificate confirming that the student has read and memorized all 900 words (the entire course) well. It is NOT a certificate for giving Fatwas or Alimiyat.`
-                  : `This is only a certificate confirming that the student has read and memorized the 500 words (Score: ${scoreDisplayE}) well. It is NOT a certificate for giving Fatwas or Alimiyat.`;
+                ctx.textAlign = 'right'; ctx.direction = 'rtl';
+                ctx.fillStyle = main; ctx.font = '700 31px "Noto Nastaliq Urdu", serif';
+                const yU = drawMultilineText(ctx, urCourse, W - 150, 575, 600, 60);
+                ctx.fillStyle = '#4A5568'; ctx.font = '400 25px "Noto Nastaliq Urdu", serif';
+                drawMultilineText(ctx, urText, W - 150, yU + 60, 600, 54);
 
-                ctx.fillStyle = '#4A5568'; 
-                ctx.font = '400 26px "Noto Nastaliq Urdu", serif';
-                ctx.direction = 'rtl';
-                let yAfterUrdu = drawMultilineText(ctx, urduText, canvas.width / 2, 660, 1300, 40);
-                
-                ctx.font = '400 22px "Figtree", sans-serif';
-                ctx.direction = 'ltr';
-                let yAfterEng = drawMultilineText(ctx, engText, canvas.width / 2, yAfterUrdu + 55, 1300, 28);
-
-                // Draw Logo below text
-                if (logoImg.complete && logoImg.naturalWidth > 0) {
-                    ctx.drawImage(logoImg, canvas.width / 2 - 30, yAfterEng + 15, 60, 60);
+                ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
+                ctx.fillText('Date / تاریخ: ' + dateStr, 150, 935);
+                const sx = W - 300;
+                if (sigImg.naturalWidth > 0) {
+                    const sh = 120, sw = Math.min(sh * sigImg.naturalWidth / sigImg.naturalHeight, 260);
+                    ctx.drawImage(sigImg, sx - sw / 2, 935 - sh - 4, sw, sh);
                 }
-
-                // Date & Signature
-                ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
-                ctx.fillText('Date: ' + dateStr, 350, 1000);
-
                 ctx.strokeStyle = '#55645C'; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.moveTo(canvas.width - 450, 1020); ctx.lineTo(canvas.width - 150, 1020); ctx.stroke();
-                ctx.fillStyle = '#0F4C3A'; ctx.font = '700 30px "Amiri", serif';
-                ctx.fillText('Quraan Ustad Admin', canvas.width - 300, 1060);
+                ctx.beginPath(); ctx.moveTo(sx - 170, 940); ctx.lineTo(sx + 170, 940); ctx.stroke();
+                ctx.textAlign = 'center'; ctx.direction = 'rtl'; ctx.fillStyle = '#0F4C3A'; ctx.font = '700 36px "Amiri", serif';
+                ctx.fillText(arabicName, sx, 985);
+                ctx.direction = 'ltr'; ctx.fillStyle = '#55645C'; ctx.font = '400 22px "Figtree", sans-serif';
+                ctx.fillText('Founder, Quraan Ustad', sx, 1025);
 
                 callback(canvas);
             }
@@ -936,5 +925,10 @@
         if (localStorage.getItem('isLoggedIn') === 'true') { enterApp(); }
     </script>
     <script src="progress.js"></script>
+<script>
+        function setMeaningLang(v){ localStorage.setItem('mlang', v); markLang(); if (typeof renderCourse === 'function' && typeof courseData !== 'undefined') { try { renderCourse(); } catch(e){} } }
+        function markLang(){ const v = localStorage.getItem('mlang') || 'u'; document.querySelectorAll('#langSel button').forEach(b => b.classList.toggle('on', b.dataset.l === v)); }
+        (function(){ const o = localStorage.getItem('mlang'); if (o === 'both' || o === 'urdu') localStorage.setItem('mlang','u'); if (o === 'roman') localStorage.setItem('mlang','ro'); markLang(); })();
+    </script>
 </body>
 </html>

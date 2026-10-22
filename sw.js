@@ -5,7 +5,7 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v15';
+const CACHE_NAME = 'quran-ustad-auto-v16';
 
 const ASSETS = [
     './',
