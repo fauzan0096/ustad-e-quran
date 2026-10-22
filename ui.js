@@ -44,7 +44,7 @@
         '.daily-card .d-acts{display:flex;gap:8px;margin-top:12px}' +
         '.daily-card .d-btn{flex:1;min-height:44px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;border:none;background:linear-gradient(180deg,#17614B,var(--primary,#0F4C3A));color:#fff}' +
         '.daily-card .d-ghost{background:transparent;color:var(--primary,#0F4C3A);border:1.5px solid var(--primary,#0F4C3A)}' +
-        '[data-theme="dark"] .daily-card .d-ghost{color:var(--gold-bright,#D9B65A);border-color:var(--gold-bright,#D9B65A)}' +
+        '[data-theme="dark"] .daily-card .d-ghost,[data-theme="midnight"] .daily-card .d-ghost,[data-theme="royal"] .daily-card .d-ghost{color:var(--gold-bright,#D9B65A);border-color:var(--gold-bright,#D9B65A)}' +
         /* Dropdown mein size row (index) */
         '.qs-size-row{display:flex;align-items:center;gap:8px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--border);font-size:13px}' +
         '.qs-size-row b{flex:1;font-weight:600}' +

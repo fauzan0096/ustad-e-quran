@@ -51,6 +51,19 @@
             --border: #27403A;
             --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
         }
+        /* Premium themes (Shop se unlock hote hain) */
+        [data-theme="midnight"] {
+            --primary: #1E3A8A; --primary-deep: #0F172A; --secondary: #F59E0B; --gold-bright: #FBBF24;
+            --ink: #F8FAFC; --bg: #0F172A; --card-bg: #1E293B; --soft-bg: #334155;
+            --text: #F8FAFC; --text-light: #94A3B8; --border: #475569;
+            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        }
+        [data-theme="royal"] {
+            --primary: #4C1D95; --primary-deep: #2E1065; --secondary: #FBBF24; --gold-bright: #FCD34D;
+            --ink: #F3F4F6; --bg: #2E1065; --card-bg: #4C1D95; --soft-bg: #5B21B6;
+            --text: #F3F4F6; --text-light: #D8B4FE; --border: #7E22CE;
+            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Figtree', system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 86px; line-height: 1.5; transition: background .3s, color .3s; }
         button, input, select { font-family: inherit; }
@@ -85,6 +98,7 @@
         .header-controls { display: flex; gap: 8px; align-items: center; }
         .icon-btn { background: rgba(255,255,255,.14); border: none; font-size: 18px; cursor: pointer; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
         .icon-btn:active { background: rgba(255,255,255,.28); }
+        .xp-badge { background: linear-gradient(180deg, #8e44ad, #6c3483); color: white; white-space: nowrap; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
         .streak-badge { background: linear-gradient(180deg, #f08a3c, #d9602a); color: white; white-space: nowrap; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
         .user-menu { position: relative; }
         .user-chip { width: auto !important; height: 40px; padding: 0 12px !important; border-radius: 20px !important; font-size: 13px !important; font-weight: 600; white-space: nowrap; gap: 4px; }
@@ -92,6 +106,8 @@
         .user-drop.hidden { display: none; }
         .user-drop-info { font-size: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
         .user-drop-info small { color: var(--text-light); }
+        .user-drop button.ud-shop { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; border: none; margin-bottom: 8px; }
+        .user-drop button.ud-support { color: var(--text); border-color: var(--border); margin-bottom: 8px; }
         .user-drop button.ud-switch { background: var(--primary); color: #fff; border-color: var(--primary); margin-bottom: 8px; }
         .user-drop button { width: 100%; background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; min-height: 44px; }
 
@@ -111,6 +127,36 @@
         /* ---------- Views ---------- */
         .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
         .view-section.active { display: block; }
+
+        /* ---------- Journey map ---------- */
+        .journey-wrap { overflow-x: auto; padding: 22px 4px 16px; margin: 6px 0 0; scrollbar-width: none; }
+        .journey-wrap::-webkit-scrollbar { display: none; }
+        .j-track { position: relative; display: flex; align-items: center; gap: 20px; min-width: max-content; padding: 0 8px; }
+        .j-line { position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: repeating-linear-gradient(to right, var(--border) 0, var(--border) 10px, transparent 10px, transparent 20px); z-index: 0; transform: translateY(-50%); }
+        .j-node { position: relative; z-index: 1; flex: 0 0 64px; height: 64px; border-radius: 50%; background: var(--card-bg); border: 3px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-light); cursor: pointer; transition: all .3s; box-shadow: var(--shadow); }
+        .j-node.unlocked { border-color: var(--primary); background: var(--primary); color: #fff; }
+        .j-node.current { border-color: var(--gold-bright); background: var(--card-bg); color: var(--ink); box-shadow: 0 0 0 4px rgba(217,182,90,.3); transform: scale(1.1); }
+        .j-node.locked { opacity: .6; background: var(--soft-bg); cursor: not-allowed; }
+
+        /* ---------- Daily goal ---------- */
+        .daily-goal-card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin: 16px 0 0; border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; }
+        .dg-icon { font-size: 32px; background: var(--soft-bg); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 56px; }
+        .dg-content { flex: 1; min-width: 0; }
+        .dg-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .dg-text { font-size: 13px; color: var(--text-light); margin-bottom: 6px; }
+        .dg-bar { height: 8px; background: var(--border); border-radius: 8px; overflow: hidden; margin-top: 6px; }
+        .dg-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--secondary), var(--gold-bright)); border-radius: 8px; transition: width .5s; }
+
+        /* ---------- Shop ---------- */
+        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .shop-item { background: var(--soft-bg); border-radius: 12px; padding: 12px; text-align: center; border: 2px solid var(--border); }
+        .shop-item.owned { border-color: var(--primary); background: rgba(15,76,58,.1); }
+        .shop-item .si-icon { font-size: 32px; margin-bottom: 5px; }
+        .shop-item .si-name { font-weight: bold; font-size: 13px; margin-bottom: 5px; }
+        .shop-item .si-cost { font-size: 12px; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
+        [data-theme="dark"] .shop-item .si-cost, [data-theme="midnight"] .shop-item .si-cost, [data-theme="royal"] .shop-item .si-cost { color: var(--gold-bright); }
+        .shop-item button { background: var(--primary); color: #fff; border: none; padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; min-height: 36px; }
+        .shop-item button:disabled { background: var(--border); color: var(--text-light); cursor: not-allowed; }
 
         /* ---------- Day heading ---------- */
         .day-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 22px 0 26px; flex-wrap: wrap; gap: 12px; }
@@ -134,8 +180,8 @@
         .mashq-box { background: var(--soft-bg); border: none; border-right: 4px solid var(--rubric); padding: 10px 12px; margin-top: 12px; border-radius: 10px; font-size: 15px; line-height: 1.9; color: var(--text); text-align: right; direction: rtl; font-family: 'Amiri', serif; }
         .tafseel-btn { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); padding: 10px; width: 100%; border-radius: 12px; margin-top: 14px; cursor: pointer; font-size: 14px; font-weight: 700; min-height: 44px; }
         .tafseel-btn:active { background: var(--primary); color: #fff; }
-        [data-theme="dark"] .tafseel-btn { color: var(--gold-bright); border-color: var(--gold-bright); }
-        [data-theme="dark"] .tafseel-btn:active { background: var(--gold-bright); color: #07211A; }
+        [data-theme="dark"] .tafseel-btn, [data-theme="midnight"] .tafseel-btn, [data-theme="royal"] .tafseel-btn { color: var(--gold-bright); border-color: var(--gold-bright); }
+        [data-theme="dark"] .tafseel-btn:active, [data-theme="midnight"] .tafseel-btn:active, [data-theme="royal"] .tafseel-btn:active { background: var(--gold-bright); color: #07211A; }
         .qs-text { background: rgba(217,182,90,.25) !important; }
 
         /* ---------- Locked page ---------- */
@@ -163,7 +209,7 @@
         .exam-ar { font-family: 'Amiri', serif; font-size: 34px; line-height: 1.7; text-align: center; color: var(--ink); margin-bottom: 6px; }
         .option-btn { padding: 12px 14px; margin: 6px 0; width: 100%; text-align: left; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; font-size: 18px; min-height: 48px; font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; text-align: center; }
         .option-btn.selected { border-color: var(--primary); background: rgba(15,76,58,.1); font-weight: 700; box-shadow: inset 4px 0 0 var(--primary); }
-        [data-theme="dark"] .option-btn.selected { border-color: var(--gold-bright); box-shadow: inset 4px 0 0 var(--gold-bright); background: rgba(217,182,90,.12); }
+        [data-theme="dark"] .option-btn.selected, [data-theme="midnight"] .option-btn.selected, [data-theme="royal"] .option-btn.selected { border-color: var(--gold-bright); box-shadow: inset 4px 0 0 var(--gold-bright); background: rgba(217,182,90,.12); }
 
         /* ---------- Bottom nav ---------- */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); box-shadow: 0 -6px 20px rgba(10,46,36,.08); z-index: 1000; }
@@ -195,7 +241,7 @@
         .pf-avatars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 8px 0 16px; }
         .pf-avatars button { font-size: 28px; padding: 8px 0; border-radius: 12px; border: 2px solid var(--border); background: var(--soft-bg); cursor: pointer; }
         .pf-avatars button.on { border-color: var(--primary); background: rgba(15,76,58,.14); }
-        [data-theme="dark"] .pf-avatars button.on { border-color: var(--gold-bright); }
+        [data-theme="dark"] .pf-avatars button.on, [data-theme="midnight"] .pf-avatars button.on, [data-theme="royal"] .pf-avatars button.on { border-color: var(--gold-bright); }
         .pf-label { font-size: 13px; font-weight: 600; display: block; margin-top: 10px; }
         .pf-err { color: var(--rubric); font-size: 13px; min-height: 18px; margin-top: 4px; }
         .exam-btn.danger { background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); box-shadow: none; }
@@ -250,6 +296,7 @@
             .header-top h1 { font-size: 20px; }
             .header-controls { gap: 6px; }
             .icon-btn { width: 36px; height: 36px; font-size: 16px; }
+            .xp-badge, .streak-badge { font-size: 11px; padding: 4px 7px; }
             .top-link-btn { font-size: 12px; padding: 10px 4px; }
             .top-link-btn .ti { width: 36px; height: 36px; font-size: 18px; }
             .user-chip { height: 36px; padding: 0 10px !important; font-size: 12px !important; max-width: 104px; overflow: hidden; text-overflow: ellipsis; }
@@ -299,6 +346,7 @@
             <div class="header-top">
                 <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
                 <div class="header-controls">
+                    <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
                     <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
                     <button class="icon-btn lang-btn" onclick="cycleMeaningLang()" id="langBtn" title="Matlab ki zubaan: Urdu / Roman / Hindi">اردو</button>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
@@ -307,6 +355,8 @@
                         <div class="user-drop hidden" id="userDrop">
                             <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>User ID: <span id="userDropId">-</span></small><br><small id="userDropRole"></small></div>
                             <button class="ud-switch" onclick="openProfilePicker()">👥 Profile badlein</button>
+                            <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
+                            <button class="ud-support" onclick="document.getElementById('userDrop').classList.add('hidden'); openFeedback()">✉️ Support</button>
                             <button onclick="logout()">🚪 Logout</button>
                         </div>
                     </div>
@@ -337,6 +387,20 @@
         <div id="courseTab" class="view-section active">
             <div id="todayCard"></div>
             <div id="dailyCard"></div>
+
+            <!-- Daily Goal -->
+            <div class="daily-goal-card">
+                <div class="dg-icon">🎯</div>
+                <div class="dg-content">
+                    <div class="dg-title">Daily Goal <span id="dailyGoalPercent">0%</span></div>
+                    <div class="dg-text" id="dailyGoalText">Aaj 10 lafz padhein (+50 XP)</div>
+                    <div class="dg-bar"><div class="dg-fill" id="dailyGoalFill"></div></div>
+                </div>
+            </div>
+
+            <!-- Journey Map -->
+            <div class="journey-wrap" id="journeyMap"></div>
+
             <div class="day-header">
                 <div class="day-title-wrap">
                     <h2 id="dayTitle">Day 1</h2>
@@ -356,11 +420,24 @@
             <a href="dua.html">🤲<br>Duaein</a>
             <a href="games.html">🎮<br>Games</a>
             <a href="tajweed.html">📖<br>Tajweed</a>
-            <button onclick="openFeedback()">✉️<br>Support</button>
+            <button onclick="openShop()">🛒<br>Shop</button>
         </div>
     </div>
 
     <!-- MODALS -->
+    <!-- Shop Modal -->
+    <div id="shopModal" class="modal hidden" style="z-index:10002;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeShop()">&times;</span>
+            <h2 style="text-align:center; color: var(--ink);">🛒 Inaam Ghar</h2>
+            <p style="text-align:center; font-size:14px; margin-bottom:15px;">XP kharch karke naye Avatars aur Themes unlock karein!</p>
+            <div style="text-align:center; margin-bottom:15px; font-weight:bold; font-size:20px; color:var(--primary);">
+                Aapka XP: <span id="shopXP">0</span>
+            </div>
+            <div id="shopGrid" class="shop-grid"></div>
+        </div>
+    </div>
+
     <!-- Profile Modal -->
     <div id="profileModal" class="modal hidden" style="z-index:10001;">
         <div class="modal-content">
@@ -443,8 +520,11 @@
             { id: "admin", name: "Admin", password: ADMIN_PASSWORD, role: "admin" }
         ];
 
-        let currentDay = 1;
-        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        let currentDay = 1;   // sabse aage ka khula hua din (progress)
+        let viewDay = 1;      // jo din abhi screen par dekh rahe hain
+        // Theme: light / dark / midnight / royal (purana darkMode bhi samjha jata hai)
+        let currentTheme = localStorage.getItem('theme') || (localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light');
+        const PREMIUM_THEMES = { midnight: 'theme_midnight', royal: 'theme_royal' };
         // --- Matlab ki zubaan: 'u' = Urdu, 'ro' = Roman, 'hi' = Hindi ---
         const MEANING_LANGS = ['u', 'ro', 'hi'];
         const MEANING_LABELS = { u: 'اردو', ro: 'Roman', hi: 'हिन्दी' };
@@ -590,6 +670,9 @@
             document.getElementById('profileScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             currentDay = parseInt(localStorage.getItem(pk('currentDay'))) || 1;
+            viewDay = currentDay;
+            // Jo premium theme is profile ne unlock nahi ki, wo na dikhe
+            if (PREMIUM_THEMES[currentTheme] && !lsJSON(pk('ownedItems'), []).includes(PREMIUM_THEMES[currentTheme])) { currentTheme = 'light'; localStorage.setItem('theme', 'light'); applyTheme(); }
             window.scrollTo(0, 0);
             initApp();
         }
@@ -641,16 +724,19 @@
         }
 
         // --- App Init ---
-        // Dark mode ab reload par bhi yaad rehta hai
-        document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-        document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙';
+        // Theme reload par bhi yaad rehti hai
+        function applyTheme() {
+            document.body.setAttribute('data-theme', currentTheme);
+            document.getElementById('themeBtn').innerText = currentTheme === 'light' ? '🌙' : '☀️';
+        }
+        applyTheme();
         if (localStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginScreen').classList.add('hidden');
             loadProfiles();
             if (activeProfile) enterApp(); else openProfilePicker();
         }
 
-        function initApp() { showUserInfo(); updateLangBtn(); renderCourse(); updateStreak(); }
+        function initApp() { showUserInfo(); updateLangBtn(); updateXPUI(); renderCourse(); updateStreak(); checkDailyGoal(); }
 
         // --- Render Course ---
         function renderCourse() {
@@ -667,17 +753,17 @@
             if(userRole === 'admin') {
                 adminSelect.classList.remove('hidden');
                 let opts = '';
-                courseData.forEach(d => { opts += `<option value="${d.day}" ${d.day === currentDay ? 'selected' : ''}>Day ${d.day}</option>`; });
+                courseData.forEach(d => { opts += `<option value="${d.day}" ${d.day === viewDay ? 'selected' : ''}>Day ${d.day}</option>`; });
                 adminSelect.innerHTML = opts;
             }
 
-            document.getElementById('dayTitle').innerText = `Day ${currentDay}`;
-            renderToday(); updateReviseBtn(); updateFavCount();
+            document.getElementById('dayTitle').innerText = `Day ${viewDay}`;
+            renderJourneyMap(); renderToday(); updateReviseBtn(); updateFavCount();
             if (window.QSProgress) QSProgress.refresh();
             const _total = courseData.length || 40;
             document.getElementById('dayProgressText').innerText = `${Math.min(currentDay, _total)} / ${_total} din`;
             document.getElementById('dayProgressFill').style.width = (Math.min(currentDay, _total) / _total * 100) + '%';
-            const todayData = courseData.find(d => d.day === currentDay);
+            const todayData = courseData.find(d => d.day === viewDay);
 
             if(todayData) {
                 todayData.words.forEach((word, index) => {
@@ -695,18 +781,18 @@
                 });
 
                 const nextDayData = courseData.find(d => d.day === currentDay + 1);
-                if(nextDayData && userRole !== 'admin') {
+                if(nextDayData && userRole !== 'admin' && viewDay === currentDay) {
                     const lockedCard = document.createElement('div');
                     lockedCard.className = 'locked-page';
                     lockedCard.innerHTML = `<div class="lock-icon">🔒</div><h2>Day ${currentDay + 1} Locked Hai</h2><p>Aaj ka exam pass karein tabhi kal ka sabaq khulega!</p>`;
                     grid.appendChild(lockedCard);
                 }
 
-                document.getElementById('startExamBtn').innerText = `📝 Day ${currentDay} Exam`;
+                document.getElementById('startExamBtn').innerText = `📝 Day ${viewDay} Exam`;
                 document.getElementById('startExamBtn').classList.remove('hidden');
 
                 const grandTestBtn = document.getElementById('grandTestBtn');
-                if (currentDay >= 5 && currentDay % 5 === 0 && userRole !== 'admin') {
+                if (currentDay >= 5 && currentDay % 5 === 0 && userRole !== 'admin' && viewDay === currentDay) {
                     grandTestBtn.classList.remove('hidden');
                 } else {
                     grandTestBtn.classList.add('hidden');
@@ -716,10 +802,133 @@
             }
         }
 
-        function changeAdminDay(day) { currentDay = parseInt(day); renderCourse(); }
+        function changeAdminDay(day) { viewDay = parseInt(day); renderCourse(); }
+
+        // --- Journey Map ---
+        function renderJourneyMap() {
+            const map = document.getElementById('journeyMap');
+            if (!map || typeof courseData === 'undefined') return;
+            let html = '<div class="j-track"><div class="j-line"></div>';
+            courseData.forEach(d => {
+                const open = userRole === 'admin' || d.day <= currentDay;
+                html += `<div class="j-node ${open ? 'unlocked' : 'locked'} ${d.day === viewDay ? 'current' : ''}" onclick="goToDay(${d.day})" aria-label="Day ${d.day}">${open ? 'Day ' + d.day : '🔒'}</div>`;
+            });
+            map.innerHTML = html + '</div>';
+            const cur = map.querySelector('.current');
+            if (cur) {
+                const nr = cur.getBoundingClientRect(), mr = map.getBoundingClientRect();
+                map.scrollLeft += nr.left - mr.left - (mr.width - nr.width) / 2;
+            }
+        }
+        function goToDay(day) {
+            if (userRole !== 'admin' && day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
+            if (day === viewDay) return;
+            viewDay = day; renderCourse();
+        }
+
+        // --- XP ---
+        function getXP() { return parseInt(localStorage.getItem(pk('xp'))) || 0; }
+        function addXP(amount, msg) {
+            if (userRole === 'admin') return;
+            localStorage.setItem(pk('xp'), getXP() + amount);
+            updateXPUI();
+            showToast(msg || `+${amount} XP!`);
+        }
+        function updateXPUI() {
+            const b = document.getElementById('xpBadge'); if (!b) return;
+            const xp = getXP();
+            b.innerText = `⭐ Lvl ${Math.floor(xp / 100) + 1} • ${xp}`;
+            b.classList.remove('hidden');
+        }
+
+        // --- Daily Goal (roz 10 lafz sunein/padhein) ---
+        function checkDailyGoal() {
+            const today = new Date().toDateString();
+            if (localStorage.getItem(pk('lastGoalDate')) !== today) {
+                localStorage.setItem(pk('lastGoalDate'), today);
+                localStorage.setItem(pk('todayReadCount'), 0);
+            }
+            const count = parseInt(localStorage.getItem(pk('todayReadCount'))) || 0;
+            const pct = Math.min(count / 10 * 100, 100);
+            document.getElementById('dailyGoalFill').style.width = pct + '%';
+            document.getElementById('dailyGoalPercent').innerText = Math.round(pct) + '%';
+            document.getElementById('dailyGoalText').innerText = count >= 10 ? '✅ Goal Mukammal!' : `${count} / 10 lafz padhein (+50 XP)`;
+        }
+        function trackWordRead() {
+            checkDailyGoal(); // din badal gaya ho to reset
+            const count = parseInt(localStorage.getItem(pk('todayReadCount'))) || 0;
+            if (count >= 10) return;
+            localStorage.setItem(pk('todayReadCount'), count + 1);
+            checkDailyGoal();
+            if (count + 1 === 10) { addXP(55, '🎯 Daily Goal poora! +55 XP'); if (window.QSSFX) QSSFX.win(); }
+            else addXP(5);
+        }
+
+        // --- Shop ---
+        const SHOP_ITEMS = [
+            { id: 'av_kaaba', type: 'avatar', icon: '🕋', name: 'Kaaba Avatar', cost: 100 },
+            { id: 'av_masjid', type: 'avatar', icon: '🕌', name: 'Masjid Avatar', cost: 100 },
+            { id: 'av_quran', type: 'avatar', icon: '📖', name: 'Quran Avatar', cost: 100 },
+            { id: 'av_crown', type: 'avatar', icon: '👑', name: 'Royal Crown', cost: 200 },
+            { id: 'theme_midnight', type: 'theme', theme: 'midnight', icon: '🌙', name: 'Midnight Theme', cost: 300 },
+            { id: 'theme_royal', type: 'theme', theme: 'royal', icon: '💎', name: 'Royal Theme', cost: 300 }
+        ];
+        function openShop() {
+            document.getElementById('userDrop').classList.add('hidden');
+            document.getElementById('shopModal').classList.remove('hidden');
+            renderShop();
+        }
+        function closeShop() { document.getElementById('shopModal').classList.add('hidden'); }
+        function renderShop() {
+            const xp = getXP();
+            document.getElementById('shopXP').innerText = xp;
+            const owned = lsJSON(pk('ownedItems'), []);
+            const p = getProfile();
+            document.getElementById('shopGrid').innerHTML = SHOP_ITEMS.map(item => {
+                const isOwned = owned.includes(item.id);
+                const inUse = item.type === 'avatar' ? (p && p.avatar === item.icon) : currentTheme === item.theme;
+                let btn;
+                if (!isOwned) btn = `<button onclick="buyItem('${item.id}')" ${xp < item.cost ? 'disabled' : ''}>Unlock</button>`;
+                else if (inUse) btn = `<button disabled>✅ Istemal mein</button>`;
+                else btn = `<button onclick="useItem('${item.id}')">Istemal karein</button>`;
+                return `<div class="shop-item ${isOwned ? 'owned' : ''}">
+                    <div class="si-icon">${item.icon}</div>
+                    <div class="si-name">${item.name}</div>
+                    <div class="si-cost">⭐ ${item.cost} XP</div>
+                    ${btn}
+                </div>`;
+            }).join('');
+        }
+        function buyItem(id) {
+            const item = SHOP_ITEMS.find(i => i.id === id);
+            const xp = getXP();
+            if (!item || xp < item.cost) return;
+            const owned = lsJSON(pk('ownedItems'), []);
+            if (owned.includes(id)) return;
+            localStorage.setItem(pk('xp'), xp - item.cost);
+            owned.push(id); lsSave(pk('ownedItems'), owned);
+            updateXPUI();
+            useItem(id);
+            if (window.QSSFX) QSSFX.win();
+            showToast(`🎉 ${item.name} Unlocked!`);
+        }
+        function useItem(id) {
+            const item = SHOP_ITEMS.find(i => i.id === id);
+            if (!item || !lsJSON(pk('ownedItems'), []).includes(id)) return;
+            if (item.type === 'theme') {
+                currentTheme = item.theme;
+                localStorage.setItem('theme', currentTheme);
+                applyTheme();
+            } else {
+                const p = getProfile();
+                if (p) { p.avatar = item.icon; saveProfiles(); showUserInfo(); }
+            }
+            renderShop();
+        }
 
         // --- Text to Speech ---
         function speakText(text, lang, btn, ctx) {
+            if (lang === 'ar') trackWordRead();
             QSpeech.speak(text, { lang: lang, rate: 0.8, btn: btn, ctx: ctx });
         }
 
@@ -742,8 +951,8 @@
 
         function startWordExam() {
             examType = 'regular';
-            document.getElementById('examTitle').innerText = "Day " + currentDay + " Exam";
-            let targetDayObj = courseData.find(d => d.day === currentDay);
+            document.getElementById('examTitle').innerText = "Day " + viewDay + " Exam";
+            let targetDayObj = courseData.find(d => d.day === viewDay);
             if(!targetDayObj) return;
             let qs = targetDayObj.words.map(word => {
                 let wrong = courseData.flatMap(d => d.words).filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => mw(w));
@@ -802,7 +1011,7 @@
                 const total = document.querySelectorAll('#examQuestions > div').length;
                 res.innerText = score === total ? `🎉 Mashallah! ${score}/${total} sahi. Sab yaad hain!` : `🔁 ${score}/${total} sahi. Galat wale dobara aayenge.`;
                 res.style.color = score === total ? "green" : "orange";
-                if (score === total) { if (window.QSSFX) QSSFX.win(); } else { if (window.QSSFX) QSSFX.wrong(); }
+                if (score === total) { if (window.QSSFX) QSSFX.win(); addXP(20, '+20 XP! Dohrai mukammal'); } else { if (window.QSSFX) QSSFX.wrong(); }
                 setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2500);
                 return;
             }
@@ -811,12 +1020,18 @@
                 if (examType === 'grand') {
                     res.innerText = `🏆 Mubarak ho! Grand Test mein ${score}/10. Aapne 50 words yaad kar liye!`; 
                     res.style.color = "green";
-                    currentDay += 5; localStorage.setItem(pk('currentDay'), currentDay);
+                    currentDay += 5; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
+                    addXP(100, '🏆 +100 XP! Grand Test pass');
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 3000);
                 } else {
                     res.innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`; 
                     res.style.color = "green";
-                    if(userRole !== 'admin') { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); }
+                    if (userRole !== 'admin') {
+                        if (viewDay === currentDay) {
+                            currentDay++; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
+                            addXP(50, '+50 XP! Naya din khul gaya');
+                        } else addXP(10, '+10 XP! Dohrai achi rahi');
+                    }
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
                 }
             } else {
@@ -947,8 +1162,9 @@
             if(btn) btn.classList.add('active');
         }
         function toggleTheme() {
-            isDarkMode = !isDarkMode; document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-            document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; localStorage.setItem('darkMode', isDarkMode);
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';   // premium theme par ho to light par wapas
+            localStorage.setItem('theme', currentTheme);
+            applyTheme();
         }
         function openFeedback() { document.getElementById('feedbackModal').classList.remove('hidden'); }
         function shareApp() { if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: 'Maine yeh bohot achi Islamic App banayi hai!', url: window.location.href }).catch(console.error); else alert("Link Copy karein: " + window.location.href); }
