@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="ur">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -221,9 +221,27 @@
         .list-item .li-main { flex: 1; min-width: 0; }
         .list-item .li-ar { font-family: 'Amiri', serif; font-size: 28px; line-height: 1.5; color: var(--ink); direction: rtl; text-align: right; cursor: pointer; }
         .list-item .li-sub { font-size: 14px; color: var(--text-light); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+        .urdu.m-ro, .urdu.m-hi, .today-card .t-ur.m-ro, .today-card .t-ur.m-hi { direction: ltr; font-family: inherit; font-size: 19px; line-height: 1.8; font-weight: 600; }
+        .list-item .li-ur.m-ro, .list-item .li-ur.m-hi { font-family: inherit; font-size: 15px; }
+        .lang-btn { font-size: 13px; font-weight: 700; min-width: 40px; }
         .list-item .li-ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 17px; color: var(--text); }
         .list-item .li-day { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: var(--soft-bg); color: var(--text-light); }
         .list-empty { text-align: center; color: var(--text-light); padding: 26px 8px; font-size: 14px; }
+
+
+        /* ---------- Smooth Staggered Animations ---------- */
+        @keyframes cardEnter {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card { animation: cardEnter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+        .locked-page { animation: fadeInUp 0.5s ease-out both; }
+        .day-header { animation: fadeInUp 0.4s ease-out both; }
+        .today-card { animation: fadeInUp 0.4s ease-out both; }
 
         @media (max-width: 420px) {
             header { padding-left: 12px; padding-right: 12px; }
@@ -282,6 +300,7 @@
                 <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
                 <div class="header-controls">
                     <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
+                    <button class="icon-btn lang-btn" onclick="cycleMeaningLang()" id="langBtn" title="Matlab ki zubaan: Urdu / Roman / Hindi">اردو</button>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                     <div class="user-menu">
                         <button class="icon-btn user-chip" id="userChip" onclick="toggleUserMenu(event)"><span id="userChipAv">👤</span> <span id="userChipName">ID</span> ▾</button>
@@ -317,6 +336,7 @@
         <!-- Course Tab -->
         <div id="courseTab" class="view-section active">
             <div id="todayCard"></div>
+            <div id="dailyCard"></div>
             <div class="day-header">
                 <div class="day-title-wrap">
                     <h2 id="dayTitle">Day 1</h2>
@@ -399,7 +419,7 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeList()">&times;</span>
             <h2 id="listTitle" style="text-align:center; color: var(--ink);">Search</h2>
-            <input type="search" id="listInput" class="list-search" placeholder="Arabic, Roman ya Urdu likhein..." oninput="renderList()" autocomplete="off">
+            <input type="search" id="listInput" class="list-search" placeholder="Arabic, Roman, Urdu ya Hindi likhein..." oninput="renderList()" autocomplete="off">
             <div id="listBody"></div>
         </div>
     </div>
@@ -425,6 +445,25 @@
 
         let currentDay = 1;
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        // --- Matlab ki zubaan: 'u' = Urdu, 'ro' = Roman, 'hi' = Hindi ---
+        const MEANING_LANGS = ['u', 'ro', 'hi'];
+        const MEANING_LABELS = { u: 'اردو', ro: 'Roman', hi: 'हिन्दी' };
+        let meaningLang = localStorage.getItem('meaningLang');
+        if (MEANING_LANGS.indexOf(meaningLang) < 0) meaningLang = 'u';
+        function mw(w) { return meaningLang === 'u' ? w.u : (w['u_' + meaningLang] || w.u); }
+        function mt(w) { return meaningLang === 'u' ? w.t : (w['t_' + meaningLang] || w.t); }
+        function mcls() { return meaningLang === 'u' ? '' : ' m-' + meaningLang; }
+        function updateLangBtn() { const b = document.getElementById('langBtn'); if (b) b.innerText = MEANING_LABELS[meaningLang]; }
+        function cycleMeaningLang() {
+            meaningLang = MEANING_LANGS[(MEANING_LANGS.indexOf(meaningLang) + 1) % MEANING_LANGS.length];
+            localStorage.setItem('meaningLang', meaningLang);
+            updateLangBtn();
+            if (typeof renderCourse === 'function') renderCourse();
+            if (typeof renderToday === 'function') renderToday();
+            const lm = document.getElementById('listModal');
+            if (lm && !lm.classList.contains('hidden')) renderList();
+            if (typeof showToast === 'function') showToast('Matlab: ' + MEANING_LABELS[meaningLang]);
+        }
         let userRole = localStorage.getItem('userRole') || 'guest';
         let userId = localStorage.getItem('userId') || userRole;
 
@@ -611,7 +650,7 @@
             if (activeProfile) enterApp(); else openProfilePicker();
         }
 
-        function initApp() { showUserInfo(); renderCourse(); updateStreak(); }
+        function initApp() { showUserInfo(); updateLangBtn(); renderCourse(); updateStreak(); }
 
         // --- Render Course ---
         function renderCourse() {
@@ -641,14 +680,15 @@
             const todayData = courseData.find(d => d.day === currentDay);
 
             if(todayData) {
-                todayData.words.forEach((word) => {
+                todayData.words.forEach((word, index) => {
                     const card = document.createElement('div');
                     card.className = 'card';
+                    card.style.animationDelay = (index * 0.08) + 's';
                     card.innerHTML = `
                         ${heartBtn(word.a)}${shareBtn(word.a)}
                         <div class="arabic" onclick="speakText('${word.a}', 'ar', this, '${word.m}')">${word.a}</div>
                         <div class="roman">${word.r}</div>
-                        <div class="urdu" onclick="speakText('${word.u}', 'ur', this)">${word.u}</div>
+                        <div class="urdu${mcls()}" onclick="speakText('${word.u}', 'ur', this)">${mw(word)}</div>
                         <div class="mashq-box" style="cursor:pointer" onclick="speakText('${word.m}', 'ar', this)"><b>Mashq:</b> ${word.m} 🔊</div>
                     `;
                     grid.appendChild(card);
@@ -706,8 +746,8 @@
             let targetDayObj = courseData.find(d => d.day === currentDay);
             if(!targetDayObj) return;
             let qs = targetDayObj.words.map(word => {
-                let wrong = courseData.flatMap(d => d.words).filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w.u);
-                return { a: word.a, opts: [word.u, ...wrong].sort(() => 0.5 - Math.random()), c: word.u };
+                let wrong = courseData.flatMap(d => d.words).filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => mw(w));
+                return { a: word.a, opts: [mw(word), ...wrong].sort(() => 0.5 - Math.random()), c: mw(word) };
             });
             displayExam(qs);
         }
@@ -724,8 +764,8 @@
             if (pastWords.length === 0) return;
             let selectedWords = pastWords.sort(() => 0.5 - Math.random()).slice(0, 10);
             let qs = selectedWords.map(word => {
-                let wrong = pastWords.filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w.u);
-                return { a: word.a, opts: [word.u, ...wrong].sort(() => 0.5 - Math.random()), c: word.u };
+                let wrong = pastWords.filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => mw(w));
+                return { a: word.a, opts: [mw(word), ...wrong].sort(() => 0.5 - Math.random()), c: mw(word) };
             });
             displayExam(qs);
         }
@@ -737,7 +777,7 @@
             document.getElementById('examModal').classList.remove('hidden');
             qs.forEach(q => {
                 let html = `<div class="exam-q"><p class="exam-ar">${q.a}</p>`;
-                q.opts.forEach(o => html += `<button class="option-btn" onclick="selectOption(this, '${o}', '${q.c}')">${o}</button>`);
+                q.opts.forEach(o => html += `<button class="option-btn" data-o="${esc(o)}" data-c="${esc(q.c)}" onclick="selectOption(this, this.dataset.o, this.dataset.c)">${esc(o)}</button>`);
                 document.getElementById('examQuestions').innerHTML += html + `</div>`;
             });
         }
@@ -754,7 +794,7 @@
                 if (d.querySelector('button[data-sel="true"]')) score++;
             });
             const res = document.getElementById('examResult');
-            if(!all) { res.innerText = "⚠️ Sabhi sawalon ke jawab dein!"; res.style.color = "orange"; return; }
+            if(!all) { res.innerText = "⚠️ Sabhi sawalon ke jawab dein!"; res.style.color = "orange"; if (window.QSSFX) QSSFX.wrong(); return; }
             document.getElementById('submitExamBtn').style.display = 'none';
             trackResults();
             if (window.QSProgress) QSProgress.onExam(score, document.querySelectorAll('#examQuestions > div').length, examType);
@@ -762,10 +802,12 @@
                 const total = document.querySelectorAll('#examQuestions > div').length;
                 res.innerText = score === total ? `🎉 Mashallah! ${score}/${total} sahi. Sab yaad hain!` : `🔁 ${score}/${total} sahi. Galat wale dobara aayenge.`;
                 res.style.color = score === total ? "green" : "orange";
+                if (score === total) { if (window.QSSFX) QSSFX.win(); } else { if (window.QSSFX) QSSFX.wrong(); }
                 setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2500);
                 return;
             }
             if (score >= 8) {
+                if (window.QSSFX) QSSFX.win();
                 if (examType === 'grand') {
                     res.innerText = `🏆 Mubarak ho! Grand Test mein ${score}/10. Aapne 50 words yaad kar liye!`; 
                     res.style.color = "green";
@@ -778,6 +820,7 @@
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
                 }
             } else {
+                if (window.QSSFX) QSSFX.wrong();
                 res.innerText = `😢 Aapne ${score}/10 score kiya. Aapko 8 chahiye.`; 
                 res.style.color = "red";
                 document.getElementById('submitExamBtn').style.display = 'block';
@@ -826,7 +869,7 @@
                 <div class="t-label">✨ AAJ KA LAFZ</div>
                 <div class="t-ar" onclick="speakText('${w.a}', 'ar', this, '${w.m}')">${w.a}</div>
                 <div class="t-ro">${w.r}</div>
-                <div class="t-ur" onclick="speakText('${w.u}', 'ur', this)">${w.u}</div>
+                <div class="t-ur${mcls()}" onclick="speakText('${w.u}', 'ur', this)">${mw(w)}</div>
             </div>`;
         }
 
@@ -853,14 +896,14 @@
             } else {
                 const q = normTxt(document.getElementById('listInput').value);
                 if (!q) { body.innerHTML = '<div class="list-empty">Upar likhna shuru karein.<br>Sirf wahi din milenge jo aap ne khole hain.</div>'; return; }
-                items = unlockedWords().filter(w => normTxt(w.a).includes(q) || w.r.toLowerCase().includes(q) || normTxt(w.u).includes(q) || normTxt(w.t).includes(q)).slice(0, 50);
+                items = unlockedWords().filter(w => normTxt(w.a).includes(q) || w.r.toLowerCase().includes(q) || normTxt(w.u).includes(q) || normTxt(w.t).includes(q) || (w.u_ro || '').toLowerCase().includes(q) || (w.t_ro || '').toLowerCase().includes(q) || (w.u_hi || '').includes(q) || (w.t_hi || '').includes(q)).slice(0, 50);
                 if (!items.length) { body.innerHTML = '<div class="list-empty">Koi lafz nahi mila.</div>'; return; }
             }
             body.innerHTML = items.map(w => `<div class="list-item">
                 ${heartBtn(w.a)}
                 <div class="li-main">
                     <div class="li-ar" onclick="speakText('${w.a}', 'ar', this, '${w.m}')">${w.a}</div>
-                    <div class="li-sub"><b>${w.r}</b><span class="li-ur">${w.u}</span><span class="li-day">Day ${w.day}</span></div>
+                    <div class="li-sub"><b>${w.r}</b><span class="li-ur${mcls()}">${mw(w)}</span><span class="li-day">Day ${w.day}</span></div>
                 </div></div>`).join('');
         }
 
@@ -889,8 +932,8 @@
             document.getElementById('examTitle').innerText = '🔁 Dohrai';
             const pool = allWords();
             displayExam(words.map(word => {
-                const wrong = shuffled(pool.filter(w => w.u !== word.u)).slice(0, 3).map(w => w.u);
-                return { a: word.a, opts: shuffled([word.u, ...wrong]), c: word.u };
+                const wrong = shuffled(pool.filter(w => w.u !== word.u)).slice(0, 3).map(w => mw(w));
+                return { a: word.a, opts: shuffled([mw(word), ...wrong]), c: mw(word) };
             }));
         }
         updateFavCount();
