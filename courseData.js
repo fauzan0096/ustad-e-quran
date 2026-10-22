@@ -1,6 +1,6 @@
 /* ==========================================
-   COURSE DATA FILE - 54 DAYS
-   Yahan aap naye din (Day 55+) add karte rahein.
+   COURSE DATA FILE - 90 DAYS (900 WORDS)
+   Yahan aap naye din (Day 91+) add karte rahein.
    Format: { day: X, words: [ { a, r, u, u_ro, u_hi, m, t, t_ro, t_hi }, ... ] }
    u/t = Urdu meaning, u_ro/t_ro = Roman, u_hi/t_hi = Hindi
    ========================================== */
@@ -607,6 +607,442 @@ const courseData = [
         { a: "طَلَبَ", r: "Talaba", u: "مانگا", u_ro: "Maanga", u_hi: "माँगा", m: "طَلَبَ", t: "مانگنا", t_ro: "Maangna", t_hi: "माँगना" } 
     ]},
     { day: 51, words: [ 
+        { a: "أَرْض", r: "Ard", u: "زمین", u_ro: "Zameen", u_hi: "ज़मीन", m: "الْأَرْضُ", t: "زمین", t_ro: "Zameen", t_hi: "ज़मीन" }, 
+        { a: "سَمَاء", r: "Samaa'", u: "آسمان", u_ro: "Aasmaan", u_hi: "आसमान", m: "السَّمَاءُ", t: "آسمان", t_ro: "Aasmaan", t_hi: "आसमान" }, 
+        { a: "شَمْس", r: "Shams", u: "سورج", u_ro: "Sooraj", u_hi: "सूरज", m: "الشَّمْسُ", t: "سورج", t_ro: "Sooraj", t_hi: "सूरज" }, 
+        { a: "قَمَر", r: "Qamar", u: "چاند", u_ro: "Chaand", u_hi: "चाँद", m: "الْقَمَرُ", t: "چاند", t_ro: "Chaand", t_hi: "चाँद" }, 
+        { a: "نَجْم", r: "Najm", u: "ستارہ", u_ro: "Sitaara", u_hi: "सितारा", m: "النَّجْمُ", t: "ستارہ", t_ro: "Sitaara", t_hi: "सितारा" }, 
+        { a: "نُور", r: "Noor", u: "روشنی", u_ro: "Roshni", u_hi: "रोशनी", m: "النُّورُ", t: "روشنی", t_ro: "Roshni", t_hi: "रोशनी" }, 
+        { a: "ظُلُمَات", r: "Zulumaat", u: "اندھیرے", u_ro: "Andhere", u_hi: "अंधेरे", m: "الظُّلُمَاتِ", t: "اندھیرا", t_ro: "Andhera", t_hi: "अंधेरा" }, 
+        { a: "لَيْل", r: "Layl", u: "رات", u_ro: "Raat", u_hi: "रात", m: "اللَّيْلُ", t: "رات", t_ro: "Raat", t_hi: "रात" }, 
+        { a: "نَهَار", r: "Nahaar", u: "دن", u_ro: "Din", u_hi: "दिन", m: "النَّهَارُ", t: "دن", t_ro: "Din", t_hi: "दिन" }, 
+        { a: "فَجْر", r: "Fajr", u: "صبح", u_ro: "Subah", u_hi: "सुबह", m: "الْفَجْرِ", t: "صبح", t_ro: "Subah", t_hi: "सुबह" } 
+    ]},
+    { day: 52, words: [ 
+        { a: "مَاء", r: "Maa'", u: "پانی", u_ro: "Paani", u_hi: "पानी", m: "الْمَاءُ", t: "پانی", t_ro: "Paani", t_hi: "पानी" }, 
+        { a: "مَطَر", r: "Matar", u: "بارش", u_ro: "Baarish", u_hi: "बारिश", m: "مَطَرٌ", t: "بارش", t_ro: "Baarish", t_hi: "बारिश" }, 
+        { a: "سَحَاب", r: "Sahaab", u: "بادل", u_ro: "Baadal", u_hi: "बादल", m: "السَّحَابُ", t: "بادل", t_ro: "Baadal", t_hi: "बादल" }, 
+        { a: "بَرْق", r: "Barq", u: "بجلی", u_ro: "Bijli", u_hi: "बिजली", m: "الْبَرْقُ", t: "بجلی", t_ro: "Bijli", t_hi: "बिजली" }, 
+        { a: "رَعْد", r: "Ra'd", u: "گرج", u_ro: "Garaj", u_hi: "गरज", m: "الرَّعْدُ", t: "گرج", t_ro: "Garaj", t_hi: "गरज" }, 
+        { a: "رِيح", r: "Reeh", u: "ہوا", u_ro: "Hawa", u_hi: "हवा", m: "الرِّيحُ", t: "ہوا", t_ro: "Hawa", t_hi: "हवा" }, 
+        { a: "بَحْر", r: "Bahr", u: "سمندر", u_ro: "Samundar", u_hi: "समुंदर", m: "الْبَحْرُ", t: "سمندر", t_ro: "Samundar", t_hi: "समुंदर" }, 
+        { a: "نَهْر", r: "Nahr", u: "نہر", u_ro: "Nahar", u_hi: "नहर", m: "النَّهْرُ", t: "نہر", t_ro: "Nahar", t_hi: "नहर" }, 
+        { a: "جَبَل", r: "Jabal", u: "پہاڑ", u_ro: "Pahaad", u_hi: "पहाड़", m: "الْجَبَلُ", t: "پہاڑ", t_ro: "Pahaad", t_hi: "पहाड़" }, 
+        { a: "نَار", r: "Naar", u: "آگ", u_ro: "Aag", u_hi: "आग", m: "النَّارُ", t: "آگ", t_ro: "Aag", t_hi: "आग" } 
+    ]},
+    { day: 53, words: [ 
+        { a: "حَجَر", r: "Hajar", u: "پتھر", u_ro: "Patthar", u_hi: "पत्थर", m: "الْحَجَرُ", t: "پتھر", t_ro: "Patthar", t_hi: "पत्थर" }, 
+        { a: "طِين", r: "Teen", u: "مٹی", u_ro: "Mitti", u_hi: "मिट्टी", m: "الطِّينُ", t: "مٹی", t_ro: "Mitti", t_hi: "मिट्टी" }, 
+        { a: "شَجَرَة", r: "Shajarah", u: "درخت", u_ro: "Darakht", u_hi: "दरख़्त", m: "الشَّجَرَةُ", t: "درخت", t_ro: "Darakht", t_hi: "दरख़्त" }, 
+        { a: "وَرَقَة", r: "Waraqah", u: "پتّا", u_ro: "Patta", u_hi: "पत्ता", m: "الْوَرَقَةُ", t: "پتّا", t_ro: "Patta", t_hi: "पत्ता" }, 
+        { a: "نَخْل", r: "Nakhl", u: "کھجور کا درخت", u_ro: "Khajoor ka darakht", u_hi: "खजूर का दरख़्त", m: "النَّخْلُ", t: "کھجور", t_ro: "Khajoor", t_hi: "खजूर" }, 
+        { a: "ثَمَرَة", r: "Thamarah", u: "پھل", u_ro: "Phal", u_hi: "फल", m: "الثَّمَرَةُ", t: "پھل", t_ro: "Phal", t_hi: "फल" }, 
+        { a: "عِنَب", r: "Inab", u: "انگور", u_ro: "Angoor", u_hi: "अंगूर", m: "الْعِنَبَ", t: "انگور", t_ro: "Angoor", t_hi: "अंगूर" }, 
+        { a: "زَيْتُون", r: "Zaytoon", u: "زیتون", u_ro: "Zaitoon", u_hi: "ज़ैतून", m: "الزَّيْتُونَ", t: "زیتون", t_ro: "Zaitoon", t_hi: "ज़ैतून" }, 
+        { a: "لَحْم", r: "Lahm", u: "گوشت", u_ro: "Gosht", u_hi: "गोश्त", m: "اللَّحْمَ", t: "گوشت", t_ro: "Gosht", t_hi: "गोश्त" }, 
+        { a: "عَسَل", r: "Asal", u: "شہد", u_ro: "Shahad", u_hi: "शहद", m: "الْعَسَلَ", t: "شہد", t_ro: "Shahad", t_hi: "शहद" } 
+    ]},
+    { day: 54, words: [ 
+        { a: "بَيْت", r: "Bayt", u: "گھر", u_ro: "Ghar", u_hi: "घर", m: "الْبَيْتَ", t: "گھر", t_ro: "Ghar", t_hi: "घर" }, 
+        { a: "مَسْجِد", r: "Masjid", u: "مسجد", u_ro: "Masjid", u_hi: "मस्जिद", m: "الْمَسْجِدَ", t: "مسجد", t_ro: "Masjid", t_hi: "मस्जिद" }, 
+        { a: "بَاب", r: "Baab", u: "دروازہ", u_ro: "Darwaaza", u_hi: "दरवाज़ा", m: "الْبَابَ", t: "دروازہ", t_ro: "Darwaaza", t_hi: "दरवाज़ा" }, 
+        { a: "فُلْك", r: "Fulk", u: "کشتی", u_ro: "Kashti", u_hi: "कश्ती", m: "الْفُلْكَ", t: "کشتی", t_ro: "Kashti", t_hi: "कश्ती" }, 
+        { a: "كِتَاب", r: "Kitaab", u: "کتاب", u_ro: "Kitaab", u_hi: "किताब", m: "الْكِتَابَ", t: "کتاب", t_ro: "Kitaab", t_hi: "किताब" }, 
+        { a: "قَلَم", r: "Qalam", u: "قلم", u_ro: "Qalam", u_hi: "क़लम", m: "الْقَلَمَ", t: "قلم", t_ro: "Qalam", t_hi: "क़लम" }, 
+        { a: "مِيزَان", r: "Meezaan", u: "ترازو", u_ro: "Taraazu", u_hi: "तराज़ू", m: "الْمِيزَانَ", t: "ترازو", t_ro: "Taraazu", t_hi: "तराज़ू" }, 
+        { a: "مَال", r: "Maal", u: "مال", u_ro: "Maal", u_hi: "माल", m: "الْمَالَ", t: "دولت", t_ro: "Daulat", t_hi: "दौलत" }, 
+        { a: "ثِيَاب", r: "Thiyaab", u: "کپڑے", u_ro: "Kapde", u_hi: "कपड़े", m: "الثِّيَابَ", t: "کپڑا", t_ro: "Kapda", t_hi: "कपड़ा" }, 
+        { a: "ظِلّ", r: "Zill", u: "سایہ", u_ro: "Saaya", u_hi: "साया", m: "الظِّلَّ", t: "سایہ", t_ro: "Saaya", t_hi: "साया" } 
+    ]},
+    { day: 55, words: [ 
+        { a: "سَبِيل", r: "Sabeel", u: "راستہ", u_ro: "Raasta", u_hi: "रास्ता", m: "السَّبِيلَ", t: "راستہ", t_ro: "Raasta", t_hi: "रास्ता" }, 
+        { a: "صِرَاط", r: "Siraat", u: "سیدھا راستہ", u_ro: "Seedha raasta", u_hi: "सीधा रास्ता", m: "الصِّرَاطَ", t: "راستہ", t_ro: "Raasta", t_hi: "रास्ता" }, 
+        { a: "بَقَرَة", r: "Baqarah", u: "گائے", u_ro: "Gaaye", u_hi: "गाय", m: "الْبَقَرَةَ", t: "گائے", t_ro: "Gaaye", t_hi: "गाय" }, 
+        { a: "عِجْل", r: "Ijil", u: "بچھڑا", u_ro: "Bachhda", u_hi: "बछड़ा", m: "الْعِجْلَ", t: "بچھڑا", t_ro: "Bachhda", t_hi: "बछड़ा" }, 
+        { a: "نَاقَة", r: "Naaqah", u: "اونٹنی", u_ro: "Untni", u_hi: "ऊँटनी", m: "النَّاقَةَ", t: "اونٹنی", t_ro: "Untni", t_hi: "ऊँटनी" }, 
+        { a: "جَمَل", r: "Jamal", u: "اونٹ", u_ro: "Unt", u_hi: "ऊँट", m: "الْجَمَلَ", t: "اونٹ", t_ro: "Unt", t_hi: "ऊँट" }, 
+        { a: "غَنَم", r: "Ghanam", u: "بھیڑ بکریاں", u_ro: "Bhed bakriyaan", u_hi: "भेड़-बकरियाँ", m: "الْغَنَمَ", t: "بکری", t_ro: "Bakri", t_hi: "बकरी" }, 
+        { a: "مَعْز", r: "Ma'z", u: "بکری", u_ro: "Bakri", u_hi: "बकरी", m: "الْمَعْزَ", t: "بکری", t_ro: "Bakri", t_hi: "बकरी" }, 
+        { a: "أَنَعَام", r: "An'aam", u: "مویشی", u_ro: "Maweshi", u_hi: "मवेशी", m: "الْأَنْعَامَ", t: "مویشی", t_ro: "Maweshi", t_hi: "मवेशी" }, 
+        { a: "خَيْل", r: "Khayl", u: "گھوڑے", u_ro: "Ghode", u_hi: "घोड़े", m: "الْخَيْلَ", t: "گھوڑا", t_ro: "Ghoda", t_hi: "घोड़ा" } 
+    ]},
+    { day: 56, words: [ 
+        { a: "حِمَار", r: "Himaar", u: "گدھا", u_ro: "Gadha", u_hi: "गधा", m: "الْحِمَارَ", t: "گدھا", t_ro: "Gadha", t_hi: "गधा" }, 
+        { a: "كَلْب", r: "Kalb", u: "کتا", u_ro: "Kutta", u_hi: "कुत्ता", m: "الْكَلْبَ", t: "کتا", t_ro: "Kutta", t_hi: "कुत्ता" }, 
+        { a: "ذِئْب", r: "Dhi'b", u: "بھیڑیا", u_ro: "Bhediya", u_hi: "भेड़िया", m: "الذِّئْبَ", t: "بھیڑیا", t_ro: "Bhediya", t_hi: "भेड़िया" }, 
+        { a: "فِيل", r: "Feel", u: "ہاتھی", u_ro: "Haathi", u_hi: "हाथी", m: "الْفِيلَ", t: "ہاتھی", t_ro: "Haathi", t_hi: "हाथी" }, 
+        { a: "طَيْر", r: "Tayr", u: "پرندے", u_ro: "Parinde", u_hi: "परिंदे", m: "الطَّيْرَ", t: "پرندہ", t_ro: "Parinda", t_hi: "परिंदा" }, 
+        { a: "هُدْهُد", r: "Hudhud", u: "ایک پرندہ", u_ro: "Ek parinda", u_hi: "एक परिंदा", m: "الْهُدْهُدَ", t: "ہدہد", t_ro: "Hudhud", t_hi: "हुदहुद" }, 
+        { a: "غُرَاب", r: "Ghuraab", u: "کوا", u_ro: "Kauwa", u_hi: "कौआ", m: "الْغُرَابَ", t: "کوا", t_ro: "Kauwa", t_hi: "कौआ" }, 
+        { a: "نَمْلَة", r: "Namlah", u: "چیونٹی", u_ro: "Cheenti", u_hi: "चींटी", m: "النَّمْلَةَ", t: "چیونٹی", t_ro: "Cheenti", t_hi: "चींटी" }, 
+        { a: "نَحْل", r: "Nahl", u: "شہد کی مکھی", u_ro: "Shahad ki makkhi", u_hi: "शहद की मक्खी", m: "النَّحْلَ", t: "مکھی", t_ro: "Makkhi", t_hi: "मक्खी" }, 
+        { a: "عَنكَبُوت", r: "Ankaboot", u: "مکڑی", u_ro: "Makdi", u_hi: "मकड़ी", m: "الْعَنكَبُوتَ", t: "مکڑی", t_ro: "Makdi", t_hi: "मकड़ी" } 
+    ]},
+    { day: 57, words: [ 
+        { a: "ذُبَاب", r: "Dhubaab", u: "مکھی", u_ro: "Makkhi", u_hi: "मक्खी", m: "الذُّبَابَ", t: "مکھی", t_ro: "Makkhi", t_hi: "मक्खी" }, 
+        { a: "جَرَاد", r: "Jaraad", u: "ٹڈی", u_ro: "Tiddi", u_hi: "टिड्डी", m: "الْجَرَادَ", t: "ٹڈی", t_ro: "Tiddi", t_hi: "टिड्डी" }, 
+        { a: "ضَفَادِع", r: "Dafaaidi'", u: "مینڈک", u_ro: "Mendak", u_hi: "मेंढक", m: "الضَّفَادِعَ", t: "مینڈک", t_ro: "Mendak", t_hi: "मेंढक" }, 
+        { a: "حَيَّة", r: "Hayyah", u: "سانپ", u_ro: "Saanp", u_hi: "साँप", m: "الْحَيَّةَ", t: "سانپ", t_ro: "Saanp", t_hi: "साँप" }, 
+        { a: "قِرْد", r: "Qird", u: "بندر", u_ro: "Bandar", u_hi: "बंदर", m: "الْقِرْدَ", t: "بندر", t_ro: "Bandar", t_hi: "बंदर" }, 
+        { a: "خِنْزِير", r: "Khinzeer", u: "سور", u_ro: "Suar", u_hi: "सूअर", m: "الْخِنْزِيرَ", t: "سور", t_ro: "Soor", t_hi: "सूअर" }, 
+        { a: "حُوت", r: "Hoot", u: "مچھلی", u_ro: "Machhli", u_hi: "मछली", m: "الْحُوتَ", t: "مچھلی", t_ro: "Machhli", t_hi: "मछली" }, 
+        { a: "دَابَّة", r: "Daabbah", u: "جاندار", u_ro: "Jaandaar", u_hi: "जानदार", m: "الدَّابَّةَ", t: "جانور", t_ro: "Jaanwar", t_hi: "जानवर" }, 
+        { a: "إِنْسَان", r: "Insaan", u: "انسان", u_ro: "Insaan", u_hi: "इंसान", m: "الْإِنسَانَ", t: "انسان", t_ro: "Insaan", t_hi: "इंसान" }, 
+        { a: "نَاس", r: "Naas", u: "لوگ", u_ro: "Log", u_hi: "लोग", m: "النَّاسَ", t: "لوگ", t_ro: "Log", t_hi: "लोग" } 
+    ]},
+    { day: 58, words: [ 
+        { a: "بَشَر", r: "Bashar", u: "انسان", u_ro: "Insaan", u_hi: "इंसान", m: "الْبَشَرَ", t: "انسان", t_ro: "Insaan", t_hi: "इंसान" }, 
+        { a: "رَجُل", r: "Rajul", u: "مرد", u_ro: "Mard", u_hi: "मर्द", m: "الرَّجُلَ", t: "مرد", t_ro: "Mard", t_hi: "मर्द" }, 
+        { a: "امْرَأَة", r: "Imra'ah", u: "عورت", u_ro: "Aurat", u_hi: "औरत", m: "الْمَرْأَةَ", t: "عورت", t_ro: "Aurat", t_hi: "औरत" }, 
+        { a: "نِسَاء", r: "Nisaa'", u: "عورتیں", u_ro: "Auratein", u_hi: "औरतें", m: "النِّسَاءَ", t: "عورتیں", t_ro: "Auratein", t_hi: "औरतें" }, 
+        { a: "وَلَد", r: "Walad", u: "اولاد", u_ro: "Aulaad", u_hi: "औलाद", m: "الْوَلَدَ", t: "بیٹا", t_ro: "Beta", t_hi: "बेटा" }, 
+        { a: "ابْن", r: "Ibn", u: "بیٹا", u_ro: "Beta", u_hi: "बेटा", m: "الِابْنُ", t: "بیٹا", t_ro: "Beta", t_hi: "बेटा" }, 
+        { a: "بِنْت", r: "Bint", u: "بیٹی", u_ro: "Beti", u_hi: "बेटी", m: "الْبِنْتُ", t: "بیٹی", t_ro: "Beti", t_hi: "बेटी" }, 
+        { a: "أَب", r: "Ab", u: "باپ", u_ro: "Baap", u_hi: "बाप", m: "الْأَبُ", t: "باپ", t_ro: "Baap", t_hi: "बाप" }, 
+        { a: "أُمّ", r: "Umm", u: "ماں", u_ro: "Maa", u_hi: "माँ", m: "الْأُمُّ", t: "ماں", t_ro: "Maa", t_hi: "माँ" }, 
+        { a: "وَالِدَيْن", r: "Waalidayn", u: "ماں باپ", u_ro: "Maa baap", u_hi: "माँ-बाप", m: "الْوَالِدَيْنِ", t: "ماں باپ", t_ro: "Maa baap", t_hi: "माँ-बाप" } 
+    ]},
+    { day: 59, words: [ 
+        { a: "أَخ", r: "Akh", u: "بھائی", u_ro: "Bhai", u_hi: "भाई", m: "الْأَخُ", t: "بھائی", t_ro: "Bhai", t_hi: "भाई" }, 
+        { a: "أُخْت", r: "Ukht", u: "بہن", u_ro: "Behen", u_hi: "बहन", m: "الْأُخْتُ", t: "بہن", t_ro: "Behen", t_hi: "बहन" }, 
+        { a: "زَوْج", r: "Zawj", u: "شوہر یا بیوی", u_ro: "Shauhar ya biwi", u_hi: "शौहर या बीवी", m: "الزَّوْجُ", t: "جوڑا", t_ro: "Joda", t_hi: "जोड़ा" }, 
+        { a: "أَهْل", r: "Ahl", u: "گھر والے", u_ro: "Ghar wale", u_hi: "घर वाले", m: "الْأَهْلُ", t: "اہل", t_ro: "Ahl", t_hi: "अहल" }, 
+        { a: "قَوْم", r: "Qawm", u: "قوم", u_ro: "Qaum", u_hi: "क़ौम", m: "الْقَوْمُ", t: "لوگ", t_ro: "Log", t_hi: "लोग" }, 
+        { a: "ذُرِّيَّة", r: "Dhurriyyah", u: "اولاد", u_ro: "Aulaad", u_hi: "औलाद", m: "الذُّرِّيَّةَ", t: "نسل", t_ro: "Nasl", t_hi: "नस्ल" }, 
+        { a: "طِفْل", r: "Tifl", u: "بچہ", u_ro: "Bachcha", u_hi: "बच्चा", m: "الطِّفْلُ", t: "بچہ", t_ro: "Bachcha", t_hi: "बच्चा" }, 
+        { a: "يَتِيم", r: "Yateem", u: "یتیم", u_ro: "Yateem", u_hi: "यतीम", m: "الْيَتِيمَ", t: "یتیم", t_ro: "Yateem", t_hi: "यतीम" }, 
+        { a: "مِسْكِين", r: "Miskeen", u: "مسکین", u_ro: "Miskeen", u_hi: "मिस्कीन", m: "الْمِسْكِينَ", t: "غریب", t_ro: "Ghareeb", t_hi: "ग़रीब" }, 
+        { a: "عَبْد", r: "Abd", u: "بندہ", u_ro: "Banda", u_hi: "बंदा", m: "الْعَبْدُ", t: "غلام", t_ro: "Ghulaam", t_hi: "ग़ुलाम" } 
+    ]},
+    { day: 60, words: [ 
+        { a: "مَلَائِكَة", r: "Malaa'ikah", u: "فرشتے", u_ro: "Farishte", u_hi: "फ़रिश्ते", m: "الْمَلَائِكَةَ", t: "فرشتے", t_ro: "Farishte", t_hi: "फ़रिश्ते" }, 
+        { a: "جِنّ", r: "Jinn", u: "جن", u_ro: "Jinn", u_hi: "जिन्न", m: "الْجِنُّ", t: "جن", t_ro: "Jinn", t_hi: "जिन्न" }, 
+        { a: "شَيْطَان", r: "Shaytaan", u: "شیطان", u_ro: "Shaitaan", u_hi: "शैतान", m: "الشَّيْطَانُ", t: "شیطان", t_ro: "Shaitaan", t_hi: "शैतान" }, 
+        { a: "نَبِيّ", r: "Nabiyy", u: "نبی", u_ro: "Nabi", u_hi: "नबी", m: "النَّبِيُّ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "رَسُول", r: "Rasool", u: "رسول", u_ro: "Rasool", u_hi: "रसूल", m: "الرَّسُولُ", t: "رسول", t_ro: "Rasool", t_hi: "रसूल" }, 
+        { a: "عَدُوّ", r: "Aduww", u: "دشمن", u_ro: "Dushman", u_hi: "दुश्मन", m: "الْعَدُوُّ", t: "دشمن", t_ro: "Dushman", t_hi: "दुश्मन" }, 
+        { a: "صَاحِب", r: "Saahib", u: "ساتھی", u_ro: "Saathi", u_hi: "साथी", m: "الصَّاحِبُ", t: "ساتھی", t_ro: "Saathi", t_hi: "साथी" }, 
+        { a: "مُؤْمِن", r: "Mu'min", u: "ایمان والا", u_ro: "Imaan wala", u_hi: "ईमान वाला", m: "الْمُؤْمِنُ", t: "مومن", t_ro: "Momin", t_hi: "मोमिन" }, 
+        { a: "كَافِر", r: "Kaafir", u: "انکار کرنے والا", u_ro: "Inkaar karne wala", u_hi: "इनकार करने वाला", m: "الْكَافِرُ", t: "کافر", t_ro: "Kaafir", t_hi: "काफ़िर" }, 
+        { a: "مُنَافِق", r: "Munaafiq", u: "منافق", u_ro: "Munaafiq", u_hi: "मुनाफ़िक़", m: "الْمُنَافِقُ", t: "منافق", t_ro: "Munaafiq", t_hi: "मुनाफ़िक़" } 
+    ]},
+    { day: 61, words: [ 
+        { a: "مُسْلِم", r: "Muslim", u: "مسلمان", u_ro: "Musalmaan", u_hi: "मुसलमान", m: "الْمُسْلِمُ", t: "مسلمان", t_ro: "Musalmaan", t_hi: "मुसलमान" }, 
+        { a: "مُشْرِك", r: "Mushrik", u: "مشرک", u_ro: "Mushrik", u_hi: "मुशरिक", m: "الْمُشْرِكُ", t: "مشرک", t_ro: "Mushrik", t_hi: "मुशरिक" }, 
+        { a: "ظَالِم", r: "Zalim", u: "ظالم", u_ro: "Zaalim", u_hi: "ज़ालिम", m: "الظَّالِمُ", t: "ظالم", t_ro: "Zaalim", t_hi: "ज़ालिम" }, 
+        { a: "مُتَّقِي", r: "Muttaqi", u: "پرہیزگار", u_ro: "Parhezgaar", u_hi: "परहेज़गार", m: "الْمُتَّقِي", t: "متقی", t_ro: "Muttaqi", t_hi: "मुत्तक़ी" }, 
+        { a: "صَالِح", r: "Saalih", u: "نیک", u_ro: "Nek", u_hi: "नेक", m: "الصَّالِحُ", t: "نیک", t_ro: "Nek", t_hi: "नेक" }, 
+        { a: "مُحْسِن", r: "Muhsin", u: "نیکی کرنے والا", u_ro: "Neki karne wala", u_hi: "नेकी करने वाला", m: "الْمُحْسِنُ", t: "نیک", t_ro: "Nek", t_hi: "नेक" }, 
+        { a: "مُجْرِم", r: "Mujrim", u: "مجرم", u_ro: "Mujrim", u_hi: "मुजरिम", m: "الْمُجْرِمُ", t: "گنہگار", t_ro: "Gunahgaar", t_hi: "गुनाहगार" }, 
+        { a: "فَاسِق", r: "Faasiq", u: "نافرمان", u_ro: "Nafarmaan", u_hi: "नाफ़रमान", m: "الْفَاسِقُ", t: "نافرمان", t_ro: "Nafarmaan", t_hi: "नाफ़रमान" }, 
+        { a: "عَالِم", r: "Aalim", u: "عالم", u_ro: "Aalim", u_hi: "आलिम", m: "الْعَالِمُ", t: "جاننے والا", t_ro: "Jaanne wala", t_hi: "जानने वाला" }, 
+        { a: "جَاهِل", r: "Jaahil", u: "نادان", u_ro: "Naadaan", u_hi: "नादान", m: "الْجَاهِلُ", t: "جاہل", t_ro: "Jaahil", t_hi: "जाहिल" } 
+    ]},
+    { day: 62, words: [ 
+        { a: "رَأْس", r: "Ra's", u: "سر", u_ro: "Sar", u_hi: "सर", m: "الرَّأْسُ", t: "سر", t_ro: "Sar", t_hi: "सर" }, 
+        { a: "وَجْه", r: "Wajh", u: "چہرہ", u_ro: "Chehra", u_hi: "चेहरा", m: "الْوَجْهُ", t: "چہرہ", t_ro: "Chehra", t_hi: "चेहरा" }, 
+        { a: "عَيْن", r: "Ayn", u: "آنکھ", u_ro: "Aankh", u_hi: "आँख", m: "الْعَيْنُ", t: "آنکھ", t_ro: "Aankh", t_hi: "आँख" }, 
+        { a: "أُذُن", r: "Udhun", u: "کان", u_ro: "Kaan", u_hi: "कान", m: "الْأُذُنُ", t: "کان", t_ro: "Kaan", t_hi: "कान" }, 
+        { a: "أَنْف", r: "Anf", u: "ناک", u_ro: "Naak", u_hi: "नाक", m: "الْأَنْفُ", t: "ناک", t_ro: "Naak", t_hi: "नाक" }, 
+        { a: "فَم", r: "Fam", u: "منہ", u_ro: "Munh", u_hi: "मुँह", m: "الْفَمُ", t: "منہ", t_ro: "Munh", t_hi: "मुँह" }, 
+        { a: "لِسَان", r: "Lisaan", u: "زبان", u_ro: "Zubaan", u_hi: "ज़ुबान", m: "اللِّسَانُ", t: "زبان", t_ro: "Zubaan", t_hi: "ज़ुबान" }, 
+        { a: "سِنّ", r: "Sinn", u: "دانت", u_ro: "Daant", u_hi: "दाँत", m: "السِّنُّ", t: "دانت", t_ro: "Daant", t_hi: "दाँत" }, 
+        { a: "يَد", r: "Yad", u: "ہاتھ", u_ro: "Haath", u_hi: "हाथ", m: "الْيَدُ", t: "ہاتھ", t_ro: "Haath", t_hi: "हाथ" }, 
+        { a: "رِجْل", r: "Rijl", u: "پاؤں", u_ro: "Paaon", u_hi: "पाँव", m: "الرِّجْلُ", t: "پاؤں", t_ro: "Paaon", t_hi: "पाँव" } 
+    ]},
+    { day: 63, words: [ 
+        { a: "قَلْب", r: "Qalb", u: "دل", u_ro: "Dil", u_hi: "दिल", m: "الْقَلْبُ", t: "دل", t_ro: "Dil", t_hi: "दिल" }, 
+        { a: "صَدْر", r: "Sadr", u: "سینہ", u_ro: "Seena", u_hi: "सीना", m: "الصَّدْرُ", t: "سینہ", t_ro: "Seena", t_hi: "सीना" }, 
+        { a: "بَطْن", r: "Batn", u: "پیٹ", u_ro: "Pet", u_hi: "पेट", m: "الْبَطْنُ", t: "پیٹ", t_ro: "Pet", t_hi: "पेट" }, 
+        { a: "ظَهْر", r: "Zahr", u: "پیٹھ", u_ro: "Peeth", u_hi: "पीठ", m: "الظَّهْرُ", t: "پیٹھ", t_ro: "Peeth", t_hi: "पीठ" }, 
+        { a: "عُنُق", r: "Unuq", u: "گردن", u_ro: "Gardan", u_hi: "गर्दन", m: "الْعُنُقُ", t: "گردن", t_ro: "Gardan", t_hi: "गर्दन" }, 
+        { a: "جِلْد", r: "Jild", u: "کھال", u_ro: "Khaal", u_hi: "खाल", m: "الْجِلْدُ", t: "کھال", t_ro: "Khaal", t_hi: "खाल" }, 
+        { a: "عَظْم", r: "Azm", u: "ہڈی", u_ro: "Haddi", u_hi: "हड्डी", m: "الْعَظْمُ", t: "ہڈی", t_ro: "Haddi", t_hi: "हड्डी" }, 
+        { a: "دَم", r: "Dam", u: "خون", u_ro: "Khoon", u_hi: "ख़ून", m: "الدَّمُ", t: "خون", t_ro: "Khoon", t_hi: "ख़ून" }, 
+        { a: "رُوح", r: "Rooh", u: "روح", u_ro: "Rooh", u_hi: "रूह", m: "الرُّوحُ", t: "روح", t_ro: "Rooh", t_hi: "रूह" }, 
+        { a: "جَسَد", r: "Jasad", u: "جسم", u_ro: "Jism", u_hi: "जिस्म", m: "الْجَسَدُ", t: "جسم", t_ro: "Jism", t_hi: "जिस्म" } 
+    ]},
+    { day: 64, words: [ 
+        { a: "سَمْع", r: "Sam'", u: "سماعت", u_ro: "Samaa-at", u_hi: "समाअत", m: "السَّمْعُ", t: "سننا", t_ro: "Sunna", t_hi: "सुनना" }, 
+        { a: "بَصَر", r: "Basar", u: "نظر", u_ro: "Nazar", u_hi: "नज़र", m: "الْبَصَرُ", t: "دیکھنا", t_ro: "Dekhna", t_hi: "देखना" }, 
+        { a: "فُؤَاد", r: "Fu'aad", u: "دل", u_ro: "Dil", u_hi: "दिल", m: "الْفُؤَادُ", t: "دل", t_ro: "Dil", t_hi: "दिल" }, 
+        { a: "نَاصِيَة", r: "Naasiyah", u: "پیشانی", u_ro: "Peshaani", u_hi: "पेशानी", m: "النَّاصِيَةُ", t: "پیشانی", t_ro: "Peshaani", t_hi: "पेशानी" }, 
+        { a: "أَصَابِع", r: "Asaabi'", u: "انگلیاں", u_ro: "Ungliyaan", u_hi: "उँगलियाँ", m: "الْأَصَابِعُ", t: "انگلی", t_ro: "Ungli", t_hi: "उँगली" }, 
+        { a: "إِيمَان", r: "Eemaan", u: "ایمان", u_ro: "Imaan", u_hi: "ईमान", m: "الْإِيمَانُ", t: "ایمان", t_ro: "Imaan", t_hi: "ईमान" }, 
+        { a: "صَلَاة", r: "Salaah", u: "نماز", u_ro: "Namaaz", u_hi: "नमाज़", m: "الصَّلَاةُ", t: "نماز", t_ro: "Namaaz", t_hi: "नमाज़" }, 
+        { a: "زَكَاة", r: "Zakaah", u: "زکوٰۃ", u_ro: "Zakaat", u_hi: "ज़कात", m: "الزَّكَاةُ", t: "زکوٰۃ", t_ro: "Zakaat", t_hi: "ज़कात" }, 
+        { a: "صِيَام", r: "Siyaam", u: "روزہ", u_ro: "Roza", u_hi: "रोज़ा", m: "الصِّيَامُ", t: "روزہ", t_ro: "Roza", t_hi: "रोज़ा" }, 
+        { a: "حَجّ", r: "Hajj", u: "حج", u_ro: "Hajj", u_hi: "हज", m: "الْحَجُّ", t: "حج", t_ro: "Hajj", t_hi: "हज" } 
+    ]},
+    { day: 65, words: [ 
+        { a: "عُمْرَة", r: "Umrah", u: "عمرہ", u_ro: "Umrah", u_hi: "उमरा", m: "الْعُمْرَةُ", t: "عمرہ", t_ro: "Umrah", t_hi: "उमरा" }, 
+        { a: "دِين", r: "Deen", u: "دین", u_ro: "Deen", u_hi: "दीन", m: "الدِّينُ", t: "دین", t_ro: "Deen", t_hi: "दीन" }, 
+        { a: "إِسْلَام", r: "Islaam", u: "اسلام", u_ro: "Islaam", u_hi: "इस्लाम", m: "الْإِسْلَامُ", t: "اسلام", t_ro: "Islaam", t_hi: "इस्लाम" }, 
+        { a: "قُرْآن", r: "Qur'aan", u: "قرآن", u_ro: "Quraan", u_hi: "क़ुरआन", m: "الْقُرْآنُ", t: "قرآن", t_ro: "Quraan", t_hi: "क़ुरआन" }, 
+        { a: "آيَة", r: "Aayah", u: "آیت", u_ro: "Aayat", u_hi: "आयत", m: "الْآيَةُ", t: "آیت", t_ro: "Aayat", t_hi: "आयत" }, 
+        { a: "سُورَة", r: "Soorah", u: "سورت", u_ro: "Soorat", u_hi: "सूरत", m: "السُّورَةُ", t: "سورت", t_ro: "Soorat", t_hi: "सूरत" }, 
+        { a: "وَحْي", r: "Wahy", u: "وحی", u_ro: "Wahi", u_hi: "वही", m: "الْوَحْيُ", t: "وحی", t_ro: "Wahi", t_hi: "वही" }, 
+        { a: "ذِكْر", r: "Dhikr", u: "ذکر", u_ro: "Zikr", u_hi: "ज़िक्र", m: "الذِّكْرُ", t: "یاد", t_ro: "Yaad", t_hi: "याद" }, 
+        { a: "دُعَاء", r: "Du'aa'", u: "دعا", u_ro: "Dua", u_hi: "दुआ", m: "الدُّعَاءُ", t: "دعا", t_ro: "Dua", t_hi: "दुआ" }, 
+        { a: "رُكُوع", r: "Ruku'", u: "رکوع", u_ro: "Rukoo", u_hi: "रुकू", m: "الرُّكُوعُ", t: "رکوع", t_ro: "Rukoo", t_hi: "रुकू" } 
+    ]},
+    { day: 66, words: [ 
+        { a: "سُجُود", r: "Sujood", u: "سجدہ", u_ro: "Sajda", u_hi: "सज्दा", m: "السُّجُودُ", t: "سجدہ", t_ro: "Sajda", t_hi: "सज्दा" }, 
+        { a: "تَسْبِيح", r: "Tasbeeh", u: "تسبیح", u_ro: "Tasbeeh", u_hi: "तस्बीह", m: "التَّسْبِيحُ", t: "تسبیح", t_ro: "Tasbeeh", t_hi: "तस्बीह" }, 
+        { a: "حَمْد", r: "Hamd", u: "حمد", u_ro: "Hamd", u_hi: "हम्द", m: "الْحَمْدُ", t: "تعریف", t_ro: "Taareef", t_hi: "तारीफ़" }, 
+        { a: "شُكْر", r: "Shukr", u: "شکر", u_ro: "Shukr", u_hi: "शुक्र", m: "الشُّكْرُ", t: "شکر", t_ro: "Shukr", t_hi: "शुक्र" }, 
+        { a: "صَبْر", r: "Sabr", u: "صبر", u_ro: "Sabr", u_hi: "सब्र", m: "الصَّبْرُ", t: "صبر", t_ro: "Sabr", t_hi: "सब्र" }, 
+        { a: "تَوْبَة", r: "Tawbah", u: "توبہ", u_ro: "Tauba", u_hi: "तौबा", m: "التَّوْبَةُ", t: "توبہ", t_ro: "Tauba", t_hi: "तौबा" }, 
+        { a: "تَقْوَى", r: "Taqwaa", u: "تقویٰ", u_ro: "Taqwa", u_hi: "तक़वा", m: "التَّقْوَى", t: "تقویٰ", t_ro: "Taqwa", t_hi: "तक़वा" }, 
+        { a: "تَوَكُّل", r: "Tawakkul", u: "توکل", u_ro: "Tawakkul", u_hi: "तवक्कुल", m: "التَّوَكُّلُ", t: "بھروسہ", t_ro: "Bharosa", t_hi: "भरोसा" }, 
+        { a: "إِخْلَاص", r: "Ikhlaas", u: "اخلاص", u_ro: "Ikhlaas", u_hi: "इख़लास", m: "الْإِخْلَاصُ", t: "اخلاص", t_ro: "Ikhlaas", t_hi: "इख़लास" }, 
+        { a: "هُدَى", r: "Hudaa", u: "ہدایت", u_ro: "Hidaayat", u_hi: "हिदायत", m: "الْهُدَى", t: "ہدایت", t_ro: "Hidaayat", t_hi: "हिदायत" } 
+    ]},
+    { day: 67, words: [ 
+        { a: "ضَلَال", r: "Dalaal", u: "گمراہی", u_ro: "Gumraahi", u_hi: "गुमराही", m: "الضَّلَالُ", t: "گمراہی", t_ro: "Gumraahi", t_hi: "गुमराही" }, 
+        { a: "طَهَارَة", r: "Tahaarah", u: "پاکیزگی", u_ro: "Paakeezgi", u_hi: "पाकीज़गी", m: "الطَّهَارَةُ", t: "پاکیزگی", t_ro: "Paakeezgi", t_hi: "पाकीज़गी" }, 
+        { a: "قِبْلَة", r: "Qiblah", u: "قبلہ", u_ro: "Qibla", u_hi: "क़िबला", m: "الْقِبْلَةُ", t: "قبلہ", t_ro: "Qibla", t_hi: "क़िबला" }, 
+        { a: "عِبَادَة", r: "Ibaadah", u: "عبادت", u_ro: "Ibaadat", u_hi: "इबादत", m: "الْعِبَادَةُ", t: "عبادت", t_ro: "Ibaadat", t_hi: "इबादत" }, 
+        { a: "جِهَاد", r: "Jihaad", u: "جہاد", u_ro: "Jihaad", u_hi: "जिहाद", m: "الْجِهَادُ", t: "کوشش", t_ro: "Koshish", t_hi: "कोशिश" }, 
+        { a: "صَدَقَة", r: "Sadaqah", u: "صدقہ", u_ro: "Sadqa", u_hi: "सदक़ा", m: "الصَّدَقَةُ", t: "صدقہ", t_ro: "Sadqa", t_hi: "सदक़ा" }, 
+        { a: "إِنْفَاق", r: "Infaaq", u: "خرچ کرنا", u_ro: "Kharch karna", u_hi: "ख़र्च करना", m: "الْإِنْفَاقُ", t: "خرچ", t_ro: "Kharch", t_hi: "ख़र्च" }, 
+        { a: "إِحْسَان", r: "Ihsaan", u: "احسان", u_ro: "Ehsaan", u_hi: "एहसान", m: "الْإِحْسَانُ", t: "نیکی", t_ro: "Neki", t_hi: "नेकी" }, 
+        { a: "مَعْرُوف", r: "Ma'roof", u: "اچھی بات", u_ro: "Achchhi baat", u_hi: "अच्छी बात", m: "الْمَعْرُوفُ", t: "بھلائی", t_ro: "Bhalaai", t_hi: "भलाई" }, 
+        { a: "مُنْكَر", r: "Munkar", u: "بری بات", u_ro: "Buri baat", u_hi: "बुरी बात", m: "الْمُنْكَرُ", t: "برائی", t_ro: "Buraai", t_hi: "बुराई" } 
+    ]},
+    { day: 68, words: [ 
+        { a: "حَرَام", r: "Haraam", u: "حرام", u_ro: "Haraam", u_hi: "हराम", m: "الْحَرَامُ", t: "حرام", t_ro: "Haraam", t_hi: "हराम" }, 
+        { a: "حَلَال", r: "Halaal", u: "حلال", u_ro: "Halaal", u_hi: "हलाल", m: "الْحَلَالُ", t: "حلال", t_ro: "Halaal", t_hi: "हलाल" }, 
+        { a: "رِبَا", r: "Ribaa", u: "سود", u_ro: "Sood", u_hi: "सूद", m: "الرِّبَا", t: "سود", t_ro: "Sood", t_hi: "सूद" }, 
+        { a: "نِكَاح", r: "Nikaah", u: "نکاح", u_ro: "Nikaah", u_hi: "निकाह", m: "النِّكَاحُ", t: "نکاح", t_ro: "Nikaah", t_hi: "निकाह" }, 
+        { a: "طَلَاق", r: "Talaaq", u: "طلاق", u_ro: "Talaaq", u_hi: "तलाक़", m: "الطَّلَاقُ", t: "طلاق", t_ro: "Talaaq", t_hi: "तलाक़" }, 
+        { a: "وَصِيَّة", r: "Wasiyyah", u: "وصیت", u_ro: "Wasiyyat", u_hi: "वसीयत", m: "الْوَصِيَّةُ", t: "وصیت", t_ro: "Wasiyyat", t_hi: "वसीयत" }, 
+        { a: "شَهْر", r: "Shahr", u: "مہینہ", u_ro: "Maheena", u_hi: "महीना", m: "الشَّهْرُ", t: "مہینہ", t_ro: "Maheena", t_hi: "महीना" }, 
+        { a: "رَمَضَان", r: "Ramadaan", u: "رمضان", u_ro: "Ramzaan", u_hi: "रमज़ान", m: "رَمَضَانُ", t: "رمضان", t_ro: "Ramzaan", t_hi: "रमज़ान" }, 
+        { a: "آخِرَة", r: "Aakhirah", u: "آخرت", u_ro: "Aakhirat", u_hi: "आख़िरत", m: "الْآخِرَةُ", t: "آخرت", t_ro: "Aakhirat", t_hi: "आख़िरत" }, 
+        { a: "دُنْيَا", r: "Dunyaa", u: "دنیا", u_ro: "Duniya", u_hi: "दुनिया", m: "الدُّنْيَا", t: "دنیا", t_ro: "Duniya", t_hi: "दुनिया" } 
+    ]},
+    { day: 69, words: [ 
+        { a: "جَنَّة", r: "Jannah", u: "جنت", u_ro: "Jannat", u_hi: "जन्नत", m: "الْجَنَّةُ", t: "جنت", t_ro: "Jannat", t_hi: "जन्नत" }, 
+        { a: "جَنَّات", r: "Jannaat", u: "باغات", u_ro: "Baaghaat", u_hi: "बाग़ात", m: "الْجَنَّاتُ", t: "باغ", t_ro: "Baagh", t_hi: "बाग़" }, 
+        { a: "جَهَنَّم", r: "Jahannam", u: "جہنم", u_ro: "Jahannam", u_hi: "जहन्नुम", m: "جَهَنَّمُ", t: "جہنم", t_ro: "Jahannam", t_hi: "जहन्नुम" }, 
+        { a: "جَحِيم", r: "Jaheem", u: "بھڑکتی آگ", u_ro: "Bhadakti aag", u_hi: "भड़कती आग", m: "الْجَحِيمُ", t: "آگ", t_ro: "Aag", t_hi: "आग" }, 
+        { a: "سَعِير", r: "Sa'eer", u: "دہکتی آگ", u_ro: "Dahakti aag", u_hi: "दहकती आग", m: "السَّعِيرُ", t: "آگ", t_ro: "Aag", t_hi: "आग" }, 
+        { a: "عَذَاب", r: "Azaab", u: "عذاب", u_ro: "Azaab", u_hi: "अज़ाब", m: "الْعَذَابُ", t: "سزا", t_ro: "Saza", t_hi: "सज़ा" }, 
+        { a: "أَجْر", r: "Ajr", u: "اجر", u_ro: "Ajr", u_hi: "अज्र", m: "الْأَجْرُ", t: "ثواب", t_ro: "Sawaab", t_hi: "सवाब" }, 
+        { a: "جَزَاء", r: "Jazaa'", u: "بدلہ", u_ro: "Badla", u_hi: "बदला", m: "الْجَزَاءُ", t: "بدلہ", t_ro: "Badla", t_hi: "बदला" }, 
+        { a: "حِسَاب", r: "Hisaab", u: "حساب", u_ro: "Hisaab", u_hi: "हिसाब", m: "الْحِسَابُ", t: "حساب", t_ro: "Hisaab", t_hi: "हिसाब" }, 
+        { a: "قِيَامَة", r: "Qiyaamah", u: "قیامت", u_ro: "Qayaamat", u_hi: "क़यामत", m: "الْقِيَامَةُ", t: "قیامت", t_ro: "Qayaamat", t_hi: "क़यामत" } 
+    ]},
+    { day: 70, words: [ 
+        { a: "سَاعَة", r: "Saa'ah", u: "گھڑی", u_ro: "Ghadi", u_hi: "घड़ी", m: "السَّاعَةُ", t: "وقت", t_ro: "Waqt", t_hi: "वक़्त" }, 
+        { a: "مَوْت", r: "Mawt", u: "موت", u_ro: "Maut", u_hi: "मौत", m: "الْمَوْتُ", t: "موت", t_ro: "Maut", t_hi: "मौत" }, 
+        { a: "حَيَاة", r: "Hayaat", u: "زندگی", u_ro: "Zindagi", u_hi: "ज़िंदगी", m: "الْحَيَاةُ", t: "زندگی", t_ro: "Zindagi", t_hi: "ज़िंदगी" }, 
+        { a: "قَبْر", r: "Qabr", u: "قبر", u_ro: "Qabr", u_hi: "क़ब्र", m: "الْقَبْرُ", t: "قبر", t_ro: "Qabr", t_hi: "क़ब्र" }, 
+        { a: "صُور", r: "Soor", u: "صور", u_ro: "Soor", u_hi: "सूर", m: "الصُّورُ", t: "صور", t_ro: "Soor", t_hi: "सूर" }, 
+        { a: "شَفَاعَة", r: "Shafaa'ah", u: "سفارش", u_ro: "Sifaarish", u_hi: "सिफ़ारिश", m: "الشَّفَاعَةُ", t: "سفارش", t_ro: "Sifaarish", t_hi: "सिफ़ारिश" }, 
+        { a: "فِرْدَوْس", r: "Firdaws", u: "فردوس", u_ro: "Firdaus", u_hi: "फ़िरदौस", m: "الْفِرْدَوْسُ", t: "جنت", t_ro: "Jannat", t_hi: "जन्नत" }, 
+        { a: "عَدْن", r: "Adn", u: "ہمیشہ رہنے کے باغات", u_ro: "Hamesha rehne ke baaghaat", u_hi: "हमेशा रहने के बाग़ात", m: "عَدْنٍ", t: "جنت", t_ro: "Jannat", t_hi: "जन्नत" }, 
+        { a: "خُلْد", r: "Khuld", u: "ہمیشگی", u_ro: "Hamesgi", u_hi: "हमेशगी", m: "الْخُلْدُ", t: "ہمیشہ", t_ro: "Hamesha", t_hi: "हमेशा" }, 
+        { a: "خَالِدِين", r: "Khaalideen", u: "ہمیشہ رہنے والے", u_ro: "Hamesha rehne wale", u_hi: "हमेशा रहने वाले", m: "خَالِدِينَ", t: "ہمیشہ", t_ro: "Hamesha", t_hi: "हमेशा" } 
+    ]},
+    { day: 71, words: [ 
+        { a: "فَوْز", r: "Fawz", u: "کامیابی", u_ro: "Kaamyaabi", u_hi: "कामयाबी", m: "الْفَوْزُ", t: "کامیابی", t_ro: "Kaamyaabi", t_hi: "कामयाबी" }, 
+        { a: "فَلَاح", r: "Falaah", u: "کامیابی", u_ro: "Kaamyaabi", u_hi: "कामयाबी", m: "الْفَلَاحُ", t: "بھلائی", t_ro: "Bhalaai", t_hi: "भलाई" }, 
+        { a: "خُسْرَان", r: "Khusraan", u: "نقصان", u_ro: "Nuqsaan", u_hi: "नुक़सान", m: "الْخُسْرَانُ", t: "نقصان", t_ro: "Nuqsaan", t_hi: "नुक़सान" }, 
+        { a: "هَلَاك", r: "Halaak", u: "ہلاکت", u_ro: "Halaakat", u_hi: "हलाकत", m: "الْهَلَاكُ", t: "تباہی", t_ro: "Tabaahi", t_hi: "तबाही" }, 
+        { a: "نَجَاة", r: "Najaah", u: "نجات", u_ro: "Najaat", u_hi: "नजात", m: "النَّجَاةُ", t: "نجات", t_ro: "Najaat", t_hi: "नजात" }, 
+        { a: "حَشْر", r: "Hashr", u: "جمع کیا جانا", u_ro: "Jama kiya jaana", u_hi: "जमा किया जाना", m: "الْحَشْرُ", t: "جمع", t_ro: "Jama", t_hi: "जमा" }, 
+        { a: "يَوْمَ الدِّين", r: "Yawm ad-Deen", u: "بدلے کا دن", u_ro: "Badle ka din", u_hi: "बदले का दिन", m: "يَوْمِ الدِّينِ", t: "قیامت", t_ro: "Qayaamat", t_hi: "क़यामत" }, 
+        { a: "غَيْب", r: "Ghayb", u: "غیب", u_ro: "Ghaib", u_hi: "ग़ैब", m: "الْغَيْبِ", t: "چھپی چیز", t_ro: "Chhupi cheez", t_hi: "छुपी चीज़" }, 
+        { a: "عَرْش", r: "Arsh", u: "عرش", u_ro: "Arsh", u_hi: "अर्श", m: "الْعَرْشِ", t: "تخت", t_ro: "Takht", t_hi: "तख़्त" }, 
+        { a: "كُرْسِيّ", r: "Kursiyy", u: "کرسی", u_ro: "Kursi", u_hi: "कुर्सी", m: "الْكُرْسِيُّ", t: "کرسی", t_ro: "Kursi", t_hi: "कुर्सी" } 
+    ]},
+    { day: 72, words: [ 
+        { a: "زَقُّوم", r: "Zaqqoom", u: "زقوم", u_ro: "Zaqqoom", u_hi: "ज़क़्क़ूम", m: "الزَّقُّومِ", t: "درخت", t_ro: "Darakht", t_hi: "दरख़्त" }, 
+        { a: "حَمِيم", r: "Hameem", u: "کھولتا پانی", u_ro: "Kholta paani", u_hi: "खौलता पानी", m: "الْحَمِيمِ", t: "پانی", t_ro: "Paani", t_hi: "पानी" }, 
+        { a: "نَعِيم", r: "Na'eem", u: "نعمتیں", u_ro: "Nemtein", u_hi: "नेमतें", m: "النَّعِيمِ", t: "نعمت", t_ro: "Nemat", t_hi: "नेमत" }, 
+        { a: "رِضْوَان", r: "Ridwaan", u: "رضا", u_ro: "Raza", u_hi: "रज़ा", m: "رِضْوَانٌ", t: "خوشی", t_ro: "Khushi", t_hi: "ख़ुशी" }, 
+        { a: "حُور", r: "Hoor", u: "حوریں", u_ro: "Hoorein", u_hi: "हूरें", m: "حُورٌ", t: "حور", t_ro: "Hoor", t_hi: "हूर" }, 
+        { a: "أَنْهَار", r: "Anhaar", u: "نہریں", u_ro: "Nehrein", u_hi: "नहरें", m: "الْأَنْهَارُ", t: "نہریں", t_ro: "Nehrein", t_hi: "नहरें" }, 
+        { a: "فَاكِهَة", r: "Faakihah", u: "میوہ", u_ro: "Meva", u_hi: "मेवा", m: "الْفَاكِهَةُ", t: "پھل", t_ro: "Phal", t_hi: "फल" }, 
+        { a: "مُحَمَّد", r: "Muhammad", u: "محمد ﷺ", u_ro: "Muhammad ﷺ", u_hi: "मुहम्मद ﷺ", m: "مُحَمَّدٌ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "آدَم", r: "Aadam", u: "آدم علیہ السلام", u_ro: "Aadam alaihis-salaam", u_hi: "आदम अलैहिस्सलाम", m: "آدَمُ", t: "پہلے انسان", t_ro: "Pehle insaan", t_hi: "पहले इंसान" }, 
+        { a: "نُوح", r: "Nooh", u: "نوح علیہ السلام", u_ro: "Nooh alaihis-salaam", u_hi: "नूह अलैहिस्सलाम", m: "نُوحٌ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" } 
+    ]},
+    { day: 73, words: [ 
+        { a: "إِبْرَاهِيم", r: "Ibraaheem", u: "ابراہیم علیہ السلام", u_ro: "Ibraheem alaihis-salaam", u_hi: "इब्राहीम अलैहिस्सलाम", m: "إِبْرَاهِيمُ", t: "خلیل اللہ", t_ro: "Khaleelullah", t_hi: "ख़लीलुल्लाह" }, 
+        { a: "إِسْمَاعِيل", r: "Ismaa'eel", u: "اسماعیل علیہ السلام", u_ro: "Ismaeel alaihis-salaam", u_hi: "इस्माईल अलैहिस्सलाम", m: "إِسْمَاعِيلُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "إِسْحَاق", r: "Is-haaq", u: "اسحاق علیہ السلام", u_ro: "Ishaaq alaihis-salaam", u_hi: "इसहाक़ अलैहिस्सलाम", m: "إِسْحَاقُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "يَعْقُوب", r: "Ya'qoob", u: "یعقوب علیہ السلام", u_ro: "Yaqoob alaihis-salaam", u_hi: "याक़ूब अलैहिस्सलाम", m: "يَعْقُوبُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "يُوسُف", r: "Yoosuf", u: "یوسف علیہ السلام", u_ro: "Yusuf alaihis-salaam", u_hi: "यूसुफ़ अलैहिस्सलाम", m: "يُوسُفُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "مُوسَى", r: "Moosaa", u: "موسیٰ علیہ السلام", u_ro: "Moosa alaihis-salaam", u_hi: "मूसा अलैहिस्सलाम", m: "مُوسَى", t: "کلیم اللہ", t_ro: "Kaleemullah", t_hi: "कलीमुल्लाह" }, 
+        { a: "هَارُون", r: "Haaroon", u: "ہارون علیہ السلام", u_ro: "Haroon alaihis-salaam", u_hi: "हारून अलैहिस्सलाम", m: "هَارُونُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "عِيسَى", r: "Eesaa", u: "عیسیٰ علیہ السلام", u_ro: "Eesa alaihis-salaam", u_hi: "ईसा अलैहिस्सलाम", m: "عِيسَى", t: "روح اللہ", t_ro: "Roohullah", t_hi: "रूहुल्लाह" }, 
+        { a: "مَرْيَم", r: "Maryam", u: "مریم علیہا السلام", u_ro: "Maryam alaihas-salaam", u_hi: "मरयम अलैहस्सलाम", m: "مَرْيَمُ", t: "عورت", t_ro: "Aurat", t_hi: "औरत" }, 
+        { a: "دَاوُود", r: "Daawood", u: "داؤد علیہ السلام", u_ro: "Dawood alaihis-salaam", u_hi: "दाऊद अलैहिस्सलाम", m: "دَاوُودُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" } 
+    ]},
+    { day: 74, words: [ 
+        { a: "سُلَيْمَان", r: "Sulaymaan", u: "سلیمان علیہ السلام", u_ro: "Sulaiman alaihis-salaam", u_hi: "सुलैमान अलैहिस्सलाम", m: "سُلَيْمَانُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "أَيُّوب", r: "Ayyoob", u: "ایوب علیہ السلام", u_ro: "Ayyoob alaihis-salaam", u_hi: "अय्यूब अलैहिस्सलाम", m: "أَيُّوبُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "يُونُس", r: "Yoonus", u: "یونس علیہ السلام", u_ro: "Yoonus alaihis-salaam", u_hi: "यूनुस अलैहिस्सलाम", m: "يُونُسُ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "زَكَرِيَّا", r: "Zakariyyaa", u: "زکریا علیہ السلام", u_ro: "Zakariyya alaihis-salaam", u_hi: "ज़करिया अलैहिस्सलाम", m: "زَكَرِيَّا", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "يَحْيَى", r: "Yahyaa", u: "یحییٰ علیہ السلام", u_ro: "Yahya alaihis-salaam", u_hi: "यह्या अलैहिस्सलाम", m: "يَحْيَى", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "هُود", r: "Hood", u: "ہود علیہ السلام", u_ro: "Hood alaihis-salaam", u_hi: "हूद अलैहिस्सलाम", m: "هُودٌ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "شُعَيْب", r: "Shu'ayb", u: "شعیب علیہ السلام", u_ro: "Shuaib alaihis-salaam", u_hi: "शुऐब अलैहिस्सलाम", m: "شُعَيْبٌ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "لُوط", r: "Loot", u: "لوط علیہ السلام", u_ro: "Loot alaihis-salaam", u_hi: "लूत अलैहिस्सलाम", m: "لُوطٌ", t: "نبی", t_ro: "Nabi", t_hi: "नबी" }, 
+        { a: "فِرْعَوْن", r: "Fir'awn", u: "فرعون", u_ro: "Firaun", u_hi: "फ़िरऔन", m: "فِرْعَوْنُ", t: "بادشاہ", t_ro: "Baadshaah", t_hi: "बादशाह" }, 
+        { a: "قَارُون", r: "Qaaroon", u: "قارون", u_ro: "Qaaroon", u_hi: "क़ारून", m: "قَارُونُ", t: "دولت مند", t_ro: "Daulatmand", t_hi: "दौलतमंद" } 
+    ]},
+    { day: 75, words: [ 
+        { a: "لُقْمَان", r: "Luqmaan", u: "لقمان", u_ro: "Luqmaan", u_hi: "लुक़मान", m: "لُقْمَانُ", t: "حکیم", t_ro: "Hakeem", t_hi: "हकीम" }, 
+        { a: "إِسْرَائِيل", r: "Israa'eel", u: "اسرائیل", u_ro: "Israaeel", u_hi: "इसराईल", m: "إِسْرَائِيلَ", t: "یعقوب", t_ro: "Yaqoob", t_hi: "याक़ूब" }, 
+        { a: "مِصْر", r: "Misr", u: "مصر", u_ro: "Misr", u_hi: "मिस्र", m: "مِصْرَ", t: "ملک", t_ro: "Mulk", t_hi: "मुल्क" }, 
+        { a: "طُور", r: "Toor", u: "طور پہاڑ", u_ro: "Toor pahaad", u_hi: "तूर पहाड़", m: "الطُّورِ", t: "پہاڑ", t_ro: "Pahaad", t_hi: "पहाड़" }, 
+        { a: "تَوْرَاة", r: "Tawraah", u: "تورات", u_ro: "Taurat", u_hi: "तौरात", m: "التَّوْرَاةَ", t: "کتاب", t_ro: "Kitaab", t_hi: "किताब" }, 
+        { a: "إِنْجِيل", r: "Injeel", u: "انجیل", u_ro: "Injeel", u_hi: "इंजील", m: "الْإِنجِيلَ", t: "کتاب", t_ro: "Kitaab", t_hi: "किताब" }, 
+        { a: "زَبُور", r: "Zaboor", u: "زبور", u_ro: "Zaboor", u_hi: "ज़बूर", m: "الزَّبُورَ", t: "کتاب", t_ro: "Kitaab", t_hi: "किताब" }, 
+        { a: "صُحُف", r: "Suhuf", u: "صحیفے", u_ro: "Sahifay", u_hi: "सहीफ़े", m: "الصُّحُفِ", t: "کتاب", t_ro: "Kitaab", t_hi: "किताब" }, 
+        { a: "قَالَ", r: "Qaala", u: "اس نے کہا", u_ro: "Us ne kaha", u_hi: "उसने कहा", m: "قَالَ", t: "کہنا", t_ro: "Kehna", t_hi: "कहना" }, 
+        { a: "قَالُوا", r: "Qaaloo", u: "انہوں نے کہا", u_ro: "Unhon ne kaha", u_hi: "उन्होंने कहा", m: "قَالُوا", t: "کہنا", t_ro: "Kehna", t_hi: "कहना" } 
+    ]},
+    { day: 76, words: [ 
+        { a: "يَقُولُ", r: "Yaqoolu", u: "وہ کہتا ہے", u_ro: "Woh kehta hai", u_hi: "वह कहता है", m: "يَقُولُ", t: "کہنا", t_ro: "Kehna", t_hi: "कहना" }, 
+        { a: "قُلْ", r: "Qul", u: "کہہ دو", u_ro: "Keh do", u_hi: "कह दो", m: "قُلْ", t: "کہنا", t_ro: "Kehna", t_hi: "कहना" }, 
+        { a: "كَانَ", r: "Kaana", u: "تھا", u_ro: "Tha", u_hi: "था", m: "كَانَ", t: "تھا", t_ro: "Tha", t_hi: "था" }, 
+        { a: "كَانُوا", r: "Kaanoo", u: "وہ تھے", u_ro: "Woh the", u_hi: "वे थे", m: "كَانُوا", t: "تھے", t_ro: "The", t_hi: "थे" }, 
+        { a: "يَكُونُ", r: "Yakoonu", u: "ہوتا ہے", u_ro: "Hota hai", u_hi: "होता है", m: "يَكُونُ", t: "ہونا", t_ro: "Hona", t_hi: "होना" }, 
+        { a: "كُنْ", r: "Kun", u: "ہو جا", u_ro: "Ho ja", u_hi: "हो जा", m: "كُنْ", t: "ہونا", t_ro: "Hona", t_hi: "होना" }, 
+        { a: "جَاءَ", r: "Jaa'a", u: "آیا", u_ro: "Aaya", u_hi: "आया", m: "جَاءَ", t: "آنا", t_ro: "Aana", t_hi: "आना" }, 
+        { a: "أَتَى", r: "Ataa", u: "آیا", u_ro: "Aaya", u_hi: "आया", m: "أَتَى", t: "آنا", t_ro: "Aana", t_hi: "आना" }, 
+        { a: "يَأْتِي", r: "Ya'tee", u: "آتا ہے", u_ro: "Aata hai", u_hi: "आता है", m: "يَأْتِي", t: "آنا", t_ro: "Aana", t_hi: "आना" }, 
+        { a: "خَرَجَ", r: "Kharaja", u: "نکلا", u_ro: "Nikla", u_hi: "निकला", m: "خَرَجَ", t: "نکلنا", t_ro: "Nikalna", t_hi: "निकलना" } 
+    ]},
+    { day: 77, words: [ 
+        { a: "دَخَلَ", r: "Dakhala", u: "داخل ہوا", u_ro: "Daakhil hua", u_hi: "दाख़िल हुआ", m: "دَخَلَ", t: "داخل ہونا", t_ro: "Daakhil hona", t_hi: "दाख़िल होना" }, 
+        { a: "ادْخُلُوا", r: "Udkhuloo", u: "داخل ہو جاؤ", u_ro: "Daakhil ho jaao", u_hi: "दाख़िल हो जाओ", m: "ادْخُلُوا", t: "داخل ہونا", t_ro: "Daakhil hona", t_hi: "दाख़िल होना" }, 
+        { a: "رَجَعَ", r: "Raja'a", u: "لوٹا", u_ro: "Lauta", u_hi: "लौटा", m: "رَجَعَ", t: "واپس", t_ro: "Waapas", t_hi: "वापस" }, 
+        { a: "اتَّبَعَ", r: "Ittaba'a", u: "پیروی کی", u_ro: "Pairwi ki", u_hi: "पैरवी की", m: "اتَّبَعَ", t: "پیروی", t_ro: "Pairwi", t_hi: "पैरवी" }, 
+        { a: "قَامَ", r: "Qaama", u: "کھڑا ہوا", u_ro: "Khada hua", u_hi: "खड़ा हुआ", m: "قَامَ", t: "کھڑا ہونا", t_ro: "Khada hona", t_hi: "खड़ा होना" }, 
+        { a: "خَلَقَ", r: "Khalaqa", u: "پیدا کیا", u_ro: "Paida kiya", u_hi: "पैदा किया", m: "خَلَقَ", t: "پیدا کرنا", t_ro: "Paida karna", t_hi: "पैदा करना" }, 
+        { a: "جَعَلَ", r: "Ja'ala", u: "بنایا", u_ro: "Banaya", u_hi: "बनाया", m: "جَعَلَ", t: "بنانا", t_ro: "Banaana", t_hi: "बनाना" }, 
+        { a: "أَنْزَلَ", r: "Anzala", u: "اتارا", u_ro: "Utaara", u_hi: "उतारा", m: "أَنْزَلَ", t: "نازل کرنا", t_ro: "Naazil karna", t_hi: "नाज़िल करना" }, 
+        { a: "أَرْسَلَ", r: "Arsala", u: "بھیجا", u_ro: "Bheja", u_hi: "भेजा", m: "أَرْسَلَ", t: "بھیجنا", t_ro: "Bhejna", t_hi: "भेजना" }, 
+        { a: "فَعَلَ", r: "Fa'ala", u: "کیا", u_ro: "Kya", u_hi: "क्या", m: "فَعَلَ", t: "کرنا", t_ro: "Karna", t_hi: "करना" } 
+    ]},
+    { day: 78, words: [ 
+        { a: "عَمِلَ", r: "Amila", u: "کام کیا", u_ro: "Kaam kiya", u_hi: "काम किया", m: "عَمِلَ", t: "عمل کرنا", t_ro: "Amal karna", t_hi: "अमल करना" }, 
+        { a: "أَخَذَ", r: "Akhadha", u: "لیا", u_ro: "Liya", u_hi: "लिया", m: "أَخَذَ", t: "پکڑنا", t_ro: "Pakadna", t_hi: "पकड़ना" }, 
+        { a: "أَعْطَى", r: "A'taa", u: "دیا", u_ro: "Diya", u_hi: "दिया", m: "أَعْطَى", t: "دینا", t_ro: "Dena", t_hi: "देना" }, 
+        { a: "تَرَكَ", r: "Taraka", u: "چھوڑا", u_ro: "Chhoda", u_hi: "छोड़ा", m: "تَرَكَ", t: "چھوڑنا", t_ro: "Chhodna", t_hi: "छोड़ना" }, 
+        { a: "وَجَدَ", r: "Wajada", u: "پایا", u_ro: "Paaya", u_hi: "पाया", m: "وَجَدَ", t: "پانا", t_ro: "Paana", t_hi: "पाना" }, 
+        { a: "رَأَى", r: "Ra'aa", u: "دیکھا", u_ro: "Dekha", u_hi: "देखा", m: "رَأَى", t: "دیکھنا", t_ro: "Dekhna", t_hi: "देखना" }, 
+        { a: "نَظَرَ", r: "Nazara", u: "دیکھا", u_ro: "Dekha", u_hi: "देखा", m: "نَظَرَ", t: "دیکھنا", t_ro: "Dekhna", t_hi: "देखना" }, 
+        { a: "انْظُرْ", r: "Unzur", u: "دیکھو", u_ro: "Dekho", u_hi: "देखो", m: "انْظُرْ", t: "دیکھنا", t_ro: "Dekhna", t_hi: "देखना" }, 
+        { a: "يَعْلَمُ", r: "Ya'lamu", u: "وہ جانتا ہے", u_ro: "Woh jaanta hai", u_hi: "वह जानता है", m: "يَعْلَمُ", t: "جاننا", t_ro: "Jaanna", t_hi: "जानना" }, 
+        { a: "تَعْلَمُونَ", r: "Ta'lamoon", u: "تم جانتے ہو", u_ro: "Tum jaante ho", u_hi: "तुम जानते हो", m: "تَعْلَمُونَ", t: "جاننا", t_ro: "Jaanna", t_hi: "जानना" } 
+    ]},
+    { day: 79, words: [ 
+        { a: "يَتَفَكَّرُونَ", r: "Yatafakkaroo", u: "وہ غور کرتے ہیں", u_ro: "Woh ghaur karte hain", u_hi: "वे ग़ौर करते हैं", m: "يَتَفَكَّرُونَ", t: "غور", t_ro: "Ghaur", t_hi: "ग़ौर" }, 
+        { a: "يَعْقِلُونَ", r: "Ya'qiloon", u: "وہ سمجھتے ہیں", u_ro: "Woh samajhte hain", u_hi: "वे समझते हैं", m: "يَعْقِلُونَ", t: "سمجھنا", t_ro: "Samajhna", t_hi: "समझना" }, 
+        { a: "اذْكُرُوا", r: "Udhkuroo", u: "یاد کرو", u_ro: "Yaad karo", u_hi: "याद करो", m: "اذْكُرُوا", t: "یاد کرنا", t_ro: "Yaad karna", t_hi: "याद करना" }, 
+        { a: "نَسِيَ", r: "Nasiya", u: "بھول گیا", u_ro: "Bhool gaya", u_hi: "भूल गया", m: "نَسِيَ", t: "بھولنا", t_ro: "Bhoolna", t_hi: "भूलना" }, 
+        { a: "شَاءَ", r: "Shaa'a", u: "چاہا", u_ro: "Chaaha", u_hi: "चाहा", m: "شَاءَ", t: "چاہنا", t_ro: "Chaahna", t_hi: "चाहना" }, 
+        { a: "أَرَادَ", r: "Araada", u: "ارادہ کیا", u_ro: "Iraada kiya", u_hi: "इरादा किया", m: "أَرَادَ", t: "چاہنا", t_ro: "Chaahna", t_hi: "चाहना" }, 
+        { a: "أَحَبَّ", r: "Ahabba", u: "پسند کیا", u_ro: "Pasand kiya", u_hi: "पसंद किया", m: "أَحَبَّ", t: "محبت", t_ro: "Mohabbat", t_hi: "मोहब्बत" }, 
+        { a: "يُحِبُّ", r: "Yuhibb", u: "وہ پسند کرتا ہے", u_ro: "Woh pasand karta hai", u_hi: "वह पसंद करता है", m: "يُحِبُّ", t: "پسند", t_ro: "Pasand", t_hi: "पसंद" }, 
+        { a: "كَرِهَ", r: "Kariha", u: "ناپسند کیا", u_ro: "Napasand kiya", u_hi: "नापसंद किया", m: "كَرِهَ", t: "ناپسند", t_ro: "Napasand", t_hi: "नापसंद" }, 
+        { a: "خَافَ", r: "Khaafa", u: "ڈرا", u_ro: "Dara", u_hi: "डरा", m: "خَافَ", t: "ڈرنا", t_ro: "Darna", t_hi: "डरना" } 
+    ]},
+    { day: 80, words: [ 
+        { a: "تَخَافُوا", r: "Takhaafoo", u: "ڈرو مت", u_ro: "Daro mat", u_hi: "डरो मत", m: "تَخَافُوا", t: "ڈرنا", t_ro: "Darna", t_hi: "डरना" }, 
+        { a: "خَشِيَ", r: "Khashiya", u: "ڈرا", u_ro: "Dara", u_hi: "डरा", m: "خَشِيَ", t: "ڈرنا", t_ro: "Darna", t_hi: "डरना" }, 
+        { a: "اتَّقُوا", r: "Ittaqoo", u: "ڈرو", u_ro: "Daro", u_hi: "डरो", m: "اتَّقُوا", t: "بچنا", t_ro: "Bachna", t_hi: "बचना" }, 
+        { a: "يَرْجُو", r: "Yarjoo", u: "وہ امید رکھتا ہے", u_ro: "Woh umeed rakhta hai", u_hi: "वह उम्मीद रखता है", m: "يَرْجُو", t: "امید", t_ro: "Umeed", t_hi: "उम्मीद" }, 
+        { a: "دَعَا", r: "Da'aa", u: "پکارا", u_ro: "Pukaara", u_hi: "पुकारा", m: "دَعَا", t: "دعا", t_ro: "Dua", t_hi: "दुआ" }, 
+        { a: "ادْعُوا", r: "Ud'oo", u: "پکارو", u_ro: "Pukaaro", u_hi: "पुकारो", m: "ادْعُوا", t: "دعا", t_ro: "Dua", t_hi: "दुआ" }, 
+        { a: "سَأَلَ", r: "Sa'ala", u: "پوچھا", u_ro: "Poochha", u_hi: "पूछा", m: "سَأَلَ", t: "پوچھنا", t_ro: "Poochhna", t_hi: "पूछना" }, 
+        { a: "أَجَابَ", r: "Ajaaba", u: "جواب دیا", u_ro: "Jawaab diya", u_hi: "जवाब दिया", m: "أَجَابَ", t: "جواب", t_ro: "Jawaab", t_hi: "जवाब" }, 
+        { a: "اسْتَجَابَ", r: "Istajaaba", u: "قبول کیا", u_ro: "Qubool kiya", u_hi: "क़बूल किया", m: "اسْتَجَابَ", t: "قبول", t_ro: "Qubool", t_hi: "क़बूल" }, 
+        { a: "غَفَرَ", r: "Ghafara", u: "بخش دیا", u_ro: "Bakhsh diya", u_hi: "बख़्श दिया", m: "غَفَرَ", t: "بخشنا", t_ro: "Bakhshna", t_hi: "बख़्शना" } 
+    ]},
+    { day: 81, words: [ 
+        { a: "اغْفِرْ", r: "Ighfir", u: "بخش دے", u_ro: "Bakhsh de", u_hi: "बख़्श दे", m: "اغْفِرْ", t: "بخشنا", t_ro: "Bakhshna", t_hi: "बख़्शना" }, 
+        { a: "رَحِمَ", r: "Rahima", u: "رحم کیا", u_ro: "Rahm kiya", u_hi: "रहम किया", m: "رَحِمَ", t: "رحم", t_ro: "Rahm", t_hi: "रहम" }, 
+        { a: "ارْحَمْ", r: "Irham", u: "رحم کر", u_ro: "Rahm kar", u_hi: "रहम कर", m: "ارْحَمْ", t: "رحم", t_ro: "Rahm", t_hi: "रहम" }, 
+        { a: "اهْدِنَا", r: "Ihdinaa", u: "ہمیں ہدایت دے", u_ro: "Hamein hidaayat de", u_hi: "हमें हिदायत दे", m: "اهْدِنَا", t: "ہدایت", t_ro: "Hidaayat", t_hi: "हिदायत" }, 
+        { a: "ضَلَّ", r: "Dalla", u: "گمراہ ہوا", u_ro: "Gumraah hua", u_hi: "गुमराह हुआ", m: "ضَلَّ", t: "گمراہ", t_ro: "Gumraah", t_hi: "गुमराह" }, 
+        { a: "أَضَلَّ", r: "Adalla", u: "گمراہ کیا", u_ro: "Gumraah kiya", u_hi: "गुमराह किया", m: "أَضَلَّ", t: "گمراہ", t_ro: "Gumraah", t_hi: "गुमराह" }, 
+        { a: "آمَنَ", r: "Aamana", u: "ایمان لایا", u_ro: "Imaan laaya", u_hi: "ईमान लाया", m: "آمَنَ", t: "ایمان", t_ro: "Imaan", t_hi: "ईमान" }, 
+        { a: "آمَنُوا", r: "Aamanoo", u: "ایمان لائے", u_ro: "Imaan laaye", u_hi: "ईमान लाए", m: "آمَنُوا", t: "ایمان", t_ro: "Imaan", t_hi: "ईमान" }, 
+        { a: "كَفَرَ", r: "Kafara", u: "انکار کیا", u_ro: "Inkaar kiya", u_hi: "इनकार किया", m: "كَفَرَ", t: "کفر", t_ro: "Kufr", t_hi: "कुफ़्र" }, 
+        { a: "كَفَرُوا", r: "Kafaroo", u: "انہوں نے انکار کیا", u_ro: "Unhon ne inkaar kiya", u_hi: "उन्होंने इनकार किया", m: "كَفَرُوا", t: "کفر", t_ro: "Kufr", t_hi: "कुफ़्र" } 
+    ]},
+    { day: 82, words: [ 
+        { a: "صَدَقَ", r: "Sadaqa", u: "سچ کہا", u_ro: "Sach kaha", u_hi: "सच कहा", m: "صَدَقَ", t: "سچ", t_ro: "Sach", t_hi: "सच" }, 
+        { a: "كَذَبَ", r: "Kadhaba", u: "جھوٹ بولا", u_ro: "Jhoot bola", u_hi: "झूठ बोला", m: "كَذَبَ", t: "جھوٹ", t_ro: "Jhoot", t_hi: "झूठ" }, 
+        { a: "كَذَّبُوا", r: "Kadhdhaboo", u: "انہوں نے جھٹلایا", u_ro: "Unhon ne jhutlaaya", u_hi: "उन्होंने झुठलाया", m: "كَذَّبُوا", t: "جھوٹ", t_ro: "Jhoot", t_hi: "झूठ" }, 
+        { a: "ظَلَمَ", r: "Zalama", u: "ظلم کیا", u_ro: "Zulm kiya", u_hi: "ज़ुल्म किया", m: "ظَلَمَ", t: "ظلم", t_ro: "Zulm", t_hi: "ज़ुल्म" }, 
+        { a: "عَصَى", r: "Asaa", u: "نافرمانی کی", u_ro: "Nafarmaani ki", u_hi: "नाफ़रमानी की", m: "عَصَى", t: "نافرمانی", t_ro: "Nafarmaani", t_hi: "नाफ़रमानी" }, 
+        { a: "أَطِيعُوا", r: "Atee'oo", u: "اطاعت کرو", u_ro: "Itaat karo", u_hi: "इताअत करो", m: "أَطِيعُوا", t: "اطاعت", t_ro: "Itaat", t_hi: "इताअत" }, 
+        { a: "اصْبِرْ", r: "Isbir", u: "صبر کر", u_ro: "Sabr kar", u_hi: "सब्र कर", m: "اصْبِرْ", t: "صبر", t_ro: "Sabr", t_hi: "सब्र" }, 
+        { a: "اعْبُدُوا", r: "U'budoo", u: "عبادت کرو", u_ro: "Ibaadat karo", u_hi: "इबादत करो", m: "اعْبُدُوا", t: "عبادت", t_ro: "Ibaadat", t_hi: "इबादत" }, 
+        { a: "أَقِيمُوا", r: "Aqeemoo", u: "قائم کرو", u_ro: "Qaaim karo", u_hi: "क़ायम करो", m: "أَقِيمُوا", t: "قائم", t_ro: "Qaaim", t_hi: "क़ायम" }, 
+        { a: "آتُوا", r: "Aatoo", u: "ادا کرو", u_ro: "Ada karo", u_hi: "अदा करो", m: "آتُوا", t: "دینا", t_ro: "Dena", t_hi: "देना" } 
+    ]},
+    { day: 83, words: [ 
+        { a: "ارْكَعُوا", r: "Irka'oo", u: "رکوع کرو", u_ro: "Rukoo karo", u_hi: "रुकू करो", m: "ارْكَعُوا", t: "رکوع", t_ro: "Rukoo", t_hi: "रुकू" }, 
+        { a: "اسْجُدُوا", r: "Usjudoo", u: "سجدہ کرو", u_ro: "Sajda karo", u_hi: "सज्दा करो", m: "اسْجُدُوا", t: "سجدہ", t_ro: "Sajda", t_hi: "सज्दा" }, 
+        { a: "تَابَ", r: "Taaba", u: "توبہ کی", u_ro: "Tauba ki", u_hi: "तौबा की", m: "تَابَ", t: "توبہ", t_ro: "Tauba", t_hi: "तौबा" }, 
+        { a: "هَاجَرَ", r: "Haajara", u: "ہجرت کی", u_ro: "Hijrat ki", u_hi: "हिजरत की", m: "هَاجَرَ", t: "ہجرت", t_ro: "Hijrat", t_hi: "हिजरत" }, 
+        { a: "قَاتَلَ", r: "Qaatala", u: "لڑائی کی", u_ro: "Ladaai ki", u_hi: "लड़ाई की", m: "قَاتَلَ", t: "جنگ", t_ro: "Jang", t_hi: "जंग" }, 
+        { a: "قَتَلَ", r: "Qatala", u: "قتل کیا", u_ro: "Qatl kiya", u_hi: "क़त्ल किया", m: "قَتَلَ", t: "قتل", t_ro: "Qatl", t_hi: "क़त्ल" }, 
+        { a: "مَاتَ", r: "Maata", u: "مر گیا", u_ro: "Mar gaya", u_hi: "मर गया", m: "مَاتَ", t: "موت", t_ro: "Maut", t_hi: "मौत" }, 
+        { a: "أَحْيَا", r: "Ahyaa", u: "زندہ کیا", u_ro: "Zinda kiya", u_hi: "ज़िंदा किया", m: "أَحْيَا", t: "زندگی", t_ro: "Zindagi", t_hi: "ज़िंदगी" }, 
+        { a: "أَمَاتَ", r: "Amaata", u: "موت دی", u_ro: "Maut di", u_hi: "मौत दी", m: "أَمَاتَ", t: "موت", t_ro: "Maut", t_hi: "मौत" }, 
+        { a: "أَنْفَقَ", r: "Anfaqa", u: "خرچ کیا", u_ro: "Kharch kiya", u_hi: "ख़र्च किया", m: "أَنْفَقَ", t: "خرچ", t_ro: "Kharch", t_hi: "ख़र्च" } 
+    ]},
+    { day: 84, words: [ 
+        { a: "أَنْفِقُوا", r: "Anfiquoo", u: "خرچ کرو", u_ro: "Kharch karo", u_hi: "ख़र्च करो", m: "أَنْفِقُوا", t: "خرچ", t_ro: "Kharch", t_hi: "ख़र्च" }, 
+        { a: "أَكَلَ", r: "Akala", u: "کھایا", u_ro: "Khaaya", u_hi: "खाया", m: "أَكَلَ", t: "کھانا", t_ro: "Khaana", t_hi: "खाना" }, 
+        { a: "كُلُوا", r: "Kuloo", u: "کھاؤ", u_ro: "Khaao", u_hi: "खाओ", m: "كُلُوا", t: "کھانا", t_ro: "Khaana", t_hi: "खाना" }, 
+        { a: "شَرِبَ", r: "Shariba", u: "پیا", u_ro: "Piya", u_hi: "पिया", m: "شَرِبَ", t: "پینا", t_ro: "Peena", t_hi: "पीना" }, 
+        { a: "اشْرَبُوا", r: "Ishraboo", u: "پیو", u_ro: "Piyo", u_hi: "पियो", m: "اشْرَبُوا", t: "پینا", t_ro: "Peena", t_hi: "पीना" }, 
+        { a: "سَارَ", r: "Saara", u: "چلا", u_ro: "Chala", u_hi: "चला", m: "سَارَ", t: "چلنا", t_ro: "Chalna", t_hi: "चलना" }, 
+        { a: "سِيرُوا", r: "Seeroo", u: "چلو پھرو", u_ro: "Chalo phiro", u_hi: "चलो-फिरो", m: "سِيرُوا", t: "چلنا", t_ro: "Chalna", t_hi: "चलना" }, 
+        { a: "أَخْرَجَ", r: "Akhraja", u: "نکالا", u_ro: "Nikaala", u_hi: "निकाला", m: "أَخْرَجَ", t: "نکالنا", t_ro: "Nikaalna", t_hi: "निकालना" }, 
+        { a: "أَدْخَلَ", r: "Adkhala", u: "داخل کیا", u_ro: "Daakhil kiya", u_hi: "दाख़िल किया", m: "أَدْخَلَ", t: "داخل", t_ro: "Daakhil", t_hi: "दाख़िल" }, 
+        { a: "رَفَعَ", r: "Rafa'a", u: "بلند کیا", u_ro: "Buland kiya", u_hi: "बुलंद किया", m: "رَفَعَ", t: "بلند", t_ro: "Buland", t_hi: "बुलंद" } 
+    ]},
+    { day: 85, words: [ 
+        { a: "جَمَعَ", r: "Jama'a", u: "جمع کیا", u_ro: "Jama kiya", u_hi: "जमा किया", m: "جَمَعَ", t: "جمع", t_ro: "Jama", t_hi: "जमा" }, 
+        { a: "حَكَمَ", r: "Hakama", u: "فیصلہ کیا", u_ro: "Faisla kiya", u_hi: "फ़ैसला किया", m: "حَكَمَ", t: "فیصلہ", t_ro: "Faisla", t_hi: "फ़ैसला" }, 
+        { a: "قَضَى", r: "Qadaa", u: "فیصلہ کر دیا", u_ro: "Faisla kar diya", u_hi: "फ़ैसला कर दिया", m: "قَضَى", t: "فیصلہ", t_ro: "Faisla", t_hi: "फ़ैसला" }, 
+        { a: "قَصَّ", r: "Qassa", u: "بیان کیا", u_ro: "Bayaan kiya", u_hi: "बयान किया", m: "قَصَّ", t: "بیان", t_ro: "Bayaan", t_hi: "बयान" }, 
+        { a: "كَتَبَ", r: "Kataba", u: "لکھا", u_ro: "Likha", u_hi: "लिखा", m: "كَتَبَ", t: "لکھنا", t_ro: "Likhna", t_hi: "लिखना" }, 
+        { a: "اقْرَأْ", r: "Iqra'", u: "پڑھو", u_ro: "Padho", u_hi: "पढ़ो", m: "اقْرَأْ", t: "پڑھنا", t_ro: "Padhna", t_hi: "पढ़ना" }, 
+        { a: "تَلَا", r: "Talaa", u: "تلاوت کی", u_ro: "Tilaawat ki", u_hi: "तिलावत की", m: "تَلَا", t: "پڑھنا", t_ro: "Padhna", t_hi: "पढ़ना" }, 
+        { a: "أَمَرَ", r: "Amara", u: "حکم دیا", u_ro: "Hukm diya", u_hi: "हुक्म दिया", m: "أَمَرَ", t: "حکم", t_ro: "Hukm", t_hi: "हुक्म" }, 
+        { a: "نَهَى", r: "Nahaa", u: "منع کیا", u_ro: "Mana kiya", u_hi: "मना किया", m: "نَهَى", t: "منع", t_ro: "Mana", t_hi: "मना" }, 
+        { a: "حَرَّمَ", r: "Harrama", u: "حرام کیا", u_ro: "Haraam kiya", u_hi: "हराम किया", m: "حَرَّمَ", t: "حرام", t_ro: "Haraam", t_hi: "हराम" } 
+    ]},
+    { day: 86, words: [ 
+        { a: "أَحَلَّ", r: "Ahalla", u: "حلال کیا", u_ro: "Halaal kiya", u_hi: "हलाल किया", m: "أَحَلَّ", t: "حلال", t_ro: "Halaal", t_hi: "हलाल" }, 
+        { a: "بَدَّلَ", r: "Baddala", u: "بدل دیا", u_ro: "Badal diya", u_hi: "बदल दिया", m: "بَدَّلَ", t: "بدلنا", t_ro: "Badalna", t_hi: "बदलना" }, 
+        { a: "بَلَغَ", r: "Balagha", u: "پہنچا", u_ro: "Pahuncha", u_hi: "पहुँचा", m: "بَلَغَ", t: "پہنچنا", t_ro: "Pahunchna", t_hi: "पहुँचना" }, 
+        { a: "ظَنَّ", r: "Zanna", u: "گمان کیا", u_ro: "Gumaan kiya", u_hi: "गुमान किया", m: "ظَنَّ", t: "گمان", t_ro: "Gumaan", t_hi: "गुमान" }, 
+        { a: "حَسِبَ", r: "Hasiba", u: "سمجھا", u_ro: "Samjha", u_hi: "समझा", m: "حَسِبَ", t: "سمجھنا", t_ro: "Samajhna", t_hi: "समझना" }, 
+        { a: "أَنْذَرَ", r: "Andhara", u: "ڈرایا", u_ro: "Daraaya", u_hi: "डराया", m: "أَنْذَرَ", t: "ڈرانا", t_ro: "Daraana", t_hi: "डराना" }, 
+        { a: "نَصَرَ", r: "Nasara", u: "مدد کی", u_ro: "Madad ki", u_hi: "मदद की", m: "نَصَرَ", t: "مدد", t_ro: "Madad", t_hi: "मदद" }, 
+        { a: "هَلَكَ", r: "Halaka", u: "ہلاک ہوا", u_ro: "Halaak hua", u_hi: "हलाक हुआ", m: "هَلَكَ", t: "ہلاک", t_ro: "Halaak", t_hi: "हलाक" }, 
+        { a: "أَهْلَكَ", r: "Ahlaka", u: "ہلاک کیا", u_ro: "Halaak kiya", u_hi: "हलाक किया", m: "أَهْلَكَ", t: "ہلاک", t_ro: "Halaak", t_hi: "हलाक" }, 
+        { a: "نَجَّى", r: "Najjaa", u: "بچا لیا", u_ro: "Bacha liya", u_hi: "बचा लिया", m: "نَجَّى", t: "نجات", t_ro: "Najaat", t_hi: "नजात" } 
+    ]},
+    { day: 87, words: [ 
+        { a: "غَلَبَ", r: "Ghalaba", u: "غالب آیا", u_ro: "Ghaalib aaya", u_hi: "ग़ालिब आया", m: "غَلَبَ", t: "غالب", t_ro: "Ghaalib", t_hi: "ग़ालिब" }, 
+        { a: "ضَرَبَ", r: "Daraba", u: "مارا", u_ro: "Maara", u_hi: "मारा", m: "ضَرَبَ", t: "مارنا", t_ro: "Maarna", t_hi: "मारना" }, 
+        { a: "فَتَحَ", r: "Fataha", u: "کھولا", u_ro: "Khola", u_hi: "खोला", m: "فَتَحَ", t: "کھولنا", t_ro: "Kholna", t_hi: "खोलना" }, 
+        { a: "طَلَبَ", r: "Talaba", u: "مانگا", u_ro: "Maanga", u_hi: "माँगा", m: "طَلَبَ", t: "مانگنا", t_ro: "Maangna", t_hi: "माँगना" }, 
         { a: "الْحَمْدُ لِلَّهِ", r: "Alhamdulillah", u: "تمام تعریف اللہ کے لیے ہے", u_ro: "Sab taareef Allah ke liye hai", u_hi: "सब तारीफ़ अल्लाह के लिए है", m: "الْحَمْدُ لِلَّهِ", t: "سورہ فاتحہ", t_ro: "Surah Fatiha", t_hi: "सूरह फ़ातिहा" }, 
         { a: "سُبْحَانَ اللَّهِ", r: "SubhanAllah", u: "اللہ پاک ہے", u_ro: "Allah paak hai", u_hi: "अल्लाह पाक है", m: "سُبْحَانَ اللَّهِ", t: "تسبیح", t_ro: "Tasbeeh", t_hi: "तस्बीह" }, 
         { a: "اللَّهُ أَكْبَرُ", r: "Allahu Akbar", u: "اللہ سب سے بڑا ہے", u_ro: "Allah sab se bada hai", u_hi: "अल्लाह सबसे बड़ा है", m: "اللَّهُ أَكْبَرُ", t: "تکبیر", t_ro: "Takbeer", t_hi: "तकबीर" }, 
@@ -614,7 +1050,7 @@ const courseData = [
         { a: "بِسْمِ اللَّهِ", r: "Bismillah", u: "اللہ کے نام سے", u_ro: "Allah ke naam se", u_hi: "अल्लाह के नाम से", m: "بِسْمِ اللَّهِ", t: "شروعات", t_ro: "Shuruaat", t_hi: "शुरुआत" }, 
         { a: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ", r: "Allahumma salli 'ala Muhammad", u: "اے اللہ! محمد ﷺ پر رحمت نازل فرما", u_ro: "Ae Allah! Muhammad ﷺ par rahmat naazil farma", u_hi: "ऐ अल्लाह! मुहम्मद ﷺ पर रहमत नाज़िल फ़रमा", m: "اللَّهُمَّ صَلِّ", t: "درود شریف", t_ro: "Darood Shareef", t_hi: "दरूद शरीफ़" } 
     ]},
-    { day: 52, words: [ 
+    { day: 88, words: [ 
         { a: "رَبَّنَا لَكَ الْحَمْدُ", r: "Rabbana lakal hamd", u: "اے ہمارے رب! تیری ہی تعریف ہے", u_ro: "Ae hamare Rabb! Teri hi taareef hai", u_hi: "ऐ हमारे रब! तेरी ही तारीफ़ है", m: "رَبَّنَا لَكَ الْحَمْدُ", t: "رکوع سے اٹھنا", t_ro: "Rukoo se uthna", t_hi: "रुकू से उठना" }, 
         { a: "اللَّهُمَّ بَارِكْ", r: "Allahumma barik", u: "اے اللہ! برکت نازل فرما", u_ro: "Ae Allah! Barkat naazil farma", u_hi: "ऐ अल्लाह! बरकत नाज़िल फ़रमा", m: "اللَّهُمَّ بَارِكْ", t: "درود ابراہیمی", t_ro: "Darood Ibraheemi", t_hi: "दरूद इब्राहीमी" }, 
         { a: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", r: "Subhana Rabbiyal Azeem", u: "میرا رب بہت عظمت والا ہے", u_ro: "Mera Rabb bahut azmat wala hai", u_hi: "मेरा रब बहुत अज़मत वाला है", m: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", t: "رکوع کی تسبیح", t_ro: "Rukoo ki tasbeeh", t_hi: "रुकू की तस्बीह" }, 
@@ -626,7 +1062,7 @@ const courseData = [
         { a: "رَبِّ اشْرَحْ لِي صَدْرِي", r: "Rabbish rah li sadri", u: "اے میرے رب! میرا سینہ کھول دے", u_ro: "Ae mere Rabb! Mera seena khol de", u_hi: "ऐ मेरे रब! मेरा सीना खोल दे", m: "رَبِّ اشْرَحْ لِي صَدْرِي", t: "موسیٰ علیہ السلام کی دعا", t_ro: "Moosa AS ki dua", t_hi: "मूसा अ.स. की दुआ" }, 
         { a: "يَا حَيُّ يَا قَيُّومُ", r: "Ya Hayyu ya Qayyum", u: "اے زندہ! اے قائم رکھنے والے!", u_ro: "Ae Zinda! Ae Qaaim rakhne wale!", u_hi: "ऐ ज़िंदा! ऐ क़ायम रखने वाले!", m: "يَا حَيُّ يَا قَيُّومُ", t: "پریشانی کی دعا", t_ro: "Pareshaani ki dua", t_hi: "परेशानी की दुआ" } 
     ]},
-    { day: 53, words: [ 
+    { day: 89, words: [ 
         { a: "اللَّهُمَّ أَنْتَ السَّلَامُ", r: "Allahumma antas-salam", u: "اے اللہ! تو سلامتی والا ہے", u_ro: "Ae Allah! Tu salaamati wala hai", u_hi: "ऐ अल्लाह! तू सलामती वाला है", m: "اللَّهُمَّ أَنْتَ السَّلَامُ", t: "نماز کے بعد", t_ro: "Namaaz ke baad", t_hi: "नमाज़ के बाद" }, 
         { a: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", r: "La hawla wa la quwwata illa billah", u: "طاقت نہیں مگر اللہ سے", u_ro: "Taaqat nahin magar Allah se", u_hi: "ताक़त नहीं मगर अल्लाह से", m: "لَا حَوْلَ وَلَا قُوَّةَ", t: "جنت کا خزانہ", t_ro: "Jannat ka khazaana", t_hi: "जन्नत का ख़ज़ाना" }, 
         { a: "أَشْهَدُ أَنْ لَّا إِلَهَ إِلَّا اللَّهُ", r: "Ashhadu an la ilaha illallah", u: "میں گواہی دیتا ہوں", u_ro: "Main gawaahi deta hoon", u_hi: "मैं गवाही देता हूँ", m: "أَشْهَدُ أَنْ", t: "تشہد", t_ro: "Tashahhud", t_hi: "तशह्हुद" }, 
@@ -638,7 +1074,7 @@ const courseData = [
         { a: "يَا أَيُّهَا النَّاسُ", r: "Ya ayyuhan-naas", u: "اے لوگو!", u_ro: "Ae logo!", u_hi: "ऐ लोगो!", m: "يَا أَيُّهَا النَّاسُ", t: "پکار", t_ro: "Pukaar", t_hi: "पुकार" }, 
         { a: "اتَّقُوا اللَّهَ", r: "Ittaqullah", u: "اللہ سے ڈرو", u_ro: "Allah se daro", u_hi: "अल्लाह से डरो", m: "اتَّقُوا اللَّهَ", t: "تقویٰ", t_ro: "Taqwa", t_hi: "तक़वा" } 
     ]},
-    { day: 54, words: [ 
+    { day: 90, words: [ 
         { a: "أَطِيعُوا اللَّهَ", r: "Atee'ullah", u: "اللہ کی اطاعت کرو", u_ro: "Allah ki itaat karo", u_hi: "अल्लाह की इताअत करो", m: "أَطِيعُوا اللَّهَ", t: "اطاعت", t_ro: "Itaat", t_hi: "इताअत" }, 
         { a: "وَأَطِيعُوا الرَّسُولَ", r: "Wa atee'ur-rasool", u: "رسول کی اطاعت کرو", u_ro: "Rasool ki itaat karo", u_hi: "रसूल की इताअत करो", m: "وَأَطِيعُوا الرَّسُولَ", t: "اطاعت", t_ro: "Itaat", t_hi: "इताअत" }, 
         { a: "وَاذْكُرُوا نِعْمَتَ اللَّهِ", r: "Wadhkuru ni'matallah", u: "اللہ کی نعمت یاد کرو", u_ro: "Allah ki nemat yaad karo", u_hi: "अल्लाह की नेमत याद करो", m: "وَاذْكُرُوا", t: "یاد", t_ro: "Yaad", t_hi: "याद" }, 
@@ -650,5 +1086,4 @@ const courseData = [
         { a: "إِنَّ اللَّهَ سَمِيعٌ بَصِيرٌ", r: "Innallaha samee'un baseer", u: "اللہ سننے والا دیکھنے والا ہے", u_ro: "Allah sunne wala dekhne wala hai", u_hi: "अल्लाह सुनने वाला देखने वाला है", m: "سَمِيعٌ بَصِيرٌ", t: "سننا دیکھنا", t_ro: "Sunna dekhna", t_hi: "सुनना देखना" }, 
         { a: "إِنَّ اللَّهَ لَا يُحِبُّ الظَّالِمِينَ", r: "Innallaha la yuhibbuz-zalimeen", u: "اللہ ظالموں کو پسند نہیں کرتا", u_ro: "Allah zaalimon ko pasand nahin karta", u_hi: "अल्लाह ज़ालिमों को पसंद नहीं करता", m: "لَا يُحِبُّ", t: "ظلم", t_ro: "Zulm", t_hi: "ज़ुल्म" } 
     ]}
-
 ];
