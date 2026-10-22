@@ -4,7 +4,7 @@
 // Cache-First for Images
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v6';
+const CACHE_NAME = 'quran-ustad-auto-v9';
 
 const ASSETS = [
     './',
@@ -17,6 +17,7 @@ const ASSETS = [
     './manifest.json',
     './icon.png',
     './icon-192.png',
+    './icon-maskable.png',
     './install.js',
     './speech.js',
     './ui.js',
@@ -29,7 +30,12 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
     self.skipWaiting(); // Purane SW ko wait mat karo, foran replace karo
     e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+        caches.open(CACHE_NAME).then(cache =>
+            // Ek file na mile to bhi baaki cache ho jayein (addAll sab fail kar deta hai)
+            Promise.all(ASSETS.map(url =>
+                cache.add(url).catch(err => console.warn('Cache skip:', url))
+            ))
+        )
     );
 });
 
