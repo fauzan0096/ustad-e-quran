@@ -111,6 +111,16 @@
         .tafseel-box { background: linear-gradient(135deg, rgba(212,175,55,0.14), rgba(212,175,55,0.04)); border: 1px solid rgba(201,162,39,0.4); border-radius: 14px; }
         .tafseel-text { font-size: calc(17px * var(--scale)); line-height: 2.2; color: var(--text); }
         .hawala { display: inline-block; font-style: normal; border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; margin-top: 14px; background: var(--chip-bg); }
+
+        /* ===== Favourites ===== */
+        .card-title { flex: 1; min-width: 0; }
+        .cat-tag { display: inline-block; margin-left: 8px; font-size: 10px; font-weight: 700; letter-spacing: .4px; padding: 2px 9px; border-radius: 20px; background: var(--chip-bg); color: var(--text-light); vertical-align: middle; }
+        .fav-btn { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-light); font-size: 22px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        .fav-btn:active { transform: scale(.88); }
+        .fav-btn.on { color: #fff; background: linear-gradient(135deg, var(--gold), #8f7312); border-color: var(--gold); }
+        .fav-empty { text-align: center; color: var(--text-light); padding: 30px 16px; line-height: 1.8; }
+        .fav-toast { position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%) translateY(20px); background: #222; color: #fff; padding: 10px 18px; border-radius: 22px; font-size: 13px; z-index: 99995; opacity: 0; transition: all .25s; pointer-events: none; border: 1px solid var(--gold); max-width: 88%; text-align: center; }
+        .fav-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
     <link rel="stylesheet" href="theme.css">
 </head>
@@ -133,6 +143,7 @@
         
         <nav class="main-nav">
             <button class="nav-btn active" onclick="filterCategory('all', this)">Sab Kuch</button>
+            <button class="nav-btn" id="favNavBtn" onclick="filterCategory('fav', this)">⭐ Favourites (0)</button>
             <button class="nav-btn" onclick="filterCategory('namaz', this)">Namaz (59)</button>
             <button class="nav-btn" onclick="filterCategory('subah', this)">Subah-Sham Azkar</button>
             <button class="nav-btn" onclick="filterCategory('mushkil', this)">Mushkil & Pareshani</button>
@@ -268,6 +279,40 @@
         ];
 
 
+        // ---------- ⭐ Favourites (har profile ki apni list) ----------
+        const CAT_LABEL = { namaz: 'Namaz', subah: 'Subah-Sham', mushkil: 'Mushkil', bimari: 'Bimari', sone: 'Sone se Pehle' };
+        const duaId = d => d.cat + '|' + d.title;
+        const byId = {}; allDuas.forEach(d => { byId[duaId(d)] = d; });
+        function favStoreKey() {
+            try { const p = localStorage.getItem('activeProfile'); return p ? 'p_' + p + '_duaFavs' : 'duaFavs'; } catch (e) { return 'duaFavs'; }
+        }
+        let favs = [];
+        try { const v = JSON.parse(localStorage.getItem(favStoreKey())); if (Array.isArray(v)) favs = v.filter(id => byId[id]); } catch (e) {}
+        function isFav(d) { return favs.indexOf(duaId(d)) !== -1; }
+        function updateFavCount() {
+            const b = document.getElementById('favNavBtn');
+            if (b) b.textContent = '⭐ Favourites (' + favs.length + ')';
+        }
+        function saveFavs() {
+            try { localStorage.setItem(favStoreKey(), JSON.stringify(favs)); } catch (e) {}
+            updateFavCount();
+        }
+        let favToastTimer = null;
+        function favToast(msg) {
+            let t = document.getElementById('favToast');
+            if (!t) { t = document.createElement('div'); t.id = 'favToast'; t.className = 'fav-toast'; document.body.appendChild(t); }
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(favToastTimer); favToastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+        }
+        function toggleFav(d, btn) {
+            const id = duaId(d), i = favs.indexOf(id), on = i === -1;
+            if (on) favs.push(id); else favs.splice(i, 1);
+            saveFavs();
+            btn.classList.toggle('on', on); btn.textContent = on ? '★' : '☆'; btn.setAttribute('aria-pressed', on);
+            favToast(on ? '⭐ Favourites mein jod diya' : 'Favourites se hata diya');
+            if (currentCategory === 'fav' && !on) filterCards();      // Favourites tab mein hatate hi card gayab
+        }
+
         // ---------- Line-wise display helpers ----------
         function splitLines(text, kind) {
             let t = (text || '').trim();
@@ -299,16 +344,18 @@
             const container = document.getElementById('duaContainer');
             container.innerHTML = '';
 
-            const filtered = allDuas.filter(dua => {
+            const filtered = (category === 'fav' ? favs.map(id => byId[id]).filter(Boolean) : allDuas).filter(dua => {
                 const matchesSearch = dua.title.toLowerCase().includes(filterText.toLowerCase()) || 
                                       dua.roman.toLowerCase().includes(filterText.toLowerCase()) || 
                                       dua.urdu.includes(filterText);
-                const matchesCategory = category === 'all' || dua.cat === category;
+                const matchesCategory = category === 'all' || category === 'fav' || dua.cat === category;
                 return matchesSearch && matchesCategory;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Koi Dua nahi mili.</p>';
+                container.innerHTML = (category === 'fav' && !filterText)
+                    ? '<div class="fav-empty">⭐ Abhi koi favourite nahi hai.<br>Jo dua baar baar padhni ho, uske card par ☆ dabayein — wo yahan aa jayegi.</div>'
+                    : '<p style="text-align:center; color:gray; padding: 20px;">Koi Dua nahi mili.</p>';
                 return;
             }
 
@@ -321,7 +368,8 @@
                 card.innerHTML = `
                     <div class="card-head">
                         <div class="num-badge">${num}</div>
-                        <div class="card-title">${ttl}</div>
+                        <div class="card-title">${ttl}${(category === 'all' || category === 'fav') && CAT_LABEL[dua.cat] ? `<span class="cat-tag">${CAT_LABEL[dua.cat]}</span>` : ''}</div>
+                        <button type="button" class="fav-btn${isFav(dua) ? ' on' : ''}" aria-label="Favourite" aria-pressed="${isFav(dua)}">${isFav(dua) ? '★' : '☆'}</button>
                     </div>
 
                     ${dua.arabic ? `<div class="sec sec-ar">
@@ -348,6 +396,7 @@
 
                     <div class="hawala">📍 Hawala: ${dua.hawala}</div>
                 `;
+                card.querySelector('.fav-btn').onclick = function () { toggleFav(dua, this); };
                 const pa = card.querySelector('.play-ar'); if (pa) pa.onclick = function () { speakText(dua.arabic, 'ar', this); };
                 const pu = card.querySelector('.play-ur'); if (pu) pu.onclick = function () { speakText(dua.urdu, 'ur', this); };
                 container.appendChild(card);
@@ -369,6 +418,7 @@
         }
 
         renderDuas();
+        updateFavCount();
     </script>
 </body>
 </html>

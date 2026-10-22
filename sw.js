@@ -5,9 +5,10 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
-// v21: naya login (pura naam + multi-user profiles) aur certificate naam fix — cache badalna zaroori hai
+// v22: Qari ki awaaz har Quran ke hisse par (multi-ayat, teeno Qul, Ayatul Kursi) + dua mein Favourites — cache badalna zaroori hai
+// (v21: naya login (pura naam + multi-user profiles) aur certificate naam fix)
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v21';
+const CACHE_NAME = 'quran-ustad-auto-v22';
 
 const ASSETS = [
     './',

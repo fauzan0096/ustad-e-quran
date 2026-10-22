@@ -6,26 +6,69 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 
 ## ✨ Features
 
-- 📚 **Sabaq (40 Days Course)** — har din 10 alfaz, Arabic + Roman + Urdu meaning, mashq aur tafseel
-- 📝 **Daily Exam** — Urdu meaning ka MCQ test (pass hone par agla din unlock)
-- 🤲 **Namaz ki Duaen** aur 🌅 **Azkar** — search ke saath
-- 📖 **Quran Alfaz** — searchable list
-- 🎮 **Islamic GK Quiz**
-- 🔊 Suno, 📤 Share, 🔥 Streak, 🌙 Dark/Light mode, 🔐 Password login
-- 📱 **PWA** — phone ki home screen par install kar sakte hain
+### 📚 Sabaq (90 Days Course)
+- Har din 10 alfaz (kul 900) — Arabic + Roman + meaning, **Mashq** aur tafseel
+- Meaning 3 tarah se: **اردو / Roman / हिंदी**
+- Arabic lafz aur **Mashq par tap karke Qari ki awaaz** suniye 🔊
+- 📝 **Daily Exam** — meaning ka MCQ test (pass hone par agla din unlock)
+- 🔥 Streak, ⭐ XP/Levels, 🏅 Badges, 🛒 Inaam Ghar (Shop)
+- 🏆 **Certificate (Sanad)** — Silver (50 Din) aur Gold (90 Din), download/share
+- 📤 Lafz ya badge ki share card (WhatsApp / Insta)
+- 📖 **Aaj ki Ayat**, 👤 alag-alag naam ki alag profile (har ki apni history)
+
+### 🤲 Masnoon Duaein (`dua.html`)
+- **93 duaein**: Namaz (59), Subah-Sham Azkar, Mushkil & Pareshani, Bimari & Shifa, Sone se Pehle
+- Har dua: Arabic (line-wise) + Roman + Urdu tarjuma + tafseel + hawala
+- 🔍 Search (Urdu ya Roman)
+- **⭐ Favourites** — jo dua baar baar padhni ho, card ke ☆ par tap karein. Upar **⭐ Favourites** tab mein sab ek jagah milengi (search bhi chalta hai). Har profile ki apni favourites list.
+- A- / A+ se Arabic aur Urdu ka size
+
+### 🕌 Tajweed (`tajweed.html`)
+Basic / Intermediate / High qawaid, misaalon ke saath — har misaal Qari ki awaaz mein.
+
+### 🎮 Games (`games.html`)
+🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji — nasheed aur sound effects ke saath.
+
+### Aur
+🔊 Suno · 🌙 Dark/Light mode · 🔐 Password login · 📱 PWA (home screen par install)
+
+## 🎙️ Qari ki awaaz (Quran ka har hissa)
+
+App mein jahan bhi Arabic par 🔊 / tap hai — dua, sabaq, mashq, tajweed, Aaj ki Ayat — wahan **jo hissa Quran ka hai wo Qari ki asli recording se chalta hai, phone ki robot awaaz se nahi.**
+
+Kaise kaam karta hai (`qari.js`):
+
+1. Poora Quran text (harakat ke saath) ek baar Quran.com se aata hai aur phone mein save ho jaata hai.
+2. App ka Arabic text poore Quran se milaya jaata hai — **ek se zyada ayat aur ek se zyada surah bhi** (jaise Aamanar-Rasulu, teeno Qul). Spelling ka chhota farq maaf hai (jaise `يَئُودُهُ` / `يَـُٔودُهُ`).
+3. **Poori ayat** mile to us ayat ki **Qari Mishary Rashid Alafasy** ki recording chalti hai (everyayah.com se, na chale to Quran.com se). Ayat ka **tukda** ho to Quran.com ki lafz-ba-lafz recording chalti hai.
+4. **Jo Quran mein nahi hai** (hadees ki duaein, jaise "Allahumma inni a'udhu bika...") wo phone ki awaaz mein chalta hai. Agar ek hi dua mein Quran + hadees dono hon (jaise musibat ki dua) to Quran wala hissa Qari se aur baaki phone se.
+5. Net na ho ya recording na chale to us hisse ke liye phone ki awaaz chalti hai.
+
+Dhyan dein:
+- Qari ki recording ke liye **internet zaroori** hai (Quran text pehli baar ke baad offline bhi match ho jaata hai).
+- Quran ka hissa sahi pehchanne ke liye dua/sabaq ke `arabic` mein Quran ka text **bilkul sahi** likhein (Quran.com se copy karna behtar hai). Quran aur hadees ko ek hi dua mein milana ho to bhi chalega, magar alag-alag cards behtar hain.
+- **Qari badalna** ho to `qari.js` mein `RECITER` (everyayah.com ka folder naam, jaise `Alafasy_128kbps`) badlein.
 
 ## 📁 Files
 
 ```
 .
-├── index.html      # Poori app (HTML + CSS + JS + data)
-├── dua.html        # Masnoon duaein (line-wise)
-├── manifest.json   # PWA settings
-├── sw.js           # Service worker (offline)
-├── install.js      # Install popup (upar banner)
-├── icon.png        # App icon 512x512
-├── icon-192.png    # App icon 192x192
-├── icon-maskable.png # Android maskable icon
+├── index.html       # Sabaq, exam, login, shop, certificate (main app)
+├── courseData.js    # 90 din ka course data (900 alfaz)
+├── dua.html         # Masnoon duaein + Favourites
+├── tajweed.html     # Tajweed ke qawaid
+├── games.html       # Games
+├── asma.html        # Asma wala page
+├── speech.js        # 🔊 Suno / Roko — Qari + phone ki awaaz ko jodta hai
+├── qari.js          # Quran text pehchan kar Qari ki recording dhoondhta hai
+├── progress.js      # Levels, badges, share card
+├── ui.js            # Splash, text size (A-/A+), Aaj ki Ayat
+├── games-audio.js   # Games ka nasheed aur sound effects (nasheed.mp3 chahiye)
+├── theme.css        # Shared theme
+├── install.js       # Install popup (upar banner)
+├── manifest.json    # PWA settings
+├── sw.js            # Service worker (offline)
+├── icon.png / icon-192.png / icon-maskable.png / signature.png
 └── README.md
 ```
 
@@ -36,24 +79,35 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 3. App is link par live hogi: `https://<your-username>.github.io/<repo-name>/`
 4. Phone ke browser mein kholkar **Add to Home Screen** karein.
 
-Locally chalane ke liye `index.html` browser mein open karein (PWA install ke liye server zaroori hai, jaise `python3 -m http.server`).
+Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost:8000` kholen (PWA install aur Qari ki awaaz ke liye server zaroori hai, seedha file kholne se kuch cheezein nahi chalti).
+
+> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v22` → `v23`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
 
 ## 🛠️ Data Badalna / Badhaana
 
-Course data `index.html` ke andar `courseData` array mein hai:
+**Sabaq** — `courseData.js` mein:
 
 ```js
 { day: 1, words: [
-  { a: "اللَّهُ", r: "Allah", u: "اللہ", m: "اللَّهُ أَحَدٌ", t: "اسمِ اعظم" }
+  { a: "اللَّهُ", r: "Allah", u: "اللہ", u_ro: "Allah", u_hi: "अल्लाह",
+    m: "اللَّهُ أَحَدٌ", t: "سب کا رب", t_ro: "Sab ka Rabb", t_hi: "सब का रब" }
 ]}
 ```
 
-`a` = Arabic, `r` = Roman, `u` = Urdu meaning, `m` = mashq, `t` = tafseel.
-Namaz, Azkar, Quran Alfaz aur GK quiz ka data bhi usi script mein (`namazData`, `azkarData`, `quranWordsData`, `gkData`) hai.
+`a` = Arabic, `r` = Roman, `u` / `u_ro` / `u_hi` = meaning (Urdu / Roman / Hindi), `m` = mashq (Quran ka jumla), `t` / `t_ro` / `t_hi` = tafseel.
+
+**Duaein** — `dua.html` ke andar `allDuas` array mein:
+
+```js
+{ cat: "namaz", title: "5. Masjid mein dakhil hote waqt",
+  arabic: "...", roman: "...", urdu: "...", tafseel: "...", hawala: "Sahih Muslim 713" }
+```
+
+`cat` = `namaz` / `subah` / `mushkil` / `bimari` / `sone`. Favourites `cat` + `title` se pehchani jaati hain, isliye kisi dua ka `title` badalne par uski favourite hat jayegi.
 
 ## 🔐 Password
 
-Passwords `index.html` ke `CONFIG` section mein (`USER_PASSWORD`, `ADMIN_PASSWORD`) badlein. Yeh client-side hain, isliye asli security nahi dete.
+Login ke passwords `index.html` ke script mein (`ADMIN_PASSWORD`, `GUEST_PASSWORD`) hain. Yeh client-side hain, isliye asli security nahi dete — public repo mein koi bhi inhein dekh sakta hai. Asli password README ya kisi public jagah par na likhein.
 
 ## 📬 Contact
 

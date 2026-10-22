@@ -1,5 +1,5 @@
 /* Suno / Roko — sab pages ke liye ek jaisa awaaz ka system
-   - Arabic (lang:'ar'): pehle Qari ki asli recording (qari.js), na mile to phone ki awaaz
+   - Arabic (lang:'ar'): jo hissa Quran ka ho wo Qari ki asli recording (qari.js) se; baaki (hadees ki dua) phone ki awaaz se
    - Urdu: phone ki awaaz */
 (function () {
     var synth = window.speechSynthesis;
@@ -54,44 +54,65 @@
     }
 
     // ---------- Phone ki awaaz ----------
-    function robot(text, opt, my) {
+    // Ek tukda phone ki awaaz mein bolo; khatam hone par done() chalta hai
+    function say(text, opt, my, done) {
         if (my !== current.token) return;
-        if (!synth) { reset(); return; }
-        var u = new SpeechSynthesisUtterance(String(text).replace(/\s+/g, ' ').trim());
+        text = String(text || '').replace(/\s+/g, ' ').trim();
+        if (!text || !synth) { done(); return; }
+        var fin = false;
+        function end() { if (fin) return; fin = true; if (watch) { clearInterval(watch); watch = null; } if (current.token === my) done(); }
+        var u = new SpeechSynthesisUtterance(text);
         u.lang = opt.lang === 'ar' ? 'ar-SA' : 'ur-PK';
         u.rate = opt.rate || 0.85;
-        u.onend = u.onerror = function () { if (current.token === my) reset(); };
+        u.onend = u.onerror = end;
         synth.speak(u);
         if (watch) clearInterval(watch);
         // Kuch phones par onend nahi aata — khud check karo
         watch = setInterval(function () {
             if (current.token !== my) { clearInterval(watch); watch = null; return; }
-            if (!synth.speaking && !synth.pending) reset();
+            if (!synth.speaking && !synth.pending) end();
         }, 600);
     }
+    function robot(text, opt, my) { say(text, opt, my, function () { if (my === current.token) reset(); }); }
 
     // ---------- Qari ki recording ----------
-    function playQari(urls, opt, my, fallback) {
-        var i = 0, started = false;
+    // Ek clip: p.u = [pehla link, vikalp link ...]. Pehla na chale to agla try hota hai.
+    function playClip(p, opt, my, done) {
+        var c = 0, started = false, settled = false;
+        function detach() { audio.onplaying = audio.onended = audio.onerror = null; }
+        function finish(ok) { if (settled) return; settled = true; detach(); done(ok); }
+        function tryNext() {
+            if (my !== current.token || settled) return;
+            if (c >= p.u.length) { finish(false); return; }
+            started = false;
+            audio.src = p.u[c++];
+            audio.playbackRate = opt.audioRate || 1;
+            var pr = audio.play();
+            if (pr && pr.catch) pr.catch(function () { if (my === current.token && !started) tryNext(); });
+        }
         audio.onplaying = function () { started = true; };
-        audio.onended = function () {
-            if (my !== current.token || audio.src !== urls[i]) return;
-            i++; next();
-        };
+        audio.onended = function () { if (my === current.token) finish(true); };
         audio.onerror = function () {
-            if (my !== current.token || audio.src !== urls[i]) return;
-            if (!started) fallback(); else { i++; next(); }
+            if (my !== current.token) return;
+            if (!started) tryNext(); else finish(true);
         };
+        tryNext();
+    }
+    // parts: [{u:[links], x:text} (Qari), {t:text} (phone)] ek ke baad ek
+    function playParts(parts, text, opt, my) {
+        var i = 0, played = false;
         function next() {
             if (my !== current.token) return;
-            if (i >= urls.length) { reset(); return; }
-            audio.src = urls[i];
-            audio.playbackRate = opt.audioRate || 1;
-            var p = audio.play();
-            if (p && p.catch) p.catch(function () {
-                if (my !== current.token) return;
-                if (!started) fallback(); else { i++; next(); }
-            });
+            if (i >= parts.length) { reset(); return; }
+            var p = parts[i++];
+            if (p.u) {
+                playClip(p, opt, my, function (ok) {
+                    if (my !== current.token) return;
+                    if (ok) { played = true; next(); }
+                    else if (!played) robot(text, opt, my);          // Qari ki recording bilkul nahi chali (net?) — poora text phone se
+                    else say(p.x, opt, my, next);                    // beech mein ek clip na chali — sirf wo hissa phone se
+                });
+            } else say(p.t, opt, my, next);
         }
         next();
     }
@@ -124,13 +145,11 @@
         if (!audio) audio = new Audio();
         try { audio.src = SILENT; var pr = audio.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {}
 
-        var once = false;
-        function fallback() { if (once) return; once = true; robot(text, opt, my); }
-        window.QSQari.resolve(text, opt.ctx).then(function (urls) {
+        window.QSQari.plan(text, opt.ctx).then(function (parts) {
             if (my !== current.token) return;
-            if (urls && urls.length) playQari(urls, opt, my, fallback);
-            else fallback();
-        }, function () { if (my === current.token) fallback(); });
+            if (parts && parts.length) playParts(parts, text, opt, my);
+            else robot(text, opt, my);                                // Quran mein nahi mila — phone ki awaaz
+        }, function () { if (my === current.token) robot(text, opt, my); });
     }
 
     window.QSpeech = { speak: speak, stop: stop };
