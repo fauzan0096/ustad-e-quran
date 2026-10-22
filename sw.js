@@ -2,12 +2,10 @@
 // SERVICE WORKER — Auto Update Version
 // Network-First for HTML/CSS/JS
 // Cache-First for Images
-// Cache-First + Range support for Audio (nasheed.mp3)
+// Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v13';
-// Audio ka alag cache: app update par bhaari mp3 dobara download na ho
-const AUDIO_CACHE = 'quran-ustad-audio-v1';
+const CACHE_NAME = 'quran-ustad-auto-v15';
 
 const ASSETS = [
     './',
@@ -22,6 +20,7 @@ const ASSETS = [
     './icon.png',
     './icon-192.png',
     './icon-maskable.png',
+    './signature.png',
     './install.js',
     './speech.js',
     './ui.js',
@@ -43,55 +42,16 @@ self.addEventListener('install', (e) => {
     );
 });
 
-// ===== ACTIVATE: Purana cache delete karo =====
+// ===== ACTIVATE: Purana cache delete karo (purana audio cache bhi) =====
 self.addEventListener('activate', (e) => {
     e.waitUntil(
         caches.keys().then(keys =>
             Promise.all(
-                keys.filter(k => k !== CACHE_NAME && k !== AUDIO_CACHE).map(k => caches.delete(k))
+                keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
             )
         ).then(() => self.clients.claim())
     );
 });
-
-// ===== AUDIO (nasheed): Range request support =====
-// iOS/Safari ko 206 Partial Content chahiye, warna cache se audio play nahi hota
-async function audioResponse(request) {
-    const cache = await caches.open(AUDIO_CACHE);
-    let res = await cache.match(request.url);
-    if (!res) {
-        try {
-            // Poori file mangwao (Range header ke bagair) aur cache kar lo
-            const full = await fetch(request.url);
-            if (!full.ok) return full;
-            await cache.put(request.url, full.clone());
-            res = full;
-        } catch (err) {
-            return new Response('', { status: 404, statusText: 'Audio offline' });
-        }
-    }
-    const range = request.headers.get('range');
-    if (!range) return res;
-
-    const buf = await res.arrayBuffer();
-    const size = buf.byteLength;
-    const m = /bytes=(\d*)-(\d*)/.exec(range);
-    const start = m && m[1] ? parseInt(m[1], 10) : 0;
-    let end = m && m[2] ? parseInt(m[2], 10) : size - 1;
-    if (end >= size) end = size - 1;
-    if (start > end) {
-        return new Response('', { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
-    }
-    return new Response(buf.slice(start, end + 1), {
-        status: 206,
-        headers: {
-            'Content-Type': res.headers.get('Content-Type') || 'audio/mpeg',
-            'Content-Range': `bytes ${start}-${end}/${size}`,
-            'Content-Length': String(end - start + 1),
-            'Accept-Ranges': 'bytes'
-        }
-    });
-}
 
 // ===== FETCH: Smart Strategy =====
 self.addEventListener('fetch', (e) => {
@@ -101,11 +61,8 @@ self.addEventListener('fetch', (e) => {
     // Sirf same-origin handle karo
     if (url.origin !== location.origin) return;
 
-    // 🎵 Audio = alag handler (range support)
-    if (/\.(mp3|ogg|m4a|wav)$/i.test(url.pathname)) {
-        e.respondWith(audioResponse(request));
-        return;
-    }
+    // 🎵 Audio = SW ko beech mein mat daalo (range requests browser khud sambhalta hai)
+    if (/\.(mp3|ogg|m4a|wav)$/i.test(url.pathname) || request.headers.has('range')) return;
 
     const isHTML = request.headers.get('accept')?.includes('text/html');
     const isJS = url.pathname.endsWith('.js');
@@ -116,8 +73,7 @@ self.addEventListener('fetch', (e) => {
     // Matlab: Pehle internet se naya version lao, agar fail ho toh cache se do
     if (isHTML || isJS || isCSS || isJSON) {
         e.respondWith(
-            // cache:'no-cache' = browser ka 10 minute wala purana HTTP cache bhi skip,
-            // taake GitHub par upload karte hi naya version foran aaye
+            // cache:'no-cache' = browser ka purana HTTP cache skip, GitHub par upload hote hi naya version aaye
             fetch(request, { cache: 'no-cache' })
                 .then(response => {
                     // Naya version mila — cache mein update kar do

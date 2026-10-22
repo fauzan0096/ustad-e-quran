@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,334 +18,149 @@
     <meta name="theme-color" content="#0F4C3A">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* =====================================================
-           DESIGN SYSTEM — Mushaf-inspired
-           Zumurrud (emerald) + sona (gold) + kaghaz (paper)
-           ===================================================== */
         :root {
-            --primary: #0F4C3A;
-            --primary-deep: #0A2E24;
-            --secondary: #B8923A;
-            --gold-bright: #D9B65A;
-            --rubric: #9C3B2E;
-            --ink: #0A2E24;
-            --bg: #EDF0E7;
-            --card-bg: #FFFDF6;
-            --soft-bg: #F4F1E3;
-            --text: #1F2A25;
-            --text-light: #55645C;
-            --border: #D9D6C3;
+            --primary: #0F4C3A; --primary-deep: #0A2E24; --secondary: #B8923A; --gold-bright: #D9B65A;
+            --rubric: #9C3B2E; --ink: #0A2E24; --bg: #EDF0E7; --card-bg: #FFFDF6; --soft-bg: #F4F1E3;
+            --text: #1F2A25; --text-light: #55645C; --border: #D9D6C3;
             --shadow: 0 1px 2px rgba(10,46,36,.08), 0 8px 24px rgba(10,46,36,.08);
             --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23D9B65A' stroke-opacity='.2' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E");
         }
         [data-theme="dark"] {
-            --primary: #0C3A2C;
-            --primary-deep: #07211A;
-            --secondary: #D9B65A;
-            --ink: #F0E9D0;
-            --bg: #0A1411;
-            --card-bg: #12211B;
-            --soft-bg: #182A22;
-            --text: #E8E3D0;
-            --text-light: #A5B3AA;
-            --border: #27403A;
-            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+            --primary: #0C3A2C; --primary-deep: #07211A; --secondary: #D9B65A; --ink: #F0E9D0;
+            --bg: #0A1411; --card-bg: #12211B; --soft-bg: #182A22; --text: #E8E3D0;
+            --text-light: #A5B3AA; --border: #27403A; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
         }
-        /* Premium themes (Shop se unlock hote hain) */
         [data-theme="midnight"] {
             --primary: #1E3A8A; --primary-deep: #0F172A; --secondary: #F59E0B; --gold-bright: #FBBF24;
             --ink: #F8FAFC; --bg: #0F172A; --card-bg: #1E293B; --soft-bg: #334155;
             --text: #F8FAFC; --text-light: #94A3B8; --border: #475569;
-            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
         }
         [data-theme="royal"] {
             --primary: #4C1D95; --primary-deep: #2E1065; --secondary: #FBBF24; --gold-bright: #FCD34D;
             --ink: #F3F4F6; --bg: #2E1065; --card-bg: #4C1D95; --soft-bg: #5B21B6;
             --text: #F3F4F6; --text-light: #D8B4FE; --border: #7E22CE;
-            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Figtree', system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 86px; line-height: 1.5; transition: background .3s, color .3s; }
-        button, input, select { font-family: inherit; }
-        a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, .arabic:focus-visible, .urdu:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
+        [data-theme="lightblue"] {
+            --primary: #0284C7; --primary-deep: #0369A1; --secondary: #F59E0B; --gold-bright: #FBBF24;
+            --ink: #0F172A; --bg: #F0F9FF; --card-bg: #FFFFFF; --soft-bg: #E0F2FE;
+            --text: #0F172A; --text-light: #475569; --border: #BAE6FD;
+        }
 
-        /* ---------- Login ---------- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Figtree', system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 86px; line-height: 1.5; transition: background .3s, color .3s; position: relative; overflow-x: hidden; }
+        
+        body::after { content: "🕋"; position: fixed; bottom: 80px; right: -20px; font-size: 150px; opacity: 0.04; pointer-events: none; z-index: 0; transform: rotate(-15deg); filter: grayscale(1); }
+
+        button, input, select { font-family: inherit; position: relative; z-index: 1; }
+        a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
+
         .login-container { position: fixed; inset: 0; background: radial-gradient(120% 90% at 50% 0%, #17614B 0%, var(--primary-deep) 70%); display: flex; justify-content: center; align-items: center; z-index: 9999; overflow-y: auto; padding: 56px 16px 24px; }
-        .login-container::before { content: ""; position: absolute; inset: 0; background-image: var(--star); opacity: .9; pointer-events: none; }
         .login-box { position: relative; background: var(--card-bg); padding: 56px 24px 26px; border-radius: 24px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,.45); width: 100%; max-width: 380px; border: 1px solid rgba(217,182,90,.55); }
-        .login-box::after { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(184,146,58,.35); border-radius: 19px; pointer-events: none; }
-        .login-logo { position: absolute; top: -42px; left: 50%; transform: translateX(-50%); width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--gold-bright); background: var(--primary-deep); object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
+        .login-logo { position: absolute; top: -42px; left: 50%; transform: translateX(-50%); width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--gold-bright); background: var(--primary-deep); object-fit: cover; }
         .login-bismillah { font-family: 'Amiri', serif; font-size: 22px; color: var(--secondary); line-height: 1.8; }
-        .login-box h1 { font-family: 'Amiri', serif; color: var(--ink); margin: 2px 0 4px; font-size: 32px; font-weight: 700; line-height: 1.2; }
-        .login-box p { color: var(--text-light); font-size: 14px; margin-bottom: 8px; }
+        .login-box h1 { font-family: 'Amiri', serif; color: var(--ink); margin: 2px 0 4px; font-size: 32px; font-weight: 700; }
         .login-label { display: block; text-align: left; font-size: 13px; font-weight: 600; margin: 14px 0 6px; color: var(--text); }
         .login-box input, .login-select { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); text-align: left; }
-        .login-box input:focus, .login-select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(15,76,58,.18); }
-        .pwd-wrap { position: relative; }
-        .pwd-wrap input { padding-right: 52px; }
-        .login-box .pwd-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; margin: 0; padding: 0; background: transparent; border: none; box-shadow: none; font-size: 18px; color: var(--text); border-radius: 12px; }
-        .login-box > button { width: 100%; background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 14px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; margin-top: 20px; box-shadow: 0 6px 16px rgba(15,76,58,.35); min-height: 50px; }
-        .login-box > button:active { transform: translateY(1px); }
+        .login-box > button { width: 100%; background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 14px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; margin-top: 20px; min-height: 50px; }
 
-        /* ---------- Header ---------- */
-        header { position: relative; background: linear-gradient(180deg, #14614A 0%, var(--primary) 100%); color: white; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); }
-        header::before { content: ""; position: absolute; inset: 0; background-image: var(--star); pointer-events: none; }
-        header::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-bright) 20%, var(--gold-bright) 80%, transparent); }
-        .header-top { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; gap: 10px; }
-        .brand { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
-        .brand-logo { width: 38px; height: 38px; border-radius: 11px; border: 1.5px solid var(--gold-bright); object-fit: cover; flex-shrink: 0; }
-        .header-top h1 { font-family: 'Amiri', serif; font-size: 24px; font-weight: 700; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        header { position: relative; background: linear-gradient(180deg, #14614A 0%, var(--primary) 100%); color: white; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); z-index: 10; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; gap: 10px; }
+        .brand { display: flex; align-items: center; gap: 10px; flex: 1; }
+        .brand-logo { width: 38px; height: 38px; border-radius: 11px; border: 1.5px solid var(--gold-bright); object-fit: cover; }
+        .header-top h1 { font-family: 'Amiri', serif; font-size: 24px; font-weight: 700; white-space: nowrap; }
         .header-controls { display: flex; gap: 8px; align-items: center; }
-        .icon-btn { background: rgba(255,255,255,.14); border: none; font-size: 18px; cursor: pointer; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
-        .icon-btn:active { background: rgba(255,255,255,.28); }
-        .xp-badge { background: linear-gradient(180deg, #8e44ad, #6c3483); color: white; white-space: nowrap; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
-        .streak-badge { background: linear-gradient(180deg, #f08a3c, #d9602a); color: white; white-space: nowrap; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+        .icon-btn { background: rgba(255,255,255,.14); border: none; font-size: 18px; cursor: pointer; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .xp-badge { background: linear-gradient(180deg, #8e44ad, #6c3483); color: white; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+        .streak-badge { background: linear-gradient(180deg, #f08a3c, #d9602a); color: white; padding: 5px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+
         .user-menu { position: relative; }
-        .user-chip { width: auto !important; height: 40px; padding: 0 12px !important; border-radius: 20px !important; font-size: 13px !important; font-weight: 600; white-space: nowrap; gap: 4px; }
-        .user-drop { position: absolute; right: 0; top: calc(100% + 10px); min-width: 200px; background: var(--card-bg); color: var(--text); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.35); padding: 14px; z-index: 500; text-align: left; border: 1px solid var(--border); }
+        .user-chip { width: auto !important; height: 40px; padding: 0 12px !important; border-radius: 20px !important; font-size: 13px !important; font-weight: 600; white-space: nowrap; }
+        .user-drop { position: absolute; right: 0; top: calc(100% + 10px); min-width: 220px; background: var(--card-bg); color: var(--text); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.35); padding: 14px; z-index: 500; text-align: left; border: 1px solid var(--border); }
         .user-drop.hidden { display: none; }
         .user-drop-info { font-size: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
-        .user-drop-info small { color: var(--text-light); }
-        .user-drop button.ud-shop { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; border: none; margin-bottom: 8px; }
-        .user-drop button.ud-support { color: var(--text); border-color: var(--border); margin-bottom: 8px; }
-        .user-drop button.ud-switch { background: var(--primary); color: #fff; border-color: var(--primary); margin-bottom: 8px; }
-        .user-drop button { width: 100%; background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; min-height: 44px; }
+        .user-drop button { width: 100%; background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
+        .user-drop button.ud-shop { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; border: none; }
+        .user-drop button.ud-cert { background: linear-gradient(180deg, #D4AF37, #B8923A); color: #fff; border: none; }
+        .user-drop button.ud-switch { background: var(--primary); color: #fff; border: none; }
+        .user-drop button.ud-default { background: transparent; color: var(--text-light); border: 1.5px solid var(--border); font-size: 12px; padding: 8px; }
 
-        /* ---------- Quick links (Tajweed, Games, Duaein) ---------- */
-        .top-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px auto 4px; max-width: 1200px; padding: 0 16px; }
+        .top-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px auto 4px; max-width: 1200px; padding: 0 16px; position: relative; z-index: 1; }
         .top-link-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border-radius: 16px; background: var(--card-bg); color: var(--text); text-decoration: none; font-weight: 600; font-size: 13px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-        .top-link-btn:active { transform: scale(.97); }
         .top-link-btn .ti { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: rgba(15,76,58,.12); }
-        .top-link-btn.gold .ti { background: rgba(184,146,58,.2); }
-        .top-link-btn.green .ti { background: rgba(31,143,78,.16); }
-
-        /* ---------- Main nav ---------- */
-        .main-nav { display: none; }
-        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--card-bg); color: var(--text); cursor: pointer; }
-        .nav-btn.active { background: var(--primary); color: #fff; }
-
-        /* ---------- Views ---------- */
-        .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+        .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; }
         .view-section.active { display: block; }
 
-        /* ---------- Stats strip ---------- */
-        .stats-strip { display: flex; gap: 8px; align-items: stretch; max-width: 1200px; margin: 14px auto 0; padding: 0 16px; }
-        .stats-strip .xp-badge, .stats-strip .streak-badge { display: flex; align-items: center; justify-content: center; min-height: 42px; border-radius: 14px; font-size: 14px; padding: 0 12px; }
-        .stats-strip .xp-badge { flex: 1.6; }
-        .stats-strip .streak-badge { flex: 1; }
-        .strip-btn { flex: 0 0 52px; min-height: 42px; border-radius: 14px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); }
-        .strip-btn:active { transform: scale(.96); }
-        .top-links { margin-top: 10px; }
-
-        /* ---------- Journey map ---------- */
-        .journey-wrap { overflow-x: auto; padding: 22px 4px 16px; margin: 6px 0 0; scrollbar-width: none; }
-        .journey-wrap::-webkit-scrollbar { display: none; }
-        .j-track { position: relative; display: flex; align-items: center; gap: 20px; min-width: max-content; padding: 0 8px; }
+        .journey-wrap { display: flex; align-items: center; gap: 20px; overflow-x: auto; padding: 20px 16px 15px; scrollbar-width: none; position: relative; }
         .j-line { position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: repeating-linear-gradient(to right, var(--border) 0, var(--border) 10px, transparent 10px, transparent 20px); z-index: 0; transform: translateY(-50%); }
-        .j-node { position: relative; z-index: 1; flex: 0 0 64px; height: 64px; border-radius: 50%; background: var(--card-bg); border: 3px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-light); cursor: pointer; transition: all .3s; box-shadow: var(--shadow); }
+        .j-node { position: relative; z-index: 1; flex: 0 0 64px; height: 64px; border-radius: 50%; background: var(--card-bg); border: 3px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-light); cursor: pointer; }
         .j-node.unlocked { border-color: var(--primary); background: var(--primary); color: #fff; }
-        .j-node.current { border-color: var(--gold-bright); background: var(--card-bg); color: var(--ink); box-shadow: 0 0 0 4px rgba(217,182,90,.3); transform: scale(1.1); }
-        .j-node.locked { opacity: .6; background: var(--soft-bg); cursor: not-allowed; }
+        .j-node.current { border-color: var(--gold-bright); background: var(--card-bg); color: var(--ink); transform: scale(1.1); }
+        .j-node.locked { opacity: 0.6; background: var(--soft-bg); }
 
-        /* ---------- Daily goal ---------- */
-        .daily-goal-card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin: 16px 0 0; border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; }
-        .dg-icon { font-size: 32px; background: var(--soft-bg); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 56px; }
-        .dg-content { flex: 1; min-width: 0; }
-        .dg-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; justify-content: space-between; }
-        .dg-text { font-size: 13px; color: var(--text-light); margin-bottom: 6px; }
+        .daily-goal-card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin: 16px auto 0; display: flex; align-items: center; gap: 16px; border: 1px solid var(--border); }
+        .dg-icon { font-size: 32px; background: var(--soft-bg); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .dg-content { flex: 1; }
+        .dg-title { font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; }
         .dg-bar { height: 8px; background: var(--border); border-radius: 8px; overflow: hidden; margin-top: 6px; }
-        .dg-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--secondary), var(--gold-bright)); border-radius: 8px; transition: width .5s; }
+        .dg-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--secondary), var(--gold-bright)); transition: width .5s; }
 
-        /* ---------- Shop ---------- */
+        .ayat-card { background: linear-gradient(135deg, rgba(184,146,58,0.1), rgba(184,146,58,0.02)); border: 1px solid var(--secondary); border-left: 4px solid var(--secondary); border-radius: 16px; padding: 16px; margin: 10px auto 0; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.2s; }
+        .ayat-card:active { transform: scale(0.98); }
+        .ayat-card .dg-icon { background: rgba(184,146,58,0.2); }
+        .ayat-card .dg-title { color: var(--secondary); }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 30px 16px; margin-bottom: 24px; counter-reset: word; }
+        .card { position: relative; counter-increment: word; background: var(--card-bg); border-radius: 16px; padding: 30px 18px 18px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
+        .card::before { content: counter(word); position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; background: var(--card-bg); border: 1.5px solid var(--secondary); color: var(--secondary); font-family: 'Amiri', serif; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 1; }
+        .arabic { font-family: 'Amiri', serif; font-size: 42px; color: var(--ink); direction: rtl; }
+        .roman { font-weight: 600; font-size: 12px; letter-spacing: .2px; color: var(--secondary); margin: 4px 0 2px; }
+        .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 21px; color: var(--text); direction: rtl; }
+        .mashq-box { background: var(--soft-bg); border-right: 4px solid var(--rubric); padding: 10px; margin-top: 12px; border-radius: 10px; font-size: 15px; color: var(--text); text-align: right; direction: rtl; font-family: 'Amiri', serif; }
+
+        .modal { position: fixed; inset: 0; background: rgba(4,16,12,.72); backdrop-filter: blur(4px); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 18px; }
+        .modal-content { background: var(--card-bg); padding: 24px 20px 20px; border-radius: 22px; width: 100%; max-width: 520px; border: 1px solid var(--border); border-top: 4px solid var(--secondary); position: relative; max-height: 88vh; overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+        .close-btn { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background: var(--soft-bg); display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; color: var(--text-light); }
+
         .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
         .shop-item { background: var(--soft-bg); border-radius: 12px; padding: 12px; text-align: center; border: 2px solid var(--border); }
-        .shop-item.owned { border-color: var(--primary); background: rgba(15,76,58,.1); }
+        .shop-item.owned { border-color: var(--primary); background: rgba(15,76,58,0.1); }
         .shop-item .si-icon { font-size: 32px; margin-bottom: 5px; }
         .shop-item .si-name { font-weight: bold; font-size: 13px; margin-bottom: 5px; }
         .shop-item .si-cost { font-size: 12px; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
-        [data-theme="dark"] .shop-item .si-cost, [data-theme="midnight"] .shop-item .si-cost, [data-theme="royal"] .shop-item .si-cost { color: var(--gold-bright); }
-        .shop-item button { background: var(--primary); color: #fff; border: none; padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; min-height: 36px; }
-        .shop-item button:disabled { background: var(--border); color: var(--text-light); cursor: not-allowed; }
+        .shop-item button { background: var(--primary); color: #fff; border: none; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; }
+        .shop-item button:disabled { background: var(--border); color: var(--text-light); }
 
-        /* ---------- Day heading ---------- */
-        .day-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 22px 0 26px; flex-wrap: wrap; gap: 12px; }
-        .day-title-wrap { flex: 1; min-width: 200px; }
-        .day-header h2 { font-family: 'Amiri', serif; color: var(--ink); font-size: 38px; font-weight: 700; line-height: 1.05; }
-        .day-progress { margin-top: 10px; }
-        .day-progress span { font-size: 13px; color: var(--text-light); font-weight: 600; }
-        .day-progress .bar { height: 6px; background: var(--border); border-radius: 6px; margin-top: 6px; overflow: hidden; max-width: 320px; }
-        .day-progress .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary), var(--gold-bright)); border-radius: 6px; transition: width .5s; }
-        .admin-select { padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--primary); background: var(--card-bg); color: var(--text); font-weight: 700; min-height: 44px; }
-
-        /* ---------- Word cards (Mushaf page) ---------- */
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 30px 16px; margin-bottom: 24px; counter-reset: word; }
-        .card { position: relative; counter-increment: word; background: var(--card-bg); border-radius: 16px; padding: 30px 18px 18px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
-        .card::after { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(184,146,58,.4); border-radius: 12px; pointer-events: none; }
-        .card::before { content: counter(word); position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; background: var(--card-bg); border: 1.5px solid var(--secondary); color: var(--secondary); font-family: 'Amiri', serif; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 0 0 4px var(--bg); }
-        .arabic { font-family: 'Amiri', serif; font-size: 42px; line-height: 1.7; color: var(--ink); direction: rtl; cursor: pointer; border-radius: 12px; padding: 0 8px; }
-        .roman { position: relative; font-weight: 700; font-size: 16px; letter-spacing: .3px; color: var(--secondary); padding-top: 14px; margin: 6px 0 4px; }
-        .roman::before { content: ""; position: absolute; top: 0; left: 50%; width: 44px; height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
-        .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 21px; line-height: 2.2; color: var(--text); direction: rtl; cursor: pointer; border-radius: 12px; padding: 0 8px; }
-        .mashq-box { background: var(--soft-bg); border: none; border-right: 4px solid var(--rubric); padding: 10px 12px; margin-top: 12px; border-radius: 10px; font-size: 15px; line-height: 1.9; color: var(--text); text-align: right; direction: rtl; font-family: 'Amiri', serif; }
-        .tafseel-btn { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); padding: 10px; width: 100%; border-radius: 12px; margin-top: 14px; cursor: pointer; font-size: 14px; font-weight: 700; min-height: 44px; }
-        .tafseel-btn:active { background: var(--primary); color: #fff; }
-        [data-theme="dark"] .tafseel-btn, [data-theme="midnight"] .tafseel-btn, [data-theme="royal"] .tafseel-btn { color: var(--gold-bright); border-color: var(--gold-bright); }
-        [data-theme="dark"] .tafseel-btn:active, [data-theme="midnight"] .tafseel-btn:active, [data-theme="royal"] .tafseel-btn:active { background: var(--gold-bright); color: #07211A; }
-        .qs-text { background: rgba(217,182,90,.25) !important; }
-
-        /* ---------- Locked page ---------- */
-        .locked-page { background: transparent; padding: 28px 20px; border-radius: 16px; text-align: center; margin: 4px 0; border: 2px dashed var(--border); grid-column: 1 / -1; }
-        .locked-page h2 { font-family: 'Amiri', serif; color: var(--text); margin-bottom: 6px; font-size: 24px; }
-        .locked-page p { color: var(--text-light); font-size: 14px; }
-        .lock-icon { font-size: 40px; margin-bottom: 8px; }
-
-        /* ---------- Buttons ---------- */
-        .exam-btn { background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 13px 20px; border: none; border-radius: 14px; font-weight: 700; font-size: 16px; width: 100%; margin-top: 10px; cursor: pointer; min-height: 52px; box-shadow: 0 6px 16px rgba(15,76,58,.3); }
-        .exam-btn:active { transform: translateY(1px); box-shadow: 0 3px 8px rgba(15,76,58,.3); }
-        .exam-btn + .exam-btn { margin-top: 12px; }
-        .exam-btn.gold { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; box-shadow: 0 6px 16px rgba(184,146,58,.35); }
-        .exam-btn.share { background: linear-gradient(180deg, #27a05a, #1f8a4c); box-shadow: 0 6px 16px rgba(31,138,76,.3); }
-
-        /* ---------- Modals ---------- */
-        .modal { position: fixed; inset: 0; background: rgba(4,16,12,.72); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 18px; }
-        .modal-content { background: var(--card-bg); padding: 24px 20px 20px; border-radius: 22px; width: 100%; max-width: 520px; border: 1px solid var(--border); border-top: 4px solid var(--secondary); position: relative; max-height: 88vh; overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
-        .modal-content h2 { font-family: 'Amiri', serif; font-size: 26px; }
-        .close-btn { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background: var(--soft-bg); display: flex; align-items: center; justify-content: center; font-size: 24px; line-height: 1; cursor: pointer; color: var(--text-light); }
-        .modal-text { margin-top: 16px; font-size: 19px; line-height: 2.2; text-align: right; font-family: 'Noto Nastaliq Urdu', serif; color: var(--text); }
-
-        /* ---------- Exam ---------- */
         .exam-q { margin-bottom: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 16px; background: var(--soft-bg); }
-        .exam-ar { font-family: 'Amiri', serif; font-size: 34px; line-height: 1.7; text-align: center; color: var(--ink); margin-bottom: 6px; }
-        .option-btn { padding: 12px 14px; margin: 6px 0; width: 100%; text-align: left; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; font-size: 18px; min-height: 48px; font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; text-align: center; }
-        .option-btn.selected { border-color: var(--primary); background: rgba(15,76,58,.1); font-weight: 700; box-shadow: inset 4px 0 0 var(--primary); }
-        [data-theme="dark"] .option-btn.selected, [data-theme="midnight"] .option-btn.selected, [data-theme="royal"] .option-btn.selected { border-color: var(--gold-bright); box-shadow: inset 4px 0 0 var(--gold-bright); background: rgba(217,182,90,.12); }
+        .exam-ar { font-family: 'Amiri', serif; font-size: 34px; text-align: center; color: var(--ink); }
+        .option-btn { padding: 12px; margin: 6px 0; width: 100%; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; font-size: 18px; font-family: 'Noto Nastaliq Urdu', serif; }
+        .option-btn.selected { border-color: var(--primary); background: rgba(15,76,58,.1); font-weight: 700; }
+        .exam-btn { background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 13px 20px; border: none; border-radius: 14px; font-weight: 700; font-size: 16px; width: 100%; margin-top: 10px; cursor: pointer; }
+        .exam-btn.gold { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; }
 
-        /* ---------- Bottom nav ---------- */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); box-shadow: 0 -6px 20px rgba(10,46,36,.08); z-index: 1000; }
-        .bottom-nav button, .bottom-nav a { background: none; border: none; color: var(--text-light); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; line-height: 1.3; gap: 2px; text-decoration: none; min-width: 60px; min-height: 48px; border-radius: 12px; }
-        .bottom-nav button.active { color: var(--primary); font-weight: 700; }
-
-        /* ---------- Toast & utility ---------- */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); z-index: 1000; }
+        .bottom-nav button, .bottom-nav a { background: none; border: none; color: var(--text-light); display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 600; text-decoration: none; }
         .toast { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); background: var(--primary-deep); color: white; padding: 12px 22px; border-radius: 24px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 3000; font-size: 14px; border: 1px solid var(--gold-bright); }
         .toast.show { opacity: 1; }
         .hidden { display: none !important; }
-
-
-        /* ---------- Profiles ---------- */
-        .pf-box { position: relative; width: 100%; max-width: 420px; text-align: center; color: #fff; }
-        .pf-box h1 { font-family: 'Amiri', serif; font-size: 32px; margin: 6px 0 2px; }
-        .pf-box p { color: rgba(255,255,255,.8); font-size: 14px; margin-bottom: 18px; }
-        .pf-logo { width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--gold-bright); object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
-        .pf-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .pf-tile { position: relative; background: var(--card-bg); color: var(--text); border-radius: 18px; padding: 18px 10px 14px; cursor: pointer; border: 1px solid rgba(217,182,90,.6); box-shadow: 0 10px 24px rgba(0,0,0,.3); min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
-        .pf-tile:active { transform: scale(.97); }
-        .pf-av { font-size: 46px; line-height: 1; }
-        .pf-name { font-weight: 700; font-size: 16px; word-break: break-word; }
-        .pf-sub { font-size: 12px; color: var(--text-light); }
-        .pf-add { background: transparent; color: #fff; border: 2px dashed rgba(217,182,90,.8); box-shadow: none; }
-        .pf-add .pf-av { font-size: 34px; color: var(--gold-bright); }
-        .pf-edit { position: absolute; top: 6px; right: 6px; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--soft-bg); font-size: 15px; cursor: pointer; }
-        .pf-manage { margin-top: 20px; background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.35); padding: 11px 20px; border-radius: 24px; font-weight: 600; font-size: 14px; cursor: pointer; min-height: 44px; }
-        .pf-input { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); margin: 6px 0 4px; }
-        .pf-avatars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 8px 0 16px; }
-        .pf-avatars button { font-size: 28px; padding: 8px 0; border-radius: 12px; border: 2px solid var(--border); background: var(--soft-bg); cursor: pointer; }
-        .pf-avatars button.on { border-color: var(--primary); background: rgba(15,76,58,.14); }
-        [data-theme="dark"] .pf-avatars button.on, [data-theme="midnight"] .pf-avatars button.on, [data-theme="royal"] .pf-avatars button.on { border-color: var(--gold-bright); }
-        .pf-label { font-size: 13px; font-weight: 600; display: block; margin-top: 10px; }
-        .pf-err { color: var(--rubric); font-size: 13px; min-height: 18px; margin-top: 4px; }
-        .exam-btn.danger { background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); box-shadow: none; }
-        .exam-btn.ghost { background: transparent; color: var(--text-light); border: 1.5px solid var(--border); box-shadow: none; }
-
-        /* ---------- Batch 1: Aaj ka lafz, bookmark, search, dohrai ---------- */
-        .quick-row { display: flex; gap: 10px; margin: 10px auto 0; max-width: 1200px; padding: 0 16px; }
-        .search-open { flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-light); font-size: 14px; cursor: pointer; text-align: left; min-height: 46px; box-shadow: var(--shadow); }
-        .fav-open { flex: 0 0 auto; padding: 0 16px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; min-height: 46px; box-shadow: var(--shadow); }
-        .today-card { position: relative; margin: 18px 0 0; padding: 16px 16px 14px; border-radius: 18px; background: linear-gradient(135deg, #14614A, #0A2E24); color: #fff; border: 1px solid rgba(217,182,90,.6); box-shadow: var(--shadow); text-align: center; }
-        .today-card .t-label { font-size: 12px; font-weight: 700; letter-spacing: .5px; color: var(--gold-bright); }
-        .today-card .t-ar { font-family: 'Amiri', serif; font-size: 40px; line-height: 1.6; cursor: pointer; direction: rtl; border-radius: 12px; }
-        .today-card .t-ro { font-weight: 700; color: var(--gold-bright); }
-        .today-card .t-ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 20px; line-height: 2; direction: rtl; cursor: pointer; border-radius: 12px; }
-        .today-card .heart { background: rgba(255,255,255,.14); }
-        .heart { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; font-size: 20px; cursor: pointer; z-index: 3; display: flex; align-items: center; justify-content: center; }
-        .heart:active { transform: scale(.9); }
-        .exam-btn.rev { background: linear-gradient(180deg, #B5493A, #9C3B2E); box-shadow: 0 6px 16px rgba(156,59,46,.35); }
-        .list-search { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); margin-top: 12px; }
-        .list-search:focus { border-color: var(--primary); outline: none; }
-        .list-item { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 6px 10px 2px; border-bottom: 1px solid var(--border); }
-        .list-item .heart { position: static; flex: 0 0 auto; }
-        .list-item .li-main { flex: 1; min-width: 0; }
-        .list-item .li-ar { font-family: 'Amiri', serif; font-size: 28px; line-height: 1.5; color: var(--ink); direction: rtl; text-align: right; cursor: pointer; }
-        .list-item .li-sub { font-size: 14px; color: var(--text-light); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
-        .urdu.m-ro, .urdu.m-hi, .today-card .t-ur.m-ro, .today-card .t-ur.m-hi { direction: ltr; font-family: inherit; font-size: 19px; line-height: 1.8; font-weight: 600; }
-        .list-item .li-ur.m-ro, .list-item .li-ur.m-hi { font-family: inherit; font-size: 15px; }
-        .lang-btn { font-size: 13px; font-weight: 700; min-width: 40px; }
-        .list-item .li-ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 17px; color: var(--text); }
-        .list-item .li-day { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: var(--soft-bg); color: var(--text-light); }
-        .list-empty { text-align: center; color: var(--text-light); padding: 26px 8px; font-size: 14px; }
-
-
-        /* ---------- Smooth Staggered Animations ---------- */
-        @keyframes cardEnter {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .card { animation: cardEnter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-        .locked-page { animation: fadeInUp 0.5s ease-out both; }
-        .day-header { animation: fadeInUp 0.4s ease-out both; }
-        .today-card { animation: fadeInUp 0.4s ease-out both; }
-
-        @media (max-width: 420px) {
-            header { padding-left: 12px; padding-right: 12px; }
-            .brand { gap: 8px; }
-            .brand-logo { width: 34px; height: 34px; }
-            .header-top h1 { font-size: 20px; }
-            .header-controls { gap: 6px; }
-            .icon-btn { width: 36px; height: 36px; font-size: 16px; }
-            .xp-badge, .streak-badge { font-size: 11px; padding: 4px 7px; }
-            .top-link-btn { font-size: 12px; padding: 10px 4px; }
-            .top-link-btn .ti { width: 36px; height: 36px; font-size: 18px; }
-            .user-chip { height: 36px; padding: 0 10px !important; font-size: 12px !important; max-width: 104px; overflow: hidden; text-overflow: ellipsis; }
-        }
-        @media (min-width: 720px) {
-            .day-header h2 { font-size: 46px; }
-            .top-link-btn { flex-direction: row; justify-content: center; gap: 10px; padding: 14px; font-size: 15px; }
-        }
-        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+        
+        @keyframes cardEnter { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .card { animation: cardEnter 0.5s ease-out both; }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN -->
     <div id="loginScreen" class="login-container">
         <div class="login-box">
             <img class="login-logo" src="icon-192.png" alt="">
             <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <h1>Quraan Ustad</h1>
-            <p>Apni ID chunein aur password daalein</p>
-            <label class="login-label" for="userIdSelect">User ID</label>
+            <label class="login-label">User ID</label>
             <select id="userIdSelect" class="login-select"></select>
-            <label class="login-label" for="passwordInput">Password</label>
-            <div class="pwd-wrap">
-                <input type="password" id="passwordInput" placeholder="Password daalein" autocomplete="current-password">
-                <button type="button" class="pwd-eye" id="pwdEye" onclick="togglePwd()" aria-label="Password dikhao">👁️</button>
-            </div>
+            <label class="login-label">Password</label>
+            <input type="password" id="passwordInput" placeholder="Password daalein">
             <button onclick="handleLogin()">Login</button>
             <p id="loginError" style="color: #ff4d4d; margin-top: 10px; font-size: 13px;"></p>
-        </div>
-    </div>
-
-    <!-- PROFILE PICKER -->
-    <div id="profileScreen" class="login-container hidden">
-        <div class="pf-box">
-            <img class="pf-logo" src="icon-192.png" alt="">
-            <h1>Kaun parh raha hai?</h1>
-            <p>Apna profile chunein, har ek ka sabaq alag save hota hai</p>
-            <div class="pf-grid" id="pfGrid"></div>
-            <button class="pf-manage" id="pfManageBtn" onclick="toggleProfileEdit()">✏️ Profile sambhalein</button>
         </div>
     </div>
 
@@ -355,80 +170,59 @@
             <div class="header-top">
                 <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
                 <div class="header-controls">
+                    <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
+                    <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
+                    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                     <div class="user-menu">
-                        <button class="icon-btn user-chip" id="userChip" onclick="toggleUserMenu(event)"><span id="userChipAv">👤</span> <span id="userChipName">ID</span> ▾</button>
+                        <button class="icon-btn user-chip" onclick="toggleUserMenu(event)"><span id="userChipName">ID</span> ▾</button>
                         <div class="user-drop hidden" id="userDrop">
-                            <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>User ID: <span id="userDropId">-</span></small><br><small id="userDropRole"></small></div>
-                            <button class="ud-switch" onclick="openProfilePicker()">👥 Profile badlein</button>
+                            <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small></div>
+                            <button class="ud-cert" onclick="handleCertificateClick()">🏆 Certificate (Sanad)</button>
                             <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
-                            <button class="ud-support" onclick="document.getElementById('userDrop').classList.add('hidden'); openFeedback()">✉️ Support</button>
-                            <button onclick="logout()">🚪 Logout</button>
+                            <button class="ud-default" onclick="resetTheme()">🔄 Default Theme</button>
+                            <button onclick="logout()" style="margin-top:8px;">🚪 Logout</button>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Stats strip: XP, streak, zubaan, theme -->
-        <div class="stats-strip">
-            <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
-            <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
-            <button class="strip-btn" onclick="cycleMeaningLang()" id="langBtn" title="Matlab ki zubaan: Urdu / Roman / Hindi">اردو</button>
-            <button class="strip-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Theme badlein">🌙</button>
-        </div>
-
-        <!-- Top Links -->
         <div class="top-links">
             <a href="tajweed.html" class="top-link-btn"><span class="ti">📖</span>Tajweed</a>
-            <a href="games.html" class="top-link-btn gold"><span class="ti">🎮</span>Games</a>
-            <a href="dua.html" class="top-link-btn green"><span class="ti">🤲</span>Duaein</a>
-            <a href="asma.html" class="top-link-btn gold"><span class="ti">✨</span>99 Naam</a>
+            <a href="games.html" class="top-link-btn"><span class="ti">🎮</span>Games</a>
+            <a href="dua.html" class="top-link-btn"><span class="ti">🤲</span>Duaein</a>
+            <a href="asma.html" class="top-link-btn"><span class="ti">✨</span>99 Naam</a>
         </div>
 
-        <!-- Search + Pasandida -->
-        <div class="quick-row">
-            <button class="search-open" onclick="openList('search')">🔍 Lafz, matlab ya Roman dhoondein...</button>
-            <button class="fav-open" onclick="openList('fav')">❤️ <span id="favCount">0</span></button>
-        </div>
-
-        <!-- Main Nav -->
-        <nav class="main-nav">
-            <button class="nav-btn active" onclick="switchTab('courseTab', this)">📚 Sabaq</button>
-        </nav>
-
-        <!-- Course Tab -->
         <div id="courseTab" class="view-section active">
-            <div id="dailyCard"></div>
-
-            <!-- Daily Goal -->
+            <div id="todayCard" style="margin-top:16px;"></div>
+            
             <div class="daily-goal-card">
                 <div class="dg-icon">🎯</div>
                 <div class="dg-content">
                     <div class="dg-title">Daily Goal <span id="dailyGoalPercent">0%</span></div>
-                    <div class="dg-text" id="dailyGoalText">Aaj 10 lafz padhein (+50 XP)</div>
+                    <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;" id="dailyGoalText">Aaj 10 lafz padhein</div>
                     <div class="dg-bar"><div class="dg-fill" id="dailyGoalFill"></div></div>
                 </div>
             </div>
 
-            <!-- Journey Map -->
+            <div class="ayat-card" onclick="showDailyAyat()">
+                <div class="dg-icon" style="color: var(--secondary);">✨</div>
+                <div class="dg-content">
+                    <div class="dg-title">Aaj ki Ayat / Hadith <span>Share karein ›</span></div>
+                    <div style="font-size:13px;color:var(--text-light);margin-top:2px;">Rozana ka paigham dekhein aur doston ko bhejein.</div>
+                </div>
+            </div>
+
             <div class="journey-wrap" id="journeyMap"></div>
 
-            <div class="day-header">
-                <div class="day-title-wrap">
-                    <h2 id="dayTitle">Day 1</h2>
-                    <div class="day-progress"><span id="dayProgressText"></span><div class="bar"><i id="dayProgressFill"></i></div></div>
-                </div>
-                <select id="adminDaySelect" class="admin-select hidden" onchange="changeAdminDay(this.value)"></select>
-            </div>
+            <div style="margin: 20px 0;"><h2 id="dayTitle" style="font-size:32px;">Day 1</h2></div>
             <div class="grid-container" id="courseGrid"></div>
             <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam</button>
-            <button id="grandTestBtn" class="exam-btn gold hidden" onclick="startGrandExam()">🏆 Grand Test (50 Words)</button>
-            <button id="reviseBtn" class="exam-btn rev hidden" onclick="startRevision()">🔁 Dohrai</button>
         </div>
 
-        <!-- Bottom Nav -->
         <div class="bottom-nav">
-            <button onclick="switchTab('courseTab', document.querySelectorAll('.nav-btn')[0])">📚<br>Sabaq</button>
+            <button onclick="scrollToTop()">📚<br>Sabaq</button>
             <a href="dua.html">🤲<br>Duaein</a>
             <a href="games.html">🎮<br>Games</a>
             <a href="tajweed.html">📖<br>Tajweed</a>
@@ -436,44 +230,55 @@
         </div>
     </div>
 
-    <!-- MODALS -->
+    <!-- Ayat Modal -->
+    <div id="ayatModal" class="modal hidden">
+        <div class="modal-content" style="text-align:center; background: linear-gradient(135deg, #0F4C3A, #0A2E24); color: white; border: 2px solid var(--gold-bright);">
+            <span class="close-btn" style="color:white; background:rgba(255,255,255,0.1)" onclick="document.getElementById('ayatModal').classList.add('hidden')">&times;</span>
+            <h2 style="color:var(--gold-bright); font-family:'Amiri', serif; font-size:32px; margin-bottom:20px;">✨ Aaj ka Paigham</h2>
+            <div id="ayatAr" style="font-family:'Amiri', serif; font-size:38px; line-height:1.6; direction:rtl; margin-bottom:20px; color:#fff;"></div>
+            <div id="ayatUr" style="font-family:'Nastaliq', serif; font-size:20px; line-height:2; direction:rtl; margin-bottom:15px; color:var(--gold-bright);"></div>
+            <div id="ayatRef" style="font-size:14px; color:#A5B3AA; font-weight:bold; margin-bottom:25px;"></div>
+            <button class="exam-btn" style="background: linear-gradient(180deg, #27a05a, #1f8a4c);" onclick="shareDailyAyat()">📤 WhatsApp / Insta par Share karein</button>
+        </div>
+    </div>
+
     <!-- Shop Modal -->
-    <div id="shopModal" class="modal hidden" style="z-index:10002;">
+    <div id="shopModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-btn" onclick="closeShop()">&times;</span>
-            <h2 style="text-align:center; color: var(--ink);">🛒 Inaam Ghar</h2>
-            <p style="text-align:center; font-size:14px; margin-bottom:15px;">XP kharch karke naye Avatars aur Themes unlock karein!</p>
-            <div style="text-align:center; margin-bottom:15px; font-weight:bold; font-size:20px; color:var(--primary);">
-                Aapka XP: <span id="shopXP">0</span>
-            </div>
+            <h2 style="text-align:center;">🛒 Inaam Ghar</h2>
+            <div style="text-align:center; margin-bottom:15px; font-weight:bold; font-size:20px;">Aapka XP: <span id="shopXP">0</span></div>
             <div id="shopGrid" class="shop-grid"></div>
+            <button class="exam-btn" style="margin-top:15px; background:var(--soft-bg); color:var(--text); border:1px solid var(--border);" onclick="resetTheme(); closeShop();">🔄 Default Theme par wapas jayein</button>
         </div>
     </div>
 
-    <!-- Profile Modal -->
-    <div id="profileModal" class="modal hidden" style="z-index:10001;">
+    <!-- Admin Certificate Modal -->
+    <div id="adminCertModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeProfileForm()">&times;</span>
-            <h2 id="pfFormTitle" style="text-align:center; color: var(--ink);">Naya Profile</h2>
-            <label class="pf-label" for="pfName">Naam</label>
-            <input id="pfName" class="pf-input" type="text" maxlength="14" placeholder="Jaise: Ahmad" autocomplete="off">
-            <label class="pf-label">Tasveer chunein</label>
-            <div class="pf-avatars" id="pfAvatars"></div>
-            <div class="pf-err" id="pfErr"></div>
-            <button class="exam-btn" onclick="saveProfileForm()">💾 Save karein</button>
-            <button class="exam-btn danger hidden" id="pfDeleteBtn" onclick="deleteProfile()">🗑️ Profile hatayein</button>
+            <span class="close-btn" onclick="document.getElementById('adminCertModal').classList.add('hidden')">&times;</span>
+            <h2 style="text-align:center; color:var(--primary);">🏆 Admin Certificate Panel</h2>
+            <p style="text-align:center; font-size:14px; margin-bottom:15px;">Kisi bhi profile ke liye Sanad (Certificate) banayein.</p>
+            <label style="font-size:13px; font-weight:bold; margin-bottom:5px; display:block;">Profile Chunein:</label>
+            <select id="adminProfileSelect" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); font-size:16px; margin-bottom:15px;"></select>
+            
+            <div style="display:flex; gap:10px;">
+                <button class="exam-btn" style="background:#B0BEC5;" onclick="adminGenerateCert(false)">🥈 Silver (50 Din)</button>
+                <button class="exam-btn gold" onclick="adminGenerateCert(true)">🥇 Gold (90 Din)</button>
+            </div>
         </div>
     </div>
 
-    <!-- Info Modal -->
-    <div id="infoModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="QSpeech.stop(); document.getElementById('infoModal').classList.add('hidden')">&times;</span>
-            <h2 id="modalTitle" style="color: var(--ink); text-align: center;">Tafseel</h2>
-            <div id="modalText" class="modal-text"></div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="exam-btn" id="speakBtn" style="flex:1; margin-top:0;">🔊 Suno</button>
-                <button class="exam-btn share" id="shareBtn" style="flex:1; margin-top:0;">📤 Share</button>
+    <!-- Certificate Preview Modal -->
+    <div id="certPreviewModal" class="modal hidden" style="z-index: 3000;">
+        <div class="modal-content" style="max-width: 800px; padding: 10px;">
+            <span class="close-btn" style="background:rgba(0,0,0,0.5); color:white; z-index:10;" onclick="document.getElementById('certPreviewModal').classList.add('hidden')">&times;</span>
+            <h2 style="text-align:center; margin-bottom:10px; font-size:18px;">Sanad Preview</h2>
+            <img id="certPreviewImg" style="width: 100%; border-radius: 10px; display:block; margin-bottom:10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            
+            <div style="display:flex; gap:10px;">
+                <button class="exam-btn" style="background: var(--primary); margin-top:0;" onclick="downloadPreviewCert()">📥 Download</button>
+                <button class="exam-btn" style="background: linear-gradient(180deg, #27a05a, #1f8a4c); margin-top:0;" onclick="sharePreviewCert()">📤 Share</button>
             </div>
         </div>
     </div>
@@ -482,100 +287,43 @@
     <div id="examModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('examModal').classList.add('hidden')">&times;</span>
-            <h2 id="examTitle" style="text-align: center; color: var(--ink);">Exam</h2>
-            <p style="text-align: center; font-size: 12px; margin-bottom: 15px;">Sahi Urdu Meaning Select Karein</p>
+            <h2 id="examTitle" style="text-align:center;">Exam</h2>
+            <div id="examProgress" style="text-align:center; color:var(--text-light); margin-bottom:10px; font-size:13px;"></div>
             <div id="examQuestions"></div>
             <button class="exam-btn" onclick="submitExam()" id="submitExamBtn">Submit Exam</button>
-            <div id="examResult" style="text-align: center; margin-top: 15px; font-weight: bold;"></div>
-        </div>
-    </div>
-
-    <!-- Feedback Modal -->
-    <div id="feedbackModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="document.getElementById('feedbackModal').classList.add('hidden')">&times;</span>
-            <h2 style="text-align: center; color: var(--ink);">✉️ Feedback</h2>
-            <p style="text-align: center; font-size: 14px; margin: 10px 0;">App kaisi lagi, zaroor batayein.</p>
-            <a href="mailto:fauzan0096@gmail.com?subject=Feedback%20from%20Quran%20Ustad%20App" style="text-decoration: none; display: block;">
-                <button class="exam-btn" style="margin-top:10px;">📧 Email Karein</button>
-            </a>
-            <button class="exam-btn share" onclick="shareApp()" style="margin-top:10px;">📤 App Share Karein</button>
-        </div>
-    </div>
-
-    <!-- List Modal (Search / Pasandida) -->
-    <div id="listModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeList()">&times;</span>
-            <h2 id="listTitle" style="text-align:center; color: var(--ink);">Search</h2>
-            <input type="search" id="listInput" class="list-search" placeholder="Arabic, Roman, Urdu ya Hindi likhein..." oninput="renderList()" autocomplete="off">
-            <div id="listBody"></div>
+            <div id="examResult" style="text-align:center; margin-top:15px; font-weight:bold;"></div>
         </div>
     </div>
 
     <div id="toast" class="toast">Message</div>
 
-    <!-- Load Data File -->
     <script src="courseData.js"></script>
-
-    <!-- App Logic -->
     <script>
-        // ==========================================
-        // 🔑 SIMPLE PASSWORDS (Yahan change karein)
-        // ==========================================
         const ADMIN_PASSWORD = "Fauzan8087";
         const GUEST_PASSWORD = "quran123";
-
-        // 👤 USER IDs — naya user jodna ho to ek line badhayein
         const USERS = [
-            { id: "guest", name: "Mehmaan (Guest)", password: GUEST_PASSWORD, role: "guest" },
+            { id: "guest", name: "Mehmaan", password: GUEST_PASSWORD, role: "guest" },
             { id: "admin", name: "Admin", password: ADMIN_PASSWORD, role: "admin" }
         ];
 
-        const BLOCK_DAYS = 5;          // har 5 din (= 50 lafz) ke baad imtihan
-        const BLOCK_QUESTIONS = 25;    // imtihan mein kitne sawal (50 lafz mein se)
-        const BLOCK_PASS = 0.8;        // paas hone ke liye 80%
-        let currentDay = 1;   // sabse aage ka khula hua din (progress)
-        let viewDay = 1;      // jo din abhi screen par dekh rahe hain
-        // Theme: light / dark / midnight / royal (purana darkMode bhi samjha jata hai)
-        let currentTheme = localStorage.getItem('theme') || (localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light');
-        const PREMIUM_THEMES = { midnight: 'theme_midnight', royal: 'theme_royal' };
-        // --- Matlab ki zubaan: 'u' = Urdu, 'ro' = Roman, 'hi' = Hindi ---
-        const MEANING_LANGS = ['u', 'ro', 'hi'];
-        const MEANING_LABELS = { u: 'اردو', ro: 'Roman', hi: 'हिन्दी' };
-        let meaningLang = localStorage.getItem('meaningLang');
-        if (MEANING_LANGS.indexOf(meaningLang) < 0) meaningLang = 'u';
-        function mw(w) { return meaningLang === 'u' ? w.u : (w['u_' + meaningLang] || w.u); }
-        function mt(w) { return meaningLang === 'u' ? w.t : (w['t_' + meaningLang] || w.t); }
-        function mcls() { return meaningLang === 'u' ? '' : ' m-' + meaningLang; }
-        function updateLangBtn() { const b = document.getElementById('langBtn'); if (b) b.innerText = MEANING_LABELS[meaningLang]; }
-        function cycleMeaningLang() {
-            meaningLang = MEANING_LANGS[(MEANING_LANGS.indexOf(meaningLang) + 1) % MEANING_LANGS.length];
-            localStorage.setItem('meaningLang', meaningLang);
-            updateLangBtn();
-            if (typeof renderCourse === 'function') renderCourse();
-            if (typeof renderToday === 'function') renderToday();
-            const lm = document.getElementById('listModal');
-            if (lm && !lm.classList.contains('hidden')) renderList();
-            if (typeof showToast === 'function') showToast('Matlab: ' + MEANING_LABELS[meaningLang]);
-        }
+        const APP_LINK = "https://quraan-ustad.github.io/"; 
+
+        let currentDay = 1;
+        let currentTheme = localStorage.getItem('theme') || 'light';
         let userRole = localStorage.getItem('userRole') || 'guest';
-        let userId = localStorage.getItem('userId') || userRole;
+        let isCertExam = false;
 
-        // --- User ID menu bharo (pichli ID yaad rehti hai) ---
-        (function fillUserMenu() {
-            const sel = document.getElementById('userIdSelect');
-            const last = localStorage.getItem('lastUserId') || USERS[0].id;
-            sel.innerHTML = USERS.map(u => `<option value="${u.id}" ${u.id === last ? 'selected' : ''}>👤 ${u.name}</option>`).join('');
-        })();
+        // --- Profiles ---
+        let profiles = JSON.parse(localStorage.getItem('profiles')) || [{ id: 'p1', name: 'Meri Profile', avatar: '🧒' }];
+        let activeProfile = localStorage.getItem('activeProfile');
+        
+        function pk(key) { return 'p_' + activeProfile + '_' + key; }
+        function lsJSON(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e) { return d; } }
+        function lsSave(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
 
-        function togglePwd() {
-            const i = document.getElementById('passwordInput');
-            i.type = i.type === 'password' ? 'text' : 'password';
-            document.getElementById('pwdEye').innerText = i.type === 'password' ? '👁️' : '🙈';
-        }
-
-        // --- Login Function ---
+        // --- Init ---
+        document.getElementById('userIdSelect').innerHTML = USERS.map(u => `<option value="${u.id}">👤 ${u.name}</option>`).join('');
+        
         function handleLogin() {
             const id = document.getElementById('userIdSelect').value;
             const pwd = document.getElementById('passwordInput').value.trim();
@@ -584,279 +332,159 @@
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userRole', user.role);
                 localStorage.setItem('userId', user.id);
-                localStorage.setItem('lastUserId', user.id);
                 location.reload();
             } else {
-                document.getElementById('loginError').innerText = "❌ Galat Password! Dobara koshish karein.";
+                document.getElementById('loginError').innerText = "❌ Galat Password!";
             }
         }
-
-        // Enter key se login
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') handleLogin();
-        });
-
-        function logout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userRole');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('activeProfile');
-            location.reload();
-        }
-
-        // --- Header ka user menu ---
-        function toggleUserMenu(e) {
-            if (e) e.stopPropagation();
-            document.getElementById('userDrop').classList.toggle('hidden');
-        }
-        document.addEventListener('click', function () {
-            const d = document.getElementById('userDrop');
-            if (d) d.classList.add('hidden');
-        });
-        function showUserInfo() {
-            const u = USERS.find(x => x.id === userId);
-            const p = getProfile();
-            document.getElementById('userChipAv').innerText = p ? p.avatar : '👤';
-            document.getElementById('userChipName').innerText = p ? p.name : userId;
-            document.getElementById('userDropProfile').innerText = p ? p.name : '-';
-            document.getElementById('userDropId').innerText = userId;
-            document.getElementById('userDropRole').innerText = (u ? u.name : '') + (userRole === 'admin' ? ' • Admin' : '');
-        }
-
-
-        // ==========================================
-        // 👥 KAI BACHON KE PROFILE
-        // Har profile ka apna Day, streak aur KBC progress
-        // ==========================================
-        const AVATARS = ['👦', '🧒', '👧', '👩', '🧔', '👨', '👴', '👵', '🧕', '🧑'];
-        let profiles = [], activeProfile = null, pfEditMode = false, pfEditingId = null, pfPicked = AVATARS[0];
-
-        function pk(key) { return 'p_' + activeProfile + '_' + key; }
-        function esc(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-        function getProfile() { return profiles.find(p => p.id === activeProfile); }
-        function saveProfiles() { localStorage.setItem('profiles', JSON.stringify(profiles)); }
-
-        function loadProfiles() {
-            try { profiles = JSON.parse(localStorage.getItem('profiles')) || []; } catch (e) { profiles = []; }
-            if (!profiles.length) {
-                // Purana progress pehle profile mein chala jata hai
-                profiles = [{ id: 'p1', name: 'Meri Profile', avatar: '🧒' }];
-                ['currentDay', 'streak', 'lastLoginDate'].forEach(k => {
-                    const v = localStorage.getItem(k);
-                    if (v !== null) localStorage.setItem('p_p1_' + k, v);
-                });
-                saveProfiles();
-            }
-            activeProfile = localStorage.getItem('activeProfile');
-            if (!profiles.find(p => p.id === activeProfile)) activeProfile = null;
-        }
-
-        function openProfilePicker() {
-            if (window.QSpeech) QSpeech.stop();
-            document.getElementById('userDrop').classList.add('hidden');
-            document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('profileScreen').classList.remove('hidden');
-            pfEditMode = false;
-            renderProfiles();
-        }
-
-        function renderProfiles() {
-            let html = profiles.map(p => `
-                <div class="pf-tile" onclick="${pfEditMode ? `openProfileForm('${p.id}')` : `pickProfile('${p.id}')`}">
-                    ${pfEditMode ? '<span class="pf-edit">✏️</span>' : ''}
-                    <div class="pf-av">${p.avatar}</div>
-                    <div class="pf-name">${esc(p.name)}</div>
-                    <div class="pf-sub">Day ${parseInt(localStorage.getItem('p_' + p.id + '_currentDay')) || 1}</div>
-                </div>`).join('');
-            if (profiles.length < 8) html += `<div class="pf-tile pf-add" onclick="openProfileForm()"><div class="pf-av">＋</div><div class="pf-name">Naya Profile</div></div>`;
-            document.getElementById('pfGrid').innerHTML = html;
-            document.getElementById('pfManageBtn').innerText = pfEditMode ? '✅ Ho gaya' : '✏️ Profile sambhalein';
-        }
-
-        function toggleProfileEdit() { pfEditMode = !pfEditMode; renderProfiles(); }
-
-        function pickProfile(id) {
-            activeProfile = id;
-            localStorage.setItem('activeProfile', id);
-            enterApp();
-        }
+        function logout() { localStorage.clear(); location.reload(); }
 
         function enterApp() {
-            document.getElementById('profileScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             currentDay = parseInt(localStorage.getItem(pk('currentDay'))) || 1;
-            viewDay = currentDay;
-            // Jo premium theme is profile ne unlock nahi ki, wo na dikhe
-            if (PREMIUM_THEMES[currentTheme] && !lsJSON(pk('ownedItems'), []).includes(PREMIUM_THEMES[currentTheme])) { currentTheme = 'light'; localStorage.setItem('theme', 'light'); applyTheme(); }
-            window.scrollTo(0, 0);
             initApp();
         }
 
-        // --- Naya / purana profile form ---
-        function openProfileForm(id) {
-            pfEditingId = id || null;
-            const p = id ? profiles.find(x => x.id === id) : null;
-            pfPicked = p ? p.avatar : AVATARS[profiles.length % AVATARS.length];
-            document.getElementById('pfFormTitle').innerText = p ? 'Profile badlein' : 'Naya Profile';
-            document.getElementById('pfName').value = p ? p.name : '';
-            document.getElementById('pfErr').innerText = '';
-            document.getElementById('pfDeleteBtn').classList.toggle('hidden', !(p && profiles.length > 1));
-            renderAvatarChoices();
-            document.getElementById('profileModal').classList.remove('hidden');
-        }
-        function renderAvatarChoices() {
-            document.getElementById('pfAvatars').innerHTML = AVATARS.map(a => `<button type="button" class="${a === pfPicked ? 'on' : ''}" onclick="pfPicked='${a}'; renderAvatarChoices()">${a}</button>`).join('');
-        }
-        function closeProfileForm() { document.getElementById('profileModal').classList.add('hidden'); }
-
-        function saveProfileForm() {
-            const name = document.getElementById('pfName').value.trim();
-            const err = document.getElementById('pfErr');
-            if (!name) { err.innerText = 'Naam likhna zaroori hai.'; return; }
-            if (profiles.some(p => p.id !== pfEditingId && p.name.toLowerCase() === name.toLowerCase())) { err.innerText = 'Ye naam pehle se maujood hai.'; return; }
-            if (pfEditingId) {
-                const p = profiles.find(x => x.id === pfEditingId);
-                p.name = name; p.avatar = pfPicked;
-            } else {
-                profiles.push({ id: 'p' + Date.now().toString(36), name: name, avatar: pfPicked });
-            }
-            saveProfiles();
-            closeProfileForm();
-            renderProfiles();
-            if (activeProfile) showUserInfo();
-        }
-
-        function deleteProfile() {
-            const p = profiles.find(x => x.id === pfEditingId);
-            if (!p || profiles.length < 2) return;
-            if (!confirm(p.name + ' ka profile aur uska saara progress hamesha ke liye hat jayega. Pakka hatayein?')) return;
-            Object.keys(localStorage).filter(k => k.indexOf('p_' + p.id + '_') === 0).forEach(k => localStorage.removeItem(k));
-            profiles = profiles.filter(x => x.id !== p.id);
-            if (activeProfile === p.id) { activeProfile = null; localStorage.removeItem('activeProfile'); }
-            saveProfiles();
-            closeProfileForm();
-            renderProfiles();
-        }
-
-        // --- App Init ---
-        // Theme reload par bhi yaad rehti hai
-        function applyTheme() {
+        // --- Themes ---
+        document.body.setAttribute('data-theme', currentTheme);
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
             document.body.setAttribute('data-theme', currentTheme);
-            document.getElementById('themeBtn').innerText = currentTheme === 'light' ? '🌙' : '☀️';
+            document.getElementById('themeBtn').innerText = currentTheme === 'dark' ? '☀️' : '🌙';
         }
-        applyTheme();
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            document.getElementById('loginScreen').classList.add('hidden');
-            loadProfiles();
-            if (activeProfile) enterApp(); else openProfilePicker();
+        function resetTheme() {
+            currentTheme = 'light';
+            localStorage.setItem('theme', currentTheme);
+            document.body.setAttribute('data-theme', currentTheme);
+            document.getElementById('themeBtn').innerText = '🌙';
+            showToast('Default theme apply ho gayi!');
         }
 
-        function initApp() { showUserInfo(); updateLangBtn(); updateXPUI(); renderCourse(); updateStreak(); checkDailyGoal(); }
+        // --- Shop ---
+        const SHOP_ITEMS = [
+            { id: 'theme_midnight', type: 'theme', icon: '🌙', name: 'Midnight Theme', cost: 300 },
+            { id: 'theme_royal', type: 'theme', icon: '💎', name: 'Royal Theme', cost: 300 },
+            { id: 'theme_lightblue', type: 'theme', icon: '💧', name: 'Sky Blue Theme', cost: 250 },
+            { id: 'av_kaaba', type: 'avatar', icon: '🕋', name: 'Kaaba Avatar', cost: 100 }
+        ];
 
-        // --- Render Course ---
-        function renderCourse() {
-            if (window.QSpeech) QSpeech.stop();
-            if (typeof courseData === 'undefined') {
-                document.getElementById('courseGrid').innerHTML = '<p style="text-align:center; color:red; padding:20px;">⚠️ courseData.js load nahi hua. File check karein.</p>';
-                return;
-            }
+        function openShop() {
+            document.getElementById('userDrop').classList.add('hidden');
+            document.getElementById('shopModal').classList.remove('hidden');
+            renderShop();
+        }
+        function closeShop() { document.getElementById('shopModal').classList.add('hidden'); }
+
+        function renderShop() {
+            const xp = parseInt(localStorage.getItem(pk('xp'))) || 0;
+            document.getElementById('shopXP').innerText = xp;
+            const owned = lsJSON(pk('ownedItems'), []);
+            document.getElementById('shopGrid').innerHTML = SHOP_ITEMS.map(item => {
+                const isOwned = owned.includes(item.id);
+                return `
+                <div class="shop-item ${isOwned ? 'owned' : ''}">
+                    <div class="si-icon">${item.icon}</div>
+                    <div class="si-name">${item.name}</div>
+                    <div class="si-cost">⭐ ${item.cost} XP</div>
+                    <button onclick="buyItem('${item.id}', ${item.cost})" ${isOwned || xp < item.cost ? 'disabled' : ''}>
+                        ${isOwned ? '✅ Unlocked' : 'Unlock'}
+                    </button>
+                </div>`;
+            }).join('');
+        }
+
+        function buyItem(id, cost) {
+            const xp = parseInt(localStorage.getItem(pk('xp'))) || 0;
+            if (xp < cost) return;
+            localStorage.setItem(pk('xp'), xp - cost);
+            let owned = lsJSON(pk('ownedItems'), []);
+            owned.push(id); lsSave(pk('ownedItems'), owned);
+            updateXPUI(); renderShop();
             
-            const grid = document.getElementById('courseGrid');
-            grid.innerHTML = '';
-            
-            const adminSelect = document.getElementById('adminDaySelect');
-            if(userRole === 'admin') {
-                adminSelect.classList.remove('hidden');
-                let opts = '';
-                courseData.forEach(d => { opts += `<option value="${d.day}" ${d.day === viewDay ? 'selected' : ''}>Day ${d.day}</option>`; });
-                adminSelect.innerHTML = opts;
+            const item = SHOP_ITEMS.find(i => i.id === id);
+            if (item.type === 'theme') {
+                currentTheme = id === 'theme_midnight' ? 'midnight' : id === 'theme_royal' ? 'royal' : 'lightblue';
+                localStorage.setItem('theme', currentTheme);
+                document.body.setAttribute('data-theme', currentTheme);
             }
-
-            document.getElementById('dayTitle').innerText = `Day ${viewDay}`;
-            renderJourneyMap(); updateReviseBtn(); updateFavCount();
-            if (window.QSProgress) QSProgress.refresh();
-            const _total = courseData.length || 40;
-            document.getElementById('dayProgressText').innerText = `${Math.min(currentDay, _total)} / ${_total} din`;
-            document.getElementById('dayProgressFill').style.width = (Math.min(currentDay, _total) / _total * 100) + '%';
-            const todayData = courseData.find(d => d.day === viewDay);
-
-            if(todayData) {
-                todayData.words.forEach((word, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.animationDelay = (index * 0.08) + 's';
-                    card.innerHTML = `
-                        ${heartBtn(word.a)}${shareBtn(word.a)}
-                        <div class="arabic" onclick="speakText('${word.a}', 'ar', this, '${word.m}')">${word.a}</div>
-                        <div class="roman">${word.r}</div>
-                        <div class="urdu${mcls()}" onclick="speakText('${word.u}', 'ur', this)">${mw(word)}</div>
-                        <div class="mashq-box" style="cursor:pointer" onclick="speakText('${word.m}', 'ar', this)"><b>Mashq:</b> ${word.m} 🔊</div>
-                    `;
-                    grid.appendChild(card);
-                });
-
-                const nextDayData = courseData.find(d => d.day === currentDay + 1);
-                if(nextDayData && userRole !== 'admin' && viewDay === currentDay) {
-                    const lockedCard = document.createElement('div');
-                    lockedCard.className = 'locked-page';
-                    const blockDay = currentDay % BLOCK_DAYS === 0;
-                lockedCard.innerHTML = `<div class="lock-icon">🔒</div><h2>Day ${currentDay + 1} Locked Hai</h2><p>${blockDay ? `Pehle Day ${currentDay - BLOCK_DAYS + 1}-${currentDay} ke ${BLOCK_DAYS * 10} lafz ka imtihan pass karein.` : 'Aaj ka exam pass karein tabhi kal ka sabaq khulega!'}</p>`;
-                    grid.appendChild(lockedCard);
-                }
-
-                document.getElementById('startExamBtn').innerText = `📝 Day ${viewDay} Exam`;
-                // 5-din ke aakhri din par: din ka exam pass hone ke baad 50 lafz ka imtihan aata hai
-                const blockPending = userRole !== 'admin' && viewDay === currentDay && currentDay % BLOCK_DAYS === 0
-                    && localStorage.getItem(pk('dayPassed')) === String(currentDay);
-                document.getElementById('startExamBtn').classList.toggle('hidden', blockPending);
-                const grandTestBtn = document.getElementById('grandTestBtn');
-                grandTestBtn.innerText = `🏆 ${BLOCK_DAYS * 10} Lafz ka Imtihan (Day ${currentDay - BLOCK_DAYS + 1}-${currentDay})`;
-                grandTestBtn.classList.toggle('hidden', !blockPending);
-            } else {
-                grid.innerHTML = '<p style="text-align:center; color:gray; padding:20px;">Yeh Day abhi available nahi.</p>';
-            }
-        }
-
-        function changeAdminDay(day) { viewDay = parseInt(day); renderCourse(); }
-
-        // --- Journey Map ---
-        function renderJourneyMap() {
-            const map = document.getElementById('journeyMap');
-            if (!map || typeof courseData === 'undefined') return;
-            let html = '<div class="j-track"><div class="j-line"></div>';
-            courseData.forEach(d => {
-                const open = userRole === 'admin' || d.day <= currentDay;
-                html += `<div class="j-node ${open ? 'unlocked' : 'locked'} ${d.day === viewDay ? 'current' : ''}" onclick="goToDay(${d.day})" aria-label="Day ${d.day}">${open ? 'Day ' + d.day : '🔒'}</div>`;
-            });
-            map.innerHTML = html + '</div>';
-            const cur = map.querySelector('.current');
-            if (cur) {
-                const nr = cur.getBoundingClientRect(), mr = map.getBoundingClientRect();
-                map.scrollLeft += nr.left - mr.left - (mr.width - nr.width) / 2;
-            }
-        }
-        function goToDay(day) {
-            if (userRole !== 'admin' && day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
-            if (day === viewDay) return;
-            viewDay = day; renderCourse();
+            if (window.QSSFX) QSSFX.win();
+            showToast(`🎉 ${item.name} Unlocked!`);
         }
 
         // --- XP ---
-        function getXP() { return parseInt(localStorage.getItem(pk('xp'))) || 0; }
-        function addXP(amount, msg) {
+        function addXP(amount) {
             if (userRole === 'admin') return;
-            localStorage.setItem(pk('xp'), getXP() + amount);
+            let xp = parseInt(localStorage.getItem(pk('xp'))) || 0;
+            localStorage.setItem(pk('xp'), xp + amount);
             updateXPUI();
-            showToast(msg || `+${amount} XP!`);
+            if (window.QSSFX) QSSFX.correct();
+            showToast(`+${amount} XP!`);
         }
         function updateXPUI() {
-            const b = document.getElementById('xpBadge'); if (!b) return;
-            const xp = getXP();
-            b.innerText = `⭐ Lvl ${Math.floor(xp / 100) + 1} • ${xp} XP`;
-            b.classList.remove('hidden');
+            let xp = parseInt(localStorage.getItem(pk('xp'))) || 0;
+            let level = Math.floor(xp / 100) + 1;
+            const b = document.getElementById('xpBadge');
+            if (b) { b.innerText = `⭐ Lvl ${level} • ${xp} XP`; b.classList.remove('hidden'); }
         }
 
-        // --- Daily Goal (roz 10 lafz sunein/padhein) ---
+        // --- Render App ---
+        function initApp() {
+            const p = profiles.find(p => p.id === activeProfile);
+            document.getElementById('userChipName').innerText = p ? p.name : 'User';
+            document.getElementById('userDropRole').innerText = userRole === 'admin' ? 'Admin' : 'Student';
+            updateXPUI(); renderCourse(); updateStreak(); checkDailyGoal();
+        }
+
+        function renderCourse() {
+            const grid = document.getElementById('courseGrid'); grid.innerHTML = '';
+            document.getElementById('dayTitle').innerText = `Day ${currentDay}`;
+            renderJourneyMap();
+            
+            const todayData = courseData.find(d => d.day === currentDay);
+            if(todayData) {
+                todayData.words.forEach((word, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card'; card.style.animationDelay = (index * 0.08) + 's'; 
+                    card.innerHTML = `
+                        <div class="arabic" onclick="speakText('${word.a}', 'ar', this, '${word.m}')">${word.a}</div>
+                        <div class="roman">${word.r}</div>
+                        <div class="urdu" onclick="speakText('${word.u}', 'ur', this)">${word.u}</div>
+                        <div class="mashq-box"><b>Mashq:</b> ${word.m}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+                document.getElementById('startExamBtn').innerText = `📝 Day ${currentDay} Exam`;
+                document.getElementById('startExamBtn').classList.remove('hidden');
+            }
+        }
+
+        function renderJourneyMap() {
+            const map = document.getElementById('journeyMap');
+            let html = '<div class="j-line"></div>';
+            courseData.forEach((d, i) => {
+                const isUnlocked = i + 1 <= currentDay;
+                const isCurrent = i + 1 === currentDay;
+                html += `<div class="j-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCurrent ? 'current' : ''}" onclick="goToDay(${i+1})">
+                    ${isUnlocked ? 'Day ' + (i+1) : '🔒'}
+                </div>`;
+            });
+            map.innerHTML = html;
+        }
+
+        function goToDay(day) {
+            if (day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
+            currentDay = day; localStorage.setItem(pk('currentDay'), day); renderCourse();
+        }
+
+        function speakText(t, lang, btn, ctx) {
+            if (lang === 'ar') trackWordRead();
+            QSpeech.speak(t, { lang, btn, ctx });
+        }
+        function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+
+        // --- Daily Goal & Exam ---
         function checkDailyGoal() {
             const today = new Date().toDateString();
             if (localStorage.getItem(pk('lastGoalDate')) !== today) {
@@ -864,347 +492,448 @@
                 localStorage.setItem(pk('todayReadCount'), 0);
             }
             const count = parseInt(localStorage.getItem(pk('todayReadCount'))) || 0;
-            const pct = Math.min(count / 10 * 100, 100);
+            const pct = Math.min((count / 10) * 100, 100);
             document.getElementById('dailyGoalFill').style.width = pct + '%';
             document.getElementById('dailyGoalPercent').innerText = Math.round(pct) + '%';
-            document.getElementById('dailyGoalText').innerText = count >= 10 ? '✅ Goal Mukammal!' : `${count} / 10 lafz padhein (+50 XP)`;
+            document.getElementById('dailyGoalText').innerText = count >= 10 ? '✅ Goal Mukammal!' : `${count} / 10 lafz padhein`;
         }
         function trackWordRead() {
-            checkDailyGoal(); // din badal gaya ho to reset
-            const count = parseInt(localStorage.getItem(pk('todayReadCount'))) || 0;
-            if (count >= 10) return;
-            localStorage.setItem(pk('todayReadCount'), count + 1);
-            checkDailyGoal();
-            if (count + 1 === 10) { addXP(55, '🎯 Daily Goal poora! +55 XP'); if (window.QSSFX) QSSFX.win(); }
-            else addXP(5);
-        }
-
-        // --- Shop ---
-        const SHOP_ITEMS = [
-            { id: 'av_kaaba', type: 'avatar', icon: '🕋', name: 'Kaaba Avatar', cost: 100 },
-            { id: 'av_masjid', type: 'avatar', icon: '🕌', name: 'Masjid Avatar', cost: 100 },
-            { id: 'av_quran', type: 'avatar', icon: '📖', name: 'Quran Avatar', cost: 100 },
-            { id: 'av_crown', type: 'avatar', icon: '👑', name: 'Royal Crown', cost: 200 },
-            { id: 'theme_midnight', type: 'theme', theme: 'midnight', icon: '🌙', name: 'Midnight Theme', cost: 300 },
-            { id: 'theme_royal', type: 'theme', theme: 'royal', icon: '💎', name: 'Royal Theme', cost: 300 }
-        ];
-        function openShop() {
-            document.getElementById('userDrop').classList.add('hidden');
-            document.getElementById('shopModal').classList.remove('hidden');
-            renderShop();
-        }
-        function closeShop() { document.getElementById('shopModal').classList.add('hidden'); }
-        function renderShop() {
-            const xp = getXP();
-            document.getElementById('shopXP').innerText = xp;
-            const owned = lsJSON(pk('ownedItems'), []);
-            const p = getProfile();
-            document.getElementById('shopGrid').innerHTML = SHOP_ITEMS.map(item => {
-                const isOwned = owned.includes(item.id);
-                const inUse = item.type === 'avatar' ? (p && p.avatar === item.icon) : currentTheme === item.theme;
-                let btn;
-                if (!isOwned) btn = `<button onclick="buyItem('${item.id}')" ${xp < item.cost ? 'disabled' : ''}>Unlock</button>`;
-                else if (inUse) btn = `<button disabled>✅ Istemal mein</button>`;
-                else btn = `<button onclick="useItem('${item.id}')">Istemal karein</button>`;
-                return `<div class="shop-item ${isOwned ? 'owned' : ''}">
-                    <div class="si-icon">${item.icon}</div>
-                    <div class="si-name">${item.name}</div>
-                    <div class="si-cost">⭐ ${item.cost} XP</div>
-                    ${btn}
-                </div>`;
-            }).join('');
-        }
-        function buyItem(id) {
-            const item = SHOP_ITEMS.find(i => i.id === id);
-            const xp = getXP();
-            if (!item || xp < item.cost) return;
-            const owned = lsJSON(pk('ownedItems'), []);
-            if (owned.includes(id)) return;
-            localStorage.setItem(pk('xp'), xp - item.cost);
-            owned.push(id); lsSave(pk('ownedItems'), owned);
-            updateXPUI();
-            useItem(id);
-            if (window.QSSFX) QSSFX.win();
-            showToast(`🎉 ${item.name} Unlocked!`);
-        }
-        function useItem(id) {
-            const item = SHOP_ITEMS.find(i => i.id === id);
-            if (!item || !lsJSON(pk('ownedItems'), []).includes(id)) return;
-            if (item.type === 'theme') {
-                currentTheme = item.theme;
-                localStorage.setItem('theme', currentTheme);
-                applyTheme();
-            } else {
-                const p = getProfile();
-                if (p) { p.avatar = item.icon; saveProfiles(); showUserInfo(); }
+            let count = parseInt(localStorage.getItem(pk('todayReadCount'))) || 0;
+            if (count < 10) {
+                localStorage.setItem(pk('todayReadCount'), count + 1);
+                checkDailyGoal(); addXP(5);
+                if (count + 1 === 10) { addXP(50); if (window.QSSFX) QSSFX.win(); }
             }
-            renderShop();
         }
-
-        // --- Text to Speech ---
-        function speakText(text, lang, btn, ctx) {
-            if (lang === 'ar') trackWordRead();
-            QSpeech.speak(text, { lang: lang, rate: 0.8, btn: btn, ctx: ctx });
-        }
-
-        // --- Tafseel Modal ---
-        function showTafseel(arabic, urdu, tafseel) {
-            document.getElementById('modalTitle').innerText = "Tafseel / Fazilat";
-            document.getElementById('modalText').innerText = tafseel;
-            document.getElementById('infoModal').classList.remove('hidden');
-            QSpeech.stop();
-            document.getElementById('speakBtn').onclick = function () { speakText(tafseel, 'ur', this); };
-            const shareTxt = `${arabic}\n\n${urdu}\n\n${tafseel}\n\n- Quraan Ustad App`;
-            document.getElementById('shareBtn').onclick = () => {
-                if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: shareTxt }).catch(console.error);
-                else { navigator.clipboard.writeText(shareTxt); showToast("📋 Copy ho gaya!"); }
-            };
-        }
-
-        // --- Exam Logic ---
-        let examType = 'regular';
 
         function startWordExam() {
-            examType = 'regular';
-            document.getElementById('examTitle').innerText = "Day " + viewDay + " Exam";
-            let targetDayObj = courseData.find(d => d.day === viewDay);
-            if(!targetDayObj) return;
-            let qs = targetDayObj.words.map(word => {
-                let wrong = courseData.flatMap(d => d.words).filter(w => w.u !== word.u).sort(() => 0.5 - Math.random()).slice(0, 3).map(w => mw(w));
-                return { a: word.a, opts: [mw(word), ...wrong].sort(() => 0.5 - Math.random()), c: mw(word) };
+            isCertExam = false;
+            let qs = courseData.find(d => d.day === currentDay).words.map(w => {
+                let wrong = courseData.flatMap(d => d.words).filter(x => x.u !== w.u).sort(() => 0.5 - Math.random()).slice(0,3).map(x => x.u);
+                return { a: w.a, opts: [w.u, ...wrong].sort(() => 0.5 - Math.random()), c: w.u };
             });
+            document.getElementById('examTitle').innerText = `Day ${currentDay} Exam`;
+            document.getElementById('examProgress').innerText = `${qs.length} sawal • Pass: 8/${qs.length}`;
             displayExam(qs);
         }
 
-        function startGrandExam() {
-            examType = 'grand';
-            const startDay = Math.max(1, currentDay - BLOCK_DAYS + 1);
-            document.getElementById('examTitle').innerText = "🏆 " + (BLOCK_DAYS * 10) + " Lafz ka Imtihan (Day " + startDay + " - " + currentDay + ")";
-            let pastWords = [];
-            for (let i = startDay; i <= currentDay; i++) {
-                const dayData = courseData.find(d => d.day === i);
-                if (dayData) pastWords.push(...dayData.words);
+        // --- Admin Certificate Logic ---
+        function handleCertificateClick() {
+            document.getElementById('userDrop').classList.add('hidden');
+            if (userRole === 'admin') {
+                document.getElementById('adminProfileSelect').innerHTML = profiles.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                document.getElementById('adminCertModal').classList.remove('hidden');
+            } else {
+                if (currentDay < 50) {
+                    showToast('🔒 Certificate ke liye kam se kam Day 50 poore karein!');
+                    if(window.QSSFX) QSSFX.wrong();
+                    return;
+                }
+                isCertExam = true;
+                let pool = courseData.filter(d => d.day <= currentDay).flatMap(d => d.words);
+                if (pool.length < 50) pool = courseData.flatMap(d => d.words);
+                let selected = pool.sort(() => 0.5 - Math.random()).slice(0, 50);
+                let qs = selected.map(w => {
+                    let wrong = pool.filter(x => x.u !== w.u).sort(() => 0.5 - Math.random()).slice(0,3).map(x => x.u);
+                    return { a: w.a, opts: [w.u, ...wrong].sort(() => 0.5 - Math.random()), c: w.u };
+                });
+                document.getElementById('examTitle').innerText = "🏆 Hard Certificate Exam";
+                document.getElementById('examProgress').innerHTML = `50 sawal • Pass: <b style="color:red">40/50</b>`;
+                displayExam(qs);
             }
-            if (pastWords.length === 0) return;
-            const selectedWords = shuffled(pastWords).slice(0, BLOCK_QUESTIONS);
-            displayExam(selectedWords.map(word => {
-                const wrong = shuffled(pastWords.filter(w => w.u !== word.u)).slice(0, 3).map(w => mw(w));
-                return { a: word.a, opts: shuffled([mw(word), ...wrong]), c: mw(word) };
-            }));
         }
 
-        function displayExam(qs) {
-            document.getElementById('examQuestions').innerHTML = '';
-            document.getElementById('examResult').innerText = '';
-            document.getElementById('submitExamBtn').style.display = 'block';
-            document.getElementById('examModal').classList.remove('hidden');
-            qs.forEach(q => {
-                let html = `<div class="exam-q"><p class="exam-ar">${q.a}</p>`;
-                q.opts.forEach(o => html += `<button class="option-btn" data-o="${esc(o)}" data-c="${esc(q.c)}" onclick="selectOption(this, this.dataset.o, this.dataset.c)">${esc(o)}</button>`);
-                document.getElementById('examQuestions').innerHTML += html + `</div>`;
+        function adminGenerateCert(isGold) {
+            const pid = document.getElementById('adminProfileSelect').value;
+            const profile = profiles.find(p => p.id === pid);
+            if (!profile) return;
+            document.getElementById('adminCertModal').classList.add('hidden');
+            showToast('⏳ Sanad ban rahi hai...');
+            
+            drawCertificateCanvas(profile.name, isGold, 'Verified', (canvas) => {
+                window.currentCertCanvas = canvas;
+                window.currentCertName = profile.name;
+                window.currentCertIsGold = isGold;
+                
+                document.getElementById('certPreviewImg').src = canvas.toDataURL('image/png');
+                document.getElementById('certPreviewModal').classList.remove('hidden');
             });
         }
 
-        function selectOption(btn, selected, correct) {
-            btn.parentElement.querySelectorAll('button').forEach(b => { b.classList.remove('selected'); b.dataset.sel = 'false'; });
-            btn.classList.add('selected'); btn.dataset.sel = (selected === correct).toString();
+        function downloadPreviewCert() {
+            if (!window.currentCertCanvas) return;
+            const link = document.createElement('a');
+            link.download = `Sanad-${window.currentCertName}-${window.currentCertIsGold ? 'Gold' : 'Silver'}.png`;
+            link.href = window.currentCertCanvas.toDataURL('image/png');
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            showToast('📥 Sanad Download Ho Gayi!');
+        }
+
+        function sharePreviewCert() {
+            if (!window.currentCertCanvas) return;
+            shareCertificateCanvas(window.currentCertCanvas, window.currentCertName, window.currentCertIsGold);
+        }
+
+        // --- Student Certificate Exam ---
+        function displayExam(qs) {
+            document.getElementById('examQuestions').innerHTML = qs.map((q, idx) => `
+                <div class="exam-q">
+                    <div style="font-size:11px; color:var(--text-light);">Sawal ${idx+1}</div>
+                    <div class="exam-ar">${q.a}</div>
+                    ${q.opts.map(o => `<button class="option-btn" onclick="selectOpt(this, '${o}', '${q.c}')">${o}</button>`).join('')}
+                </div>`).join('');
+            document.getElementById('examModal').classList.remove('hidden');
+            document.getElementById('examResult').innerHTML = '';
+            document.getElementById('submitExamBtn').classList.remove('hidden');
+            document.querySelector('#examModal .modal-content').scrollTop = 0;
+        }
+
+        function selectOpt(b, sel, cor) {
+            b.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected'); b.dataset.ok = (sel === cor);
+            if (sel === cor) { if(window.QSSFX) QSSFX.correct(); } else { if(window.QSSFX) QSSFX.wrong(); }
         }
 
         function submitExam() {
-            let score = 0, all = true;
-            document.querySelectorAll('#examQuestions > div').forEach(d => {
-                if (!d.querySelector('button.selected')) { all = false; return; }
-                if (d.querySelector('button[data-sel="true"]')) score++;
-            });
-            const res = document.getElementById('examResult');
-            if(!all) { res.innerText = "⚠️ Sabhi sawalon ke jawab dein!"; res.style.color = "orange"; if (window.QSSFX) QSSFX.wrong(); return; }
-            document.getElementById('submitExamBtn').style.display = 'none';
-            trackResults();
-            if (window.QSProgress) QSProgress.onExam(score, document.querySelectorAll('#examQuestions > div').length, examType);
-            if (examType === 'revision') {
-                const total = document.querySelectorAll('#examQuestions > div').length;
-                res.innerText = score === total ? `🎉 Mashallah! ${score}/${total} sahi. Sab yaad hain!` : `🔁 ${score}/${total} sahi. Galat wale dobara aayenge.`;
-                res.style.color = score === total ? "green" : "orange";
-                if (score === total) { if (window.QSSFX) QSSFX.win(); addXP(20, '+20 XP! Dohrai mukammal'); } else { if (window.QSSFX) QSSFX.wrong(); }
-                setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2500);
-                return;
-            }
-            const total = document.querySelectorAll('#examQuestions > div').length;
-            const need = Math.ceil(total * (examType === 'grand' ? BLOCK_PASS : 0.8));
-            if (score >= need) {
-                if (window.QSSFX) QSSFX.win();
-                res.style.color = "green";
-                if (examType === 'grand') {
-                    res.innerText = `🏆 Mubarak ho! ${score}/${total} sahi. ${BLOCK_DAYS * 10} lafz yaad ho gaye, agla din khul gaya!`;
-                    currentDay++; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
-                    localStorage.removeItem(pk('dayPassed'));
-                    addXP(100, '🏆 +100 XP! Imtihan pass');
-                    setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 3000);
+            let score = 0;
+            const totalQs = document.querySelectorAll('.exam-q').length;
+            document.querySelectorAll('.exam-q').forEach(q => { if(q.querySelector('[data-ok="true"]')) score++; });
+
+            if (isCertExam) {
+                if (score >= 40) {
+                    if(window.QSSFX) QSSFX.win(); addXP(500);
+                    document.getElementById('examResult').innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/50. Certificate tayyar hai!</span>`;
+                    const p = profiles.find(p => p.id === activeProfile);
+                    setTimeout(() => { 
+                        document.getElementById('examModal').classList.add('hidden'); 
+                        drawCertificateCanvas(p.name, currentDay >= 90, score, (canvas) => {
+                            window.currentCertCanvas = canvas;
+                            window.currentCertName = p.name;
+                            window.currentCertIsGold = currentDay >= 90;
+                            document.getElementById('certPreviewImg').src = canvas.toDataURL('image/png');
+                            document.getElementById('certPreviewModal').classList.remove('hidden');
+                        });
+                    }, 2000);
                 } else {
-                    const atFrontier = userRole !== 'admin' && viewDay === currentDay;
-                    const blockDay = currentDay % BLOCK_DAYS === 0;
-                    if (atFrontier && blockDay) {
-                        // 5vein din ka exam pass: agla din abhi band, pehle 50 lafz ka imtihan
-                        localStorage.setItem(pk('dayPassed'), String(currentDay));
-                        res.innerText = `🎉 Mubarak ho! ${score}/${total}. Ab ${BLOCK_DAYS * 10} lafz ka imtihan dein, tabhi agla din khulega.`;
-                        addXP(30, '+30 XP! Ab 50 lafz ka imtihan');
-                    } else if (atFrontier) {
-                        res.innerText = `🎉 Mubarak ho! Aapne ${score}/${total} score kiya. Day Unlocked!`;
-                        currentDay++; localStorage.setItem(pk('currentDay'), currentDay); viewDay = currentDay;
-                        addXP(50, '+50 XP! Naya din khul gaya');
-                    } else {
-                        res.innerText = `🎉 Mubarak ho! Aapne ${score}/${total} score kiya.`;
-                        if (userRole !== 'admin') addXP(10, '+10 XP! Dohrai achi rahi');
-                    }
-                    setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
+                    if(window.QSSFX) QSSFX.wrong();
+                    document.getElementById('examResult').innerHTML = `<span style="color:red;">😢 ${score}/50. Aapko 40 chahiye.</span>`;
                 }
             } else {
-                if (window.QSSFX) QSSFX.wrong();
-                res.innerText = `😢 Aapne ${score}/${total} score kiya. Aapko ${need} chahiye.`;
-                res.style.color = "red";
-                document.getElementById('submitExamBtn').style.display = 'block';
+                if (score >= 8) {
+                    if(window.QSSFX) QSSFX.win(); addXP(50);
+                    document.getElementById('examResult').innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs}. Day Unlocked!</span>`;
+                    setTimeout(() => { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
+                } else {
+                    if(window.QSSFX) QSSFX.wrong();
+                    document.getElementById('examResult').innerHTML = `<span style="color:red;">😢 ${score}/${totalQs}. Aapko 8 chahiye.</span>`;
+                }
             }
         }
 
-        // ==========================================
-        // Batch 1: Aaj ka lafz, Pasandida (bookmark), Search, Dohrai
-        // ==========================================
-        const normTxt = s => String(s || '').replace(/[ً-ٰٟـۖ-ۭ]/g, '').replace(/[إأآٱ]/g, 'ا').toLowerCase().trim();
-        function lsJSON(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v || d; } catch (e) { return d; } }
-        function lsSave(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-        function allWords() { const o = []; (typeof courseData !== 'undefined' ? courseData : []).forEach(d => d.words.forEach(w => o.push(Object.assign({ day: d.day }, w)))); return o; }
-        function findWord(a) { return allWords().find(w => w.a === a); }
-        function unlockedWords() { return allWords().filter(w => userRole === 'admin' || w.day <= currentDay); }
-        function shuffled(a) { return a.slice().sort(() => 0.5 - Math.random()); }
-
-        // --- Pasandida ---
-        function getFavs() { return lsJSON(pk('bookmarks'), []); }
-        function shareBtn(a) { return `<button class="share-ico" data-share="${a}" aria-label="Tasveer share karein">📤</button>`; }
-        function heartBtn(a) { const on = getFavs().includes(a); return `<button class="heart" data-a="${a}" aria-label="Pasandida">${on ? '❤️' : '🤍'}</button>`; }
-        function toggleFav(a) {
-            let f = getFavs();
-            if (f.includes(a)) { f = f.filter(x => x !== a); showToast('💔 Pasandida se hata diya'); }
-            else { f.push(a); showToast('❤️ Pasandida mein jod diya'); }
-            lsSave(pk('bookmarks'), f);
-            document.querySelectorAll('.heart').forEach(h => { if (h.dataset.a === a) h.textContent = f.includes(a) ? '❤️' : '🤍'; });
-            updateFavCount();
-            if (listMode === 'fav' && !document.getElementById('listModal').classList.contains('hidden')) renderList();
-        }
-        function updateFavCount() { const e = document.getElementById('favCount'); if (e) e.textContent = getFavs().length; }
-        document.addEventListener('click', function (e) {
-            const h = e.target.closest && e.target.closest('.heart');
-            if (h) { e.stopPropagation(); toggleFav(h.dataset.a); }
-        });
-
-        // --- Aaj ka lafz ---
-        function renderToday() {
-            const el = document.getElementById('todayCard');
-            const pool = unlockedWords();
-            if (!el || !pool.length) { if (el) el.innerHTML = ''; return; }
-            const n = new Date();
-            const w = pool[(n.getFullYear() * 372 + n.getMonth() * 31 + n.getDate()) % pool.length];
-            el.innerHTML = `<div class="today-card">
-                ${heartBtn(w.a)}${shareBtn(w.a)}
-                <div class="t-label">✨ AAJ KA LAFZ</div>
-                <div class="t-ar" onclick="speakText('${w.a}', 'ar', this, '${w.m}')">${w.a}</div>
-                <div class="t-ro">${w.r}</div>
-                <div class="t-ur${mcls()}" onclick="speakText('${w.u}', 'ur', this)">${mw(w)}</div>
-            </div>`;
-        }
-
-        // --- Search / Pasandida list ---
-        let listMode = 'search';
-        function openList(mode) {
-            listMode = mode;
-            document.getElementById('listTitle').innerText = mode === 'fav' ? '❤️ Pasandida' : '🔍 Search';
-            const inp = document.getElementById('listInput');
-            inp.value = '';
-            inp.style.display = mode === 'fav' ? 'none' : 'block';
-            document.getElementById('listModal').classList.remove('hidden');
-            renderList();
-            if (mode === 'search') setTimeout(() => inp.focus(), 150);
-        }
-        function closeList() { if (window.QSpeech) QSpeech.stop(); document.getElementById('listModal').classList.add('hidden'); }
-        function renderList() {
-            const body = document.getElementById('listBody');
-            let items;
-            if (listMode === 'fav') {
-                const f = getFavs();
-                items = f.map(findWord).filter(Boolean);
-                if (!items.length) { body.innerHTML = '<div class="list-empty">Abhi koi lafz pasandida nahi.<br>Kisi bhi lafz par 🤍 dabayen.</div>'; return; }
-            } else {
-                const q = normTxt(document.getElementById('listInput').value);
-                if (!q) { body.innerHTML = '<div class="list-empty">Upar likhna shuru karein.<br>Sirf wahi din milenge jo aap ne khole hain.</div>'; return; }
-                items = unlockedWords().filter(w => normTxt(w.a).includes(q) || w.r.toLowerCase().includes(q) || normTxt(w.u).includes(q) || normTxt(w.t).includes(q) || (w.u_ro || '').toLowerCase().includes(q) || (w.t_ro || '').toLowerCase().includes(q) || (w.u_hi || '').includes(q) || (w.t_hi || '').includes(q)).slice(0, 50);
-                if (!items.length) { body.innerHTML = '<div class="list-empty">Koi lafz nahi mila.</div>'; return; }
+        // --- Helper for Certificate Text Wrapping ---
+        function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let currentY = y;
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = ctx.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
             }
-            body.innerHTML = items.map(w => `<div class="list-item">
-                ${heartBtn(w.a)}
-                <div class="li-main">
-                    <div class="li-ar" onclick="speakText('${w.a}', 'ar', this, '${w.m}')">${w.a}</div>
-                    <div class="li-sub"><b>${w.r}</b><span class="li-ur${mcls()}">${mw(w)}</span><span class="li-day">Day ${w.day}</span></div>
-                </div></div>`).join('');
+            ctx.fillText(line, x, currentY);
+            return currentY;
         }
 
-        // --- Dohrai (galat hue lafz dobara) ---
-        function trackResults() {
-            let wrong = lsJSON(pk('wrongWords'), []);
-            document.querySelectorAll('#examQuestions > div').forEach(d => {
-                const a = (d.querySelector('.exam-ar') || {}).textContent;
-                const sel = d.querySelector('button.selected');
-                if (!a || !sel) return;
-                if (sel.dataset.sel === 'true') wrong = wrong.filter(x => x !== a);
-                else if (!wrong.includes(a)) wrong.push(a);
-            });
-            lsSave(pk('wrongWords'), wrong);
-        }
-        function updateReviseBtn() {
-            const b = document.getElementById('reviseBtn'); if (!b) return;
-            const n = lsJSON(pk('wrongWords'), []).filter(findWord).length;
-            b.classList.toggle('hidden', n === 0);
-            b.innerText = `🔁 Dohrai (${n} lafz)`;
-        }
-        function startRevision() {
-            const words = lsJSON(pk('wrongWords'), []).map(findWord).filter(Boolean).slice(0, 10);
-            if (!words.length) { showToast('Dohrai ke liye koi lafz nahi 🎉'); return; }
-            examType = 'revision';
-            document.getElementById('examTitle').innerText = '🔁 Dohrai';
-            const pool = allWords();
-            displayExam(words.map(word => {
-                const wrong = shuffled(pool.filter(w => w.u !== word.u)).slice(0, 3).map(w => mw(w));
-                return { a: word.a, opts: shuffled([mw(word), ...wrong]), c: mw(word) };
-            }));
-        }
-        updateFavCount();
+        // --- 🏆 CERTIFICATE DRAWING FUNCTION (UPDATED DISCLAIMER) ---
+        function drawCertificateCanvas(userName, isGold, score, callback) {
+            const arabicName = "فوزان الطاف غورمي المحمدي النوري المدني"; 
+            const dateStr = new Date().toLocaleDateString('en-GB');
 
-        // --- UI Helpers ---
-        function switchTab(tabId, btn) {
-            if (window.QSpeech) QSpeech.stop();
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if(btn) btn.classList.add('active');
-        }
-        function toggleTheme() {
-            currentTheme = currentTheme === 'light' ? 'dark' : 'light';   // premium theme par ho to light par wapas
-            localStorage.setItem('theme', currentTheme);
-            applyTheme();
-        }
-        function openFeedback() { document.getElementById('feedbackModal').classList.remove('hidden'); }
-        function shareApp() { if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: 'Maine yeh bohot achi Islamic App banayi hai!', url: window.location.href }).catch(console.error); else alert("Link Copy karein: " + window.location.href); }
-        function updateStreak() {
-            const today = new Date().toDateString(), last = localStorage.getItem(pk('lastLoginDate'));
-            let s = parseInt(localStorage.getItem(pk('streak'))) || 0;
-            if (last !== today) {
-                const yest = new Date(Date.now() - 86400000).toDateString();
-                s = (last === yest) ? s + 1 : 1;   // kal aaye the to badhao, warna dobara 1 se
-                localStorage.setItem(pk('streak'), s); localStorage.setItem(pk('lastLoginDate'), today);
-                if (s > (parseInt(localStorage.getItem(pk('bestStreak'))) || 0)) localStorage.setItem(pk('bestStreak'), s);
+            const canvas = document.createElement('canvas');
+            canvas.width = 1600; canvas.height = 1131;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            bgGrad.addColorStop(0, '#FFFDF6'); bgGrad.addColorStop(1, '#F4F1E3');
+            ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Borders
+            ctx.strokeStyle = isGold ? '#D4AF37' : '#0F4C3A'; ctx.lineWidth = 40;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+            ctx.strokeStyle = isGold ? '#B8923A' : '#D9B65A'; ctx.lineWidth = 10;
+            ctx.strokeRect(70, 70, canvas.width - 140, canvas.height - 140);
+
+            // Corner Designs
+            const drawCorner = (x, y, xDir, yDir) => {
+                ctx.beginPath(); ctx.moveTo(x, y + 50 * yDir);
+                ctx.quadraticCurveTo(x, y, x + 50 * xDir, y);
+                ctx.lineWidth = 8; ctx.strokeStyle = '#B8923A'; ctx.stroke();
+            };
+            drawCorner(70, 70, 1, 1); drawCorner(canvas.width - 70, 70, -1, 1);
+            drawCorner(70, canvas.height - 70, 1, -1); drawCorner(canvas.width - 70, canvas.height - 70, -1, -1);
+
+            // Top Seal
+            ctx.beginPath(); ctx.arc(canvas.width / 2, 130, 40, 0, Math.PI * 2);
+            ctx.fillStyle = isGold ? '#D4AF37' : '#0F4C3A'; ctx.fill();
+            ctx.fillStyle = '#FFF'; ctx.font = '700 30px "Amiri", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(isGold ? '🥇' : '🏅', canvas.width / 2, 130);
+
+            // Titles
+            ctx.fillStyle = isGold ? '#B8923A' : '#0F4C3A'; ctx.font = '700 55px "Amiri", serif';
+            ctx.fillText(isGold ? 'GOLD SANAD' : 'CERTIFICATE OF EXCELLENCE', canvas.width / 2, 220);
+            ctx.fillStyle = '#B8923A'; ctx.font = 'italic 400 25px "Figtree", sans-serif';
+            ctx.fillText('This Sanad is proudly presented to', canvas.width / 2, 290);
+
+            // Arabic Name
+            ctx.fillStyle = '#0A2E24'; ctx.font = '700 75px "Amiri", serif';
+            ctx.fillText(arabicName, canvas.width / 2, 400);
+            
+            // Signature & Logo Loading
+            let loadedCount = 0;
+            const sigImg = new Image(); sigImg.src = 'signature.png';
+            const logoImg = new Image(); logoImg.src = 'icon-192.png';
+            
+            const checkAndDraw = () => {
+                loadedCount++;
+                if (loadedCount >= 2) drawRest();
+            };
+            sigImg.onload = checkAndDraw; sigImg.onerror = checkAndDraw;
+            logoImg.onload = checkAndDraw; logoImg.onerror = checkAndDraw;
+
+            function drawRest() {
+                if (sigImg.complete && sigImg.naturalWidth > 0) {
+                    // Sign: neeche right me, "Quraan Ustad Admin" line ke upar (aspect ratio barqarar)
+                    const sigH = 170;
+                    const sigW = sigH * (sigImg.naturalWidth / sigImg.naturalHeight);
+                    ctx.drawImage(sigImg, canvas.width - 300 - sigW / 2, 1016 - sigH, sigW, sigH);
+                }
+
+                ctx.fillStyle = '#55645C'; ctx.font = '400 30px "Figtree", sans-serif';
+                ctx.fillText(`(Profile: ${userName})`, canvas.width / 2, 470);
+                
+                ctx.fillStyle = '#55645C'; ctx.font = '400 30px "Figtree", sans-serif';
+                ctx.fillText('has successfully completed the', canvas.width / 2, 520);
+                
+                ctx.fillStyle = isGold ? '#B8923A' : '#0F4C3A'; ctx.font = '700 40px "Figtree", sans-serif';
+                ctx.fillText(isGold ? '90 Days - 900 Quranic Words Master Course' : '50 Days - 500 Quranic Words Course', canvas.width / 2, 580);
+
+                // Divider Line
+                ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.moveTo(canvas.width / 2 - 350, 620); ctx.lineTo(canvas.width / 2 + 350, 620); ctx.stroke();
+
+                // Disclaimer Text (UPDATED AS PER USER REQUEST)
+                let scoreDisplayU = (typeof score === 'number') ? `${score}/50` : '';
+                let scoreDisplayE = (typeof score === 'number') ? `${score}/50` : '';
+
+                let urduText = isGold 
+                  ? `یہ صرف ایک تصدیق نامہ ہے کہ طالب علم نے پورے ۹۰۰ الفاظ (تمام کورس) کو اچھی طرح پڑھا اور یاد کیا ہے۔ یہ فتویٰ دینے یا عالمیت کی سند نہیں ہے۔`
+                  : `یہ صرف ایک تصدیق نامہ ہے کہ طالب علم نے ۵۰۰ الفاظ (اسکور: ${scoreDisplayU}) اچھی طرح پڑھے اور یاد کیے ہیں۔ یہ فتویٰ دینے یا عالمیت کی سند نہیں ہے۔`;
+
+                let engText = isGold
+                  ? `This is only a certificate confirming that the student has read and memorized all 900 words (the entire course) well. It is NOT a certificate for giving Fatwas or Alimiyat.`
+                  : `This is only a certificate confirming that the student has read and memorized the 500 words (Score: ${scoreDisplayE}) well. It is NOT a certificate for giving Fatwas or Alimiyat.`;
+
+                ctx.fillStyle = '#4A5568'; 
+                ctx.font = '400 26px "Noto Nastaliq Urdu", serif';
+                ctx.direction = 'rtl';
+                let yAfterUrdu = drawMultilineText(ctx, urduText, canvas.width / 2, 660, 1300, 40);
+                
+                ctx.font = '400 22px "Figtree", sans-serif';
+                ctx.direction = 'ltr';
+                let yAfterEng = drawMultilineText(ctx, engText, canvas.width / 2, yAfterUrdu + 55, 1300, 28);
+
+                // Draw Logo below text
+                if (logoImg.complete && logoImg.naturalWidth > 0) {
+                    ctx.drawImage(logoImg, canvas.width / 2 - 30, yAfterEng + 15, 60, 60);
+                }
+
+                // Date & Signature
+                ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
+                ctx.fillText('Date: ' + dateStr, 350, 1000);
+
+                ctx.strokeStyle = '#55645C'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(canvas.width - 450, 1020); ctx.lineTo(canvas.width - 150, 1020); ctx.stroke();
+                ctx.fillStyle = '#0F4C3A'; ctx.font = '700 30px "Amiri", serif';
+                ctx.fillText('Quraan Ustad Admin', canvas.width - 300, 1060);
+
+                callback(canvas);
             }
-            document.getElementById('streakBadge').innerText = `🔥 ${s}`; document.getElementById('streakBadge').classList.remove('hidden');
-            if (window.QSProgress) QSProgress.refresh();
         }
-        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+
+        // --- SHARE CERTIFICATE ---
+        function shareCertificateCanvas(canvas, userName, isGold) {
+            canvas.toBlob(async function(blob) {
+                if (!blob) { showToast('❌ Image nahi ban saki'); return; }
+                const file = new File([blob], `Sanad-${userName}.png`, { type: 'image/png' });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'Quraan Ustad Sanad',
+                            text: 'Maine apni Quraan Ustad Sanad hasil kar li! Alhamdulillah.\n\nDownload Quraan Ustad App:\n' + APP_LINK
+                        });
+                        showToast('📤 Sanad Share Ho Gayi!');
+                    } catch (e) {
+                        if (e.name !== 'AbortError') {
+                            showToast('⚠️ Share fail hua, download kar rahe hain...');
+                            downloadCanvas(canvas, userName, isGold);
+                        }
+                    }
+                } else {
+                    showToast('📥 Aapka browser direct share support nahi karta, download kar rahe hain...');
+                    downloadCanvas(canvas, userName, isGold);
+                }
+            }, 'image/png');
+        }
+
+        function downloadCanvas(canvas, name, isGold) {
+            const link = document.createElement('a');
+            link.download = `Sanad-${name}-${isGold ? 'Gold' : 'Silver'}.png`;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            if (window.QSSFX) QSSFX.win();
+            showToast('🏆 Sanad Download Ho Gayi!');
+        }
+
+        // --- ✨ AAJ KI AYAT GENERATOR ---
+        const AYATS = [
+            { ar: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", ur: "بے شک مشکل کے ساتھ آسانی ہے۔", ref: "سورۃ الشرح 94:5" },
+            { ar: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", ur: "سن لو! اللہ کے ذکر سے ہی دلوں کو سکون ملتا ہے۔", ref: "سورۃ الرعد 13:28" },
+            { ar: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", ur: "تم میں سے بہتر وہ ہے جو قرآن سیکھے اور سکھائے۔", ref: "صحیح بخاری" },
+            { ar: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ", ur: "اور جو اللہ پر بھروسہ کرے تو وہ اس کے لیے کافی ہے۔", ref: "سورۃ الطلاق 65:3" },
+            { ar: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", ur: "بے شک اللہ صبر کرنے والوں کے ساتھ ہے۔", ref: "سورۃ البقرہ 2:153" },
+            { ar: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", ur: "اور وہ تمہارے ساتھ ہے جہاں بھی تم ہو۔", ref: "سورۃ الحدید 57:4" },
+            { ar: "إِنَّ مَعَ الْعُسْرِ يُسْرًا", ur: "یقیناً مشکل کے ساتھ آسانی ہے۔", ref: "سورۃ الشرح 94:6" }
+        ];
+
+        let currentAyat = null;
+
+        function showDailyAyat() {
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+            currentAyat = AYATS[dayOfYear % AYATS.length];
+            
+            document.getElementById('ayatAr').innerText = currentAyat.ar;
+            document.getElementById('ayatUr').innerText = currentAyat.ur;
+            document.getElementById('ayatRef').innerText = currentAyat.ref;
+            document.getElementById('ayatModal').classList.remove('hidden');
+        }
+
+        function shareDailyAyat() {
+            if (!currentAyat) return;
+            showToast('⏳ Ayat ki tasveer ban rahi hai...');
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 1080; 
+            canvas.height = 1920;
+            const ctx = canvas.getContext('2d');
+
+            const logoImg = new Image(); logoImg.src = 'icon-192.png';
+            const drawAyatCard = () => {
+                const g = ctx.createLinearGradient(0, 0, 0, 1920);
+                g.addColorStop(0, '#0F4C3A'); g.addColorStop(1, '#0A2E24');
+                ctx.fillStyle = g; ctx.fillRect(0, 0, 1080, 1920);
+
+                ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 10;
+                ctx.strokeRect(40, 40, 1000, 1840);
+                ctx.strokeStyle = 'rgba(217,182,90,0.4)'; ctx.lineWidth = 2;
+                ctx.strokeRect(60, 60, 960, 1800);
+
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+
+                ctx.fillStyle = '#D9B65A'; ctx.font = '700 60px "Amiri", serif';
+                ctx.fillText('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', 540, 250);
+
+                const wrapText = (text, maxWidth) => {
+                    const words = text.split(' ');
+                    let lines = [], currentLine = '';
+                    words.forEach(word => {
+                        const testLine = currentLine ? currentLine + ' ' + word : word;
+                        if (ctx.measureText(testLine).width > maxWidth && currentLine) {
+                            lines.push(currentLine); currentLine = word;
+                        } else { currentLine = testLine; }
+                    });
+                    if (currentLine) lines.push(currentLine);
+                    return lines;
+                };
+
+                ctx.fillStyle = '#FFFFFF'; ctx.font = '700 90px "Amiri", serif';
+                const arabicLines = wrapText(currentAyat.ar, 850);
+                const arY = 700 - ((arabicLines.length - 1) * 100);
+                arabicLines.forEach((line, i) => { ctx.fillText(line, 540, arY + (i * 140)); });
+
+                ctx.strokeStyle = '#D9B65A'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(340, 1000); ctx.lineTo(740, 1000); ctx.stroke();
+
+                ctx.fillStyle = '#F4F1E3'; ctx.font = '700 50px "Noto Nastaliq Urdu", serif';
+                const urduLines = wrapText(currentAyat.ur, 850);
+                const urY = 1150 - ((urduLines.length - 1) * 60);
+                urduLines.forEach((line, i) => { ctx.fillText(line, 540, urY + (i * 90)); });
+
+                ctx.fillStyle = '#D9B65A'; ctx.font = '400 35px "Figtree", sans-serif';
+                ctx.fillText(currentAyat.ref, 540, 1450);
+
+                if (logoImg.complete && logoImg.naturalWidth > 0) {
+                    ctx.drawImage(logoImg, 490, 1580, 100, 100);
+                    ctx.fillStyle = '#FFFFFF'; ctx.font = '700 60px "Amiri", serif';
+                    ctx.fillText('Quraan Ustad', 540, 1720);
+                } else {
+                    ctx.fillStyle = '#FFFFFF'; ctx.font = '700 60px "Amiri", serif';
+                    ctx.fillText('Quraan Ustad', 540, 1660);
+                }
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = '500 30px "Figtree", sans-serif';
+                ctx.fillText('Quran aur Duaa seekhein', 540, 1780);
+
+                canvas.toBlob(async function(blob) {
+                    if (!blob) { showToast('❌ Image nahi ban saki'); return; }
+                    const file = new File([blob], `Ayat-${currentAyat.ref}.png`, { type: 'image/png' });
+                    
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: 'Aaj ki Ayat - Quraan Ustad',
+                                text: 'Aaj ka paigham: ' + currentAyat.ur + ' (' + currentAyat.ref + ')\n\nDownload Quraan Ustad App:\n' + APP_LINK
+                            });
+                            showToast('📤 Share Ho Gaya!');
+                        } catch (e) {
+                            if (e.name !== 'AbortError') { showToast('⚠️ Share fail, download kar rahe hain...'); triggerDownload(canvas); }
+                        }
+                    } else {
+                        showToast('📥 Download kar rahe hain...');
+                        triggerDownload(canvas);
+                    }
+                }, 'image/png');
+
+                function triggerDownload(c) {
+                    const link = document.createElement('a');
+                    link.download = 'Quraan-Ustad-Ayat.png';
+                    link.href = c.toDataURL('image/png');
+                    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                    showToast('📥 Tasveer Download Ho Gayi!');
+                }
+            };
+
+            logoImg.onload = drawAyatCard;
+            logoImg.onerror = drawAyatCard; 
+        }
+
+        // --- Helpers ---
+        function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        function toggleUserMenu(e) { e.stopPropagation(); document.getElementById('userDrop').classList.toggle('hidden'); }
+        document.addEventListener('click', function() { document.getElementById('userDrop').classList.add('hidden'); });
+        function updateStreak() { document.getElementById('streakBadge').innerText = `🔥 ${parseInt(localStorage.getItem(pk('streak'))) || 1}`; document.getElementById('streakBadge').classList.remove('hidden'); }
+        
+        if (localStorage.getItem('isLoggedIn') === 'true') { enterApp(); }
     </script>
     <script src="progress.js"></script>
 </body>
