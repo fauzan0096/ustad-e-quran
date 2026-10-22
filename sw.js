@@ -4,7 +4,7 @@
 // Cache-First for Images
 // ==========================================
 
-const CACHE_NAME = 'quran-ustad-auto-v4';
+const CACHE_NAME = 'quran-ustad-auto-v3';
 
 const ASSETS = [
     './',
@@ -13,14 +13,12 @@ const ASSETS = [
     './dua.html',
     './tajweed.html',
     './games.html',
+    './asma.html',
     './manifest.json',
     './icon.png',
     './icon-192.png',
     './install.js',
-    './speech.js',
-    './ui.js',
-    './progress.js',
-    './theme.css'
+    './speech.js'
 ];
 
 // ===== INSTALL: Naya SW foran ready ho =====

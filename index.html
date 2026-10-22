@@ -7,7 +7,6 @@
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
-    <script src="ui.js"></script>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Quran Ustad">
@@ -91,10 +90,11 @@
         .user-drop.hidden { display: none; }
         .user-drop-info { font-size: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
         .user-drop-info small { color: var(--text-light); }
+        .user-drop button.ud-switch { background: var(--primary); color: #fff; border-color: var(--primary); margin-bottom: 8px; }
         .user-drop button { width: 100%; background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; min-height: 44px; }
 
         /* ---------- Quick links (Tajweed, Games, Duaein) ---------- */
-        .top-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px auto 4px; max-width: 1200px; padding: 0 16px; }
+        .top-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px auto 4px; max-width: 1200px; padding: 0 16px; }
         .top-link-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border-radius: 16px; background: var(--card-bg); color: var(--text); text-decoration: none; font-weight: 600; font-size: 13px; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .top-link-btn:active { transform: scale(.97); }
         .top-link-btn .ti { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: rgba(15,76,58,.12); }
@@ -173,29 +173,31 @@
         .toast.show { opacity: 1; }
         .hidden { display: none !important; }
 
-        /* ---------- Batch 1: Aaj ka lafz, bookmark, search, dohrai ---------- */
-        .quick-row { display: flex; gap: 10px; margin: 10px auto 0; max-width: 1200px; padding: 0 16px; }
-        .search-open { flex: 1; display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-light); font-size: 14px; cursor: pointer; text-align: left; min-height: 46px; box-shadow: var(--shadow); }
-        .fav-open { flex: 0 0 auto; padding: 0 16px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); font-weight: 700; font-size: 14px; cursor: pointer; min-height: 46px; box-shadow: var(--shadow); }
-        .today-card { position: relative; margin: 18px 0 0; padding: 16px 16px 14px; border-radius: 18px; background: linear-gradient(135deg, #14614A, #0A2E24); color: #fff; border: 1px solid rgba(217,182,90,.6); box-shadow: var(--shadow); text-align: center; }
-        .today-card .t-label { font-size: 12px; font-weight: 700; letter-spacing: .5px; color: var(--gold-bright); }
-        .today-card .t-ar { font-family: 'Amiri', serif; font-size: 40px; line-height: 1.6; cursor: pointer; direction: rtl; border-radius: 12px; }
-        .today-card .t-ro { font-weight: 700; color: var(--gold-bright); }
-        .today-card .t-ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 20px; line-height: 2; direction: rtl; cursor: pointer; border-radius: 12px; }
-        .today-card .heart { background: rgba(255,255,255,.14); }
-        .heart { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; font-size: 20px; cursor: pointer; z-index: 3; display: flex; align-items: center; justify-content: center; }
-        .heart:active { transform: scale(.9); }
-        .exam-btn.rev { background: linear-gradient(180deg, #B5493A, #9C3B2E); box-shadow: 0 6px 16px rgba(156,59,46,.35); }
-        .list-search { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); margin-top: 12px; }
-        .list-search:focus { border-color: var(--primary); outline: none; }
-        .list-item { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 6px 10px 2px; border-bottom: 1px solid var(--border); }
-        .list-item .heart { position: static; flex: 0 0 auto; }
-        .list-item .li-main { flex: 1; min-width: 0; }
-        .list-item .li-ar { font-family: 'Amiri', serif; font-size: 28px; line-height: 1.5; color: var(--ink); direction: rtl; text-align: right; cursor: pointer; }
-        .list-item .li-sub { font-size: 14px; color: var(--text-light); display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
-        .list-item .li-ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 17px; color: var(--text); }
-        .list-item .li-day { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: var(--soft-bg); color: var(--text-light); }
-        .list-empty { text-align: center; color: var(--text-light); padding: 26px 8px; font-size: 14px; }
+
+        /* ---------- Profiles ---------- */
+        .pf-box { position: relative; width: 100%; max-width: 420px; text-align: center; color: #fff; }
+        .pf-box h1 { font-family: 'Amiri', serif; font-size: 32px; margin: 6px 0 2px; }
+        .pf-box p { color: rgba(255,255,255,.8); font-size: 14px; margin-bottom: 18px; }
+        .pf-logo { width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--gold-bright); object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
+        .pf-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .pf-tile { position: relative; background: var(--card-bg); color: var(--text); border-radius: 18px; padding: 18px 10px 14px; cursor: pointer; border: 1px solid rgba(217,182,90,.6); box-shadow: 0 10px 24px rgba(0,0,0,.3); min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+        .pf-tile:active { transform: scale(.97); }
+        .pf-av { font-size: 46px; line-height: 1; }
+        .pf-name { font-weight: 700; font-size: 16px; word-break: break-word; }
+        .pf-sub { font-size: 12px; color: var(--text-light); }
+        .pf-add { background: transparent; color: #fff; border: 2px dashed rgba(217,182,90,.8); box-shadow: none; }
+        .pf-add .pf-av { font-size: 34px; color: var(--gold-bright); }
+        .pf-edit { position: absolute; top: 6px; right: 6px; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--soft-bg); font-size: 15px; cursor: pointer; }
+        .pf-manage { margin-top: 20px; background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.35); padding: 11px 20px; border-radius: 24px; font-weight: 600; font-size: 14px; cursor: pointer; min-height: 44px; }
+        .pf-input { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); margin: 6px 0 4px; }
+        .pf-avatars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 8px 0 16px; }
+        .pf-avatars button { font-size: 28px; padding: 8px 0; border-radius: 12px; border: 2px solid var(--border); background: var(--soft-bg); cursor: pointer; }
+        .pf-avatars button.on { border-color: var(--primary); background: rgba(15,76,58,.14); }
+        [data-theme="dark"] .pf-avatars button.on { border-color: var(--gold-bright); }
+        .pf-label { font-size: 13px; font-weight: 600; display: block; margin-top: 10px; }
+        .pf-err { color: var(--rubric); font-size: 13px; min-height: 18px; margin-top: 4px; }
+        .exam-btn.danger { background: transparent; color: var(--rubric); border: 1.5px solid var(--rubric); box-shadow: none; }
+        .exam-btn.ghost { background: transparent; color: var(--text-light); border: 1.5px solid var(--border); box-shadow: none; }
 
         @media (max-width: 420px) {
             header { padding-left: 12px; padding-right: 12px; }
@@ -204,6 +206,8 @@
             .header-top h1 { font-size: 20px; }
             .header-controls { gap: 6px; }
             .icon-btn { width: 36px; height: 36px; font-size: 16px; }
+            .top-link-btn { font-size: 12px; padding: 10px 4px; }
+            .top-link-btn .ti { width: 36px; height: 36px; font-size: 18px; }
             .user-chip { height: 36px; padding: 0 10px !important; font-size: 12px !important; max-width: 104px; overflow: hidden; text-overflow: ellipsis; }
         }
         @media (min-width: 720px) {
@@ -234,6 +238,17 @@
         </div>
     </div>
 
+    <!-- PROFILE PICKER -->
+    <div id="profileScreen" class="login-container hidden">
+        <div class="pf-box">
+            <img class="pf-logo" src="icon-192.png" alt="">
+            <h1>Kaun parh raha hai?</h1>
+            <p>Apna profile chunein, har ek ka sabaq alag save hota hai</p>
+            <div class="pf-grid" id="pfGrid"></div>
+            <button class="pf-manage" id="pfManageBtn" onclick="toggleProfileEdit()">✏️ Profile sambhalein</button>
+        </div>
+    </div>
+
     <!-- MAIN APP -->
     <div id="mainApp" class="hidden">
         <header>
@@ -243,9 +258,10 @@
                     <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                     <div class="user-menu">
-                        <button class="icon-btn user-chip" id="userChip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span> ▾</button>
+                        <button class="icon-btn user-chip" id="userChip" onclick="toggleUserMenu(event)"><span id="userChipAv">👤</span> <span id="userChipName">ID</span> ▾</button>
                         <div class="user-drop hidden" id="userDrop">
-                            <div class="user-drop-info">User ID: <b id="userDropId">-</b><br><small id="userDropRole"></small></div>
+                            <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>User ID: <span id="userDropId">-</span></small><br><small id="userDropRole"></small></div>
+                            <button class="ud-switch" onclick="openProfilePicker()">👥 Profile badlein</button>
                             <button onclick="logout()">🚪 Logout</button>
                         </div>
                     </div>
@@ -256,14 +272,9 @@
         <!-- Top Links -->
         <div class="top-links">
             <a href="tajweed.html" class="top-link-btn"><span class="ti">📖</span>Tajweed</a>
-            <a href="games.html" class="top-link-btn gold"><span class="ti">🎮</span>Games &amp; GK</a>
+            <a href="games.html" class="top-link-btn gold"><span class="ti">🎮</span>Games</a>
             <a href="dua.html" class="top-link-btn green"><span class="ti">🤲</span>Duaein</a>
-        </div>
-
-        <!-- Search + Pasandida -->
-        <div class="quick-row">
-            <button class="search-open" onclick="openList('search')">🔍 Lafz, matlab ya Roman dhoondein...</button>
-            <button class="fav-open" onclick="openList('fav')">❤️ <span id="favCount">0</span></button>
+            <a href="asma.html" class="top-link-btn gold"><span class="ti">✨</span>99 Naam</a>
         </div>
 
         <!-- Main Nav -->
@@ -273,7 +284,6 @@
 
         <!-- Course Tab -->
         <div id="courseTab" class="view-section active">
-            <div id="todayCard"></div>
             <div class="day-header">
                 <div class="day-title-wrap">
                     <h2 id="dayTitle">Day 1</h2>
@@ -284,7 +294,6 @@
             <div class="grid-container" id="courseGrid"></div>
             <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam</button>
             <button id="grandTestBtn" class="exam-btn gold hidden" onclick="startGrandExam()">🏆 Grand Test (50 Words)</button>
-            <button id="reviseBtn" class="exam-btn rev hidden" onclick="startRevision()">🔁 Dohrai</button>
         </div>
 
         <!-- Bottom Nav -->
@@ -298,6 +307,21 @@
     </div>
 
     <!-- MODALS -->
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal hidden" style="z-index:10001;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProfileForm()">&times;</span>
+            <h2 id="pfFormTitle" style="text-align:center; color: var(--ink);">Naya Profile</h2>
+            <label class="pf-label" for="pfName">Naam</label>
+            <input id="pfName" class="pf-input" type="text" maxlength="14" placeholder="Jaise: Ahmad" autocomplete="off">
+            <label class="pf-label">Tasveer chunein</label>
+            <div class="pf-avatars" id="pfAvatars"></div>
+            <div class="pf-err" id="pfErr"></div>
+            <button class="exam-btn" onclick="saveProfileForm()">💾 Save karein</button>
+            <button class="exam-btn danger hidden" id="pfDeleteBtn" onclick="deleteProfile()">🗑️ Profile hatayein</button>
+        </div>
+    </div>
+
     <!-- Info Modal -->
     <div id="infoModal" class="modal hidden">
         <div class="modal-content">
@@ -336,16 +360,6 @@
         </div>
     </div>
 
-    <!-- List Modal (Search / Pasandida) -->
-    <div id="listModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeList()">&times;</span>
-            <h2 id="listTitle" style="text-align:center; color: var(--ink);">Search</h2>
-            <input type="search" id="listInput" class="list-search" placeholder="Arabic, Roman ya Urdu likhein..." oninput="renderList()" autocomplete="off">
-            <div id="listBody"></div>
-        </div>
-    </div>
-
     <div id="toast" class="toast">Message</div>
 
     <!-- Load Data File -->
@@ -365,7 +379,7 @@
             { id: "admin", name: "Admin", password: ADMIN_PASSWORD, role: "admin" }
         ];
 
-        let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
+        let currentDay = 1;
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
         let userRole = localStorage.getItem('userRole') || 'guest';
         let userId = localStorage.getItem('userId') || userRole;
@@ -408,6 +422,7 @@
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userRole');
             localStorage.removeItem('userId');
+            localStorage.removeItem('activeProfile');
             location.reload();
         }
 
@@ -422,9 +437,124 @@
         });
         function showUserInfo() {
             const u = USERS.find(x => x.id === userId);
-            document.getElementById('userChipName').innerText = userId;
+            const p = getProfile();
+            document.getElementById('userChipAv').innerText = p ? p.avatar : '👤';
+            document.getElementById('userChipName').innerText = p ? p.name : userId;
+            document.getElementById('userDropProfile').innerText = p ? p.name : '-';
             document.getElementById('userDropId').innerText = userId;
             document.getElementById('userDropRole').innerText = (u ? u.name : '') + (userRole === 'admin' ? ' • Admin' : '');
+        }
+
+
+        // ==========================================
+        // 👥 KAI BACHON KE PROFILE
+        // Har profile ka apna Day, streak aur KBC progress
+        // ==========================================
+        const AVATARS = ['👦', '🧒', '👧', '👩', '🧔', '👨', '👴', '👵', '🧕', '🧑'];
+        let profiles = [], activeProfile = null, pfEditMode = false, pfEditingId = null, pfPicked = AVATARS[0];
+
+        function pk(key) { return 'p_' + activeProfile + '_' + key; }
+        function esc(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+        function getProfile() { return profiles.find(p => p.id === activeProfile); }
+        function saveProfiles() { localStorage.setItem('profiles', JSON.stringify(profiles)); }
+
+        function loadProfiles() {
+            try { profiles = JSON.parse(localStorage.getItem('profiles')) || []; } catch (e) { profiles = []; }
+            if (!profiles.length) {
+                // Purana progress pehle profile mein chala jata hai
+                profiles = [{ id: 'p1', name: 'Meri Profile', avatar: '🧒' }];
+                ['currentDay', 'streak', 'lastLoginDate'].forEach(k => {
+                    const v = localStorage.getItem(k);
+                    if (v !== null) localStorage.setItem('p_p1_' + k, v);
+                });
+                saveProfiles();
+            }
+            activeProfile = localStorage.getItem('activeProfile');
+            if (!profiles.find(p => p.id === activeProfile)) activeProfile = null;
+        }
+
+        function openProfilePicker() {
+            if (window.QSpeech) QSpeech.stop();
+            document.getElementById('userDrop').classList.add('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('profileScreen').classList.remove('hidden');
+            pfEditMode = false;
+            renderProfiles();
+        }
+
+        function renderProfiles() {
+            let html = profiles.map(p => `
+                <div class="pf-tile" onclick="${pfEditMode ? `openProfileForm('${p.id}')` : `pickProfile('${p.id}')`}">
+                    ${pfEditMode ? '<span class="pf-edit">✏️</span>' : ''}
+                    <div class="pf-av">${p.avatar}</div>
+                    <div class="pf-name">${esc(p.name)}</div>
+                    <div class="pf-sub">Day ${parseInt(localStorage.getItem('p_' + p.id + '_currentDay')) || 1}</div>
+                </div>`).join('');
+            if (profiles.length < 8) html += `<div class="pf-tile pf-add" onclick="openProfileForm()"><div class="pf-av">＋</div><div class="pf-name">Naya Profile</div></div>`;
+            document.getElementById('pfGrid').innerHTML = html;
+            document.getElementById('pfManageBtn').innerText = pfEditMode ? '✅ Ho gaya' : '✏️ Profile sambhalein';
+        }
+
+        function toggleProfileEdit() { pfEditMode = !pfEditMode; renderProfiles(); }
+
+        function pickProfile(id) {
+            activeProfile = id;
+            localStorage.setItem('activeProfile', id);
+            enterApp();
+        }
+
+        function enterApp() {
+            document.getElementById('profileScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            currentDay = parseInt(localStorage.getItem(pk('currentDay'))) || 1;
+            window.scrollTo(0, 0);
+            initApp();
+        }
+
+        // --- Naya / purana profile form ---
+        function openProfileForm(id) {
+            pfEditingId = id || null;
+            const p = id ? profiles.find(x => x.id === id) : null;
+            pfPicked = p ? p.avatar : AVATARS[profiles.length % AVATARS.length];
+            document.getElementById('pfFormTitle').innerText = p ? 'Profile badlein' : 'Naya Profile';
+            document.getElementById('pfName').value = p ? p.name : '';
+            document.getElementById('pfErr').innerText = '';
+            document.getElementById('pfDeleteBtn').classList.toggle('hidden', !(p && profiles.length > 1));
+            renderAvatarChoices();
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+        function renderAvatarChoices() {
+            document.getElementById('pfAvatars').innerHTML = AVATARS.map(a => `<button type="button" class="${a === pfPicked ? 'on' : ''}" onclick="pfPicked='${a}'; renderAvatarChoices()">${a}</button>`).join('');
+        }
+        function closeProfileForm() { document.getElementById('profileModal').classList.add('hidden'); }
+
+        function saveProfileForm() {
+            const name = document.getElementById('pfName').value.trim();
+            const err = document.getElementById('pfErr');
+            if (!name) { err.innerText = 'Naam likhna zaroori hai.'; return; }
+            if (profiles.some(p => p.id !== pfEditingId && p.name.toLowerCase() === name.toLowerCase())) { err.innerText = 'Ye naam pehle se maujood hai.'; return; }
+            if (pfEditingId) {
+                const p = profiles.find(x => x.id === pfEditingId);
+                p.name = name; p.avatar = pfPicked;
+            } else {
+                profiles.push({ id: 'p' + Date.now().toString(36), name: name, avatar: pfPicked });
+            }
+            saveProfiles();
+            closeProfileForm();
+            renderProfiles();
+            if (activeProfile) showUserInfo();
+        }
+
+        function deleteProfile() {
+            const p = profiles.find(x => x.id === pfEditingId);
+            if (!p || profiles.length < 2) return;
+            if (!confirm(p.name + ' ka profile aur uska saara progress hamesha ke liye hat jayega. Pakka hatayein?')) return;
+            Object.keys(localStorage).filter(k => k.indexOf('p_' + p.id + '_') === 0).forEach(k => localStorage.removeItem(k));
+            profiles = profiles.filter(x => x.id !== p.id);
+            if (activeProfile === p.id) { activeProfile = null; localStorage.removeItem('activeProfile'); }
+            saveProfiles();
+            closeProfileForm();
+            renderProfiles();
         }
 
         // --- App Init ---
@@ -433,8 +563,8 @@
         document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙';
         if (localStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-            initApp();
+            loadProfiles();
+            if (activeProfile) enterApp(); else openProfilePicker();
         }
 
         function initApp() { showUserInfo(); renderCourse(); updateStreak(); }
@@ -459,8 +589,6 @@
             }
 
             document.getElementById('dayTitle').innerText = `Day ${currentDay}`;
-            renderToday(); updateReviseBtn();
-            if (window.QSProgress) QSProgress.refresh();
             const _total = courseData.length || 40;
             document.getElementById('dayProgressText').innerText = `${Math.min(currentDay, _total)} / ${_total} din`;
             document.getElementById('dayProgressFill').style.width = (Math.min(currentDay, _total) / _total * 100) + '%';
@@ -471,12 +599,10 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        ${heartBtn(word.a)}${shareBtn(word.a)}
                         <div class="arabic" onclick="speakText('${word.a}', 'ar', this)">${word.a}</div>
                         <div class="roman">${word.r}</div>
                         <div class="urdu" onclick="speakText('${word.u}', 'ur', this)">${word.u}</div>
                         <div class="mashq-box"><b>Mashq:</b> ${word.m}</div>
-                        <button class="tafseel-btn" onclick="showTafseel('${word.a}', '${word.u}', '${word.t}')">📖 Tafseel Padhein</button>
                     `;
                     grid.appendChild(card);
                 });
@@ -577,31 +703,23 @@
         function submitExam() {
             let score = 0, all = true;
             document.querySelectorAll('#examQuestions > div').forEach(d => {
-                if (!d.querySelector('button.selected')) { all = false; return; }
-                if (d.querySelector('button[data-sel="true"]')) score++;
+                const sel = d.querySelector('button[data-sel="true"]');
+                if (!sel) { all = false; return; }
+                if (sel.dataset.sel === 'true') score++;
             });
             const res = document.getElementById('examResult');
             if(!all) { res.innerText = "⚠️ Sabhi sawalon ke jawab dein!"; res.style.color = "orange"; return; }
             document.getElementById('submitExamBtn').style.display = 'none';
-            trackResults();
-            if (window.QSProgress) QSProgress.onExam(score, document.querySelectorAll('#examQuestions > div').length, examType);
-            if (examType === 'revision') {
-                const total = document.querySelectorAll('#examQuestions > div').length;
-                res.innerText = score === total ? `🎉 Mashallah! ${score}/${total} sahi. Sab yaad hain!` : `🔁 ${score}/${total} sahi. Galat wale dobara aayenge.`;
-                res.style.color = score === total ? "green" : "orange";
-                setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2500);
-                return;
-            }
             if (score >= 8) {
                 if (examType === 'grand') {
                     res.innerText = `🏆 Mubarak ho! Grand Test mein ${score}/10. Aapne 50 words yaad kar liye!`; 
                     res.style.color = "green";
-                    currentDay += 5; localStorage.setItem('currentDay', currentDay);
+                    currentDay += 5; localStorage.setItem(pk('currentDay'), currentDay);
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 3000);
                 } else {
                     res.innerText = `🎉 Mubarak ho! Aapne ${score}/10 score kiya. Day Unlocked!`; 
                     res.style.color = "green";
-                    if(userRole !== 'admin') { currentDay++; localStorage.setItem('currentDay', currentDay); }
+                    if(userRole !== 'admin') { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); }
                     setTimeout(() => { document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
                 }
             } else {
@@ -610,117 +728,6 @@
                 document.getElementById('submitExamBtn').style.display = 'block';
             }
         }
-
-        // ==========================================
-        // Batch 1: Aaj ka lafz, Pasandida (bookmark), Search, Dohrai
-        // ==========================================
-        const normTxt = s => String(s || '').replace(/[ً-ٰٟـۖ-ۭ]/g, '').replace(/[إأآٱ]/g, 'ا').toLowerCase().trim();
-        function lsJSON(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v || d; } catch (e) { return d; } }
-        function lsSave(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-        function allWords() { const o = []; (typeof courseData !== 'undefined' ? courseData : []).forEach(d => d.words.forEach(w => o.push(Object.assign({ day: d.day }, w)))); return o; }
-        function findWord(a) { return allWords().find(w => w.a === a); }
-        function unlockedWords() { return allWords().filter(w => userRole === 'admin' || w.day <= currentDay); }
-        function shuffled(a) { return a.slice().sort(() => 0.5 - Math.random()); }
-
-        // --- Pasandida ---
-        function getFavs() { return lsJSON('bookmarks', []); }
-        function shareBtn(a) { return `<button class="share-ico" data-share="${a}" aria-label="Tasveer share karein">📤</button>`; }
-        function heartBtn(a) { const on = getFavs().includes(a); return `<button class="heart" data-a="${a}" aria-label="Pasandida">${on ? '❤️' : '🤍'}</button>`; }
-        function toggleFav(a) {
-            let f = getFavs();
-            if (f.includes(a)) { f = f.filter(x => x !== a); showToast('💔 Pasandida se hata diya'); }
-            else { f.push(a); showToast('❤️ Pasandida mein jod diya'); }
-            lsSave('bookmarks', f);
-            document.querySelectorAll('.heart').forEach(h => { if (h.dataset.a === a) h.textContent = f.includes(a) ? '❤️' : '🤍'; });
-            updateFavCount();
-            if (listMode === 'fav' && !document.getElementById('listModal').classList.contains('hidden')) renderList();
-        }
-        function updateFavCount() { const e = document.getElementById('favCount'); if (e) e.textContent = getFavs().length; }
-        document.addEventListener('click', function (e) {
-            const h = e.target.closest && e.target.closest('.heart');
-            if (h) { e.stopPropagation(); toggleFav(h.dataset.a); }
-        });
-
-        // --- Aaj ka lafz ---
-        function renderToday() {
-            const el = document.getElementById('todayCard');
-            const pool = unlockedWords();
-            if (!el || !pool.length) { if (el) el.innerHTML = ''; return; }
-            const n = new Date();
-            const w = pool[(n.getFullYear() * 372 + n.getMonth() * 31 + n.getDate()) % pool.length];
-            el.innerHTML = `<div class="today-card">
-                ${heartBtn(w.a)}${shareBtn(w.a)}
-                <div class="t-label">✨ AAJ KA LAFZ</div>
-                <div class="t-ar" onclick="speakText('${w.a}', 'ar', this)">${w.a}</div>
-                <div class="t-ro">${w.r}</div>
-                <div class="t-ur" onclick="speakText('${w.u}', 'ur', this)">${w.u}</div>
-            </div>`;
-        }
-
-        // --- Search / Pasandida list ---
-        let listMode = 'search';
-        function openList(mode) {
-            listMode = mode;
-            document.getElementById('listTitle').innerText = mode === 'fav' ? '❤️ Pasandida' : '🔍 Search';
-            const inp = document.getElementById('listInput');
-            inp.value = '';
-            inp.style.display = mode === 'fav' ? 'none' : 'block';
-            document.getElementById('listModal').classList.remove('hidden');
-            renderList();
-            if (mode === 'search') setTimeout(() => inp.focus(), 150);
-        }
-        function closeList() { if (window.QSpeech) QSpeech.stop(); document.getElementById('listModal').classList.add('hidden'); }
-        function renderList() {
-            const body = document.getElementById('listBody');
-            let items;
-            if (listMode === 'fav') {
-                const f = getFavs();
-                items = f.map(findWord).filter(Boolean);
-                if (!items.length) { body.innerHTML = '<div class="list-empty">Abhi koi lafz pasandida nahi.<br>Kisi bhi lafz par 🤍 dabayen.</div>'; return; }
-            } else {
-                const q = normTxt(document.getElementById('listInput').value);
-                if (!q) { body.innerHTML = '<div class="list-empty">Upar likhna shuru karein.<br>Sirf wahi din milenge jo aap ne khole hain.</div>'; return; }
-                items = unlockedWords().filter(w => normTxt(w.a).includes(q) || w.r.toLowerCase().includes(q) || normTxt(w.u).includes(q) || normTxt(w.t).includes(q)).slice(0, 50);
-                if (!items.length) { body.innerHTML = '<div class="list-empty">Koi lafz nahi mila.</div>'; return; }
-            }
-            body.innerHTML = items.map(w => `<div class="list-item">
-                ${heartBtn(w.a)}
-                <div class="li-main">
-                    <div class="li-ar" onclick="speakText('${w.a}', 'ar', this)">${w.a}</div>
-                    <div class="li-sub"><b>${w.r}</b><span class="li-ur">${w.u}</span><span class="li-day">Day ${w.day}</span></div>
-                </div></div>`).join('');
-        }
-
-        // --- Dohrai (galat hue lafz dobara) ---
-        function trackResults() {
-            let wrong = lsJSON('wrongWords', []);
-            document.querySelectorAll('#examQuestions > div').forEach(d => {
-                const a = (d.querySelector('.exam-ar') || {}).textContent;
-                const sel = d.querySelector('button.selected');
-                if (!a || !sel) return;
-                if (sel.dataset.sel === 'true') wrong = wrong.filter(x => x !== a);
-                else if (!wrong.includes(a)) wrong.push(a);
-            });
-            lsSave('wrongWords', wrong);
-        }
-        function updateReviseBtn() {
-            const b = document.getElementById('reviseBtn'); if (!b) return;
-            const n = lsJSON('wrongWords', []).filter(findWord).length;
-            b.classList.toggle('hidden', n === 0);
-            b.innerText = `🔁 Dohrai (${n} lafz)`;
-        }
-        function startRevision() {
-            const words = lsJSON('wrongWords', []).map(findWord).filter(Boolean).slice(0, 10);
-            if (!words.length) { showToast('Dohrai ke liye koi lafz nahi 🎉'); return; }
-            examType = 'revision';
-            document.getElementById('examTitle').innerText = '🔁 Dohrai';
-            const pool = allWords();
-            displayExam(words.map(word => {
-                const wrong = shuffled(pool.filter(w => w.u !== word.u)).slice(0, 3).map(w => w.u);
-                return { a: word.a, opts: shuffled([word.u, ...wrong]), c: word.u };
-            }));
-        }
-        updateFavCount();
 
         // --- UI Helpers ---
         function switchTab(tabId, btn) {
@@ -737,19 +744,12 @@
         function openFeedback() { document.getElementById('feedbackModal').classList.remove('hidden'); }
         function shareApp() { if (navigator.share) navigator.share({ title: 'Quraan Ustad', text: 'Maine yeh bohot achi Islamic App banayi hai!', url: window.location.href }).catch(console.error); else alert("Link Copy karein: " + window.location.href); }
         function updateStreak() {
-            const today = new Date().toDateString(), last = localStorage.getItem('lastLoginDate');
-            let s = parseInt(localStorage.getItem('streak')) || 0;
-            if (last !== today) {
-                const yest = new Date(Date.now() - 86400000).toDateString();
-                s = (last === yest) ? s + 1 : 1;   // kal aaye the to badhao, warna dobara 1 se
-                localStorage.setItem('streak', s); localStorage.setItem('lastLoginDate', today);
-                if (s > (parseInt(localStorage.getItem('bestStreak')) || 0)) localStorage.setItem('bestStreak', s);
-            }
+            const today = new Date().toDateString(), last = localStorage.getItem(pk('lastLoginDate'));
+            let s = parseInt(localStorage.getItem(pk('streak'))) || 0;
+            if (last !== today) { if(last) s++; else s = 1; localStorage.setItem(pk('streak'), s); localStorage.setItem(pk('lastLoginDate'), today); }
             document.getElementById('streakBadge').innerText = `🔥 ${s}`; document.getElementById('streakBadge').classList.remove('hidden');
-            if (window.QSProgress) QSProgress.refresh();
         }
         function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
     </script>
-    <script src="progress.js"></script>
 </body>
 </html>

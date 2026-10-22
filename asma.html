@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Asma-ul-Husna - Quraan Ustad</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0F4C3A">
+    <script src="install.js" defer></script>
+    <script src="speech.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =====================================================
+           DESIGN SYSTEM — Mushaf-inspired
+           Zumurrud (emerald) + sona (gold) + kaghaz (paper)
+           ===================================================== */
+        :root {
+            --primary: #0F4C3A;
+            --primary-deep: #0A2E24;
+            --secondary: #B8923A;
+            --gold-bright: #D9B65A;
+            --rubric: #9C3B2E;
+            --ink: #0A2E24;
+            --bg: #EDF0E7;
+            --card-bg: #FFFDF6;
+            --soft-bg: #F4F1E3;
+            --text: #1F2A25;
+            --text-light: #55645C;
+            --border: #D9D6C3;
+            --shadow: 0 1px 2px rgba(10,46,36,.08), 0 8px 24px rgba(10,46,36,.08);
+            --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23D9B65A' stroke-opacity='.2' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        [data-theme="dark"] {
+            --primary: #0C3A2C;
+            --primary-deep: #07211A;
+            --secondary: #D9B65A;
+            --ink: #F0E9D0;
+            --bg: #0A1411;
+            --card-bg: #12211B;
+            --soft-bg: #182A22;
+            --text: #E8E3D0;
+            --text-light: #A5B3AA;
+            --border: #27403A;
+            --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Figtree', system-ui, sans-serif; background-color: var(--bg); color: var(--text); padding-bottom: 86px; line-height: 1.5; transition: background .3s, color .3s; }
+        button, input, select { font-family: inherit; }
+        a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, .arabic:focus-visible, .urdu:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
+
+
+        /* ---------- Header ---------- */
+        header { position: relative; background: linear-gradient(180deg, #14614A 0%, var(--primary) 100%); color: white; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); }
+        header::before { content: ""; position: absolute; inset: 0; background-image: var(--star); pointer-events: none; }
+        header::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-bright) 20%, var(--gold-bright) 80%, transparent); }
+        .header-top { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; gap: 10px; }
+        .header-top h1 { font-family: 'Amiri', serif; font-size: 24px; font-weight: 700; line-height: 1.1; flex: 1; text-align: center; }
+        .icon-btn { background: rgba(255,255,255,.14); border: none; font-size: 18px; cursor: pointer; color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+        main { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+
+        /* ---------- Hadith card ---------- */
+        .hadith { margin-top: 20px; background: linear-gradient(180deg, #14614A, var(--primary)); color: #fff; border-radius: 20px; padding: 22px 18px 18px; position: relative; box-shadow: var(--shadow); border: 1px solid rgba(217,182,90,.6); }
+        .hadith::after { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(217,182,90,.35); border-radius: 15px; pointer-events: none; }
+        .hadith .ar { font-family: 'Amiri', serif; font-size: 26px; line-height: 2; text-align: center; direction: rtl; color: #fff; }
+        .hadith .ur { font-family: 'Noto Nastaliq Urdu', serif; font-size: 17px; line-height: 2.2; text-align: center; direction: rtl; color: rgba(255,255,255,.92); margin-top: 6px; }
+        .hadith .ref { text-align: center; font-size: 13px; color: var(--gold-bright); font-weight: 600; margin-top: 10px; }
+        .note { margin-top: 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.7; color: var(--text-light); }
+        .note b { color: var(--text); }
+
+        /* ---------- Aaj ka naam ---------- */
+        .today { margin-top: 18px; background: var(--card-bg); border-radius: 20px; padding: 20px 16px 16px; text-align: center; border: 1.5px solid var(--secondary); box-shadow: var(--shadow); }
+        .today h2 { font-family: 'Amiri', serif; font-size: 22px; color: var(--ink); }
+        .today .big { font-family: 'Amiri', serif; font-size: 52px; line-height: 1.6; color: var(--ink); }
+        .today .rm { font-weight: 700; color: var(--secondary); font-size: 17px; }
+        .today .um { font-family: 'Noto Nastaliq Urdu', serif; font-size: 20px; line-height: 2.2; color: var(--text); direction: rtl; }
+
+        /* ---------- Progress & filter ---------- */
+        .prog { margin: 22px 0 10px; }
+        .prog .row { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; }
+        .prog .row small { color: var(--text-light); font-weight: 600; }
+        .bar { height: 8px; background: var(--border); border-radius: 8px; margin-top: 8px; overflow: hidden; }
+        .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary), var(--gold-bright)); border-radius: 8px; transition: width .4s; }
+        .search { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--card-bg); color: var(--text); margin-top: 14px; }
+        .search:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(15,76,58,.18); }
+        .tabs { display: flex; gap: 8px; margin: 12px 0 4px; overflow-x: auto; scrollbar-width: none; }
+        .tabs button { flex: 1; min-width: 90px; padding: 10px 12px; border-radius: 22px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text); font-weight: 600; font-size: 14px; cursor: pointer; min-height: 44px; }
+        .tabs button.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+        [data-theme="dark"] .tabs button.on { background: var(--gold-bright); color: #07211A; border-color: var(--gold-bright); }
+
+        /* ---------- Name cards ---------- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px 16px; margin: 26px 0 24px; }
+        .card { position: relative; background: var(--card-bg); border-radius: 16px; padding: 30px 16px 16px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
+        .card::after { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(184,146,58,.4); border-radius: 12px; pointer-events: none; }
+        .card .no { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; border-radius: 50%; background: var(--card-bg); border: 1.5px solid var(--secondary); color: var(--secondary); font-family: 'Amiri', serif; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 0 0 4px var(--bg); }
+        .card.done { border-color: var(--primary); }
+        .card.done .no { background: var(--primary); color: #fff; border-color: var(--primary); }
+        [data-theme="dark"] .card.done .no { background: var(--gold-bright); color: #07211A; border-color: var(--gold-bright); }
+        .card .ar { font-family: 'Amiri', serif; font-size: 38px; line-height: 1.7; color: var(--ink); direction: rtl; }
+        .card .rm { position: relative; font-weight: 700; font-size: 16px; color: var(--secondary); padding-top: 12px; margin: 4px 0; }
+        .card .rm::before { content: ""; position: absolute; top: 0; left: 50%; width: 44px; height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
+        .card .um { font-family: 'Noto Nastaliq Urdu', serif; font-size: 19px; line-height: 2.2; color: var(--text); direction: rtl; }
+        .acts { display: flex; gap: 8px; margin-top: 12px; position: relative; z-index: 2; }
+        .acts button { flex: 1; padding: 10px 8px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 44px; }
+        .btn-suno { background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; border: none; }
+        .btn-yaad { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+        .card.done .btn-yaad { background: rgba(15,76,58,.12); }
+        [data-theme="dark"] .btn-yaad { color: var(--gold-bright); border-color: var(--gold-bright); }
+        .qs-on { outline: none !important; background: var(--rubric) !important; color: #fff !important; }
+        .empty { text-align: center; color: var(--text-light); padding: 30px 10px; grid-column: 1 / -1; }
+        a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <a class="icon-btn" href="index.html" aria-label="Wapas">←</a>
+            <h1>أسماء الله الحسنى</h1>
+            <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Theme">🌙</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hadith">
+            <div class="ar">إِنَّ لِلَّهِ تِسْعَةً وَتِسْعِينَ اسْمًا مِائَةً إِلَّا وَاحِدًا مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ</div>
+            <div class="ur">بے شک اللہ کے ننانوے نام ہیں، سو میں ایک کم؛ جس نے انہیں یاد کیا (شمار کیا) وہ جنت میں داخل ہوگا۔</div>
+            <div class="ref">Abu Hurairah (RA) • Sahih Bukhari o Sahih Muslim</div>
+        </section>
+
+        <details class="note">
+            <summary style="cursor:pointer;font-weight:700;color:var(--text);min-height:24px;">📌 Zaroori wazahat (parhein)</summary>
+            <p style="margin-top:8px;">99 naamon ki tafseeli fehrist Tirmidhi aur Ibn Majah ki riwayaton mein aati hai (Walid bin Muslim ke tareeq se). Ulama ka is par ikhtilaf hai ke ye tafseeli fehrist Nabi ﷺ ke alfaaz hain ya kisi raawi ka izafa, is liye yahan <b>mashhoor fehrist</b> di gayi hai. Allah ke naam 99 tak mehdood nahi. "Ihsa" (yaad karna) ke maani ulama ne gin lena, yaad karna, samajhna aur taqaze par amal karna bhi bayan kiye hain. Kuch naam jode ki shakl mein liye jate hain (jaise Al-Mu'izz / Al-Mudhill, An-Nafi' / Ad-Darr), akele nahi.</p>
+        </details>
+
+        <section class="today" id="today"></section>
+
+        <div class="prog">
+            <div class="row"><span>Mere yaad kiye hue naam</span><small id="progText">0 / 99</small></div>
+            <div class="bar"><i id="progFill"></i></div>
+        </div>
+
+        <input class="search" id="q" type="search" placeholder="Naam dhoondein (Roman, Arabic ya Urdu)" oninput="render()" autocomplete="off">
+        <div class="tabs" id="tabs">
+            <button class="on" data-f="all" onclick="setFilter('all')">Sab</button>
+            <button data-f="done" onclick="setFilter('done')">Yaad hain</button>
+            <button data-f="todo" onclick="setFilter('todo')">Baaqi</button>
+        </div>
+
+        <div class="grid" id="grid"></div>
+    </main>
+
+    <script>
+        const NAMES = [["الرَّحْمَنُ", "Ar-Rahman", "بے حد مہربان"], ["الرَّحِيمُ", "Ar-Raheem", "بہت رحم کرنے والا"], ["الْمَلِكُ", "Al-Malik", "حقیقی بادشاہ"], ["الْقُدُّوسُ", "Al-Quddus", "نہایت پاک"], ["السَّلَامُ", "As-Salam", "ہر عیب سے پاک، سلامتی دینے والا"], ["الْمُؤْمِنُ", "Al-Mu'min", "امن دینے والا"], ["الْمُهَيْمِنُ", "Al-Muhaymin", "نگہبان"], ["الْعَزِيزُ", "Al-Azeez", "زبردست، غالب"], ["الْجَبَّارُ", "Al-Jabbar", "بڑی قدرت والا، ٹوٹے کام بنانے والا"], ["الْمُتَكَبِّرُ", "Al-Mutakabbir", "بڑائی والا"], ["الْخَالِقُ", "Al-Khaliq", "پیدا کرنے والا"], ["الْبَارِئُ", "Al-Bari'", "وجود میں لانے والا"], ["الْمُصَوِّرُ", "Al-Musawwir", "صورتیں بنانے والا"], ["الْغَفَّارُ", "Al-Ghaffar", "بہت بخشنے والا"], ["الْقَهَّارُ", "Al-Qahhar", "سب پر غالب"], ["الْوَهَّابُ", "Al-Wahhab", "بہت عطا کرنے والا"], ["الرَّزَّاقُ", "Ar-Razzaq", "رزق دینے والا"], ["الْفَتَّاحُ", "Al-Fattah", "کھولنے والا، فیصلہ کرنے والا"], ["الْعَلِيمُ", "Al-Aleem", "سب کچھ جاننے والا"], ["الْقَابِضُ", "Al-Qabid", "تنگی دینے والا"], ["الْبَاسِطُ", "Al-Basit", "کشادگی دینے والا"], ["الْخَافِضُ", "Al-Khafid", "پست کرنے والا"], ["الرَّافِعُ", "Ar-Rafi'", "بلند کرنے والا"], ["الْمُعِزُّ", "Al-Mu'izz", "عزت دینے والا"], ["الْمُذِلُّ", "Al-Mudhill", "ذلت دینے والا"], ["السَّمِيعُ", "As-Samee'", "سب کچھ سننے والا"], ["الْبَصِيرُ", "Al-Baseer", "سب کچھ دیکھنے والا"], ["الْحَكَمُ", "Al-Hakam", "فیصلہ کرنے والا"], ["الْعَدْلُ", "Al-Adl", "سراپا انصاف"], ["اللَّطِيفُ", "Al-Lateef", "باریک بین، نہایت مہربان"], ["الْخَبِيرُ", "Al-Khabeer", "پوری خبر رکھنے والا"], ["الْحَلِيمُ", "Al-Haleem", "بردبار"], ["الْعَظِيمُ", "Al-Azeem", "بہت عظمت والا"], ["الْغَفُورُ", "Al-Ghafoor", "بہت بخشنے والا"], ["الشَّكُورُ", "Ash-Shakoor", "قدر کرنے والا"], ["الْعَلِيُّ", "Al-Aliyy", "بلند و برتر"], ["الْكَبِيرُ", "Al-Kabeer", "سب سے بڑا"], ["الْحَفِيظُ", "Al-Hafeez", "حفاظت کرنے والا"], ["الْمُقِيتُ", "Al-Muqeet", "ہر چیز کو روزی پہنچانے والا"], ["الْحَسِيبُ", "Al-Haseeb", "حساب لینے والا، کافی"], ["الْجَلِيلُ", "Al-Jaleel", "جلال والا"], ["الْكَرِيمُ", "Al-Kareem", "بڑا کرم کرنے والا"], ["الرَّقِيبُ", "Ar-Raqeeb", "نگرانی کرنے والا"], ["الْمُجِيبُ", "Al-Mujeeb", "دعا قبول کرنے والا"], ["الْوَاسِعُ", "Al-Wasi'", "وسعت والا"], ["الْحَكِيمُ", "Al-Hakeem", "حکمت والا"], ["الْوَدُودُ", "Al-Wadood", "محبت کرنے والا"], ["الْمَجِيدُ", "Al-Majeed", "بزرگی والا"], ["الْبَاعِثُ", "Al-Ba'ith", "دوبارہ اٹھانے والا"], ["الشَّهِيدُ", "Ash-Shaheed", "ہر چیز پر گواہ"], ["الْحَقُّ", "Al-Haqq", "سچا، ثابت"], ["الْوَكِيلُ", "Al-Wakeel", "کارساز"], ["الْقَوِيُّ", "Al-Qawiyy", "بہت طاقتور"], ["الْمَتِينُ", "Al-Mateen", "مضبوط"], ["الْوَلِيُّ", "Al-Waliyy", "دوست، مددگار"], ["الْحَمِيدُ", "Al-Hameed", "تعریف کے لائق"], ["الْمُحْصِي", "Al-Muhsi", "ہر چیز کا شمار رکھنے والا"], ["الْمُبْدِئُ", "Al-Mubdi'", "پہلی بار پیدا کرنے والا"], ["الْمُعِيدُ", "Al-Mu'eed", "دوبارہ لوٹانے والا"], ["الْمُحْيِي", "Al-Muhyi", "زندگی دینے والا"], ["الْمُمِيتُ", "Al-Mumeet", "موت دینے والا"], ["الْحَيُّ", "Al-Hayy", "ہمیشہ زندہ"], ["الْقَيُّومُ", "Al-Qayyoom", "سب کو قائم رکھنے والا"], ["الْوَاجِدُ", "Al-Wajid", "سب کچھ پانے والا، کسی کا محتاج نہیں"], ["الْمَاجِدُ", "Al-Majid", "عظمت و بزرگی والا"], ["الْوَاحِدُ", "Al-Wahid", "ایک"], ["الْأَحَدُ", "Al-Ahad", "یکتا"], ["الصَّمَدُ", "As-Samad", "بے نیاز"], ["الْقَادِرُ", "Al-Qadir", "قدرت والا"], ["الْمُقْتَدِرُ", "Al-Muqtadir", "پوری قدرت رکھنے والا"], ["الْمُقَدِّمُ", "Al-Muqaddim", "آگے کرنے والا"], ["الْمُؤَخِّرُ", "Al-Mu'akhkhir", "پیچھے کرنے والا"], ["الْأَوَّلُ", "Al-Awwal", "سب سے پہلے"], ["الْآخِرُ", "Al-Akhir", "سب کے بعد"], ["الظَّاهِرُ", "Az-Zahir", "سب پر ظاہر و غالب"], ["الْبَاطِنُ", "Al-Batin", "نگاہوں سے پوشیدہ"], ["الْوَالِي", "Al-Wali", "کارساز، حاکم"], ["الْمُتَعَالِي", "Al-Muta'ali", "بہت بلند"], ["الْبَرُّ", "Al-Barr", "احسان کرنے والا"], ["التَّوَّابُ", "At-Tawwab", "توبہ قبول کرنے والا"], ["الْمُنْتَقِمُ", "Al-Muntaqim", "نافرمانوں کو سزا دینے والا"], ["الْعَفُوُّ", "Al-Afuww", "معاف کرنے والا"], ["الرَّءُوفُ", "Ar-Ra'oof", "بہت شفقت کرنے والا"], ["مَالِكُ الْمُلْكِ", "Malik-ul-Mulk", "بادشاہی کا مالک"], ["ذُو الْجَلَالِ وَالْإِكْرَامِ", "Dhul-Jalali wal-Ikram", "جلال اور اکرام والا"], ["الْمُقْسِطُ", "Al-Muqsit", "انصاف کرنے والا"], ["الْجَامِعُ", "Al-Jami'", "سب کو جمع کرنے والا"], ["الْغَنِيُّ", "Al-Ghaniyy", "بے نیاز"], ["الْمُغْنِي", "Al-Mughni", "بے نیاز کرنے والا"], ["الْمَانِعُ", "Al-Mani'", "روکنے والا"], ["الضَّارُّ", "Ad-Darr", "نقصان کا اختیار رکھنے والا"], ["النَّافِعُ", "An-Nafi'", "نفع دینے والا"], ["النُّورُ", "An-Noor", "روشنی دینے والا"], ["الْهَادِي", "Al-Hadi", "ہدایت دینے والا"], ["الْبَدِيعُ", "Al-Badee'", "بے مثال پیدا کرنے والا"], ["الْبَاقِي", "Al-Baqi", "ہمیشہ باقی رہنے والا"], ["الْوَارِثُ", "Al-Warith", "سب کا وارث"], ["الرَّشِيدُ", "Ar-Rasheed", "سیدھی راہ دکھانے والا"], ["الصَّبُورُ", "As-Saboor", "بہت صبر کرنے والا"]];
+
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        function applyTheme() { document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light'); document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; }
+        function toggleTheme() { isDarkMode = !isDarkMode; localStorage.setItem('darkMode', isDarkMode); applyTheme(); }
+        applyTheme();
+
+        // Har profile ka apna "yaad hai" record
+        const DONE_KEY = 'p_' + (localStorage.getItem('activeProfile') || 'p1') + '_asmaDone';
+        let done = new Set();
+        try { done = new Set(JSON.parse(localStorage.getItem(DONE_KEY)) || []); } catch (e) {}
+        let filter = 'all';
+
+        function saveDone() { localStorage.setItem(DONE_KEY, JSON.stringify([...done])); }
+        function strip(t) { return String(t).replace(/[\u064B-\u065F\u0670]/g, '').toLowerCase(); }
+
+        function speakName(i, btn) { QSpeech.speak(NAMES[i][0], { lang: 'ar', rate: 0.7, btn: btn }); }
+
+        function updateProgress() {
+            document.getElementById('progText').innerText = done.size + ' / ' + NAMES.length;
+            document.getElementById('progFill').style.width = (done.size / NAMES.length * 100) + '%';
+        }
+
+        function renderToday() {
+            const i = Math.floor(Date.now() / 86400000) % NAMES.length;
+            const n = NAMES[i];
+            document.getElementById('today').innerHTML =
+                '<h2>Aaj ka naam</h2><div class="big">' + n[0] + '</div><div class="rm">' + n[1] + '</div><div class="um">' + n[2] + '</div>' +
+                '<div class="acts" style="max-width:260px;margin:12px auto 0;"><button class="btn-suno" onclick="speakName(' + i + ', this)">🔊 Suno</button></div>';
+        }
+
+        function setFilter(f) {
+            filter = f;
+            document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+            render();
+        }
+
+        function render() {
+            QSpeech.stop();
+            const q = strip(document.getElementById('q').value.trim());
+            let html = '';
+            NAMES.forEach((n, i) => {
+                const isDone = done.has(i);
+                if (filter === 'done' && !isDone) return;
+                if (filter === 'todo' && isDone) return;
+                if (q && !(strip(n[0]).includes(q) || n[1].toLowerCase().includes(q) || n[2].includes(q))) return;
+                html += '<div class="card' + (isDone ? ' done' : '') + '" id="c' + i + '"><div class="no">' + (i + 1) + '</div>' +
+                    '<div class="ar">' + n[0] + '</div><div class="rm">' + n[1] + '</div><div class="um">' + n[2] + '</div>' +
+                    '<div class="acts"><button class="btn-suno" onclick="speakName(' + i + ', this)">🔊 Suno</button>' +
+                    '<button class="btn-yaad" onclick="toggleDone(' + i + ', this)">' + (isDone ? '✓ Yaad hai' : 'Yaad kiya?') + '</button></div></div>';
+            });
+            document.getElementById('grid').innerHTML = html || '<div class="empty">Koi naam nahi mila.</div>';
+            updateProgress();
+        }
+
+        function toggleDone(i, btn) {
+            if (done.has(i)) done.delete(i); else done.add(i);
+            saveDone();
+            if (filter !== 'all') { render(); return; }
+            const card = document.getElementById('c' + i), on = done.has(i);
+            card.classList.toggle('done', on);
+            btn.innerText = on ? '✓ Yaad hai' : 'Yaad kiya?';
+            updateProgress();
+        }
+
+        renderToday();
+        render();
+    </script>
+</body>
+</html>

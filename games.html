@@ -6,7 +6,6 @@
     <title>Games - Quraan Ustad</title>
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="manifest" href="manifest.json">
-    <script src="ui.js"></script>
     <meta name="theme-color" content="#0F4C3A">
     <script src="install.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -107,7 +106,6 @@
         .emoji-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; }
         .emoji-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
     </style>
-    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <header>
@@ -633,7 +631,7 @@
         let kbcData = null;
 
         // Din ki progress: Day 1 se shuru, jeetne par agla din khulta hai
-        const KBC_KEY = 'kbcUnlockedDay';
+        const KBC_KEY = 'p_' + (localStorage.getItem('activeProfile') || 'p1') + '_kbcUnlockedDay'; // har profile ka apna KBC din
         let kbcDayIdx = null;
         function kbcUnlocked() {
             const n = parseInt(localStorage.getItem(KBC_KEY), 10) || 1;
