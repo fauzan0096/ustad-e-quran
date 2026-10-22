@@ -4,8 +4,14 @@
    Ye file index.html ke main script ke BAAD load hoti hai. */
 (function () {
     // ---------- storage helpers ----------
-    function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    // Profile ke hisaab se alag save hone wali keys (index.html ka pk() 'p_<profile>_<key>' banata hai)
+    var PER = { currentDay: 1, streak: 1, bestStreak: 1, bookmarks: 1, perfectExams: 1, revisionsDone: 1, badgesEarned: 1 };
+    function K(k) {
+        try { if (PER[k] && typeof pk === 'function' && typeof activeProfile !== 'undefined' && activeProfile) return pk(k); } catch (e) {}
+        return k;
+    }
+    function lsGet(k) { try { return localStorage.getItem(K(k)); } catch (e) { return null; } }
+    function lsSet(k, v) { try { localStorage.setItem(K(k), v); } catch (e) {} }
     function lsJSON(k, d) { try { var v = JSON.parse(lsGet(k)); return v || d; } catch (e) { return d; } }
     function num(k) { return parseInt(lsGet(k), 10) || 0; }
     function toast(m) { if (typeof showToast === 'function') showToast(m); }
