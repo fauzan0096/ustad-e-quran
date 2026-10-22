@@ -234,16 +234,34 @@
     window.toggleNasheed = function () {
         const a = getAudio();
         if (!a.paused) { stopNasheed(); return; }
-        a.volume = 0.25;
+        a.volume = 0.7;
+        a.muted = false;
         nasheedWanted = true;
-        const p = a.play();
-        if (p && p.then) {
-            p.then(syncNasheedBtn).catch(() => {
-                nasheedWanted = false;
-                syncNasheedBtn();
-                toast('Nasheed file nahi mili: "nasheed.mp3" ko games.html wale folder mein rakhein');
+        const fail = function (why) {
+            nasheedWanted = false;
+            syncNasheedBtn();
+            toast('Nasheed nahi chali: ' + why);
+        };
+        const start = function () {
+            const p = a.play();
+            if (p && p.then) p.then(syncNasheedBtn).catch(function (e) {
+                if (e && e.name === 'NotAllowedError') fail('phone ne block kiya, button dobara dabayein');
+                else fail('"nasheed.mp3" file nahi mili ya khul nahi rahi');
             });
-        } else syncNasheedBtn();
+            else syncNasheedBtn();
+        };
+        // pehli baar fail ho to ek baar naya URL laga kar dobara try
+        let retried = false;
+        a.onerror = function () {
+            if (!retried) {
+                retried = true;
+                a.src = 'nasheed.mp3?v=' + Date.now();
+                a.load();
+                start();
+            } else fail('"nasheed.mp3" file nahi mili (repo mein games.html ke saath honi chahiye)');
+        };
+        if (a.readyState === 0) a.load();
+        start();
     };
 
     // KBC dobara ban'ne par button/label theek rahe
