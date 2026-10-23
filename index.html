@@ -115,6 +115,14 @@
         .arabic { font-family: 'Amiri', serif; font-size: 42px; color: var(--ink); direction: rtl; }
         .roman { font-weight: 600; font-size: 12px; letter-spacing: .2px; color: var(--secondary); margin: 4px 0 2px; }
         .urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 21px; color: var(--text); direction: rtl; }
+        .ayat-box { background: var(--soft-bg); border-right: 4px solid var(--secondary); padding: 10px 12px; margin-top: 12px; border-radius: 10px; text-align: right; direction: rtl; font-family: 'Amiri', serif; color: var(--text); }
+        .ayat-head { font-family: inherit; font-size: 13px; font-weight: 700; color: var(--secondary); margin-bottom: 6px; }
+        .ayat-ar { font-size: 22px; line-height: 2; cursor: pointer; color: var(--ink); }
+        .ayat-hl { background: rgba(156,59,46,.14); color: var(--rubric); font-weight: 700; border-radius: 6px; padding: 0 5px; }
+        [data-theme="dark"] .ayat-ar { color: var(--text); }
+        [data-theme="dark"] .ayat-hl { background: rgba(217,182,90,.22); color: var(--gold-bright); }
+        .ayat-ref { font-size: 12px; opacity: .85; margin-top: 6px; direction: rtl; line-height: 1.7; }
+        .ayat-note { font-family: 'Poppins', sans-serif; direction: ltr; text-align: left; font-size: 12px; background: rgba(184,146,58,.15); border-radius: 8px; padding: 6px 8px; margin-bottom: 6px; }
         .mashq-box { background: var(--soft-bg); border-right: 4px solid var(--rubric); padding: 10px; margin-top: 12px; border-radius: 10px; font-size: 15px; color: var(--text); text-align: right; direction: rtl; font-family: 'Amiri', serif; }
 
         .modal { position: fixed; inset: 0; background: rgba(4,16,12,.72); backdrop-filter: blur(4px); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 18px; }
@@ -313,6 +321,7 @@
     <div id="toast" class="toast">Message</div>
 
     <script src="courseData.js"></script>
+    <script src="wordAyat.js"></script>
     <script>
         const ADMIN_PASSWORD = "Fauzan8087";
         const GUEST_PASSWORD = "quran123";
@@ -321,7 +330,7 @@
         let currentDay = 1;
         let currentTheme = localStorage.getItem('theme') || 'light';
         let userRole = localStorage.getItem('userRole') || 'guest';
-        let isCertExam = false;
+        let examMode = 'day';   // 'day' | 'silver' | 'final'
 
         // --- Profiles (har naam ki alag history) ---
         let profiles = lsJSONSafe('profiles', []).filter(p => p && p.id !== 'p1' && p.name !== 'Meri Profile'); // purani default profile hatao
@@ -494,7 +503,24 @@
             const grid = document.getElementById('courseGrid'); grid.innerHTML = '';
             document.getElementById('dayTitle').innerText = `Day ${currentDay}`;
             renderJourneyMap();
-            
+
+            // 🏆 Milestone: Day 50 ke baad Silver Exam pass hone tak, aur Day 90 ke baad Final Exam
+            if (userRole !== 'admin') {
+                silverReady(); finalReady();   // pahunch gaye to yaad rakho (peeche ke din padhne par bhi exam baaki dikhe)
+                if (currentDay > SILVER_DAYS && !silverDone()) {
+                    document.getElementById('dayTitle').innerText = '🏆 Silver Exam';
+                    document.getElementById('startExamBtn').classList.add('hidden');
+                    grid.innerHTML = milestoneCardHTML('silver', true); return;
+                }
+                if (currentDay > FINAL_DAYS) {
+                    document.getElementById('dayTitle').innerText = finalDone() ? '🎓 Course Mukammal' : '🏆 Final Exam';
+                    document.getElementById('startExamBtn').classList.add('hidden');
+                    grid.innerHTML = milestoneCardHTML(finalDone() ? 'done' : 'final', true); return;
+                }
+                const pend = pendingMilestoneKind();
+                if (pend) grid.insertAdjacentHTML('beforeend', milestoneCardHTML(pend, false));
+            }
+
             const todayData = courseData.find(d => d.day === currentDay);
             if(todayData) {
                 todayData.words.forEach((word, index) => {
@@ -505,6 +531,7 @@
                         <div class="roman">${word.r}</div>
                         <div class="urdu ${lang==='u'?'':'lt'}" onclick="speakText('${word.u}', 'ur', this)">${pick(word,'u')}</div>
                         <div class="mashq-box"><b>Mashq:</b> <span class="mashq-ar" style="cursor:pointer" onclick="QSpeech.speak('${word.m}', { lang: 'ar', btn: this })">${word.m} 🔊</span><div style="margin-top:4px;opacity:.85;${lang==='u'?'':'direction:ltr;text-align:right;'}">${pick(word,'t')}</div></div>
+                        ${ayatBoxHTML(word)}
                     `;
                     grid.appendChild(card);
                 });
@@ -517,7 +544,7 @@
             const map = document.getElementById('journeyMap');
             let html = '<div class="j-line"></div>';
             courseData.forEach((d, i) => {
-                const isUnlocked = userRole === 'admin' || i + 1 <= currentDay;
+                const isUnlocked = isDayOpen(i + 1);
                 const isCurrent = i + 1 === currentDay;
                 html += `<div class="j-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCurrent ? 'current' : ''}" onclick="goToDay(${i+1})">
                     ${isUnlocked ? 'Day ' + (i+1) : '🔒'}
@@ -528,6 +555,7 @@
 
         function goToDay(day) {
             if (userRole !== 'admin' && day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
+            if (!isDayOpen(day)) { showToast('🔒 Pehle Silver Exam (500 lafz) pass karein!'); return; }
             currentDay = day; localStorage.setItem(pk('currentDay'), day); renderCourse();
         }
 
@@ -560,7 +588,7 @@
         }
 
         function startWordExam() {
-            isCertExam = false;
+            examMode = 'day';
             let qs = courseData.find(d => d.day === currentDay).words.map(w => {
                 let wrong = courseData.flatMap(d => d.words).filter(x => x.u !== w.u).sort(() => 0.5 - Math.random()).slice(0,3).map(x => x.u);
                 return { a: w.a, opts: [w.u, ...wrong].sort(() => 0.5 - Math.random()), c: w.u };
@@ -577,23 +605,135 @@
                 document.getElementById('adminProfileSelect').innerHTML = profiles.map(p => `<option value="${p.id}">${escHTML(p.name)}</option>`).join('');
                 document.getElementById('adminCertModal').classList.remove('hidden');
             } else {
-                if (currentDay < 50) {
-                    showToast('🔒 Certificate ke liye kam se kam Day 50 poore karein!');
-                    if(window.QSSFX) QSSFX.wrong();
+                if (finalDone()) { showStudentCert(true, savedScore('finalScore'), FINAL_QS); return; }
+                if (silverDone() && finalReady()) {
+                    if (confirm('Final Exam (900 lafz) dena hai?\n\nOK = Final Exam\nCancel = Silver Sanad dekhein')) startMilestoneExam('final');
+                    else showStudentCert(false, savedScore('silverScore'), SILVER_QS);
                     return;
                 }
-                isCertExam = true;
-                let pool = courseData.filter(d => d.day <= currentDay).flatMap(d => d.words);
-                if (pool.length < 50) pool = courseData.flatMap(d => d.words);
-                let selected = pool.sort(() => 0.5 - Math.random()).slice(0, 50);
-                let qs = selected.map(w => {
-                    let wrong = pool.filter(x => x.u !== w.u).sort(() => 0.5 - Math.random()).slice(0,3).map(x => x.u);
-                    return { a: w.a, opts: [w.u, ...wrong].sort(() => 0.5 - Math.random()), c: w.u };
-                });
-                document.getElementById('examTitle').innerText = "🏆 Hard Certificate Exam";
-                document.getElementById('examProgress').innerHTML = `50 sawal • Pass: <b style="color:red">40/50</b>`;
-                displayExam(qs);
+                if (silverDone()) { showStudentCert(false, savedScore('silverScore'), SILVER_QS); return; }
+                if (silverReady()) { startMilestoneExam('silver'); return; }
+                showToast('🔒 Certificate ke liye pehle Day 50 tak poore karein!');
+                if (window.QSSFX) QSSFX.wrong();
             }
+        }
+
+        // ==========================================
+        // 🏆 MILESTONE EXAMS — Silver (500 lafz, 50 sawal) aur Final/Gold (900 lafz, 75 sawal)
+        // Pass = 80% ya zyada. Silver pass kiye bina Day 51+ band rehte hain.
+        // Gold ke liye dono exam 80%+ hone chahiye (Silver pass hona Final ki shart hai).
+        // ==========================================
+        const SILVER_DAYS = 50, FINAL_DAYS = 90, SILVER_QS = 50, FINAL_QS = 75, PASS_RATIO = 0.8;
+        function silverDone() { return localStorage.getItem(pk('silverPassed')) === '1'; }
+        function finalDone() { return localStorage.getItem(pk('finalPassed')) === '1'; }
+        // "Ready" = student wahan tak pahunch chuka (purani history wale bhi, jinka currentDay pehle se bada hai)
+        function silverReady() {
+            if (currentDay > SILVER_DAYS) localStorage.setItem(pk('silverReady'), '1');
+            return localStorage.getItem(pk('silverReady')) === '1';
+        }
+        function finalReady() {
+            if (currentDay > FINAL_DAYS) localStorage.setItem(pk('finalReady'), '1');
+            return localStorage.getItem(pk('finalReady')) === '1';
+        }
+        function isDayOpen(day) {
+            return userRole === 'admin' || (day <= currentDay && (day <= SILVER_DAYS || silverDone()));
+        }
+        function savedScore(k) { const v = parseInt(localStorage.getItem(pk(k)), 10); return isFinite(v) ? v : 'Verified'; }
+
+        // Jo lafz daily exam mein galat hue wo "kamzor" mein ginte hain — milestone exam mein pehle wahi aate hain
+        function recordWeak() {
+            let weak = {};
+            try { weak = JSON.parse(localStorage.getItem(pk('weakWords'))) || {}; } catch (e) {}
+            document.querySelectorAll('.exam-q').forEach(q => {
+                const a = q.dataset.a; if (!a) return;
+                if (q.querySelector('[data-ok="true"]')) { if (weak[a]) { weak[a]--; if (!weak[a]) delete weak[a]; } }
+                else weak[a] = Math.min((weak[a] || 0) + 1, 5);
+            });
+            try { localStorage.setItem(pk('weakWords'), JSON.stringify(weak)); } catch (e) {}
+        }
+
+        // Mushkil sawal: kamzor lafz + aakhri dinon ke (kam aane wale) lafz + lambe lafz; galat options meaning ki lambai mein milte-julte
+        function buildHardQuestions(maxDay, count) {
+            let weak = {};
+            try { weak = JSON.parse(localStorage.getItem(pk('weakWords'))) || {}; } catch (e) {}
+            const all = [];
+            courseData.forEach(d => { if (d.day <= maxDay) d.words.forEach(w => all.push({ w: w, day: d.day })); });
+            const letters = s => s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, '').length;
+            all.forEach(x => { x.s = (weak[x.w.a] || 0) * 3 + (x.day / maxDay) * 1.5 + Math.min(letters(x.w.a), 8) / 8 + Math.random() * 1.2; });
+            all.sort((p, q) => q.s - p.s);
+            const seen = new Set(), picked = [];
+            for (const x of all) {
+                if (picked.length >= count) break;
+                if (seen.has(x.w.u)) continue;
+                seen.add(x.w.u); picked.push(x.w);
+            }
+            return picked.map(w => {
+                const used = new Set([w.u]), wrong = [];
+                all.map(x => ({ u: x.w.u, d: Math.abs(x.w.u.length - w.u.length) + Math.random() * 3 }))
+                   .sort((p, q) => p.d - q.d)
+                   .forEach(x => { if (wrong.length < 3 && !used.has(x.u)) { used.add(x.u); wrong.push(x.u); } });
+                return { a: w.a, opts: [w.u, ...wrong].sort(() => 0.5 - Math.random()), c: w.u };
+            }).sort(() => 0.5 - Math.random());
+        }
+
+        function startMilestoneExam(kind) {
+            const isFinal = kind === 'final';
+            if (isFinal && !silverDone()) { showToast('🔒 Pehle Silver Exam pass karein!'); return; }
+            examMode = kind;
+            const count = isFinal ? FINAL_QS : SILVER_QS, need = Math.ceil(count * PASS_RATIO);
+            document.getElementById('examTitle').innerText = isFinal ? '🥇 Final Exam (900 Lafz)' : '🥈 Silver Exam (500 Lafz)';
+            document.getElementById('examProgress').innerHTML = `${count} mushkil sawal • Pass: <b style="color:red">${need}/${count} (80%)</b>`;
+            displayExam(buildHardQuestions(isFinal ? FINAL_DAYS : SILVER_DAYS, count));
+        }
+
+        function showStudentCert(isGold, score, total) {
+            const certName = currentUserName() || 'Student';
+            window.certTotal = total;
+            drawCertificateCanvas(certName, isGold, score, (canvas) => {
+                window.currentCertCanvas = canvas;
+                window.currentCertName = certName;
+                window.currentCertIsGold = isGold;
+                document.getElementById('certPreviewImg').src = canvas.toDataURL('image/png');
+                document.getElementById('certPreviewModal').classList.remove('hidden');
+            });
+        }
+
+        // Course ke upar/andar milestone ka card
+        function milestoneInfo(kind) {
+            return {
+                silver: { t: '🥈 500 Lafz Mukammal!', d: 'Aage ke din abhi band hain. 50 mushkil sawal ka Silver Exam dein — 80% (40/50) laayen to Silver Sanad milegi aur Day 51 se aage khul jayega.', b: '🥈 Silver Exam Shuru Karein', f: "startMilestoneExam('silver')", cls: '' },
+                final:  { t: '🥇 900 Lafz Mukammal!', d: '75 mushkil sawal ka Final Exam dein — 80% (60/75) laayen to Gold Sanad milegi. (Silver aur Final dono 80%+ hon tabhi Gold.)', b: '🥇 Final Exam Shuru Karein', f: "startMilestoneExam('final')", cls: 'gold' },
+                done:   { t: '🎓 Mubarak! Course Mukammal', d: 'Aapne Silver aur Final dono exam 80% se zyada ke saath pass kiye.', b: '🥇 Gold Sanad Dekhein', f: 'handleCertificateClick()', cls: 'gold' }
+            }[kind];
+        }
+        function milestoneCardHTML(kind, big) {
+            const c = milestoneInfo(kind);
+            return `<div style="grid-column:1/-1; background:var(--card-bg); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); padding:${big ? '28px 18px' : '14px 16px'}; text-align:center;">
+                <div style="font-size:${big ? 22 : 16}px; font-weight:700; margin-bottom:8px;">${c.t}</div>
+                <p style="line-height:1.8; margin-bottom:12px; font-size:${big ? 15 : 13}px;">${c.d}</p>
+                <button class="exam-btn ${c.cls}" style="margin-top:0;" onclick="${c.f}">${c.b}</button></div>`;
+        }
+        // Wapas jaakar purane din padhne par bhi baaki exam yaad dilao
+        function pendingMilestoneKind() {
+            if (userRole === 'admin') return null;
+            if (silverReady() && !silverDone()) return 'silver';
+            if (silverDone() && finalReady() && !finalDone()) return 'final';
+            return null;
+        }
+
+        // 📖 Lafz -> Quran ki ayat (Day 1-10): lafz alag rang mein, hawala, Qari Mishary ki awaaz
+        function ayatBoxHTML(w) {
+            if (typeof wordAyat === 'undefined' || typeof ayatText === 'undefined') return '';
+            const m = wordAyat[w.a]; if (!m) return '';
+            const a = ayatText[m.k]; if (!a) return '';
+            const p = m.k.split(':');
+            const shown = a.t.split(' ').map((t, i) => i === m.i ? `<mark class="ayat-hl">${t}</mark>` : t).join(' ');
+            return `<div class="ayat-box">
+                <div class="ayat-head">📖 Quran mein ye lafz</div>
+                ${m.n ? `<div class="ayat-note">${m.n}</div>` : ''}
+                <div class="ayat-ar" onclick="QSpeech.speak('${a.t}', { lang: 'ar', btn: this, verse: '${m.k}' })">${shown} 🔊</div>
+                <div class="ayat-ref">📍 سورة ${a.sn} (${p[0]}) ، آیت ${p[1]} — ${a.sr} ${m.k}<br>📚 الشاملة · 🎙 Qari Mishary Alafasy</div>
+            </div>`;
         }
 
         function adminGenerateCert(isGold) {
@@ -630,7 +770,7 @@
         // --- Student Certificate Exam ---
         function displayExam(qs) {
             document.getElementById('examQuestions').innerHTML = qs.map((q, idx) => `
-                <div class="exam-q">
+                <div class="exam-q" data-a="${escHTML(q.a)}">
                     <div style="font-size:11px; color:var(--text-light);">Sawal ${idx+1}</div>
                     <div class="exam-ar">${q.a}</div>
                     ${q.opts.map(o => `<button class="option-btn" onclick="selectOpt(this, '${o}', '${q.c}')">${o}</button>`).join('')}
@@ -650,36 +790,39 @@
         function submitExam() {
             let score = 0;
             const totalQs = document.querySelectorAll('.exam-q').length;
-            document.querySelectorAll('.exam-q').forEach(q => { if(q.querySelector('[data-ok="true"]')) score++; });
+            document.querySelectorAll('.exam-q').forEach(q => { if (q.querySelector('[data-ok="true"]')) score++; });
+            recordWeak();
+            const res = document.getElementById('examResult');
 
-            if (isCertExam) {
-                if (score >= 40) {
-                    if(window.QSSFX) QSSFX.win(); addXP(500);
-                    document.getElementById('examResult').innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/50. Certificate tayyar hai!</span>`;
-                    const certName = currentUserName() || 'Student';
-                    setTimeout(() => { 
-                        document.getElementById('examModal').classList.add('hidden'); 
-                        drawCertificateCanvas(certName, currentDay >= 90, score, (canvas) => {
-                            window.currentCertCanvas = canvas;
-                            window.currentCertName = certName;
-                            window.currentCertIsGold = currentDay >= 90;
-                            document.getElementById('certPreviewImg').src = canvas.toDataURL('image/png');
-                            document.getElementById('certPreviewModal').classList.remove('hidden');
-                        });
+            if (examMode === 'silver' || examMode === 'final') {
+                const isFinal = examMode === 'final';
+                const need = Math.ceil(totalQs * PASS_RATIO), pct = Math.round(score / totalQs * 100);
+                if (score >= need && (!isFinal || silverDone())) {
+                    if (window.QSSFX) QSSFX.win(); addXP(isFinal ? 1000 : 500);
+                    localStorage.setItem(pk(isFinal ? 'finalPassed' : 'silverPassed'), '1');
+                    localStorage.setItem(pk(isFinal ? 'finalScore' : 'silverScore'), score);
+                    if (!isFinal && currentDay <= SILVER_DAYS) { currentDay = SILVER_DAYS + 1; localStorage.setItem(pk('currentDay'), currentDay); }
+                    res.innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs} (${pct}%). ${isFinal ? 'Gold Sanad tayyar hai!' : 'Silver Sanad tayyar hai, aage ke din khul gaye!'}</span>`;
+                    document.getElementById('submitExamBtn').classList.add('hidden');
+                    setTimeout(() => {
+                        document.getElementById('examModal').classList.add('hidden');
+                        renderCourse();
+                        showStudentCert(isFinal, score, totalQs);
                     }, 2000);
                 } else {
-                    if(window.QSSFX) QSSFX.wrong();
-                    document.getElementById('examResult').innerHTML = `<span style="color:red;">😢 ${score}/50. Aapko 40 chahiye.</span>`;
+                    if (window.QSSFX) QSSFX.wrong();
+                    res.innerHTML = `<span style="color:red;">😢 ${score}/${totalQs} (${pct}%). Pass ke liye ${need}/${totalQs} (80%) chahiye. Mushkil lafz dobara yaad karke phir koshish karein.</span>`;
                 }
+                return;
+            }
+
+            if (score >= 8) {
+                if (window.QSSFX) QSSFX.win(); addXP(50);
+                res.innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs}. Day Unlocked!</span>`;
+                setTimeout(() => { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
             } else {
-                if (score >= 8) {
-                    if(window.QSSFX) QSSFX.win(); addXP(50);
-                    document.getElementById('examResult').innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs}. Day Unlocked!</span>`;
-                    setTimeout(() => { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
-                } else {
-                    if(window.QSSFX) QSSFX.wrong();
-                    document.getElementById('examResult').innerHTML = `<span style="color:red;">😢 ${score}/${totalQs}. Aapko 8 chahiye.</span>`;
-                }
+                if (window.QSSFX) QSSFX.wrong();
+                res.innerHTML = `<span style="color:red;">😢 ${score}/${totalQs}. Aapko 8 chahiye.</span>`;
             }
         }
 
@@ -760,8 +903,8 @@
                 ctx.beginPath(); ctx.moveTo(CX - 380, 515); ctx.lineTo(CX + 380, 515); ctx.stroke();
                 ctx.beginPath(); ctx.moveTo(CX, 545); ctx.lineTo(CX, 810); ctx.stroke();
 
-                const sc = (typeof score === 'number') ? ` (Score: ${score}/50)` : '';
-                const scU = (typeof score === 'number') ? ` (اسکور: ${score}/50)` : '';
+                const sc = (typeof score === 'number') ? ` (Score: ${score}/${window.certTotal || 50})` : '';
+                const scU = (typeof score === 'number') ? ` (اسکور: ${score}/${window.certTotal || 50})` : '';
                 const engCourse = isGold ? '90 Days – 900 Quranic Words Master Course' : '50 Days – 500 Quranic Words Course';
                 const urCourse = isGold ? '۹۰ دن – ۹۰۰ قرآنی الفاظ ماسٹر کورس' : '۵۰ دن – ۵۰۰ قرآنی الفاظ کورس';
                 const engText = isGold

@@ -5,15 +5,18 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
+// v24: Day 1-10 ke har lafz ke saath Quran ki ayat (wordAyat.js), lafz highlight + hawala + Qari Mishary
+// v23: Silver (500 lafz) aur Final (900 lafz) milestone exam, 80% pass, Day 51+ lock
 // v22: Qari ki awaaz har Quran ke hisse par (multi-ayat, teeno Qul, Ayatul Kursi) + dua mein Favourites — cache badalna zaroori hai
 // (v21: naya login (pura naam + multi-user profiles) aur certificate naam fix)
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v22';
+const CACHE_NAME = 'quran-ustad-auto-v24';
 
 const ASSETS = [
     './',
     './index.html',
     './courseData.js',
+    './wordAyat.js',
     './dua.html',
     './tajweed.html',
     './games.html',

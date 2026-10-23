@@ -145,6 +145,10 @@
         if (!audio) audio = new Audio();
         try { audio.src = SILENT; var pr = audio.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {}
 
+        if (opt.verse && window.QSQari.verseParts) {                  // ayat ka hawala maloom hai — seedha Qari
+            playParts(window.QSQari.verseParts(opt.verse, text), text, opt, my);
+            return;
+        }
         window.QSQari.plan(text, opt.ctx).then(function (parts) {
             if (my !== current.token) return;
             if (parts && parts.length) playParts(parts, text, opt, my);

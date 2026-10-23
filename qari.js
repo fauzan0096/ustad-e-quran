@@ -325,7 +325,10 @@
         });
     }
 
-    window.QSQari = { plan: plan, resolve: resolve, ensure: ensure, reciter: RECITER.name };
+    // Ayat ka "surah:ayat" pata ho to Quran text match kiye bina seedha us ayat ki recording (net ke ilawa kuch nahi chahiye)
+    function verseParts(key, text) { return [{ u: verseUrls(key), x: text || '' }]; }
+
+    window.QSQari = { plan: plan, resolve: resolve, verseParts: verseParts, ensure: ensure, reciter: RECITER.name };
 
     // Page khulte hi chupke se Quran text le aao (agar pehle se saved na ho)
     function warm() {
