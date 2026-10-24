@@ -16,7 +16,7 @@
     <script src="speech.js"></script>
     <script src="qari.js"></script>
     <meta name="theme-color" content="#0F4C3A">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,800;1,600&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #0F4C3A; --primary-deep: #0A2E24; --secondary: #B8923A; --gold-bright: #D9B65A;
@@ -122,9 +122,14 @@
         [data-theme="dark"] .ayat-ar { color: var(--text); }
         [data-theme="dark"] .ayat-hl { background: rgba(217,182,90,.22); color: var(--gold-bright); }
         .ayat-ref { font-size: 12px; opacity: .85; margin-top: 6px; direction: rtl; line-height: 1.7; }
-        .brand-name { font-family: 'Cinzel Decorative', 'Amiri', serif !important; font-weight: 900 !important; letter-spacing: 1px; background: linear-gradient(180deg, #F8E7A8 0%, #E3C36E 45%, #B8892B 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
-        .header-top h1.brand-name { font-size: 20px; }
-        .login-box h1.brand-name { font-size: 26px; background: linear-gradient(180deg, #D4A63A 0%, #A8741A 55%, #6E4A0C 100%); -webkit-background-clip: text; background-clip: text; filter: none; }
+        .brand-name { font-family: 'Playfair Display', 'Amiri', serif !important; font-weight: 800 !important; line-height: 1.1; display: inline-flex; align-items: baseline; gap: .28em; white-space: nowrap; }
+        .brand-name .bn-a { background: linear-gradient(180deg, #FBEBB0 0%, #E3C36E 50%, #C79E3F 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        .brand-name .bn-b { color: #fff; font-weight: 600; font-style: italic; letter-spacing: .02em; }
+        .header-top h1.brand-name { font-size: 21px; }
+        .login-box h1.brand-name { font-size: 34px; margin-bottom: 0; }
+        .login-box h1.brand-name .bn-a { background: linear-gradient(180deg, #D4A63A 0%, #A8741A 60%, #7A5410 100%); -webkit-background-clip: text; background-clip: text; }
+        .login-box h1.brand-name .bn-b { color: var(--ink); }
+        .login-sub { font-family: 'Aref Ruqaa', 'Amiri', serif; font-weight: 700; font-size: 28px; color: var(--secondary); margin: 0 0 14px; direction: rtl; }
         .lang-cycle { flex: 0 0 auto; min-width: 96px; height: 40px; padding: 0 18px; border: none; border-radius: 20px; background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
         .lang-cycle:active { transform: scale(.95); }
         .j-node.ms { flex: 0 0 76px; height: 76px; font-size: 12px; gap: 2px; }
@@ -134,6 +139,14 @@
         .j-node.ms.locked { opacity: .55; filter: grayscale(.6); animation: none; }
         .j-node.ms.done::after { content: '✓'; position: absolute; top: -4px; right: -4px; width: 22px; height: 22px; border-radius: 50%; background: #2e7d32; color: #fff; font-size: 13px; line-height: 22px; text-align: center; }
         @keyframes goldGlow { 0%,100% { box-shadow: 0 0 6px 1px rgba(245,208,96,.55); } 50% { box-shadow: 0 0 18px 6px rgba(245,208,96,.95); } }
+        .tool-card { margin: 12px auto 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; box-shadow: var(--shadow); display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        .tool-card .tc-title { flex: 1 1 100%; font-weight: 700; font-size: 15px; }
+        .tool-card .tc-sub { flex: 1 1 100%; font-size: 12px; color: var(--text-light); line-height: 1.7; }
+        .tool-card .exam-btn { width: auto; flex: 1 1 auto; margin: 0; padding: 10px 16px; font-size: 14px; }
+        .tool-card input[type=time], .verify-in { padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--soft-bg); color: var(--text); font: 600 15px 'Figtree', sans-serif; }
+        .verify-in { width: 100%; margin-bottom: 8px; }
+        .weak-chips { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 6px; direction: rtl; }
+        .weak-chips span { font-family: 'Amiri', serif; font-size: 20px; padding: 2px 10px; border-radius: 10px; background: rgba(156,59,46,.12); color: var(--rubric); }
         .ayat-actions { direction: ltr; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; font-family: 'Poppins', sans-serif; }
         .ayat-actions button, .ayat-bulk button { font-family: inherit; font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 20px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; }
         .ayat-actions button:active, .ayat-bulk button:active { transform: scale(.96); }
@@ -191,12 +204,14 @@
         <div class="login-box">
             <img class="login-logo" src="icon-192.png" alt="">
             <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-            <h1 class="brand-name">Quraan Ustad</h1>
+            <h1 class="brand-name"><span class="bn-a">Quraan</span><span class="bn-b">Ustad</span></h1>
+            <div class="login-sub">أُستاذ القرآن</div>
             <label class="login-label">Aapka Pura Naam</label>
             <input type="text" id="fullNameInput" placeholder="Jaise: Mohammad Fauzan Raza" autocomplete="name" maxlength="40">
             <label class="login-label">Password</label>
             <input type="password" id="passwordInput" placeholder="Password daalein">
             <button onclick="handleLogin()">Login</button>
+            <p style="margin-top:12px;font-size:13px;"><a href="#" onclick="document.getElementById('verifyModal').classList.remove('hidden');return false;" style="color:var(--secondary);font-weight:700;">🔍 Sanad ki jaanch</a></p>
             <p id="loginError" style="color: #ff4d4d; margin-top: 10px; font-size: 13px;"></p>
         </div>
     </div>
@@ -205,12 +220,13 @@
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-top">
-                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1 class="brand-name">Quraan Ustad</h1></div>
+                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1 class="brand-name"><span class="bn-a">Quraan</span><span class="bn-b">Ustad</span></h1></div>
                 <div class="user-menu">
                     <button class="icon-btn user-chip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span> ▾</button>
                     <div class="user-drop hidden" id="userDrop">
                         <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small></div>
                         <button class="ud-cert" onclick="handleCertificateClick()">🏆 Certificate (Sanad)</button>
+                        <button class="ud-shop" onclick="document.getElementById('verifyModal').classList.remove('hidden')">🔍 Sanad ki jaanch</button>
                         <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
                         <button class="ud-default" onclick="resetTheme()">🔄 Default Theme</button>
                         <button onclick="logout()" style="margin-top:8px;">🚪 Logout</button>
@@ -236,6 +252,13 @@
         <div id="courseTab" class="view-section active">
             <div id="todayCard" style="margin-top:16px;"></div>
             
+            <div id="weakCard" class="tool-card hidden"></div>
+            <div class="tool-card" id="remindCard">
+                <div class="tc-title">🔔 Roz ki yaad-dehani</div>
+                <div class="tc-sub">Waqt chunein — phone ke Calendar mein roz ka alarm lag jayega (app band ho tab bhi bajega).</div>
+                <input type="time" id="remindTime" value="20:00" onchange="localStorage.setItem('remindTime', this.value)">
+                <button class="exam-btn gold" onclick="setReminder()">🔔 Alarm lagayein</button>
+            </div>
             <div class="daily-goal-card">
                 <div class="dg-icon">🎯</div>
                 <div class="dg-content">
@@ -331,6 +354,18 @@
             <div id="examQuestions"></div>
             <button class="exam-btn" onclick="submitExam()" id="submitExamBtn">Submit Exam</button>
             <div id="examResult" style="text-align:center; margin-top:15px; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <div id="verifyModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('verifyModal').classList.add('hidden')">&times;</span>
+            <h2 style="text-align:center;margin-bottom:6px;">🔍 Sanad ki jaanch</h2>
+            <p style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:12px;line-height:1.7;">Sanad par likha naam aur "Sanad No." daalein.</p>
+            <input class="verify-in" id="vName" placeholder="Sanad par likha pura naam">
+            <input class="verify-in" id="vNo" placeholder="Sanad No. (jaise QU-G-20261024-7K3F9A)" style="direction:ltr;text-transform:uppercase;">
+            <button class="exam-btn" onclick="verifySanad()">Jaanch karein</button>
+            <div id="vResult" style="text-align:center;margin-top:14px;font-weight:700;line-height:1.8;"></div>
         </div>
     </div>
 
@@ -552,7 +587,7 @@
                     grid.appendChild(card);
                 });
                 grid.insertAdjacentHTML('afterbegin', ayatBulkBarHTML(todayData.words));
-                ayatRefreshButtons(grid);
+                ayatRefreshButtons(grid); renderWeakCard();
                 document.getElementById('startExamBtn').innerText = `📝 Day ${currentDay} Exam`;
                 document.getElementById('startExamBtn').classList.remove('hidden');
             }
@@ -717,6 +752,86 @@
             document.getElementById('examTitle').innerText = isFinal ? '🥇 Final Exam (900 Lafz)' : '🥈 Silver Exam (500 Lafz)';
             document.getElementById('examProgress').innerHTML = `${count} mushkil sawal • Pass: <b style="color:red">${need}/${count} (80%)</b>`;
             displayExam(buildHardQuestions(isFinal ? FINAL_DAYS : SILVER_DAYS, count));
+        }
+
+
+        // ==========================================
+        // 🧠 Kamzor lafz revision  |  🔔 Roz ki yaad-dehani (.ics)  |  🔍 Sanad No. aur jaanch
+        // ==========================================
+        function weakWordList() {
+            let weak = {};
+            try { weak = JSON.parse(localStorage.getItem(pk('weakWords'))) || {}; } catch (e) {}
+            const seen = new Set(), out = [];
+            courseData.forEach(d => d.words.forEach(w => { if (weak[w.a] > 0 && !seen.has(w.a)) { seen.add(w.a); out.push({ w: w, n: weak[w.a] }); } }));
+            return out.sort((p, q) => q.n - p.n);
+        }
+        function renderWeakCard() {
+            const el = document.getElementById('weakCard'); if (!el) return;
+            const list = weakWordList();
+            if (!list.length) { el.classList.add('hidden'); return; }
+            el.classList.remove('hidden');
+            el.innerHTML = `<div class="tc-title">🧠 Kamzor lafz (${list.length})</div>
+                <div class="tc-sub">Jo lafz exam mein galat hue wo yahan jama hain. Sahi jawab dete rahein to ye list se khud hat jate hain.</div>
+                <div class="weak-chips">${list.slice(0, 12).map(x => `<span>${x.w.a}</span>`).join('')}${list.length > 12 ? '<span>…</span>' : ''}</div>
+                <button class="exam-btn" onclick="startWeakRevision()">🧠 Revision shuru karein</button>`;
+        }
+        function startWeakRevision() {
+            const list = weakWordList().slice(0, 20);
+            if (!list.length) { showToast('🎉 Abhi koi kamzor lafz nahi'); return; }
+            const pool = courseData.flatMap(d => d.words);
+            const qs = list.map(({ w }) => {
+                const used = new Set([w.u]), wrong = [];
+                pool.map(x => ({ u: x.u, d: Math.abs(x.u.length - w.u.length) + Math.random() * 3 })).sort((p, q) => p.d - q.d)
+                    .forEach(x => { if (wrong.length < 3 && !used.has(x.u)) { used.add(x.u); wrong.push(x.u); } });
+                return { a: w.a, opts: [w.u, ...wrong].sort(() => 0.5 - Math.random()), c: w.u };
+            }).sort(() => 0.5 - Math.random());
+            examMode = 'weak';
+            document.getElementById('examTitle').innerText = '🧠 Kamzor Lafz Revision';
+            document.getElementById('examProgress').innerHTML = `${qs.length} sawal • pass/fail nahi, sirf mashq`;
+            displayExam(qs);
+        }
+
+        function setReminder() {
+            const t = (document.getElementById('remindTime').value || '20:00').split(':');
+            const now = new Date(), p = n => String(n).padStart(2, '0');
+            const d = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}T${p(t[0])}${p(t[1])}00`;
+            const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Quraan Ustad//UR', 'BEGIN:VEVENT',
+                'UID:quraan-ustad-daily@' + (location.hostname || 'app'), 'DTSTAMP:' + d, 'DTSTART:' + d, 'DURATION:PT15M',
+                'RRULE:FREQ=DAILY', 'SUMMARY:📖 Quraan Ustad — aaj ka sabaq', 'DESCRIPTION:Aaj ke 10 lafz padhein aur exam dein. ' + APP_LINK, 'URL:' + APP_LINK,
+                'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Quraan Ustad — aaj ka sabaq', 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'Quraan-Ustad-Yaaddehani.ics';
+            document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+            localStorage.setItem('remindTime', t.join(':'));
+            showToast('🔔 File khol kar Calendar mein "Add" dabayein — roz ' + t.join(':') + ' par alarm bajega');
+        }
+        (function () { const v = localStorage.getItem('remindTime'); const i = document.getElementById('remindTime'); if (v && i) i.value = v; })();
+
+        // Sanad No.: naam + qism + score + tareekh se bana code. (Bina server ke hai, isliye ye sirf galti / chhedchhad pakadta hai, pakki security nahi.)
+        function sanadNo(name, isGold, score, iso) {
+            const src = [String(name).trim().toLowerCase().replace(/\s+/g, ' '), isGold ? 'G' : 'S', isGold ? 'x' : score, iso].join('|');
+            let h1 = 0x811c9dc5, h2 = 0x1b873593;
+            for (let i = 0; i < src.length; i++) { const c = src.charCodeAt(i); h1 = Math.imul(h1 ^ c, 16777619) >>> 0; h2 = Math.imul(h2 + c, 2654435761) >>> 0; h2 ^= h2 >>> 13; }
+            const code = ((h1 ^ h2) >>> 0).toString(36).toUpperCase().padStart(6, '0').slice(-6);
+            return `QU-${isGold ? 'G' : 'S'}-${iso.replace(/-/g, '')}-${code}`;
+        }
+        function certDateISO(isGold) {
+            const key = pk(isGold ? 'finalDate' : 'silverDate');
+            let iso = localStorage.getItem(key);
+            if (!iso) { iso = new Date().toISOString().slice(0, 10); if (userRole !== 'admin') localStorage.setItem(key, iso); }
+            return iso;
+        }
+        function verifySanad() {
+            const name = document.getElementById('vName').value.trim(), no = document.getElementById('vNo').value.trim().toUpperCase();
+            const out = document.getElementById('vResult');
+            const m = /^QU-([GS])-(\d{4})(\d{2})(\d{2})-([0-9A-Z]{6})$/.exec(no);
+            if (!name || !m) { out.innerHTML = '<span style="color:red;">❌ Naam aur sahi format ka Sanad No. daalein</span>'; return; }
+            const iso = `${m[2]}-${m[3]}-${m[4]}`, gold = m[1] === 'G';
+            let ok = false;
+            if (gold) ok = sanadNo(name, true, 0, iso) === no;
+            else for (const sc of [40,41,42,43,44,45,46,47,48,49,50,'Verified']) { if (sanadNo(name, false, sc, iso) === no) { ok = true; break; } }   // Silver: score 40–50
+            out.innerHTML = ok ? `<span style="color:green;">✅ Sanad durust hai<br><small>${escHTML(name)} • ${gold ? 'Gold' : 'Silver'} • ${m[4]}/${m[3]}/${m[2]}</small></span>`
+                               : '<span style="color:red;">❌ Naam / number mel nahi khata — Sanad durust nahi</span>';
         }
 
         function showStudentCert(isGold, score, total) {
@@ -918,6 +1033,12 @@
                 return;
             }
 
+            if (examMode === 'weak') {
+                if (window.QSSFX) (score === totalQs ? QSSFX.win : QSSFX.wrong)();
+                res.innerHTML = `<span style="color:${score === totalQs ? 'green' : '#b26a00'};">${score === totalQs ? '🎉 Mashaa-Allah! Sab sahi' : '📘 ' + score + '/' + totalQs + ' — galat wale lafz list mein rahenge'}</span>`;
+                setTimeout(renderWeakCard, 300);
+                return;
+            }
             if (score >= 8) {
                 if (window.QSSFX) QSSFX.win(); addXP(50);
                 res.innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs}. Day Unlocked!</span>`;
@@ -952,7 +1073,8 @@
         // --- 🏆 CERTIFICATE (Urdu right | English left) ---
         function drawCertificateCanvas(userName, isGold, score, callback) {
             const arabicName = "فوزان الطاف غورمي المحمدي النوري المدني";
-            const dateStr = new Date().toLocaleDateString('en-GB');
+            const iso = certDateISO(isGold), dateStr = iso.split('-').reverse().join('/');
+            const sNo = sanadNo(userName, isGold, score, iso);
             const W = 1600, H = 1131, CX = W / 2;
             const main = isGold ? '#B8923A' : '#0F4C3A';
             const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
@@ -1030,6 +1152,8 @@
 
                 ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
                 ctx.fillText('Date / تاریخ: ' + dateStr, 150, 905);
+                ctx.font = '600 24px "Figtree", sans-serif'; ctx.fillStyle = main; ctx.fillText('Sanad No: ' + sNo, 150, 950);
+                ctx.font = '400 20px "Figtree", sans-serif'; ctx.fillStyle = '#55645C'; ctx.fillText('App mein "Sanad ki jaanch" se is number ko check karein', 150, 985);
                 const sx = W - 330; // signature block thoda andar, frame se bahar na jaye
                 if (sigImg.naturalWidth > 0) {
                     const sh = 120, sw = Math.min(sh * sigImg.naturalWidth / sigImg.naturalHeight, 260);

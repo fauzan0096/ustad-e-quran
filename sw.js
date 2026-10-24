@@ -5,6 +5,9 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
+// v29: naam ka font Playfair Display + Aref Ruqaa
+// v28: app ke naam ka naya design (Reem Kufi)
+// v27: Kamzor lafz revision, roz ki yaad-dehani (.ics), Sanad No. + jaanch
 // v26: 92 padav ka safar (Silver beech mein, Gold aakhir mein), Qari sirf ayat par, ek language button, naya naam-font, ayat offline download
 // v25: Day 11-20 (lafz 101-200) ki ayat + har ayat par Mishary ki mp3 ⬇ Download button
 // v24: Day 1-10 ke har lafz ke saath Quran ki ayat (wordAyat.js), lafz highlight + hawala + Qari Mishary
@@ -12,7 +15,7 @@
 // v22: Qari ki awaaz har Quran ke hisse par (multi-ayat, teeno Qul, Ayatul Kursi) + dua mein Favourites — cache badalna zaroori hai
 // (v21: naya login (pura naam + multi-user profiles) aur certificate naam fix)
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v26';
+const CACHE_NAME = 'quran-ustad-auto-v29';
 // Download ki hui ayat ki recordings (qari.js) — ye cache kabhi delete nahi karna
 const KEEP_CACHES = [CACHE_NAME, 'qs-mishary-v1'];
 
