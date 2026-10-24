@@ -4,6 +4,7 @@
   "short_name": "Fahm-ul-Quran",
   "description": "Quran ke alfaz, namaz ki duaen aur azkar seekhein",
   "lang": "ur",
+  "dir": "auto",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -11,12 +12,16 @@
   "background_color": "#0F4C3A",
   "theme_color": "#0F4C3A",
   "categories": ["education", "lifestyle"],
+  "prefer_related_applications": false,
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Masnoon Duaein", "short_name": "Duaein", "url": "./dua.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+    { "name": "Sabaq (90 Days)", "short_name": "Sabaq", "url": "./index.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Masnoon Duaein", "short_name": "Duaein", "url": "./dua.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Tajweed", "short_name": "Tajweed", "url": "./tajweed.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Games", "short_name": "Games", "url": "./games.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ]
 }

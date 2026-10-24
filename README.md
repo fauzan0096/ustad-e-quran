@@ -52,7 +52,23 @@ Basic / Intermediate / High qawaid, misaalon ke saath — har misaal Qari ki awa
 Azan app band hone par bhi + asli phone lock ke liye. Dekhein `android/README.md` (GitHub Actions se APK banta hai).
 
 ### 🎮 Games (`games.html`)
-🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji — sound effects ke saath. Header ka **🎵 button** har game mein nasheed chalata/rokta hai (`nasheed.mp3` chahiye).
+🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji · 🎓 **Bazm-e-Fahm** (ab isi page ke andar, alag file nahi; purana `bazm.html` link sirf redirect hai) — sound effects ke saath. Header ka **🎵 button** har game mein nasheed chalata/rokta hai (`nasheed.mp3` chahiye).
+
+### 🎨 Themes (`themes.js`)
+- Shop se kharidi hui theme ab **har page** (Sabaq, Duaein, Tajweed, Asma, Games + Bazm) par lagti hai. Sub-pages ka 🌙/☀️ button kharidi hui themes ek ke baad ek badalta hai (sirf wohi jo is profile ne kharidi hon; admin ke liye sab).
+- Naye special themes: **🌌 Shab-e-Qadr** (500 XP, sitaron wali raat), **🌿 Jannah ka Bagh** (450 XP, hara-bhara), **🕋 Kaala-Sunehra** (800 XP, Shahi). Shop mein har theme ke rang ke chhote gole bhi dikhte hain.
+- Naya theme jodna ho to sirf `themes.js` ke `THEMES` array mein ek entry (shop khud bann jata hai). `c` = rang, `hdr` = header, `btn` = buttons, `deco` = background naqsh.
+- Lagi hui theme `localStorage` key `theme` mein hai (backup mein shamil), kharidi hui `p_<profile>_ownedItems` mein.
+
+### 💾 Backup / Restore (`backup.js`)
+- **Free, bina login, bina server.** Dropdown (👤 naam) → **💾 Backup / Restore**, ya login screen par **📂 Naye phone par? Backup se progress wapas laayein**.
+- **⬇️ Backup file banayein** → `Fahm-ul-Quran-backup-YYYY-MM-DD.json` (sab profiles, XP, streak, exam, namaz hisaab, favourites, shop, theme). Android app mein seedha Downloads mein; share (WhatsApp/Drive) bhi chalta hai.
+- **📂 Restore**: file chunein → tasdeeq → progress wapas. Backup wali profiles badal jaati hain, is phone ki baaki profiles safe rehti hain. Phir **usi naam** se login karein (profile id naam se banti hai).
+- File ka check (checksum) hota hai — adhoori/kharab/ghalat file reject.
+- Login session (`isLoggedIn`, `userRole`, `userId`, `activeProfile`) aur Qari ka cache backup mein nahi jaata.
+- Pehle backup ki yaad 3 din baad, phir har hafte (din mein ek baar se zyada nahi).
+- App storage ko browser se saaf hone se bachane ke liye `navigator.storage.persist()` bhi mangta hai.
+- Naya `localStorage` key jo backup mein nahi jaana chahiye uska naam `fq_` se shuru karein, ya `backup.js` ke `SKIP_*` mein daalein.
 
 ### Aur
 🔊 Suno · 🌙 Dark/Light mode · 🔐 Password login · 📱 PWA (home screen par install)
@@ -91,6 +107,8 @@ Dhyan dein:
 ├── nasheed.mp3      # Games ka nasheed
 ├── android/         # 📱 Android app ka poora project (Java, azan mp3, gradle) — android/README.md dekhein
 ├── .github/workflows/android.yml   # APK apne aap banane ka workflow
+├── themes.js        # 🎨 Saare themes + har page par lagana
+├── backup.js        # 💾 Progress Backup / Restore (.json file)
 ├── namaz.js         # Azan times, roz ki namaz ka sawal, 20 min lock, Calendar alarms
 ├── theme.css        # Shared theme
 ├── manifest.json    # PWA settings
@@ -109,6 +127,11 @@ Dhyan dein:
 Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost:8000` kholen (PWA install aur Qari ki awaaz ke liye server zaroori hai, seedha file kholne se kuch cheezein nahi chalti).
 
 > Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v38` → `v39`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
+
+## 📴 Offline
+
+- Pages, JS, CSS, icons, **Google Fonts** aur **azan/nasheed mp3** pehli baar net se aane ke baad offline chalte hain (`sw.js`: `fq-audio-v1`, `fq-fonts-v1` caches, version badalne par delete nahi hote).
+- Qari ki ayat ki recording ke liye **⬇️ Download** (neeche) ya internet chahiye. Namaz ke waqt ki location lookup (Aladhan) ke liye bhi net chahiye; ek baar le lene ke baad waqt save rehte hain.
 
 ## ⬇️ Ayat Download (Offline)
 

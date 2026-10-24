@@ -15,6 +15,8 @@
     <script src="namaz.js" defer></script>
     <script src="sounds.js"></script>
     <script src="onboarding.js"></script>
+<script src="backup.js"></script>
+<script src="themes.js"></script>
     <meta name="theme-color" content="#0F4C3A">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,800;1,600&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -29,21 +31,6 @@
             --primary: #0C3A2C; --primary-deep: #07211A; --secondary: #D9B65A; --ink: #F0E9D0;
             --bg: #0A1411; --card-bg: #12211B; --soft-bg: #182A22; --text: #E8E3D0;
             --text-light: #A5B3AA; --border: #27403A; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-        }
-        [data-theme="midnight"] {
-            --primary: #1E3A8A; --primary-deep: #0F172A; --secondary: #F59E0B; --gold-bright: #FBBF24;
-            --ink: #F8FAFC; --bg: #0F172A; --card-bg: #1E293B; --soft-bg: #334155;
-            --text: #F8FAFC; --text-light: #94A3B8; --border: #475569;
-        }
-        [data-theme="royal"] {
-            --primary: #4C1D95; --primary-deep: #2E1065; --secondary: #FBBF24; --gold-bright: #FCD34D;
-            --ink: #F3F4F6; --bg: #2E1065; --card-bg: #4C1D95; --soft-bg: #5B21B6;
-            --text: #F3F4F6; --text-light: #D8B4FE; --border: #7E22CE;
-        }
-        [data-theme="lightblue"] {
-            --primary: #0284C7; --primary-deep: #0369A1; --secondary: #F59E0B; --gold-bright: #FBBF24;
-            --ink: #0F172A; --bg: #F0F9FF; --card-bg: #FFFFFF; --soft-bg: #E0F2FE;
-            --text: #0F172A; --text-light: #475569; --border: #BAE6FD;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -63,7 +50,7 @@
         .login-box input, .login-select { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--soft-bg); color: var(--text); text-align: left; }
         .login-box > button { width: 100%; background: linear-gradient(180deg, #17614B, var(--primary)); color: #fff; padding: 14px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; margin-top: 20px; min-height: 50px; }
 
-        header { position: relative; background: linear-gradient(180deg, #14614A 0%, var(--primary) 100%); color: white; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); z-index: 10; }
+        header { position: relative; background: linear-gradient(180deg, var(--hdr-a, #14614A) 0%, var(--hdr-b, var(--primary)) 100%); color: white; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); z-index: 10; }
         .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; gap: 10px; }
         .brand { display: flex; align-items: center; gap: 10px; flex: 1; }
         .brand-logo { width: 38px; height: 38px; border-radius: 11px; border: 1.5px solid var(--gold-bright); object-fit: cover; }
@@ -183,6 +170,7 @@
         .shop-sec small { font-weight: 500; color: var(--text-light); font-size: 11px; }
         .shop-eq { grid-column: 1 / -1; background: var(--soft-bg); border: 1px dashed var(--secondary); border-radius: 12px; padding: 10px; font-size: 13px; text-align: center; }
         .shop-item { position: relative; }
+        .si-sw { display: flex; justify-content: center; gap: 3px; margin: 0 0 6px; } .si-sw i { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(128,128,128,.5); display: block; }
         .shop-item.rare { border-color: #4a90d9; } .shop-item.epic { border-color: #9b59b6; } .shop-item.legend { border-color: #E3C36E; background: linear-gradient(180deg, rgba(227,195,110,.22), rgba(227,195,110,.04)); }
         .si-rar { position: absolute; top: 6px; right: 8px; font-size: 10px; font-weight: 800; color: var(--text-light); }
         .shop-item.rare .si-rar { color: #4a90d9; } .shop-item.epic .si-rar { color: #9b59b6; } .shop-item.legend .si-rar { color: #C79E3F; }
@@ -280,6 +268,7 @@
             <input type="password" id="passwordInput" placeholder="Password daalein">
             <button onclick="handleLogin()">Login</button>
             <p id="loginError" style="color: #ff4d4d; margin-top: 10px; font-size: 13px;"></p>
+            <button type="button" onclick="FQBackup.open()" style="background:transparent;color:var(--text-light);border:1.5px dashed var(--border);margin-top:6px;font-size:13px;padding:10px;">📂 Naye phone par? Backup se progress wapas laayein</button>
         </div>
     </div>
 
@@ -293,6 +282,7 @@
                     <div class="user-drop hidden" id="userDrop">
                         <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small><div id="userDropStk" class="stk-big-row"></div></div>
                         <button class="ud-shop" onclick="window.NS&&NS.open()">🕌 Namaz ka Hisaab</button>
+                        <button class="ud-shop" onclick="FQBackup.open()">💾 Backup / Restore</button>
                         <button class="ud-cert" onclick="handleCertificateClick()">🏆 Completion Certificate</button>
                         <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
                         <button class="ud-default" onclick="resetTheme()">🔄 Default Theme (kharidi hui safe)</button>
@@ -446,7 +436,7 @@
         const APP_LINK = "https://quraan-ustad.github.io/"; 
 
         let currentDay = 1;
-        let currentTheme = localStorage.getItem('theme') || 'light';
+        let currentTheme = FQTheme.current();
         let userRole = localStorage.getItem('userRole') || 'guest';
         let examMode = 'day';   // 'day' | 'silver' | 'final'
 
@@ -527,7 +517,7 @@
         }
 
         // --- Themes ---
-        document.body.setAttribute('data-theme', currentTheme);
+        FQTheme.apply(currentTheme);
         function toggleTheme() {
             applyTheme(currentTheme === 'light' ? 'dark' : 'light');
         }
@@ -542,9 +532,8 @@
         // theme badalne ya reset karne se kuch bhi khatam nahi hota, shop se dobara "Lagayein" dabayein.
         const RARITY = { common: 'Aam', rare: 'Khaas', epic: 'Nayaab', legend: 'Shahi' };
         const SHOP_ITEMS = [
-            { id: 'theme_midnight',  type: 'theme', icon: '🌙', name: 'Midnight Theme', cost: 300, theme: 'midnight' },
-            { id: 'theme_royal',     type: 'theme', icon: '💎', name: 'Royal Theme',    cost: 300, theme: 'royal' },
-            { id: 'theme_lightblue', type: 'theme', icon: '💧', name: 'Sky Blue Theme', cost: 250, theme: 'lightblue' },
+            // Themes themes.js se aate hain (naya theme wahin jodein)
+            ...FQTheme.THEMES.filter(t => t.item).map(t => ({ id: t.item, type: 'theme', icon: t.icon, name: t.name, cost: t.cost, theme: t.id, rarity: t.rarity })),
             // Stickers — profile ke naam ke baazu mein lagte hain (max 3)
             { id: 'av_kaaba',    type: 'sticker', rarity: 'common', icon: '🕋', name: 'Kaaba',            cost: 100 },
             { id: 'st_masjid',   type: 'sticker', rarity: 'common', icon: '🕌', name: 'Masjid',           cost: 100 },
@@ -595,11 +584,9 @@
 
         // Theme sirf wahi lage jo is profile ne kharida ho
         function applyTheme(t) {
-            currentTheme = t;
-            localStorage.setItem('theme', t);
-            document.body.setAttribute('data-theme', t);
+            currentTheme = FQTheme.set(t);          // themes.js: lagata bhi hai aur sab pages ke liye save bhi
             const b = document.getElementById('themeBtn');
-            if (b) b.innerText = t === 'dark' ? '☀️' : '🌙';
+            if (b) b.innerText = currentTheme === 'dark' ? '☀️' : '🌙';
         }
         function guardTheme() {
             const it = SHOP_ITEMS.find(i => i.type === 'theme' && i.theme === currentTheme);
@@ -613,6 +600,10 @@
         }
         function closeShop() { document.getElementById('shopModal').classList.add('hidden'); }
 
+        function themeSwatch(id) {
+            const t = FQTheme.get(id); if (!t || !t.c) return '';
+            return `<div class="si-sw">${[t.c.bg, t.c.card, t.c.p, t.c.sec].map(c => `<i style="background:${c}"></i>`).join('')}</div>`;
+        }
         function shopCard(item, owned, eq, xp) {
             const isOwned = owned.includes(item.id);
             let btn;
@@ -629,6 +620,7 @@
                 ${item.rarity ? `<div class="si-rar">${RARITY[item.rarity]}</div>` : ''}
                 <div class="si-icon ${item.rarity === 'legend' ? 'glow' : ''}">${item.icon}</div>
                 <div class="si-name">${item.name}</div>
+                ${item.type === 'theme' ? themeSwatch(item.theme) : ''}
                 <div class="si-cost">${isOwned ? '✅ Hamesha aapka' : '⭐ ' + item.cost + ' XP'}</div>
                 ${btn}
             </div>`;

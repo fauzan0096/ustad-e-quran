@@ -2,9 +2,11 @@
 // SERVICE WORKER — Auto Update Version
 // Network-First for HTML/CSS/JS
 // Cache-First for Images
-// Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
+// Audio (azan + nasheed) = alag audio cache se (Range support), baaki audio browser seedha network se
 // ==========================================
 
+// v46: themes.js (kharidi theme har page par + 3 naye special themes), Bazm-e-Fahm games.html ke andar
+// v45: backup.js (Backup/Restore), offline audio (azan + nasheed, range support), offline Google Fonts, privacy.html cache
 // v44: Bazm-e-Fahm game games page mein jora (bazm.html)
 // v43: app ka naam badal kar Fahm-ul-Quran (ÙÙÙ Ø§ÙÙØ±Ø¢Ù)
 // v42: certificate — jhoota 'Sanad ki jaanch' hata, 'Completion Certificate' naam, disclaimer
@@ -30,9 +32,13 @@
 // v22: Qari ki awaaz har Quran ke hisse par (multi-ayat, teeno Qul, Ayatul Kursi) + dua mein Favourites — cache badalna zaroori hai
 // (v21: naya login (pura naam + multi-user profiles) aur certificate naam fix)
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v44';
+const CACHE_NAME = 'quran-ustad-auto-v46';
 // Download ki hui ayat ki recordings (sounds.js) — ye cache kabhi delete nahi karna
-const KEEP_CACHES = [CACHE_NAME, 'qs-mishary-v1'];
+// Audio (azan + nasheed) aur fonts ke alag caches — ye bhi version badalne par delete nahi hote
+const AUDIO_CACHE = 'fq-audio-v1';
+const FONT_CACHE = 'fq-fonts-v1';
+const KEEP_CACHES = [CACHE_NAME, 'qs-mishary-v1', AUDIO_CACHE, FONT_CACHE];
+const AUDIO_ASSETS = ['./azan-aksa.mp3', './azan-sweet.mp3', './azan-3.mp3', './nasheed.mp3'];
 
 const ASSETS = [
     './',
@@ -42,7 +48,6 @@ const ASSETS = [
     './dua.html',
     './tajweed.html',
     './games.html',
-    './bazm.html',
     './asma.html',
     './manifest.json',
     './icon.png',
@@ -53,7 +58,10 @@ const ASSETS = [
     './theme.css',
     './namaz.js',
     './sounds.js',
-    './onboarding.js'
+    './onboarding.js',
+    './backup.js',
+    './themes.js',
+    './privacy.html'
 ];
 
 // ===== INSTALL: Naya SW foran ready ho =====
@@ -65,6 +73,13 @@ self.addEventListener('install', (e) => {
             Promise.all(ASSETS.map(url =>
                 cache.add(url).catch(err => console.warn('Cache skip:', url))
             ))
+        ).then(() =>
+            // Azan + nasheed offline ke liye (ek baar save, version badalne par dobara nahi)
+            caches.open(AUDIO_CACHE).then(cache =>
+                Promise.all(AUDIO_ASSETS.map(url =>
+                    cache.match(url).then(hit => hit || cache.add(url)).catch(err => console.warn('Audio skip:', url))
+                ))
+            )
         )
     );
 });
@@ -85,11 +100,31 @@ self.addEventListener('fetch', (e) => {
     const request = e.request;
     const url = new URL(request.url);
 
-    // Sirf same-origin handle karo
+    // 🔤 Google Fonts (CSS + font files): pehli baar net se, phir offline bhi (stale-while-revalidate)
+    if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+        e.respondWith(
+            caches.open(FONT_CACHE).then(cache =>
+                cache.match(request).then(hit => {
+                    const net = fetch(request).then(res => {
+                        if (res && (res.status === 200 || res.type === 'opaque')) cache.put(request, res.clone());
+                        return res;
+                    }).catch(() => hit);
+                    return hit || net;
+                })
+            )
+        );
+        return;
+    }
+
+    // Baaki sirf same-origin handle karo
     if (url.origin !== location.origin) return;
 
-    // 🎵 Audio = SW ko beech mein mat daalo (range requests browser khud sambhalta hai)
-    if (/\.(mp3|ogg|m4a|wav)$/i.test(url.pathname) || request.headers.has('range')) return;
+    // 🎵 Audio: saved azan/nasheed cache se (Range support ke saath), warna browser seedha network se
+    if (/\.(mp3|ogg|m4a|wav)$/i.test(url.pathname)) {
+        e.respondWith(serveAudio(request));
+        return;
+    }
+    if (request.headers.has('range')) return;
 
     const isHTML = request.headers.get('accept')?.includes('text/html');
     const isJS = url.pathname.endsWith('.js');
@@ -134,3 +169,35 @@ self.addEventListener('fetch', (e) => {
         })
     );
 });
+
+
+// ===== Audio ko cache se do (Range request bhi chalti hai, warna seek/play nahi chalta) =====
+async function serveAudio(request) {
+    const cache = await caches.open(AUDIO_CACHE);
+    const hit = await cache.match(request.url, { ignoreSearch: true });
+    if (!hit) {
+        try { return await fetch(request); }
+        catch (err) { return new Response('', { status: 503, statusText: 'Offline' }); }
+    }
+    const range = request.headers.get('range');
+    if (!range) return hit;
+    const m = /bytes=(\d*)-(\d*)/.exec(range);
+    if (!m) return hit;
+    const buf = await hit.arrayBuffer();
+    const size = buf.byteLength;
+    let start = m[1] === '' ? Math.max(0, size - parseInt(m[2], 10)) : parseInt(m[1], 10);
+    let end = (m[1] === '' || m[2] === '') ? size - 1 : Math.min(parseInt(m[2], 10), size - 1);
+    if (isNaN(start) || isNaN(end) || start > end || start >= size) {
+        return new Response('', { status: 416, headers: { 'Content-Range': 'bytes */' + size } });
+    }
+    return new Response(buf.slice(start, end + 1), {
+        status: 206,
+        statusText: 'Partial Content',
+        headers: {
+            'Content-Type': hit.headers.get('Content-Type') || 'audio/mpeg',
+            'Content-Length': String(end - start + 1),
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
+            'Accept-Ranges': 'bytes'
+        }
+    });
+}

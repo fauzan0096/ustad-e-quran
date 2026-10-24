@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
+    <script src="themes.js"></script>
     <script src="app.js"></script>
     <meta name="theme-color" content="#0F4C3A">
     <meta name="mobile-web-app-capable" content="yes">
@@ -167,16 +168,8 @@
     </div>
 
     <script>
-        let isDarkMode = localStorage.getItem('darkMode') === 'true';
-        if (isDarkMode) document.body.setAttribute('data-theme', 'dark');
-        
-        function toggleTheme() {
-            isDarkMode = !isDarkMode; 
-            document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-            document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; 
-            localStorage.setItem('darkMode', isDarkMode);
-        }
-        if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
+        function toggleTheme() { FQTheme.cycle(); }   // themes.js: kharidi hui themes ek ke baad ek
+        FQTheme.bindButton();
 
         function speakText(text, lang, btn) {
             QSpeech.speak(text, { lang: lang, rate: 0.85, btn: btn });

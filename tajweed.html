@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
+    <script src="themes.js"></script>
     <script src="app.js"></script>
     <meta name="theme-color" content="#0F4C3A">
     <script src="sounds.js"></script>
@@ -89,10 +90,8 @@
         <div id="tajweedContainer"></div>
     </div>
     <script>
-        let isDarkMode = localStorage.getItem('darkMode') === 'true';
-        if (isDarkMode) document.body.setAttribute('data-theme', 'dark');
-        function toggleTheme() { isDarkMode = !isDarkMode; document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light'); document.getElementById('themeBtn').innerText = isDarkMode ? '☀️' : '🌙'; localStorage.setItem('darkMode', isDarkMode); }
-        if (isDarkMode) document.getElementById('themeBtn').innerText = '☀️';
+        function toggleTheme() { FQTheme.cycle(); }   // themes.js: kharidi hui themes ek ke baad ek
+        FQTheme.bindButton();
         let textScale = parseFloat(localStorage.getItem('textScale') || '1');
         function applyScale() { document.documentElement.style.setProperty('--scale', textScale); }
         function changeScale(d) { textScale = Math.min(1.6, Math.max(0.8, Math.round((textScale + d) * 10) / 10)); localStorage.setItem('textScale', textScale); applyScale(); }

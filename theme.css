@@ -38,7 +38,7 @@ body {
 /* ---------- Header (index jaisa: emerald + sunehri line + star pattern) ---------- */
 header {
     position: sticky;
-    background: linear-gradient(180deg, #14614A 0%, #0F4C3A 100%);
+    background: linear-gradient(180deg, var(--hdr-a, #14614A) 0%, var(--hdr-b, #0F4C3A) 100%);
     color: #fff;
     border-bottom: none;
     padding-top: calc(14px + env(safe-area-inset-top));
@@ -59,7 +59,7 @@ header a[href="index.html"] { display: inline-flex; width: 36px; height: 36px; a
 
 /* ---------- Nav chips ---------- */
 .nav-btn { border: 1px solid var(--border); background: var(--card-bg); color: var(--text); box-shadow: var(--shadow); min-height: 40px; }
-.nav-btn.active { background: linear-gradient(180deg, #17614B, #0F4C3A); color: #fff; border-color: transparent; box-shadow: 0 4px 12px rgba(15,76,58,.35); }
+.nav-btn.active { background: linear-gradient(180deg, var(--btn-a, #17614B), var(--btn-b, #0F4C3A)); color: var(--btn-text, #fff); border-color: transparent; box-shadow: 0 4px 12px rgba(15,76,58,.35); }
 [data-theme="dark"] .nav-btn.active { background: linear-gradient(180deg, #D9B65A, #B8923A); color: #2A2008; }
 
 /* ---------- Search ---------- */
@@ -77,7 +77,7 @@ header a[href="index.html"] { display: inline-flex; width: 36px; height: 36px; a
 [data-theme="dark"] .sec-ar .chip { background: var(--gold); color: #2A2008; }
 .num-badge { background: linear-gradient(135deg, var(--gold), #8f7312); }
 
-.play-btn, .audio-btn { background: linear-gradient(180deg, #17614B, #0F4C3A); box-shadow: 0 4px 12px rgba(15,76,58,.3); min-height: 36px; }
+.play-btn, .audio-btn { background: linear-gradient(180deg, var(--btn-a, #17614B), var(--btn-b, #0F4C3A)); color: var(--btn-text, #fff); box-shadow: 0 4px 12px rgba(15,76,58,.3); min-height: 36px; }
 [data-theme="dark"] .play-btn, [data-theme="dark"] .audio-btn { background: linear-gradient(180deg, #D9B65A, #B8923A); color: #2A2008; }
 
 .tafseel-box, .example-box { border-color: rgba(184,146,58,.4); }
@@ -92,3 +92,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .sahaba-opt:hover { border-color: var(--primary); }
 [data-theme="dark"] .sahaba-opt.correct { background: #12301f; border-color: #2ea14a; color: #b7f0c4; }
 [data-theme="dark"] .sahaba-opt.wrong { background: #3a1616; border-color: #a12e2e; color: #f5b5b5; }
+
+/* ---------- Kharidi hui special themes (themes.js): dark wale default gold rules ko dabao ---------- */
+[data-skin] .nav-btn.active { background: linear-gradient(180deg, var(--btn-a), var(--btn-b)); color: var(--btn-text); }
+[data-skin] .play-btn, [data-skin] .audio-btn { background: linear-gradient(180deg, var(--btn-a), var(--btn-b)); color: var(--btn-text); }
+[data-skin] header .icon-btn, [data-skin] header .size-btn { color: #fff; }
