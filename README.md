@@ -1,4 +1,4 @@
-# 📖 Quraan and Duaa Ustad
+# 📖 Fahm-ul-Quran
 
 Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen aur azkar aasaani se seekhe ja sakte hain. Koi build ya install ki zaroorat nahi.
 
@@ -13,9 +13,9 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 - 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–50: lafz 1–500, poore): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Har ayat ke neeche **⬇️ Download** (app mein save, net ke bina bhi sunein), **📥 MP3 file** (phone mein file utaarein) aur **🗑 Hatao**; din ke upar **Is din ki sab ayaat / Sab ayaat** ek saath download. Ayat ka text Maktaba Shamila se.
 - 📝 **Daily Exam** — roz 10 sawal, 8 sahi hon to agla din unlock
 - 🗺️ **92 padav ka safar**: 90 din + beech mein 🥈 Silver (Day 50 ke baad) + aakhir mein 🥇 Gold
-- 🥈 **Silver Exam (500 lafz)** — Day 50 poora hote hi **50 mushkil sawal**. **80% (40/50)** laayen to Silver Sanad milti hai. **Jab tak pass nahi, Day 51 se aage sab band (🔒).**
-- 🥇 **Final Exam (900 lafz)** — Day 90 ke baad **75 sawal**, pass **80% (60/75)**. Silver aur Final **dono 80%+** hon tabhi Gold Sanad.
-- Exam fail ho to dobara de sakte hain (har baar naye sawal). Sanad download/share ho sakti hai.
+- 🥈 **Silver Exam (500 lafz)** — Day 50 poora hote hi **50 mushkil sawal**. **80% (40/50)** laayen to Silver Completion Certificate milta hai. **Jab tak pass nahi, Day 51 se aage sab band (🔒).**
+- 🥇 **Final Exam (900 lafz)** — Day 90 ke baad **75 sawal**, pass **80% (60/75)**. Silver aur Final **dono 80%+** hon tabhi Gold Completion Certificate.
+- Exam fail ho to dobara de sakte hain (har baar naye sawal). Certificate download/share ho sakta hai (disclaimer ke saath: ijazah/sanad nahi).
 - 🔥 Streak, ⭐ XP/Levels, 🏅 Badges
 - 🛒 **Inaam Ghar (Shop)** — 3 themes + **16 stickers** (Aam / Khaas / Nayaab / Shahi). **Kharida hua item hamesha profile ke paas rehta hai**; theme badalne/reset karne se kuch khatam nahi hota, Shop se **🎨 Lagayein** dabayein. Stickers (max 3) **profile ke naam ke baazu mein** dikhte hain (Shahi stickers chamakte hain ✨)
 - 📤 Lafz ya badge ki share card (WhatsApp / Insta)
@@ -25,7 +25,7 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 
 **Mushkil sawal kaise bante hain:** jo lafz aapne daily exam mein galat kiye wo pehle aate hain, phir aakhri dinon ke kam aane wale aur lambe lafz. Galat options bhi sahi jawab jaise lambai ke hote hain, isliye andaze se pass hona mushkil hai.
 
-- 🧠 **Kamzor lafz revision** (galat hue lafz dobara) • 🔔 **Roz ki yaad** (.ics) • 🔍 **Sanad No. + jaanch** (certificate par Sanad No.)
+- 🧠 **Kamzor lafz revision** (galat hue lafz dobara) • 🔔 **Roz ki yaad** (.ics) • 🔖 **Ref. No.** (certificate par)
 - 🏠 **Dashboard**: Maqsad → shortcuts → Aaj ki Ayat → Namaz/Yaad → Safar → Aaj ke lafz
 
 ### 🤲 Masnoon Duaein (`dua.html`)
@@ -61,7 +61,7 @@ Azan app band hone par bhi + asli phone lock ke liye. Dekhein `android/README.md
 
 App mein jahan bhi Arabic par 🔊 / tap hai — dua, sabaq, mashq, tajweed, Aaj ki Ayat — wahan **jo hissa Quran ka hai wo Qari ki asli recording se chalta hai, phone ki robot awaaz se nahi.**
 
-Kaise kaam karta hai (`qari.js`):
+Kaise kaam karta hai (`sounds.js`):
 
 1. Poora Quran text (harakat ke saath) ek baar Quran.com se aata hai aur phone mein save ho jaata hai.
 2. App ka Arabic text poore Quran se milaya jaata hai — **ek se zyada ayat aur ek se zyada surah bhi** (jaise Aamanar-Rasulu, teeno Qul). Spelling ka chhota farq maaf hai (jaise `يَئُودُهُ` / `يَـُٔودُهُ`).
@@ -72,7 +72,7 @@ Kaise kaam karta hai (`qari.js`):
 Dhyan dein:
 - Qari ki recording ke liye **internet zaroori** hai (Quran text pehli baar ke baad offline bhi match ho jaata hai).
 - Quran ka hissa sahi pehchanne ke liye dua/sabaq ke `arabic` mein Quran ka text **bilkul sahi** likhein (Quran.com se copy karna behtar hai). Quran aur hadees ko ek hi dua mein milana ho to bhi chalega, magar alag-alag cards behtar hain.
-- **Qari badalna** ho to `qari.js` mein `RECITER` (everyayah.com ka folder naam, jaise `Alafasy_128kbps`) badlein.
+- **Qari badalna** ho to `sounds.js` mein `RECITER` (everyayah.com ka folder naam, jaise `Alafasy_128kbps`) badlein.
 
 ## 📁 Files
 
@@ -85,16 +85,14 @@ Dhyan dein:
 ├── tajweed.html     # Tajweed ke qawaid
 ├── games.html       # Games
 ├── asma.html        # Asma wala page
-├── speech.js        # 🔊 Suno / Roko — Qari + phone ki awaaz ko jodta hai
-├── qari.js          # Quran text pehchan kar Qari ki recording dhoondhta hai
-├── progress.js      # Levels, badges, share card
-├── ui.js            # Splash, text size (A-/A+), Aaj ki Ayat
+├── sounds.js        # 🔊 Saari awaazein: Qari + Suno/Roko + games ka nasheed/effects
+├── app.js           # Shared UI: splash, text size, Aaj ki Ayat + install popup + levels/badges/share card
 ├── azan-aksa.mp3 / azan-sweet.mp3 / azan-3.mp3   # Azan ki awaaz
 ├── nasheed.mp3      # Games ka nasheed
+├── android/         # 📱 Android app ka poora project (Java, azan mp3, gradle) — android/README.md dekhein
+├── .github/workflows/android.yml   # APK apne aap banane ka workflow
 ├── namaz.js         # Azan times, roz ki namaz ka sawal, 20 min lock, Calendar alarms
-├── games-audio.js   # Games ka nasheed aur sound effects (nasheed.mp3 chahiye)
 ├── theme.css        # Shared theme
-├── install.js       # Install popup (upar banner)
 ├── manifest.json    # PWA settings
 ├── sw.js            # Service worker (offline)
 ├── icon.png / icon-192.png / icon-maskable.png / signature.png
@@ -115,7 +113,7 @@ Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost
 ## ⬇️ Ayat Download (Offline)
 
 - Download karne par ayat ki Mishary wali mp3 phone ke **Cache Storage** (`qs-mishary-v1`) mein save hoti hai; phir ayat par tap karne se pehle wahi saved copy chalti hai (net na ho tab bhi). Saved na ho to pehle jaisa net se.
-- `sw.js` is cache (`qs-mishary-v1`) ko version badalne par bhi delete nahi karta. Naam badlein to `qari.js` (`DL_CACHE`) aur `sw.js` (`KEEP_CACHES`) dono mein.
+- `sw.js` is cache (`qs-mishary-v1`) ko version badalne par bhi delete nahi karta. Naam badlein to `sounds.js` (`DL_CACHE`) aur `sw.js` (`KEEP_CACHES`) dono mein.
 - Download ke liye internet chahiye aur everyayah.com / Quran.com ko browser se fetch karne dena chahiye (CORS).
 
 ## 🛠️ Data Badalna / Badhaana

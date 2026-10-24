@@ -1,7 +1,7 @@
 {
   "id": "./index.html",
-  "name": "Quraan and Duaa Ustad",
-  "short_name": "Quran Ustad",
+  "name": "Fahm-ul-Quran",
+  "short_name": "Fahm-ul-Quran",
   "description": "Quran ke alfaz, namaz ki duaen aur azkar seekhein",
   "lang": "ur",
   "start_url": "./index.html",

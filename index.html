@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Quraan Ustad - Complete Course</title>
+    <title>Fahm-ul-Quran - Complete Course</title>
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
-    <script src="ui.js"></script>
+    <script src="app.js"></script>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Quran Ustad">
+    <meta name="apple-mobile-web-app-title" content="Fahm-ul-Quran">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <script src="install.js" defer></script>
     <script src="namaz.js" defer></script>
-    <script src="speech.js"></script>
-    <script src="qari.js"></script>
+    <script src="sounds.js"></script>
+    <script src="onboarding.js"></script>
     <meta name="theme-color" content="#0F4C3A">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,800;1,600&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -132,7 +131,7 @@
         [data-theme="dark"] .ayat-ar { color: var(--text); }
         [data-theme="dark"] .ayat-hl { background: rgba(217,182,90,.22); color: var(--gold-bright); }
         .ayat-ref { font-size: 12px; opacity: .85; margin-top: 6px; direction: rtl; line-height: 1.7; }
-        .brand-name { font-family: 'Playfair Display', 'Amiri', serif !important; font-weight: 800 !important; line-height: 1.1; display: inline-flex; align-items: baseline; gap: .28em; white-space: nowrap; }
+        .brand-name { font-family: 'Playfair Display', 'Amiri', serif !important; font-weight: 800 !important; line-height: 1.1; display: inline-flex; align-items: baseline; gap: 0; white-space: nowrap; }
         .brand-name .bn-a { background: linear-gradient(180deg, #FBEBB0 0%, #E3C36E 50%, #C79E3F 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
         .brand-name .bn-b { color: #fff; font-weight: 600; font-style: italic; letter-spacing: .02em; }
         .header-top h1.brand-name { font-size: 21px; }
@@ -153,8 +152,7 @@
         .tool-card .tc-title { flex: 1 1 100%; font-weight: 700; font-size: 15px; }
         .tool-card .tc-sub { flex: 1 1 100%; font-size: 12px; color: var(--text-light); line-height: 1.7; }
         .tool-card .exam-btn { width: auto; flex: 1 1 auto; margin: 0; padding: 10px 16px; font-size: 14px; }
-        .tool-card input[type=time], .verify-in { padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--soft-bg); color: var(--text); font: 600 15px 'Figtree', sans-serif; }
-        .verify-in { width: 100%; margin-bottom: 8px; }
+        .tool-card input[type=time] { padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--soft-bg); color: var(--text); font: 600 15px 'Figtree', sans-serif; }
         .weak-chips { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 6px; direction: rtl; }
         .weak-chips span { font-family: 'Amiri', serif; font-size: 20px; padding: 2px 10px; border-radius: 10px; background: rgba(156,59,46,.12); color: var(--rubric); }
         .ayat-actions { direction: ltr; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; font-family: 'Poppins', sans-serif; }
@@ -274,14 +272,13 @@
         <div class="login-box">
             <img class="login-logo" src="icon-192.png" alt="">
             <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-            <h1 class="brand-name"><span class="bn-a">Quraan</span><span class="bn-b">Ustad</span></h1>
-            <div class="login-sub">أُستاذ القرآن</div>
+            <h1 class="brand-name"><span class="bn-a">Fahm-ul-</span><span class="bn-b">Quran</span></h1>
+            <div class="login-sub">فهم القرآن</div>
             <label class="login-label">Aapka Pura Naam</label>
             <input type="text" id="fullNameInput" placeholder="Jaise: Mohammad Fauzan Raza" autocomplete="name" maxlength="40">
             <label class="login-label">Password</label>
             <input type="password" id="passwordInput" placeholder="Password daalein">
             <button onclick="handleLogin()">Login</button>
-            <p style="margin-top:12px;font-size:13px;"><a href="#" onclick="document.getElementById('verifyModal').classList.remove('hidden');return false;" style="color:var(--secondary);font-weight:700;">🔍 Sanad ki jaanch</a></p>
             <p id="loginError" style="color: #ff4d4d; margin-top: 10px; font-size: 13px;"></p>
         </div>
     </div>
@@ -290,14 +287,13 @@
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-top">
-                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1 class="brand-name"><span class="bn-a">Quraan</span><span class="bn-b">Ustad</span></h1></div>
+                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1 class="brand-name"><span class="bn-a">Fahm-ul-</span><span class="bn-b">Quran</span></h1></div>
                 <div class="user-menu">
                     <button class="icon-btn user-chip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span><span id="userChipStk" class="stk-row"></span> ▾</button>
                     <div class="user-drop hidden" id="userDrop">
                         <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small><div id="userDropStk" class="stk-big-row"></div></div>
                         <button class="ud-shop" onclick="window.NS&&NS.open()">🕌 Namaz ka Hisaab</button>
-                        <button class="ud-cert" onclick="handleCertificateClick()">🏆 Certificate (Sanad)</button>
-                        <button class="ud-shop" onclick="document.getElementById('verifyModal').classList.remove('hidden')">🔍 Sanad ki jaanch</button>
+                        <button class="ud-cert" onclick="handleCertificateClick()">🏆 Completion Certificate</button>
                         <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
                         <button class="ud-default" onclick="resetTheme()">🔄 Default Theme (kharidi hui safe)</button>
                         <button onclick="logout()" style="margin-top:8px;">🚪 Logout</button>
@@ -402,7 +398,7 @@
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('adminCertModal').classList.add('hidden')">&times;</span>
             <h2 style="text-align:center; color:var(--primary);">🏆 Admin Certificate Panel</h2>
-            <p style="text-align:center; font-size:14px; margin-bottom:15px;">Kisi bhi profile ke liye Sanad (Certificate) banayein.</p>
+            <p style="text-align:center; font-size:14px; margin-bottom:15px;">Kisi bhi profile ke liye Completion Certificate banayein.</p>
             <label style="font-size:13px; font-weight:bold; margin-bottom:5px; display:block;">Profile Chunein:</label>
             <select id="adminProfileSelect" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); font-size:16px; margin-bottom:15px;"></select>
             
@@ -417,7 +413,7 @@
     <div id="certPreviewModal" class="modal hidden" style="z-index: 3000;">
         <div class="modal-content" style="max-width: 800px; padding: 10px;">
             <span class="close-btn" style="background:rgba(0,0,0,0.5); color:white; z-index:10;" onclick="document.getElementById('certPreviewModal').classList.add('hidden')">&times;</span>
-            <h2 style="text-align:center; margin-bottom:10px; font-size:18px;">Sanad Preview</h2>
+            <h2 style="text-align:center; margin-bottom:10px; font-size:18px;">Certificate Preview</h2>
             <img id="certPreviewImg" style="width: 100%; border-radius: 10px; display:block; margin-bottom:10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
             
             <div style="display:flex; gap:10px;">
@@ -439,17 +435,6 @@
         </div>
     </div>
 
-    <div id="verifyModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="document.getElementById('verifyModal').classList.add('hidden')">&times;</span>
-            <h2 style="text-align:center;margin-bottom:6px;">🔍 Sanad ki jaanch</h2>
-            <p style="font-size:12px;color:var(--text-light);text-align:center;margin-bottom:12px;line-height:1.7;">Sanad par likha naam aur "Sanad No." daalein.</p>
-            <input class="verify-in" id="vName" placeholder="Sanad par likha pura naam">
-            <input class="verify-in" id="vNo" placeholder="Sanad No. (jaise QU-G-20261024-7K3F9A)" style="direction:ltr;text-transform:uppercase;">
-            <button class="exam-btn" onclick="verifySanad()">Jaanch karein</button>
-            <div id="vResult" style="text-align:center;margin-top:14px;font-weight:700;line-height:1.8;"></div>
-        </div>
-    </div>
 
     <div id="toast" class="toast">Message</div>
 
@@ -537,6 +522,8 @@
             currentDay = parseInt(localStorage.getItem(pk('currentDay'))) || 1;
             guardTheme();
             initApp();
+            // Login ke baad welcome slides (sirf pehli baar)
+            if (window.QSOnboarding) QSOnboarding.show();
         }
 
         // --- Themes ---
@@ -786,7 +773,7 @@
             html += msNode('gold', '🥇', 'Gold', finalDone(), admin || finalReady());                                          // aakhir mein Gold (900 lafz)
             map.innerHTML = html;
         }
-        // Silver / Gold node dabane par: exam shuru (ya pass ho chuka ho to sanad)
+        // Silver / Gold node dabane par: exam shuru (ya pass ho chuka ho to certificate)
         function goToMilestone(kind) {
             const admin = userRole === 'admin', gold = kind === 'final';
             if (gold ? !(admin || finalReady() || finalDone()) : !(admin || silverReady() || silverDone())) {
@@ -851,7 +838,7 @@
             } else {
                 if (finalDone()) { showStudentCert(true, savedScore('finalScore'), FINAL_QS); return; }
                 if (silverDone() && finalReady()) {
-                    if (confirm('Final Exam (900 lafz) dena hai?\n\nOK = Final Exam\nCancel = Silver Sanad dekhein')) startMilestoneExam('final');
+                    if (confirm('Final Exam (900 lafz) dena hai?\n\nOK = Final Exam\nCancel = Silver Certificate dekhein')) startMilestoneExam('final');
                     else showStudentCert(false, savedScore('silverScore'), SILVER_QS);
                     return;
                 }
@@ -882,7 +869,7 @@
         function isDayOpen(day) {
             return userRole === 'admin' || (day <= currentDay && (day <= SILVER_DAYS || silverDone()));
         }
-        function savedScore(k) { const v = parseInt(localStorage.getItem(pk(k)), 10); return isFinite(v) ? v : 'Verified'; }
+        function savedScore(k) { const v = parseInt(localStorage.getItem(pk(k)), 10); return isFinite(v) ? v : null; }   // score na ho to certificate par score nahi likha jata
 
         // Jo lafz daily exam mein galat hue wo "kamzor" mein ginte hain — milestone exam mein pehle wahi aate hain
         function recordWeak() {
@@ -937,7 +924,7 @@
 
 
         // ==========================================
-        // 🧠 Kamzor lafz revision  |  🔔 Roz ki yaad-dehani (.ics)  |  🔍 Sanad No. aur jaanch
+        // 🧠 Kamzor lafz revision  |  🔔 Roz ki yaad-dehani (.ics)  |  Reference No.
         // ==========================================
         function weakWordList() {
             let weak = {};
@@ -976,19 +963,19 @@
             const t = (document.getElementById('remindTime').value || '20:00').split(':');
             const now = new Date(), p = n => String(n).padStart(2, '0');
             const d = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}T${p(t[0])}${p(t[1])}00`;
-            const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Quraan Ustad//UR', 'BEGIN:VEVENT',
+            const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Fahm-ul-Quran//UR', 'BEGIN:VEVENT',
                 'UID:quraan-ustad-daily@' + (location.hostname || 'app'), 'DTSTAMP:' + d, 'DTSTART:' + d, 'DURATION:PT15M',
-                'RRULE:FREQ=DAILY', 'SUMMARY:📖 Quraan Ustad — aaj ka sabaq', 'DESCRIPTION:Aaj ke 10 lafz padhein aur exam dein. ' + APP_LINK, 'URL:' + APP_LINK,
-                'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Quraan Ustad — aaj ka sabaq', 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+                'RRULE:FREQ=DAILY', 'SUMMARY:📖 Fahm-ul-Quran — aaj ka sabaq', 'DESCRIPTION:Aaj ke 10 lafz padhein aur exam dein. ' + APP_LINK, 'URL:' + APP_LINK,
+                'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Fahm-ul-Quran — aaj ka sabaq', 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
             const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'Quraan-Ustad-Yaaddehani.ics';
+            a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'Fahm-ul-Quran-Yaaddehani.ics';
             document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
             localStorage.setItem('remindTime', t.join(':'));
             showToast('🔔 File khol kar Calendar mein "Add" dabayein — roz ' + t.join(':') + ' par alarm bajega');
         }
         (function () { const v = localStorage.getItem('remindTime'); const i = document.getElementById('remindTime'); if (v && i) i.value = v; })();
 
-        // Sanad No.: naam + qism + score + tareekh se bana code. (Bina server ke hai, isliye ye sirf galti / chhedchhad pakadta hai, pakki security nahi.)
+        // Ref. No.: naam + qism + score + tareekh se bana code — sirf certificate ki pehchan ke liye; verification ya security nahi.
         function sanadNo(name, isGold, score, iso) {
             const src = [String(name).trim().toLowerCase().replace(/\s+/g, ' '), isGold ? 'G' : 'S', isGold ? 'x' : score, iso].join('|');
             let h1 = 0x811c9dc5, h2 = 0x1b873593;
@@ -1001,18 +988,6 @@
             let iso = localStorage.getItem(key);
             if (!iso) { iso = new Date().toISOString().slice(0, 10); if (userRole !== 'admin') localStorage.setItem(key, iso); }
             return iso;
-        }
-        function verifySanad() {
-            const name = document.getElementById('vName').value.trim(), no = document.getElementById('vNo').value.trim().toUpperCase();
-            const out = document.getElementById('vResult');
-            const m = /^QU-([GS])-(\d{4})(\d{2})(\d{2})-([0-9A-Z]{6})$/.exec(no);
-            if (!name || !m) { out.innerHTML = '<span style="color:red;">❌ Naam aur sahi format ka Sanad No. daalein</span>'; return; }
-            const iso = `${m[2]}-${m[3]}-${m[4]}`, gold = m[1] === 'G';
-            let ok = false;
-            if (gold) ok = sanadNo(name, true, 0, iso) === no;
-            else for (const sc of [40,41,42,43,44,45,46,47,48,49,50,'Verified']) { if (sanadNo(name, false, sc, iso) === no) { ok = true; break; } }   // Silver: score 40–50
-            out.innerHTML = ok ? `<span style="color:green;">✅ Sanad durust hai<br><small>${escHTML(name)} • ${gold ? 'Gold' : 'Silver'} • ${m[4]}/${m[3]}/${m[2]}</small></span>`
-                               : '<span style="color:red;">❌ Naam / number mel nahi khata — Sanad durust nahi</span>';
         }
 
         function showStudentCert(isGold, score, total) {
@@ -1030,9 +1005,9 @@
         // Course ke upar/andar milestone ka card
         function milestoneInfo(kind) {
             return {
-                silver: { t: '🥈 500 Lafz Mukammal!', d: 'Aage ke din abhi band hain. 50 mushkil sawal ka Silver Exam dein — 80% (40/50) laayen to Silver Sanad milegi aur Day 51 se aage khul jayega.', b: '🥈 Silver Exam Shuru Karein', f: "startMilestoneExam('silver')", cls: '' },
-                final:  { t: '🥇 900 Lafz Mukammal!', d: '75 mushkil sawal ka Final Exam dein — 80% (60/75) laayen to Gold Sanad milegi. (Silver aur Final dono 80%+ hon tabhi Gold.)', b: '🥇 Final Exam Shuru Karein', f: "startMilestoneExam('final')", cls: 'gold' },
-                done:   { t: '🎓 Mubarak! Course Mukammal', d: 'Aapne Silver aur Final dono exam 80% se zyada ke saath pass kiye.', b: '🥇 Gold Sanad Dekhein', f: 'handleCertificateClick()', cls: 'gold' }
+                silver: { t: '🥈 500 Lafz Mukammal!', d: 'Aage ke din abhi band hain. 50 mushkil sawal ka Silver Exam dein — 80% (40/50) laayen to Silver Certificate milega aur Day 51 se aage khul jayega.', b: '🥈 Silver Exam Shuru Karein', f: "startMilestoneExam('silver')", cls: '' },
+                final:  { t: '🥇 900 Lafz Mukammal!', d: '75 mushkil sawal ka Final Exam dein — 80% (60/75) laayen to Gold Certificate milega. (Silver aur Final dono 80%+ hon tabhi Gold.)', b: '🥇 Final Exam Shuru Karein', f: "startMilestoneExam('final')", cls: 'gold' },
+                done:   { t: '🎓 Mubarak! Course Mukammal', d: 'Aapne Silver aur Final dono exam 80% se zyada ke saath pass kiye.', b: '🥇 Gold Certificate Dekhein', f: 'handleCertificateClick()', cls: 'gold' }
             }[kind];
         }
         function milestoneCardHTML(kind, big) {
@@ -1070,7 +1045,7 @@
             </div>`;
         }
 
-        // ⬇️ Qari Mishary ki ayat download karke rakhna (offline) — qari.js (QSQari.download / isSaved ...)
+        // ⬇️ Qari Mishary ki ayat download karke rakhna (offline) — sounds.js (QSQari.download / isSaved ...)
         function ayatSetSaved(box, saved) {
             const dl = box.querySelector('.ayat-dl'), del = box.querySelector('.ayat-del');
             if (!dl || !del) return;
@@ -1139,9 +1114,9 @@
             const profile = profiles.find(p => p.id === pid);
             if (!profile) return;
             document.getElementById('adminCertModal').classList.add('hidden');
-            showToast('⏳ Sanad ban rahi hai...');
+            showToast('⏳ Certificate ban raha hai...');
             
-            drawCertificateCanvas(profile.name, isGold, 'Verified', (canvas) => {
+            drawCertificateCanvas(profile.name, isGold, null, (canvas) => {
                 window.currentCertCanvas = canvas;
                 window.currentCertName = profile.name;
                 window.currentCertIsGold = isGold;
@@ -1154,10 +1129,10 @@
         function downloadPreviewCert() {
             if (!window.currentCertCanvas) return;
             const link = document.createElement('a');
-            link.download = `Sanad-${window.currentCertName}-${window.currentCertIsGold ? 'Gold' : 'Silver'}.png`;
+            link.download = `Certificate-${window.currentCertName}-${window.currentCertIsGold ? 'Gold' : 'Silver'}.png`;
             link.href = window.currentCertCanvas.toDataURL('image/png');
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
-            showToast('📥 Sanad Download Ho Gayi!');
+            showToast('📥 Certificate Download Ho Gaya!');
         }
 
         function sharePreviewCert() {
@@ -1200,7 +1175,7 @@
                     localStorage.setItem(pk(isFinal ? 'finalPassed' : 'silverPassed'), '1');
                     localStorage.setItem(pk(isFinal ? 'finalScore' : 'silverScore'), score);
                     if (!isFinal && currentDay <= SILVER_DAYS) { currentDay = SILVER_DAYS + 1; localStorage.setItem(pk('currentDay'), currentDay); }
-                    res.innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs} (${pct}%). ${isFinal ? 'Gold Sanad tayyar hai!' : 'Silver Sanad tayyar hai, aage ke din khul gaye!'}</span>`;
+                    res.innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs} (${pct}%). ${isFinal ? 'Gold Certificate tayyar hai!' : 'Silver Certificate tayyar hai, aage ke din khul gaye!'}</span>`;
                     document.getElementById('submitExamBtn').classList.add('hidden');
                     setTimeout(() => {
                         document.getElementById('examModal').classList.add('hidden');
@@ -1285,15 +1260,15 @@
                 }
                 ctx.fillStyle = '#B8923A'; ctx.font = '400 44px "Amiri", serif';
                 ctx.direction = 'rtl'; ctx.fillText('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', CX, 130); ctx.direction = 'ltr';
-                ctx.fillStyle = main; ctx.font = '700 62px "Amiri", serif';
-                ctx.fillText(isGold ? 'GOLD SANAD' : 'CERTIFICATE OF EXCELLENCE', CX, 215);
-                ctx.direction = 'rtl'; ctx.font = '400 50px "Noto Nastaliq Urdu", serif';
-                ctx.fillText(isGold ? 'گولڈ سند' : 'سندِ امتیاز', CX, 290); ctx.direction = 'ltr';
+                ctx.fillStyle = main; ctx.font = '700 56px "Amiri", serif';
+                ctx.fillText(isGold ? 'GOLD — COURSE COMPLETION' : 'SILVER — COURSE COMPLETION', CX, 215);
+                ctx.direction = 'rtl'; ctx.font = '400 44px "Noto Nastaliq Urdu", serif';
+                ctx.fillText(isGold ? 'گولڈ — کورس مکمل' : 'سلور — کورس مکمل', CX, 288); ctx.direction = 'ltr';
 
                 ctx.fillStyle = '#8A6D2B'; ctx.font = 'italic 400 26px "Figtree", sans-serif';
-                ctx.fillText('This Sanad is proudly presented to', CX - 330, 365);
+                ctx.fillText('This certificate is proudly presented to', CX - 330, 365);
                 ctx.direction = 'rtl'; ctx.font = '400 26px "Noto Nastaliq Urdu", serif';
-                ctx.fillText('یہ سند فخر کے ساتھ پیش کی جاتی ہے', CX + 330, 365); ctx.direction = 'ltr';
+                ctx.fillText('یہ سرٹیفکیٹ فخر کے ساتھ پیش کیا جاتا ہے', CX + 330, 365); ctx.direction = 'ltr';
 
                 // Naam: line se upar, descender (g, y, j) bhi line ko na chhuye; lamba naam apne aap chhota ho jaye
                 ctx.fillStyle = '#0A2E24';
@@ -1333,8 +1308,7 @@
 
                 ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.fillStyle = '#55645C'; ctx.font = '400 28px "Figtree", sans-serif';
                 ctx.fillText('Date / تاریخ: ' + dateStr, 150, 905);
-                ctx.font = '600 24px "Figtree", sans-serif'; ctx.fillStyle = main; ctx.fillText('Sanad No: ' + sNo, 150, 950);
-                ctx.font = '400 20px "Figtree", sans-serif'; ctx.fillStyle = '#55645C'; ctx.fillText('App mein "Sanad ki jaanch" se is number ko check karein', 150, 985);
+                ctx.font = '600 22px "Figtree", sans-serif'; ctx.fillStyle = main; ctx.fillText('Ref. No: ' + sNo, 150, 950);
                 const sx = W - 330; // signature block thoda andar, frame se bahar na jaye
                 if (sigImg.naturalWidth > 0) {
                     const sh = 120, sw = Math.min(sh * sigImg.naturalWidth / sigImg.naturalHeight, 260);
@@ -1349,7 +1323,14 @@
                 while (ctx.measureText(arabicName).width > maxAW && aSize > 18) { aSize -= 1; ctx.font = `700 ${aSize}px "Amiri", serif`; }
                 ctx.textBaseline = 'alphabetic'; ctx.fillText(arabicName, sx, 975); ctx.textBaseline = 'middle'; // line se neeche, saaf jagah
                 ctx.direction = 'ltr'; ctx.fillStyle = '#55645C'; ctx.font = '400 22px "Figtree", sans-serif';
-                ctx.fillText('Founder, Quraan Ustad', sx, 1020);
+                ctx.fillText('Founder, Fahm-ul-Quran', sx, 1020);
+
+                // Disclaimer (frame ke andar, Ref. No. ke neeche, left side)
+                ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#8B6F3A'; ctx.font = 'italic 500 17px "Figtree", sans-serif';
+                ctx.fillText('Self-declared course completion record.', 150, 988);
+                ctx.fillText('NOT an ijazah, sanad, or any form of religious authority.', 150, 1010);
+                ctx.fillText('Does NOT authorize Fatwa, formal teaching, or Alimiyat.', 150, 1032);
 
                 callback(canvas);
             }
@@ -1359,16 +1340,16 @@
         function shareCertificateCanvas(canvas, userName, isGold) {
             canvas.toBlob(async function(blob) {
                 if (!blob) { showToast('❌ Image nahi ban saki'); return; }
-                const file = new File([blob], `Sanad-${userName}.png`, { type: 'image/png' });
+                const file = new File([blob], `Certificate-${userName}.png`, { type: 'image/png' });
                 
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
                     try {
                         await navigator.share({
                             files: [file],
-                            title: 'Quraan Ustad Sanad',
-                            text: 'Maine apni Quraan Ustad Sanad hasil kar li! Alhamdulillah.\n\nDownload Quraan Ustad App:\n' + APP_LINK
+                            title: 'Fahm-ul-Quran Certificate',
+                            text: 'Maine Fahm-ul-Quran ka course certificate hasil kar liya! Alhamdulillah.\n\nDownload Fahm-ul-Quran App:\n' + APP_LINK
                         });
-                        showToast('📤 Sanad Share Ho Gayi!');
+                        showToast('📤 Certificate Share Ho Gaya!');
                     } catch (e) {
                         if (e.name !== 'AbortError') {
                             showToast('⚠️ Share fail hua, download kar rahe hain...');
@@ -1384,11 +1365,11 @@
 
         function downloadCanvas(canvas, name, isGold) {
             const link = document.createElement('a');
-            link.download = `Sanad-${name}-${isGold ? 'Gold' : 'Silver'}.png`;
+            link.download = `Certificate-${name}-${isGold ? 'Gold' : 'Silver'}.png`;
             link.href = canvas.toDataURL('image/png');
             document.body.appendChild(link); link.click(); document.body.removeChild(link);
             if (window.QSSFX) QSSFX.win();
-            showToast('🏆 Sanad Download Ho Gayi!');
+            showToast('🏆 Certificate Download Ho Gaya!');
         }
 
         // --- ✨ AAJ KI AYAT GENERATOR ---
@@ -1471,10 +1452,10 @@
                 if (logoImg.complete && logoImg.naturalWidth > 0) {
                     ctx.drawImage(logoImg, 490, 1580, 100, 100);
                     ctx.fillStyle = '#FFFFFF'; ctx.font = '700 60px "Amiri", serif';
-                    ctx.fillText('Quraan Ustad', 540, 1720);
+                    ctx.fillText('Fahm-ul-Quran', 540, 1720);
                 } else {
                     ctx.fillStyle = '#FFFFFF'; ctx.font = '700 60px "Amiri", serif';
-                    ctx.fillText('Quraan Ustad', 540, 1660);
+                    ctx.fillText('Fahm-ul-Quran', 540, 1660);
                 }
                 
                 ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = '500 30px "Figtree", sans-serif';
@@ -1488,8 +1469,8 @@
                         try {
                             await navigator.share({
                                 files: [file],
-                                title: 'Aaj ki Ayat - Quraan Ustad',
-                                text: 'Aaj ka paigham: ' + currentAyat.ur + ' (' + currentAyat.ref + ')\n\nDownload Quraan Ustad App:\n' + APP_LINK
+                                title: 'Aaj ki Ayat - Fahm-ul-Quran',
+                                text: 'Aaj ka paigham: ' + currentAyat.ur + ' (' + currentAyat.ref + ')\n\nDownload Fahm-ul-Quran App:\n' + APP_LINK
                             });
                             showToast('📤 Share Ho Gaya!');
                         } catch (e) {
@@ -1503,7 +1484,7 @@
 
                 function triggerDownload(c) {
                     const link = document.createElement('a');
-                    link.download = 'Quraan-Ustad-Ayat.png';
+                    link.download = 'Fahm-ul-Quran-Ayat.png';
                     link.href = c.toDataURL('image/png');
                     document.body.appendChild(link); link.click(); document.body.removeChild(link);
                     showToast('📥 Tasveer Download Ho Gayi!');
@@ -1525,7 +1506,6 @@
             else { ['isLoggedIn', 'userRole', 'userId', 'activeProfile'].forEach(k => localStorage.removeItem(k)); } // purana login: naam ke saath dobara login karein
         }
     </script>
-    <script src="progress.js"></script>
 <script>
         function setMeaningLang(v){ localStorage.setItem('mlang', v); markLang(); if (typeof renderCourse === 'function' && typeof courseData !== 'undefined') { try { renderCourse(); } catch(e){} } }
         function markLang(){ const v = localStorage.getItem('mlang') || 'u'; const b = document.getElementById('langSel'); if (b) b.textContent = v === 'ro' ? 'Roman' : v === 'hi' ? 'हिंदी' : 'اردو'; }

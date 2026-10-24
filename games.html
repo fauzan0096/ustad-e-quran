@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games - Quraan Ustad</title>
+    <title>Games - Fahm-ul-Quran</title>
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="manifest" href="manifest.json">
-    <script src="ui.js"></script>
+    <script src="app.js"></script>
     <meta name="theme-color" content="#0F4C3A">
-    <script src="install.js" defer></script>
-    <script src="games-audio.js" defer></script>
+    <script src="sounds.js" defer></script>
     <script src="namaz.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #fff; --text: #333; --text-light: #666; --border: #ddd; --kbc-bg: #0a0e1a; --kbc-gold: #f5c518; --kbc-blue: #0c1e3c; }
+        :root { --primary: #0F4C3A; --secondary: #D4AF37; --bg: #F4F7F6; --card-bg: #fff; --text: #333; --text-light: #666; --border: #ddd; --kbc-bg: #0b3a2c; --kbc-gold: #D9B65A; --kbc-blue: #0F4C3A; }
         [data-theme="dark"] { --primary: #1a1a2e; --secondary: #6ee7b7; --bg: #0f0f23; --card-bg: #1e1e36; --text: #eee; --text-light: #aaa; --border: #333; }
         * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 30px; }
@@ -44,27 +43,33 @@
         @keyframes celePop { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         #kbc { background: var(--kbc-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; min-height: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
-        #kbc::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(245,197,24,0.15), transparent 60%); pointer-events: none; }
+        #kbc::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(217,182,90,0.15), transparent 60%); pointer-events: none; }
         .kbc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; position: relative; z-index: 1; color: var(--kbc-gold); font-weight: bold; font-size: 13px; gap: 8px; }
-        .kbc-day { background: rgba(245,197,24,0.2); padding: 5px 12px; border-radius: 15px; }
-        .kbc-prize { background: rgba(245,197,24,0.2); padding: 5px 12px; border-radius: 15px; }
+        .kbc-day { background: rgba(217,182,90,0.2); padding: 5px 12px; border-radius: 15px; }
+        .kbc-prize { background: rgba(217,182,90,0.2); padding: 5px 12px; border-radius: 15px; }
         .kbc-qnum { text-align: center; color: #aaa; font-size: 12px; margin-bottom: 10px; position: relative; z-index: 1; }
         .kbc-qnum b { color: var(--kbc-gold); }
-        .kbc-question { color: #fff; font-size: 17px; font-weight: 600; text-align: center; padding: 20px 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(245,197,24,0.3); margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; line-height: 1.5; position: relative; z-index: 1; }
+        .kbc-question { color: #fff; font-size: 17px; font-weight: 600; text-align: center; padding: 20px 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(217,182,90,0.3); margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; line-height: 1.5; position: relative; z-index: 1; }
         .kbc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative; z-index: 1; }
-        .kbc-opt { background: linear-gradient(135deg, #1a2a4a, #0c1e3c); color: #fff; border: 2px solid #2a4a7a; padding: 12px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; text-align: left; display: flex; gap: 8px; align-items: center; }
+        .kbc-opt { background: linear-gradient(135deg, #14614A, #0F4C3A); color: #fff; border: 2px solid #2f7a60; padding: 12px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; text-align: left; display: flex; gap: 8px; align-items: center; }
         .kbc-opt b { color: var(--kbc-gold); font-weight: bold; }
         .kbc-opt.correct { background: linear-gradient(135deg, #1a5c2a, #0c3c1a); border-color: #2ea14a; }
         .kbc-opt.wrong { background: linear-gradient(135deg, #5c1a1a, #3c0c0c); border-color: #a12e2e; }
+        .kbc-opt.sel { border-color: var(--kbc-gold); background: rgba(217,182,90,0.22); }
+        .kbc-confirm { display: flex; gap: 8px; margin-top: 12px; position: relative; z-index: 1; }
+        .kbc-confirm button { flex: 1; padding: 11px 8px; border-radius: 14px; font-weight: bold; font-size: 13px; cursor: pointer; border: 1px solid var(--kbc-gold); background: transparent; color: var(--kbc-gold); }
+        .kbc-confirm button.yes { background: var(--kbc-gold); color: #000; }
+        .kbc-quit { display: block; margin: 14px auto 0; background: transparent; border: 1px solid rgba(255,255,255,.3); color: #ddd; padding: 8px 16px; border-radius: 16px; font-size: 12px; cursor: pointer; position: relative; z-index: 1; }
+        .kbc-note { text-align: center; color: #aaa; font-size: 11px; margin-top: 8px; position: relative; z-index: 1; }
         .kbc-opt.disabled { opacity: 0.4; cursor: not-allowed; }
         .kbc-lifelines { display: flex; justify-content: center; gap: 8px; margin-top: 15px; position: relative; z-index: 1; flex-wrap: wrap; }
-        .kbc-life { background: rgba(245,197,24,0.15); color: var(--kbc-gold); border: 1px solid var(--kbc-gold); padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
+        .kbc-life { background: rgba(217,182,90,0.15); color: var(--kbc-gold); border: 1px solid var(--kbc-gold); padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .kbc-life:disabled { opacity: 0.3; cursor: not-allowed; }
         .kbc-life.on { background: var(--kbc-gold); color: #000; }
         .kbc-result { text-align: center; padding: 25px 15px; color: #fff; position: relative; z-index: 1; }
         .kbc-result h2 { color: var(--kbc-gold); margin-bottom: 15px; font-size: 22px; }
         .kbc-result .prize { font-size: 28px; color: #4ade80; font-weight: bold; margin: 15px 0; }
-        .kbc-btn { background: linear-gradient(135deg, var(--kbc-gold), #c9a012); color: #000; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
+        .kbc-btn { background: linear-gradient(135deg, var(--kbc-gold), #B8923A); color: #000; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; }
         .kbc-ladder { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 20px; position: relative; z-index: 1; }
         .kbc-ladder span { background: rgba(255,255,255,0.08); color: #aaa; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
         .kbc-ladder span.active { background: var(--kbc-gold); color: #000; }
@@ -109,6 +114,18 @@
     <link rel="stylesheet" href="theme.css">
 </head>
 <body>
+<!-- ⚠️ Deeni disclaimer: tajweed / dua / asma / games / bazm -->
+<div id="deeniNotice" role="note">
+    <span>⚠️ <b>Zaroori:</b> ye app <b>aalim ya qaari ki jagah nahi</b>. Tajweed, namaz aur deeni ahkam kisi mustanad ustad se seekhein. App sirf seekhne mein madad ke liye hai. <a href="privacy.html">Tafseel</a></span>
+    <button type="button" aria-label="Band karein" onclick="this.parentElement.style.display='none';try{sessionStorage.setItem('deeniNoticeHide','1')}catch(e){}">✕</button>
+</div>
+<style>
+#deeniNotice{display:flex;align-items:flex-start;gap:8px;justify-content:center;background:#FFF3CD;border-bottom:2px solid #FFC107;color:#5a4400;padding:9px 12px;font:12.5px/1.6 system-ui,-apple-system,sans-serif;text-align:center}
+#deeniNotice a{color:inherit;font-weight:700}
+#deeniNotice button{flex:0 0 auto;background:transparent;border:none;color:inherit;font-weight:700;font-size:16px;line-height:1;cursor:pointer;padding:2px 6px;min-width:32px;min-height:32px}
+[data-theme="dark"] #deeniNotice{background:#3a2f0b;border-bottom-color:#B8923A;color:#f3e6b5}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('deeniNoticeHide')==='1')document.getElementById('deeniNotice').style.display='none';}catch(e){}})();</script>
     <header>
         <div class="header-top">
             <h1>🎮 Games</h1>
@@ -119,10 +136,11 @@
         </div>
     </header>
     <div class="main-nav">
-        <button class="nav-btn active" onclick="switchGame('kbc', this)">🏆 KBC</button>
+        <button class="nav-btn active" onclick="switchGame('kbc', this)">🪜 Maratib-e-Ilm</button>
         <button class="nav-btn" onclick="switchGame('sahaba', this)">⭐ Sahaba</button>
         <button class="nav-btn" onclick="switchGame('memory', this)">🧠 Memory</button>
         <button class="nav-btn" onclick="switchGame('emoji', this)">😀 Emoji</button>
+        <button class="nav-btn" onclick="location.href='bazm.html'">🎓 Bazm-e-Fahm</button>
     </div>
     <div class="container">
         <div id="kbc" class="game-section active"></div>
@@ -219,7 +237,7 @@
 
         // ==========================================
         // NASHEED TOGGLE
-        // (games-audio.js isko behtar version se replace kar deta hai)
+        // (sounds.js isko behtar version se replace kar deta hai)
         // ==========================================
         function toggleNasheed() {
             const audio = document.getElementById('kbcNasheed');
@@ -239,7 +257,7 @@
         }
 
         // ==========================================
-        // KBC DATA — 30 DAYS × 10 QUESTIONS
+        // MARATIB-E-ILM DATA — 30 DAYS × 10 QUESTIONS
         // Format: [question, A, B, C, D, correctIdx, difficulty(1-3)]
         // Har din ke andar difficulty 1→3 badhti hai
         // SAARE SAWALAT AHLE HADEES MANHAJ KE MUTABIQ
@@ -381,8 +399,8 @@
             ["Islami saal mein kitne mahine?","10","11","12","13",2,1],
             ["Ramzan ke baad ka mahina?","Shaban","Shawwal","Rajab","Muharram",1,2],
             ["Ashura kis mahine mein?","Ramzan","Muharram","Rajab","Shaban",1,2],
-            ["Shab-e-Barat kis mahine mein?","Rajab","Shaban","Ramzan","Shawwal",1,2],
-            ["Shab-e-Miraj kis mahine mein?","Rajab","Shaban","Ramzan","Shawwal",0,2],
+            ["Hajj kis mahine mein hota hai?","Ramzan","Muharram","Zil-Hijjah","Shawwal",2,2],
+            ["Islami saal ka aakhri mahina kaun sa hai?","Muharram","Rajab","Shaban","Zil-Hijjah",3,2],
             ["Lailatul Qadr kis mahine mein?","Shaban","Ramzan","Rajab","Muharram",1,3],
             ["Qurbani kis mahine mein?","Ramzan","Muharram","Zil-Hijjah","Shawwal",2,3],
             ["Hijri calendar kis sahaba ne muqarrar kiya?","Abu Bakr (RA)","Umar (RA)","Uthman (RA)","Ali (RA)",1,3],
@@ -638,12 +656,13 @@
         ];
 
         // ==========================================
-        // KBC PRIZE = STARS (₹ ke bajaye)
+        // MARATIB-E-ILM: inaam = Stars (koi paisa nahi)
         // ==========================================
         const PRIZES = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
+        const DARJA = ['🌱 Mubtadi', '📖 Talib', '💡 Faahim', '🏅 Mutqin', '🌟 Mahir'];   // har 2 sawal par ek darja
         const PRIZE_LABELS = PRIZES.map((p, i) => `⭐ ${p}${i === 4 ? ' 🎯' : i === 9 ? ' 🏆' : ''}`);
 
-        // ===== KBC STATE =====
+        // ===== MARATIB-E-ILM STATE (purane naam kbc* andar rakhe hain taaki saved progress na tute) =====
         let kbcState = null;
         let kbcData = null;
         const KBC_KEY = 'p_' + (localStorage.getItem('activeProfile') || 'p1') + '_kbcUnlockedDay';
@@ -662,7 +681,7 @@
             // Sort by difficulty ascending — Q1 easy ... Q10 hard
             kbcData = KBC[dayIndex].slice().sort((a, b) => (a[6] || 1) - (b[6] || 1));
 
-            kbcState = { qIndex: 0, used5050: false, usedAudience: false, usedPhone: false, currentPrize: 0 };
+            kbcState = { qIndex: 0, used5050: false, usedAudience: false, usedPhone: false, usedSwap: false, currentPrize: 0, sel: -1 };
 
             let dayOpts = '';
             for (let d = 1; d <= unlocked; d++) dayOpts += `<option value="${d}" ${d === dayIndex + 1 ? 'selected' : ''}>📅 Day ${d}</option>`;
@@ -673,15 +692,22 @@
                     ${daySelect}
                     <span class="kbc-prize" id="kbcPrizeDisplay">⭐ 0</span>
                 </div>
-                <div class="kbc-qnum" id="kbcQNum">Question 1 / 10</div>
+                <div class="kbc-qnum" id="kbcQNum">Sawal 1 / 10</div>
                 <div class="kbc-question" id="kbcQuestion"></div>
                 <div class="kbc-options" id="kbcOptions"></div>
+                <div class="kbc-confirm" id="kbcConfirm" style="display:none">
+                    <button class="yes" onclick="kbcConfirmYes()">Haan, jawab pakka hai</button>
+                    <button onclick="kbcConfirmNo()">Dobara sochun</button>
+                </div>
                 <div class="kbc-lifelines">
-                    <button class="kbc-life" id="life5050" onclick="kbc5050()">50:50</button>
-                    <button class="kbc-life" id="lifeAud" onclick="kbcAudience()">👥 Audience</button>
-                    <button class="kbc-life" id="lifePhone" onclick="kbcPhone()">📞 Phone</button>
+                    <button class="kbc-life" id="life5050" onclick="kbc5050()">✂️ Do Ghalat Hatayein</button>
+                    <button class="kbc-life" id="lifeAud" onclick="kbcAudience()">👥 Hazireen ki Raay</button>
+                    <button class="kbc-life" id="lifePhone" onclick="kbcPhone()">📞 Saathi se Mashwara</button>
+                    <button class="kbc-life" id="lifeSwap" onclick="kbcSwap()">🔄 Sawal Tabdeel</button>
                 </div>
                 <div class="kbc-ladder" id="kbcLadder"></div>
+                <div class="kbc-note">🎯 = pakka darja (yahan tak ke stars mehfooz) • Stars sirf inaam ke nishan hain, koi paisa nahi</div>
+                <button class="kbc-quit" onclick="kbcQuit()">🛑 Yahin Ruk Jayein (abhi ke stars le lein)</button>
             `;
             renderLadder();
             kbcLoadQuestion();
@@ -702,7 +728,8 @@
             if (kbcState.qIndex >= kbcData.length) { kbcFinish(true); return; }
             const q = kbcData[kbcState.qIndex];
 
-            document.getElementById('kbcQNum').innerHTML = `Question <b>${kbcState.qIndex + 1}</b> / 10`;
+            document.getElementById('kbcQNum').innerHTML = `Sawal <b>${kbcState.qIndex + 1}</b> / 10 &nbsp;•&nbsp; Darja: <b>${DARJA[Math.min(4, Math.floor(kbcState.qIndex / 2))]}</b>`;
+            kbcState.sel = -1; const cf = document.getElementById('kbcConfirm'); if (cf) cf.style.display = 'none';
             document.getElementById('kbcQuestion').innerText = q[0];
 
             const opts = document.getElementById('kbcOptions');
@@ -712,7 +739,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'kbc-opt';
                 btn.innerHTML = `<b>${letters[i]}.</b> ${q[i+1]}`;
-                btn.onclick = () => kbcAnswer(i);
+                btn.onclick = () => kbcSelect(i);
                 opts.appendChild(btn);
             }
             document.getElementById('kbcPrizeDisplay').innerText = kbcState.currentPrize > 0 ? `⭐ ${kbcState.currentPrize}` : '⭐ 0';
@@ -722,6 +749,47 @@
                 if (i < kbcState.qIndex) s.classList.add('done');
                 if (i === kbcState.qIndex) s.classList.add('active');
             });
+        }
+
+        // Jawab chunne ke baad "pakka hai?" poochta hai
+        function kbcSelect(i) {
+            if (!kbcState) return;
+            const btns = document.querySelectorAll('.kbc-opt');
+            if (btns[i].disabled) return;
+            kbcState.sel = i;
+            btns.forEach((b, k) => b.classList.toggle('sel', k === i));
+            document.getElementById('kbcConfirm').style.display = 'flex';
+        }
+        function kbcConfirmYes() {
+            if (!kbcState || kbcState.sel < 0) return;
+            document.getElementById('kbcConfirm').style.display = 'none';
+            document.querySelectorAll('.kbc-opt').forEach(b => b.classList.remove('sel'));
+            kbcAnswer(kbcState.sel);
+        }
+        function kbcConfirmNo() {
+            if (!kbcState) return;
+            kbcState.sel = -1;
+            document.querySelectorAll('.kbc-opt').forEach(b => b.classList.remove('sel'));
+            document.getElementById('kbcConfirm').style.display = 'none';
+        }
+
+        // Sawal Tabdeel: usi mushkil-darje ka dusra sawal (kisi bhi din se, jo abhi is round mein nahi aaya)
+        function kbcSwap() {
+            if (!kbcState || kbcState.usedSwap) return;
+            const cur = kbcData[kbcState.qIndex];
+            const asked = new Set(kbcData.map(q => q[0]));
+            let pool = [];
+            KBC.forEach(day => day.forEach(q => { if ((q[6] || 1) === (cur[6] || 1) && !asked.has(q[0])) pool.push(q); }));
+            if (!pool.length) return;
+            kbcState.usedSwap = true;
+            document.getElementById('lifeSwap').disabled = true;
+            kbcData[kbcState.qIndex] = pool[Math.floor(Math.random() * pool.length)];
+            kbcLoadQuestion();
+        }
+
+        function kbcQuit() {
+            if (!kbcState) return;
+            if (confirm('Yahin ruk jayein? Abhi tak ke stars mil jayenge.')) kbcFinish(false, true);
         }
 
         function kbcAnswer(sel) {
@@ -754,7 +822,7 @@
             const correct = q[5];
             const wrongs = [0,1,2,3].filter(i => i !== correct).sort(() => Math.random() - 0.5).slice(0, 2);
             const btns = document.querySelectorAll('.kbc-opt');
-            wrongs.forEach(i => { btns[i].disabled = true; btns[i].classList.add('disabled'); });
+            wrongs.forEach(i => { btns[i].disabled = true; btns[i].classList.add('disabled'); if (kbcState.sel === i) kbcConfirmNo(); });
         }
 
         function kbcAudience() {
@@ -774,7 +842,7 @@
             });
             percentages[correct] += remaining;
             const letters = ['A','B','C','D'];
-            alert('👥 Audience Poll:\n' + percentages.map((p, i) => `${letters[i]}: ${p}%`).join('\n'));
+            alert('👥 Hazireen ki Raay (sirf andaza, asli log nahi):\n' + percentages.map((p, i) => `${letters[i]}: ${p}%`).join('\n'));
         }
 
         function kbcPhone() {
@@ -786,23 +854,23 @@
             const correct = q[5];
             let guess = correct;
             if (Math.random() > 0.7) guess = [0,1,2,3].filter(i => i !== correct)[Math.floor(Math.random()*3)];
-            alert(`📞 Dost ka jawab:\n"Mujhe lagta hai ${letters[guess]} — ${q[guess+1]} sahi hai"`);
+            alert(`📞 Saathi ka mashwara (andaza, pakka nahi):\n"Mujhe lagta hai ${letters[guess]} — ${q[guess+1]} sahi hai"`);
         }
 
-        function kbcFinish(win) {
-            const earned = win ? PRIZES[PRIZES.length-1] : (kbcState.qIndex >= 5 ? PRIZES[4] : 0);
+        function kbcFinish(win, quit) {
+            const earned = win ? PRIZES[PRIZES.length-1] : (quit ? kbcState.currentPrize : (kbcState.qIndex >= 5 ? PRIZES[4] : 0));
             const cur = kbcDayIdx + 1;
             let nextBtn = '';
             if (win && cur < KBC.length) {
                 if (kbcUnlocked() < cur + 1) localStorage.setItem(KBC_KEY, String(cur + 1));
                 nextBtn = `<button class="kbc-btn" onclick="initKBC(${cur + 1})">➡️ Agla Din (Day ${cur + 1})</button><br>`;
             }
-            if (win) celebrate('Mubarak Ho! 🎉', `Day ${cur} mukammal! ⭐ ${earned} stars jeete.`);
+            if (win) celebrate('MashaAllah! 🎉', `Day ${cur} mukammal! ⭐ ${earned} stars jeete.`);
             document.getElementById('kbc').innerHTML = `
                 <div class="kbc-result">
-                    <h2>${win ? '🏆 Mubarak Ho!' : '😢 Game Over'}</h2>
+                    <h2>${win ? '🏆 Mubarak Ho!' : (quit ? '🛑 Aap yahin ruk gaye' : '😢 Afsos, jawab durust nahi tha')}</h2>
                     <div class="prize">⭐ ${earned}</div>
-                    <p style="color:#aaa; margin-bottom:15px;">${win ? (cur < KBC.length ? `Day ${cur} mukammal! Day ${cur + 1} khul gaya.` : 'Aapne saare 30 din mukammal kar liye!') : `Aap Q${kbcState.qIndex+1} par ruk gaye`}</p>
+                    <p style="color:#aaa; margin-bottom:15px;">${win ? (cur < KBC.length ? `Day ${cur} mukammal! Day ${cur + 1} khul gaya.` : 'Aapne saare 30 din mukammal kar liye!') : (quit ? `Aapne ${kbcState.qIndex} sawal durust kiye.` : `Aap sawal ${kbcState.qIndex+1} par ruk gaye. Dobara koshish karein 🤍`)}</p>
                     ${nextBtn}
                     <button class="kbc-btn" onclick="initKBC(${cur})">🔄 Dobara Khelein</button>
                 </div>
@@ -816,7 +884,7 @@
             {"q":"Hazrat Abu Bakr (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Saifullah"],"c":0,"name":"Hazrat Abu Bakr Siddiq (RA)","story":"Hazrat Abu Bakr (RA) Islam ke pehle Khalifa the. 'Siddiq' ka laqab unhe Meraj ki tasdeeq karne ki wajah se mila. Nabi ﷺ ne farmaya: 'Agar main kisi ko Khalil banata to Abu Bakr ko banata.' Wo Nabi ﷺ ke sabse qareebi sathi the aur gufa-e-Saur mein saath the."},
             {"q":"Hazrat Umar (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Saifullah"],"c":1,"name":"Hazrat Umar Farooq (RA)","story":"Hazrat Umar (RA) Islam ke doosre Khalifa the. 'Farooq' ka matlab haq aur batil mein farq karne wala. Unke daur mein Islami saltanat Misr, Sham, Iraq tak phaili. Unhe 'Ameer-ul-Mu'mineen' kaha jata hai. Unki adalat ka qissa aaj bhi mashhoor hai."},
             {"q":"Hazrat Uthman (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Saifullah"],"c":2,"name":"Hazrat Uthman Ghani (RA)","story":"Hazrat Uthman (RA) ko 'Zul Noorain' kaha jata hai kyunki unki nikah Nabi ﷺ ki do betiyon se hua. Unke daur mein Quran ko ek qirat par jama kiya gaya - aaj jo Quran hum padhte hain, wo unhi ki khidmat hai. 'Ghani' ka matlab sakhawat wale - unhone apna saara maal Allah ki raah mein diya."},
-            {"q":"Hazrat Ali (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Sher-e-Khuda"],"c":3,"name":"Hazrat Ali (RA)","story":"Hazrat Ali (RA) Nabi ﷺ ke chacha-zad bhai aur damaad the. Pehli umar ke islam lane wale bachche. 'Sher-e-Khuda' ka laqab unhe Jang-e-Khandaq mein Amr bin Abd Wudd ko qatal karne par mila. Unki ilm ki gehrai mashhoor hai - 'Ana madinatul ilm wa Ali babuha' (Main ilm ka shehar hoon aur Ali uska darwaza)."},
+            {"q":"Hazrat Ali (RA) ka laqab kya tha?","o":["Siddiq","Farooq","Zul Noorain","Sher-e-Khuda"],"c":3,"name":"Hazrat Ali (RA)","story":"Hazrat Ali (RA) Nabi ﷺ ke chacha-zad bhai aur damaad the. Pehli umar ke islam lane wale bachche. 'Sher-e-Khuda' ka laqab unhe Jang-e-Khandaq mein Amr bin Abd Wudd ko qatal karne par mila. Unki ilm ki gehrai mashhoor hai."},
             {"q":"Pehli shaheeda aurat kaun thi?","o":["Khadija (RA)","Sumayya (RA)","Aisha (RA)","Fatima (RA)"],"c":1,"name":"Hazrat Sumayya (RA)","story":"Islam ki pehli shaheeda aurat. Hazrat Ammar bin Yasir (RA) ki walida. Abu Jahl ne sakht azab diya, phir bhi 'Ahad, Ahad' kehti rahi."},
             {"q":"Hazrat Bilal (RA) ko kis ne azad kiya?","o":["Umar (RA)","Abu Bakr (RA)","Uthman (RA)","Hamza (RA)"],"c":1,"name":"Hazrat Bilal Habshi (RA)","story":"Hazrat Bilal (RA) Habshi (Abyssinian) ghulam the. Unke maalik Umayya bin Khalaf unhe garam ret par lita kar azab deta tha - phir bhi wo 'Ahad, Ahad' (Ek Allah) kehta rehta. Hazrat Abu Bakr (RA) ne unhe khareed kar azad kiya. Nabi ﷺ ne unhe pehla Muazzin banaya - unki azan ki aawaz Madinah mein goonjti thi."},
             {"q":"Hazrat Hamza (RA) kis jang mein shaheed hue?","o":["Badr","Uhud","Khandaq","Khyber"],"c":1,"name":"Hazrat Hamza (RA)","story":"Hazrat Hamza (RA) Nabi ﷺ ke chacha aur 'Syed-ush-Shuhada' (shuhada ke sardaar) hain. Wo Islam laane mein thodi der kiye the lekin jab laaye toh poore jaan se. Jang-e-Uhud mein Wahshi (Habshi) ne unhe shaheed kiya - jo baad mein musalman hua aur kehta tha 'Main ne sabse behtar insaan ko qatal kiya'."},
@@ -1057,7 +1125,7 @@
             { emoji: "🔄🕋", q: "Yeh kya hai?", o: ["Tawaf", "Sai", "Rami", "Qurbani"], c: 0 },
             { emoji: "⛰️🏃", q: "Yeh kya hai?", o: ["Tawaf", "Sai", "Rami", "Qurbani"], c: 1 },
             { emoji: "🐑🔪", q: "Yeh kya hai?", o: ["Aqiqah", "Qurbani", "Zakat", "Sadaqah"], c: 1 },
-            { emoji: "🌙⭐", q: "Yeh kis raat ki nishani hai?", o: ["Shab-e-Barat", "Shab-e-Miraj", "Lailatul Qadr", "Eid ki raat"], c: 2 },
+            { emoji: "🌙⭐", q: "Yeh kis raat ki nishani hai?", o: ["Jumma ki raat", "Arafah ki raat", "Lailatul Qadr", "Eid ki raat"], c: 2 },
             { emoji: "🍬🎉", q: "Yeh kya hai?", o: ["Eid", "Shaadi", "Aqiqah", "Bismillah"], c: 0 },
             { emoji: "🕌🎤", q: "Yeh kya hai?", o: ["Azan", "Khutbah", "Naat", "Bayaan"], c: 0 },
             { emoji: "🙏📿", q: "Yeh kya hai?", o: ["Namaz", "Dua", "Tasbeeh", "Tilawat"], c: 1 },
@@ -1138,7 +1206,7 @@
             { emoji: "🧕💎", q: "Nabi ﷺ ki pehli biwi kaun thin?", o: ["Khadija (RA)", "Aisha (RA)", "Hafsa (RA)", "Zainab (RA)"], c: 0 },
             { emoji: "🛡️⚔️", q: "Jang-e-Uhud mein Nabi ﷺ ke chacha shaheed hue, kaun?", o: ["Hamza (RA)", "Abbas (RA)", "Abu Talib", "Ali (RA)"], c: 0 },
             { emoji: "📖🔢", q: "Quran mein kitne Manzil hain?", o: ["5", "6", "7", "8"], c: 2 },
-            { emoji: "🌙✨", q: "Quran kis raat nazil hona shuru hua?", o: ["Lailatul Qadr", "Shab-e-Barat", "Shab-e-Miraj", "Eid ki raat"], c: 0 },
+            { emoji: "🌙✨", q: "Quran kis raat nazil hona shuru hua?", o: ["Lailatul Qadr", "Jumma ki raat", "Arafah ki raat", "Eid ki raat"], c: 0 },
             { emoji: "📿🤲🌙", q: "Ramzan ka aakhri ashra kya kehlata hai?", o: ["Najat ka ashra", "Rehmat", "Maghfirat", "Barkat"], c: 0 },
             { emoji: "🕋🕋", q: "Makkah mein kitni badi masjidein hain?", o: ["1 (Masjid-e-Haram)", "2", "3", "4"], c: 0 },
             { emoji: "🕌🕌🕌", q: "Masjid-e-Aqsa kahan hai?", o: ["Jerusalem", "Makkah", "Madinah", "Taif"], c: 0 },
@@ -1190,7 +1258,7 @@
             setTimeout(() => { emojiState.index++; emojiRender(); }, 1200);
         }
 
-        // Start with KBC
+        // Start with Maratib-e-Ilm
         initKBC();
     </script>
 </body>

@@ -1,13 +1,11 @@
-/* namaz.js — Quraan Ustad
-   🕌 Azan ke waqt 20 min ka lock   📋 Roz ek baar "poori namaz padhi?"   📅 Azan alarms (Calendar)
+/* namaz.js — Fahm-ul-Quran
+   🕌 Azan ki awaaz   📋 Roz ek baar "poori namaz padhi?"   📅 Azan alarms (Calendar)
    Install: har page ke <head> mein ek line:  <script src="namaz.js" defer></script>
-   Dhyan: web app phone ko system-level lock nahi kar sakti. Ye lock APP ke andar chalta hai
-   (azan ke 20 min tak app khulte hi poori screen band rehti hai, reload se bhi nahi hatti). */
+   (Azan ke waqt koi screen/phone lock nahi lagta.) */
 (function () {
     'use strict';
 
-    var LOCK_MIN = 20;
-    var HOLD_MS = 5000;
+    var EVENT_MIN = 20;                           // Calendar event ki lambai (sirf yaad dahani)
     var PR = [
         { k: 'Fajr',    n: 'Fajr',    i: '🌅' },
         { k: 'Dhuhr',   n: 'Zuhr',    i: '☀️' },
@@ -18,14 +16,13 @@
 
     // ---------- Android app (window.AndroidNS) ----------
     var NATIVE = (window.AndroidNS && typeof window.AndroidNS.configure === 'function') ? window.AndroidNS : null;
-    function nativeAdmin() { try { return !!NATIVE.isAdmin(); } catch (e) { return false; } }
     var lastSync = '';
     function syncNative() {
         if (!NATIVE) return;
         try {
             var T = getTimes(), loc = jget('ns_loc', null);
             var j = JSON.stringify({ times: T ? T.t : null, lat: loc ? String(loc.lat) : null, lng: loc ? String(loc.lng) : null,
-                school: school(), auto: !!(T && !T.manual && loc), lock: lockOn(), sound: sndPref() });
+                school: school(), auto: !!(T && !T.manual && loc), sound: sndPref() });
             if (j !== lastSync) { lastSync = j; NATIVE.configure(j); }
         } catch (e) {}
     }
@@ -89,10 +86,7 @@
         });
     }
 
-    // ---------- lock ----------
-    function lockOn() { return (loggedIn() ? lsGet(P('lockOn')) : lsGet('ns_on')) !== '0'; }
-    function setLock(v) { if (loggedIn()) lsSet(P('lockOn'), v ? '1' : '0'); else lsSet('ns_on', v ? '1' : '0'); }
-    // Azan apne aap: waqt aate hi (pehle 60 sec mein) ek baar bajti hai — lock chalu ho ya na ho
+    // Azan apne aap: waqt aate hi (pehle 60 sec mein) ek baar bajti hai
     function azanTick() {
         if (NATIVE) return;                       // app mein azan Android service bajati hai
         var T = getTimes(); if (!T || sndPref() === 'off') return;
@@ -104,26 +98,6 @@
             if (now >= s0 && now < s0 + 60000 && lsGet('ns_played') !== key) { lsSet('ns_played', key); playAzan(); toast('🕌 ' + p.n + ' ki azan'); }
         });
     }
-    function skipKey(date, k) { return date + '_' + k; }
-    function bypassed(date, k) { return (jget('ns_skip', [])).indexOf(skipKey(date, k)) >= 0; }
-    function addBypass(date, k) { var a = jget('ns_skip', []); a.push(skipKey(date, k)); jset('ns_skip', a.slice(-12)); }
-
-    var testUntil = 0;
-    function activeWindow() {
-        var T = getTimes(); if (!T) return null;
-        var now = Date.now(), found = null;
-        [-1, 0].forEach(function (off) {              // kal ki Isha raat 12 ke baad tak chale to bhi pakde
-            var base = new Date(); base.setDate(base.getDate() + off);
-            PR.forEach(function (p) {
-                var m = toMin(T.t[p.k]); if (m == null) return;
-                var s = new Date(base.getFullYear(), base.getMonth(), base.getDate(), 0, m, 0, 0).getTime();
-                var e = s + LOCK_MIN * 60000;
-                if (now >= s && now < e && !bypassed(dstr(base), p.k)) found = { p: p, start: s, end: e, date: dstr(base) };
-            });
-        });
-        return found;
-    }
-
     function nextPrayer() {
         var T = getTimes(); if (!T) return null;
         var now = new Date(), best = null;
@@ -177,21 +151,6 @@
     }
 
     var CSS =
-        '.ns-lock{position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;color:#fff;' +
-        'background:radial-gradient(120% 90% at 50% 0%,#17614B 0%,#06201A 75%);font-family:Figtree,system-ui,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none}' +
-        '.ns-lock .ns-ar{font-family:Amiri,serif;font-size:34px;color:#D9B65A;line-height:1.7;direction:rtl}' +
-        '.ns-lock .ns-ic{font-size:64px;animation:nsPulse 2.4s ease-in-out infinite}' +
-        '.ns-lock h2{margin:0;font-size:26px}' +
-        '.ns-lock .ns-sub{font-size:15px;opacity:.85;line-height:1.7;max-width:340px}' +
-        '.ns-lock .ns-count{font-size:56px;font-weight:800;letter-spacing:2px;font-variant-numeric:tabular-nums;color:#fff;margin:4px 0}' +
-        '.ns-lock .ns-dua{max-width:360px;background:rgba(255,255,255,.08);border:1px solid rgba(217,182,90,.4);border-radius:16px;padding:12px 14px}' +
-        '.ns-lock .ns-dua .ar{font-family:Amiri,serif;font-size:20px;line-height:2;direction:rtl;color:#fff}' +
-        '.ns-lock .ns-dua small{display:block;font-size:11.5px;opacity:.75;line-height:1.6;margin-top:4px}' +
-        '.ns-hold{margin-top:10px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.35);border-radius:14px;padding:10px 16px;font-size:12.5px;opacity:.75;background:transparent;color:#fff;cursor:pointer}' +
-        '.ns-hold i{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(217,182,90,.45)}' +
-        '.ns-hold span{position:relative}' +
-        '@keyframes nsPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}' +
-        '@media (prefers-reduced-motion:reduce){.ns-lock .ns-ic{animation:none}}' +
 
         '.ns-modal{position:fixed;inset:0;background:rgba(4,16,12,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);z-index:2500;display:flex;justify-content:center;align-items:flex-end;padding:0}' +
         '.ns-box,.ns-box *{box-sizing:border-box}' +
@@ -225,9 +184,6 @@
         '.ns-btn.ghost{background:transparent;color:var(--text,#1F2A25);border:1.5px solid var(--border,#D9D6C3)}' +
         '.ns-set{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:52px;padding:6px 2px;font-size:14px}' +
         '.ns-set select{width:150px;height:40px;padding:0 8px;border-radius:10px;border:1px solid var(--border,#D9D6C3);background:var(--card-bg,#fff);color:var(--text,#1F2A25);font:600 13px Figtree,sans-serif}' +
-        '.ns-lockrow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;margin-top:10px;padding:10px 12px;border-radius:14px;background:var(--soft-bg,#F4F1E3);cursor:pointer;font-size:14px;line-height:1.4}' +
-        '.ns-lockrow small{display:block;font-size:11.5px;color:var(--text-light,#55645C);margin-top:2px}' +
-        '.ns-lockrow input{width:26px;height:26px;flex:0 0 auto}' +
         '.ns-note{font-size:11.5px;line-height:1.7;color:var(--text-light,#55645C);margin-top:8px}' +
         '.ns-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}' +
         '.ns-chips.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}' +
@@ -256,55 +212,6 @@
     var styled = false;
     function injectCSS() { if (styled) return; styled = true; var s = document.createElement('style'); s.textContent = CSS; document.head.appendChild(s); }
 
-    // ---------- lock screen ----------
-    var lockEl = null, holdT = null, holdStart = 0, currentWin = null;
-    function fmtCount(ms) { var s = Math.max(0, Math.ceil(ms / 1000)); return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
-
-    function showLock(w) {
-        injectCSS();
-        if (!lockEl) {
-            lockEl = document.createElement('div');
-            lockEl.className = 'ns-lock'; lockEl.id = 'nsLock';
-            lockEl.setAttribute('role', 'alertdialog'); lockEl.setAttribute('aria-modal', 'true');
-            lockEl.innerHTML =
-                '<div class="ns-ic" id="nsIc"></div>' +
-                '<div class="ns-ar">حَيَّ عَلَى الصَّلَاةِ</div>' +
-                '<h2 id="nsTitle"></h2>' +
-                '<div class="ns-sub" id="nsSub"></div>' +
-                '<div class="ns-count" id="nsCount">20:00</div>' +
-                '<div class="ns-dua"><div class="ar">اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ وَالصَّلَاةِ الْقَائِمَةِ آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ</div>' +
-                '<small>Azan ke baad ki dua — pehle ye padhein, phir namaz ki taiyari karein 🤲</small></div>' +
-                '<button class="ns-hold" id="nsHold" type="button"><i></i><span>Zaroori kaam? Yahan 5 second dabaye rakhein</span></button>';
-            document.body.appendChild(lockEl);
-            document.documentElement.style.overflow = 'hidden';
-            try { document.querySelectorAll('audio').forEach(function (a) { a.pause(); }); if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {}
-            try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
-            var hold = lockEl.querySelector('#nsHold'), bar = hold.querySelector('i');
-            var stop = function () { clearInterval(holdT); holdT = null; bar.style.width = '0'; };
-            hold.addEventListener('pointerdown', function (e) {
-                e.preventDefault(); holdStart = Date.now(); clearInterval(holdT);
-                holdT = setInterval(function () {
-                    var f = (Date.now() - holdStart) / HOLD_MS; bar.style.width = Math.min(100, f * 100) + '%';
-                    if (f >= 1) { stop(); if (currentWin) { if (!currentWin.test) addBypass(currentWin.date, currentWin.p.k); else testUntil = 0; } hideLock(); toast('Lock hata diya — namaz zaroor padhein 🤲'); }
-                }, 80);
-            });
-            ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { hold.addEventListener(ev, stop); });
-            hold.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-        }
-        var firstShow = !currentWin || currentWin.p.k !== w.p.k;
-        currentWin = w;
-        if (firstShow && w.test) playAzan();
-        lockEl.querySelector('#nsIc').textContent = w.p.i;
-        lockEl.querySelector('#nsTitle').textContent = w.test ? 'Lock ka test' : w.p.n + ' ki azan ho gayi';
-        lockEl.querySelector('#nsSub').textContent = w.test ? 'Aise lock dikhega. 10 second mein apne aap khul jayega.' : 'Phone/App 20 minute ke liye band hai. Namaz padhein, phir wapas aayein — Allah qubool farmaye 🤍';
-        lockEl.querySelector('#nsCount').textContent = fmtCount(w.end - Date.now());
-    }
-    function hideLock() {
-        if (!lockEl) return;
-        clearInterval(holdT); holdT = null; stopAzan();
-        lockEl.remove(); lockEl = null; currentWin = null;
-        document.documentElement.style.overflow = '';
-    }
 
     // ---------- namaz ka hisaab (log) ----------
     function getLog() { return jget(P('namazLog'), {}); }
@@ -436,7 +343,7 @@
         toast('📅 Waqt jama ho rahe hain...');
         return (useApi ? fetchMonthTimes(loc, monthsNeeded(dates)) : Promise.resolve(null)).then(function (map) {
             var now = Date.now(), n = 0, stamp = icsUTC(new Date());
-            var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Quraan Ustad//Namaz//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:Azan ke waqt'];
+            var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Fahm-ul-Quran//Namaz//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:Azan ke waqt'];
             dates.forEach(function (base) {
                 var ds = dstr(base);
                 var t = (ds === todayS && T.date === todayS) ? T.t : ((map && map[ds]) || T.t);   // aaj ka = bilkul wahi jo app mein dikh raha hai
@@ -444,10 +351,10 @@
                     var m = toMin(t[p.k]); if (m == null) return;
                     var s = new Date(base.getFullYear(), base.getMonth(), base.getDate(), 0, m, 0, 0);
                     if (s.getTime() <= now) return;                                                  // guzra hua waqt nahi
-                    var e = new Date(s.getTime() + LOCK_MIN * 60000), at = fmt12(t[p.k]);
+                    var e = new Date(s.getTime() + EVENT_MIN * 60000), at = fmt12(t[p.k]);
                     L.push('BEGIN:VEVENT', 'UID:ns-' + icsUTC(s) + '-' + p.k + '@quraan-ustad', 'DTSTAMP:' + stamp,
                         'DTSTART:' + icsUTC(s), 'DTEND:' + icsUTC(e), 'SUMMARY:🕌 ' + p.n + ' ki azan • ' + at,
-                        'DESCRIPTION:' + p.n + ' ka waqt ' + at + '. Namaz padhein phir Quraan Ustad kholein 🤲', 'TRANSP:TRANSPARENT',
+                        'DESCRIPTION:' + p.n + ' ka waqt ' + at + '. Namaz padhein phir Fahm-ul-Quran kholein 🤲', 'TRANSP:TRANSPARENT',
                         'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:' + p.n + ' ki azan ' + at, 'END:VALARM', 'END:VEVENT');
                     n++;
                 });
@@ -617,19 +524,14 @@
             '<div class="ns-sec">PICHLE 7 DIN</div><div class="ns-week">' + week + '</div>' +
             '<div class="ns-sec">SETTINGS</div>' +
             '<button class="ns-btn gold" data-a="loc" style="margin-top:0">📍 ' + (loc ? 'Waqt dobara lein (location se)' : 'Location se azan ke waqt lein') + '</button>' +
-            '<label class="ns-lockrow"><span><b>🔒 Azan par 20 min lock lagana hai?</b><small>Tick = lagega • Tick hata do = nahi lagega (sirf aapke liye)</small></span><input type="checkbox" id="nsOn" ' + (lockOn() ? 'checked' : '') + '></label>' +
             '<div class="ns-set"><span>🔊 Azan ki awaaz</span><select id="nsSnd">' + ['aksa', 'sweet', 'third', 'off'].map(function (k) { return '<option value="' + k + '" ' + (sndPref() === k ? 'selected' : '') + '>' + SND_NAME[k] + '</option>'; }).join('') + '</select></div>' +
             '<button class="ns-btn ghost" data-a="snd" style="margin-top:2px">▶️ Awaaz sunein</button>' +
             '<div class="ns-set"><span>Asr ka hisaab</span><select id="nsSchool"><option value="1" ' + (school() === '1' ? 'selected' : '') + '>Hanafi</option><option value="0" ' + (school() === '0' ? 'selected' : '') + '>Shafi / Maliki / Hanbali</option></select></div>' +
             icsBox +
-            '<button class="ns-btn ghost" data-a="test">🧪 Screen lock ka test (10 sec)</button>' +
-            (NATIVE ? '<div class="ns-sec">📱 ASLI PHONE LOCK (Android app)</div>' +
-                '<div class="ns-note" style="margin-top:0">' + (nativeAdmin()
-                    ? '✅ Ijazat mili hai. Azan ke waqt app band ho tab bhi azan bajegi' + (lockOn() ? ' aur phone 20 min ke liye lock hoga.' : ' (lock ka tick band hai, isliye phone lock nahi hoga).')
-                    : '⚠️ Azan app band hone par bhi bajegi. Phone lock ke liye neeche ijazat dein (sirf screen lock — koi data nahi padha jata).') + '</div>' +
-                (nativeAdmin() ? '' : '<button class="ns-btn gold" data-a="admin">🔓 Phone lock ki ijazat dein</button>') +
-                '<button class="ns-btn ghost" data-a="ntest">🧪 Azan + phone lock ka test (15 sec)</button>' : '') +
-            (NATIVE ? '<div class="ns-note">🔋 Agar azan waqt par na bajti ho to phone ki Settings → Battery mein "Quraan Ustad" ko <b>Unrestricted / Autostart</b> dein (Xiaomi, Oppo, Vivo, Realme mein zaroori).</div>' : '<div class="ns-note">ℹ️ Web app phone ko system-level lock nahi kar sakti. Ye lock app ke <b>andar</b> chalta hai: azan ke 20 min tak app khulte hi poori screen band rehti hai (reload se bhi nahi hatti). App band ho tab bhi yaad dilane ke liye upar wala <b>Calendar alarm</b> lagayein. Asli phone lock aur app band hone par azan ki awaaz ke liye Android app install karein.</div>') +
+            (NATIVE ? '<div class="ns-sec">📱 ANDROID APP</div>' +
+                '<div class="ns-note" style="margin-top:0">✅ Azan app band ho tab bhi waqt par bajegi.</div>' +
+                '<button class="ns-btn ghost" data-a="ntest">🧪 Azan ka test</button>' : '') +
+            (NATIVE ? '<div class="ns-note">🔋 Agar azan waqt par na bajti ho to phone ki Settings → Battery mein "Fahm-ul-Quran" ko <b>Unrestricted / Autostart</b> dein (Xiaomi, Oppo, Vivo, Realme mein zaroori).</div>' : '<div class="ns-note">ℹ️ App band ho tab bhi yaad dilane ke liye upar wala <b>Calendar alarm</b> lagayein. App band hone par azan ki awaaz ke liye Android app install karein.</div>') +
             '</div></div>';
         var sc1 = panelEl.querySelector('.ns-body'); if (sc1) sc1.scrollTop = keep;
     }
@@ -646,9 +548,7 @@
         }
         var a = t.dataset.a;
         if (a === 'close') closePanel();
-        else if (a === 'test') { testUntil = Date.now() + 10000; closePanel(); tick(); }
         else if (a === 'ics') { var inp = document.getElementById('nsIcsN'); if (inp && inp.value) setIcsDays(inp.value); makeICS(); }
-        else if (a === 'admin') { try { NATIVE.requestAdmin(); } catch (e) {} }
         else if (a === 'ntest') { syncNative(); try { NATIVE.test(); } catch (e) {} }
         else if (a === 'report') openReport(0, false);
         else if (a === 'snd') { if (audioEl) stopAzan(); else playAzan(); }
@@ -661,7 +561,6 @@
     }
     function onPanelChange(e) {
         var t = e.target;
-        if (t.id === 'nsOn') { setLock(t.checked); toast(t.checked ? '🔒 Azan lock chalu' : 'Azan lock band'); tick(); return; }
         if (t.id === 'nsSnd') { lsSet('ns_snd', t.value); stopAzan(); playAzan(); return; }
         if (t.id === 'nsSchool') { lsSet('ns_school', t.value); if (jget('ns_loc', null)) refreshTimes(true).then(function () { drawPanel(); }); return; }
         if (t.id === 'nsIcsN') {                              // redraw nahi — warna button chhoot jata hai
@@ -690,21 +589,12 @@
 
     // ---------- main tick ----------
     function tick() {
-        var w = null;
-        if (testUntil > Date.now()) w = { p: { n: 'Test', i: '🧪', k: 'test' }, start: Date.now(), end: testUntil, test: true, date: '' };
-        else if (lockOn()) w = activeWindow();
         azanTick(); syncNative();
-        if (w) showLock(w);
-        else if (lockEl) {
-            var wasReal = currentWin && !currentWin.test; hideLock();
-            if (wasReal) { toast('🤲 Namaz ke baad: Allah qubool farmaye'); setTimeout(maybeAsk, 1500); }
-        }
-        if (lockEl && currentWin) lockEl.querySelector('#nsCount').textContent = fmtCount(currentWin.end - Date.now());
         renderCard();
     }
 
     function maybeAsk() {
-        if (lockEl || askEl || panelEl || repEl || window.qsSplashActive) return;
+        if (askEl || panelEl || repEl || window.qsSplashActive) return;
         if (!loggedIn()) return;
         var d = pendingAsk(); if (d) { openAsk(d); return; }
         if (repEl) return;
@@ -720,13 +610,13 @@
         document.addEventListener('visibilitychange', function () { if (!document.hidden) { drawPanel(); tick(); refreshTimes(false); setTimeout(maybeAsk, 800); } });
         // pehli baar: waqt set karne ki yaad (ek baar)
         setTimeout(function () {
-            if (loggedIn() && !getTimes() && !jget('ns_loc', null) && lsGet('ns_setupAsked') !== '1' && !lockEl && !window.qsSplashActive) {
+            if (loggedIn() && !getTimes() && !jget('ns_loc', null) && lsGet('ns_setupAsked') !== '1' && !window.qsSplashActive) {
                 lsSet('ns_setupAsked', '1'); openPanel();
             } else maybeAsk();
         }, 2800);
     }
 
-    window.NS = { open: openPanel, _ics: makeICS, _layers: function () { return layers.length; }, test: function () { testUntil = Date.now() + 10000; tick(); }, _report: openReport, _times: getTimes, _active: activeWindow };
+    window.NS = { open: openPanel, _ics: makeICS, _layers: function () { return layers.length; }, _report: openReport, _times: getTimes };
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

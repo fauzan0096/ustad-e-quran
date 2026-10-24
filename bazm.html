@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bazm-e-Fahm — Fahm-ul-Quran</title>
+<link rel="icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root { --primary:#0F4C3A; --gold:#B8923A; --bg:#EDF0E7; --card:#FFFDF6; --text:#1F2A25; --light:#55645C; --border:#D9D6C3; --ok:#2e9d62; --bad:#d64545; --arabic:#0A2E24; }
+    [data-theme="dark"] { --primary:#0C3A2C; --gold:#D9B65A; --bg:#0A1411; --card:#12211B; --text:#E8E3D0; --light:#A5B3AA; --border:#27403A; --arabic:#F0E9D0; }
+    * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    body { margin:0; font-family:'Figtree',system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.5; padding-bottom:env(safe-area-inset-bottom,0); }
+    header { background:linear-gradient(180deg,#14614A,#0F4C3A); color:#fff; padding:calc(12px + env(safe-area-inset-top,0)) 16px 12px; border-bottom:3px solid var(--gold); display:flex; align-items:center; gap:12px; }
+    header a { color:#fff; text-decoration:none; font-size:22px; line-height:1; }
+    header h1 { margin:0; font-size:19px; flex:1; }
+    header .xp { background:rgba(255,255,255,.15); border-radius:12px; padding:4px 10px; font-size:13px; font-weight:700; }
+    main { max-width:560px; margin:0 auto; padding:14px 14px 40px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:16px; margin-bottom:14px; box-shadow:0 4px 14px rgba(10,46,36,.07); }
+    .hidden { display:none !important; }
+    h2 { margin:0 0 6px; color:var(--primary); font-size:18px; } [data-theme="dark"] h2 { color:var(--gold); }
+    .btn { display:block; width:100%; border:none; border-radius:14px; padding:14px; font:700 15px Figtree,system-ui; cursor:pointer; background:var(--primary); color:#fff; margin-top:10px; min-height:48px; }
+    .btn.gold { background:var(--gold); color:#fff; } .btn.ghost { background:transparent; color:var(--text); border:1px solid var(--border); }
+    .btn:disabled { opacity:.45; }
+    .note { font-size:12.5px; color:var(--light); line-height:1.7; }
+    .steps { display:flex; gap:4px; margin:4px 0 12px; }
+    .steps i { flex:1; height:8px; border-radius:6px; background:var(--border); }
+    .steps i.done { background:var(--ok); } .steps i.cur { background:var(--gold); }
+    .meta { display:flex; justify-content:space-between; align-items:center; gap:6px; white-space:nowrap; font-size:12.5px; font-weight:700; color:var(--light); }
+    .meta b { color:var(--primary); } [data-theme="dark"] .meta b { color:var(--gold); }
+    .q-prompt { font-size:14px; color:var(--light); text-align:center; margin:10px 0 4px; }
+    .q-main { text-align:center; padding:10px 6px 4px; }
+    .q-main .ar { font-family:Amiri,serif; font-size:44px; color:var(--arabic); line-height:1.9; direction:rtl; }
+    .q-main .ar.sm { font-size:28px; }
+    .q-main .big { font-size:24px; font-weight:800; }
+    .q-main .ur { font-family:'Noto Nastaliq Urdu',serif; font-size:24px; line-height:2.2; direction:rtl; }
+    .q-hint { text-align:center; font-size:13px; background:rgba(184,146,58,.15); border-radius:12px; padding:8px 10px; margin-top:8px; }
+    .opts { display:grid; gap:10px; margin-top:12px; }
+    .opt { border:2px solid var(--border); background:var(--card); color:var(--text); border-radius:14px; padding:12px 14px; text-align:left; font:600 15px Figtree,system-ui; cursor:pointer; min-height:54px; display:flex; align-items:center; gap:10px; width:100%; }
+    .opt .l { width:28px; height:28px; border-radius:50%; background:var(--bg); display:grid; place-items:center; font-size:13px; font-weight:800; flex:0 0 auto; }
+    .opt .t small { display:block; font-weight:400; font-size:12px; color:var(--light); }
+    .opt .t .ur2 { font-family:'Noto Nastaliq Urdu',serif; font-size:16px; direction:rtl; display:block; line-height:2; }
+    .opt .t .ar2 { font-family:Amiri,serif; font-size:26px; direction:rtl; display:block; line-height:1.8; }
+    .opt .p { margin-left:auto; font-size:12px; font-weight:800; color:var(--gold); }
+    .opt.sel { border-color:var(--gold); background:rgba(184,146,58,.14); }
+    .opt.ok { border-color:var(--ok); background:rgba(46,157,98,.18); }
+    .opt.bad { border-color:var(--bad); background:rgba(214,69,69,.15); }
+    .opt.gone { visibility:hidden; }
+    .opt:disabled { cursor:default; }
+    .confirm { display:flex; gap:10px; margin-top:12px; } .confirm .btn { margin-top:0; }
+    .lifes { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:14px; }
+    .life { border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:12px; padding:9px 6px; font:700 12.5px Figtree,system-ui; cursor:pointer; min-height:46px; }
+    .life:disabled { opacity:.35; text-decoration:line-through; }
+    .res { text-align:center; } .res .em { font-size:56px; }
+    .res .pts { font-size:34px; font-weight:800; color:var(--gold); }
+    .toast { position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0)); transform:translateX(-50%); background:#0F4C3A; color:#fff; padding:10px 16px; border-radius:14px; font-size:13px; z-index:99; max-width:90%; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,.35); }
+    table.rank { width:100%; font-size:13px; border-collapse:collapse; } table.rank td { padding:5px 6px; border-bottom:1px solid var(--border); }
+</style>
+</head>
+<body>
+<!-- ⚠️ Deeni disclaimer: tajweed / dua / asma / games / bazm -->
+<div id="deeniNotice" role="note">
+    <span>⚠️ <b>Zaroori:</b> ye app <b>aalim ya qaari ki jagah nahi</b>. Tajweed, namaz aur deeni ahkam kisi mustanad ustad se seekhein. App sirf seekhne mein madad ke liye hai. <a href="privacy.html">Tafseel</a></span>
+    <button type="button" aria-label="Band karein" onclick="this.parentElement.style.display='none';try{sessionStorage.setItem('deeniNoticeHide','1')}catch(e){}">✕</button>
+</div>
+<style>
+#deeniNotice{display:flex;align-items:flex-start;gap:8px;justify-content:center;background:#FFF3CD;border-bottom:2px solid #FFC107;color:#5a4400;padding:9px 12px;font:12.5px/1.6 system-ui,-apple-system,sans-serif;text-align:center}
+#deeniNotice a{color:inherit;font-weight:700}
+#deeniNotice button{flex:0 0 auto;background:transparent;border:none;color:inherit;font-weight:700;font-size:16px;line-height:1;cursor:pointer;padding:2px 6px;min-width:32px;min-height:32px}
+[data-theme="dark"] #deeniNotice{background:#3a2f0b;border-bottom-color:#B8923A;color:#f3e6b5}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('deeniNoticeHide')==='1')document.getElementById('deeniNotice').style.display='none';}catch(e){}})();</script>
+<header>
+    <a href="games.html" aria-label="Wapas">&larr;</a>
+    <h1>🧩 Bazm-e-Fahm</h1>
+    <span class="xp" id="xpBadge">⭐ 0 XP</span>
+</header>
+
+<main>
+    <!-- ===== Shuru ===== -->
+    <section id="vStart">
+        <div class="card">
+            <h2>Bazm-e-Fahm</h2>
+            <p class="note" style="margin:0">Quran ke lafzon ke 15 sawal. Har 3 sawal ke baad ek <b>darja</b> pakka ho jaata hai. Galat jawab par aap pichla pakka darja ka XP rakhte hain. Koi paisa nahi, sirf <b>Ilm Points (XP)</b>.</p>
+            <div id="tierList" style="margin-top:10px"></div>
+            <div class="note" id="poolNote" style="margin-top:8px"></div>
+            <button class="btn" id="btnStart">▶️ Shuru karein</button>
+        </div>
+        <div class="card">
+            <h2>Madad ke 4 tareeqe (har ek sirf ek baar)</h2>
+            <div class="note">
+                ✂️ <b>Do Ghalat Hatayein</b>: 2 ghalat jawab hat jaate hain<br>
+                👥 <b>Hazireen ki Raay</b>: andaza (asli log nahi, sirf mashwara)<br>
+                📞 <b>Ustad se Rujoo</b>: ek asli ishara (padhne ka tareeqa / ayat ka hissa)<br>
+                🔄 <b>Sawal Tabdeel</b>: naya sawal, usi darje ka
+            </div>
+        </div>
+        <p class="note" style="text-align:center">Ye game sirf seekhne mein madad ke liye hai. Deeni baatein mustanad ustad se seekhein.</p>
+    </section>
+
+    <!-- ===== Sawal ===== -->
+    <section id="vPlay" class="hidden">
+        <div class="steps" id="steps"></div>
+        <div class="meta"><span>Sawal <b id="qNo">1</b>/15</span><span><b id="qTier"></b></span><span>🏆 <b id="qPts">0</b> XP</span></div>
+        <div class="card" style="margin-top:10px">
+            <div class="q-prompt" id="qPrompt"></div>
+            <div class="q-main" id="qMain"></div>
+            <div class="q-hint hidden" id="qHint"></div>
+            <div class="opts" id="opts"></div>
+            <div class="confirm hidden" id="confirm">
+                <button class="btn gold" id="btnYes">Haan, jawab pakka hai</button>
+                <button class="btn ghost" id="btnNo">Dobara sochun</button>
+            </div>
+            <div class="lifes" id="lifes"></div>
+            <button class="btn ghost" id="btnQuit" style="margin-top:10px">🛑 Yahin Ruk Jayein (abhi tak ka XP le lein)</button>
+        </div>
+    </section>
+
+    <!-- ===== Natija ===== -->
+    <section id="vEnd" class="hidden">
+        <div class="card res">
+            <div class="em" id="endEm"></div>
+            <h2 id="endTitle"></h2>
+            <div class="note" id="endMsg"></div>
+            <div class="pts" id="endPts"></div>
+            <div class="note" id="endCap"></div>
+            <button class="btn" id="btnAgain">🔁 Dobara khelein</button>
+            <a class="btn ghost" href="index.html" style="text-decoration:none;text-align:center">📚 Sabaq par wapas</a>
+        </div>
+    </section>
+</main>
+
+<script src="courseData.js"></script>
+<script>
+(function () {
+    'use strict';
+    // ---------- Settings ----------
+    var TOTAL = 15;
+    var TIERS = [
+        { n: 'Mubtadi', ic: '🌱' }, { n: 'Talib', ic: '📖' }, { n: 'Faahim', ic: '💡' },
+        { n: 'Mutqin', ic: '🏅' }, { n: 'Mahir', ic: '🌟' }
+    ];
+    var PTS = [2, 4, 6, 8, 10, 14, 18, 22, 26, 30, 36, 42, 48, 54, 60];   // har sawal ka XP
+    var WIN_BONUS = 50, DAILY_CAP = 300, MIN_POOL_DAYS = 3;
+    var LETTERS = ['A', 'B', 'C', 'D'];
+
+    // ---------- Helpers ----------
+    function $(id) { return document.getElementById(id); }
+    function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    function rnd(n) { return Math.floor(Math.random() * n); }
+    function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function toast(m) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(function () { t.remove(); }, 2600); }
+    function today() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+
+    if (ls('darkMode') === 'true') document.body.setAttribute('data-theme', 'dark');
+
+    // ---------- Profile / XP (index.html ke pk() jaisa) ----------
+    var profile = ls('activeProfile');
+    var isAdmin = ls('userRole') === 'admin';
+    function pk(k) { return 'p_' + profile + '_' + k; }
+    function getXP() { return parseInt(ls(pk('xp'))) || 0; }
+    function showXP() { $('xpBadge').textContent = '⭐ ' + (profile ? getXP() : 0) + ' XP'; }
+    function capLeft() {
+        var d = ls(pk('maratibDay')) === today() ? (parseInt(ls(pk('maratibXP'))) || 0) : 0;
+        return Math.max(0, DAILY_CAP - d);
+    }
+    function award(n) {                 // returns actual XP given
+        if (!profile || isAdmin || n <= 0) return 0;
+        var give = Math.min(n, capLeft());
+        if (give <= 0) return 0;
+        var used = ls(pk('maratibDay')) === today() ? (parseInt(ls(pk('maratibXP'))) || 0) : 0;
+        lsSet(pk('maratibDay'), today()); lsSet(pk('maratibXP'), used + give);
+        lsSet(pk('xp'), getXP() + give);
+        showXP();
+        return give;
+    }
+
+    // ---------- Word pool (sirf wo din jo user tak pahunch chuka) ----------
+    var maxDay = Math.max(MIN_POOL_DAYS, parseInt(ls(profile ? pk('currentDay') : 'x')) || MIN_POOL_DAYS);
+    var pool = [];
+    (typeof courseData !== 'undefined' ? courseData : []).forEach(function (d) {
+        if (d.day <= maxDay) d.words.forEach(function (w) { pool.push({ w: w, day: d.day }); });
+    });
+    function usable(x) { return x.w.a && x.w.r && x.w.u_ro && x.w.u; }
+    pool = pool.filter(usable);
+
+    // ---------- Question builder ----------
+    // Darja 1-2: lafz -> matlab | 3: ayat ka hissa -> matlab | 4: matlab -> lafz | 5: Roman -> matlab (Urdu script mein)
+    function qType(level) { return [0, 0, 1, 2, 3][Math.min(4, level)]; }   // level 0..4
+    var used = {};
+    function distractors(x, n, kind) {
+        var key = kind === 'ar' ? 'a' : 'u_ro';
+        var same = pool.filter(function (p) { return p !== x && p.w[key] !== x.w[key] && p.w.u_ro !== x.w.u_ro; });
+        return shuffle(same).slice(0, n);
+    }
+    function build(level) {
+        var type = qType(level), tries = 0, x;
+        do { x = pool[rnd(pool.length)]; tries++; } while ((used[x.w.a] || (type === 1 && !x.w.m)) && tries < 80);
+        used[x.w.a] = 1;
+        var q = { type: type, x: x, level: level }, d, opts;
+        if (type === 0 || type === 1 || type === 3) {
+            d = distractors(x, 3, 'mean');
+            opts = d.map(function (p) { return { t: p.w.u_ro, u: p.w.u, ok: false }; });
+            opts.push({ t: x.w.u_ro, u: x.w.u, ok: true });
+        } else {
+            d = distractors(x, 3, 'ar');
+            opts = d.map(function (p) { return { ar: p.w.a, t: p.w.r, ok: false }; });
+            opts.push({ ar: x.w.a, t: x.w.r, ok: true });
+        }
+        q.opts = shuffle(opts);
+        return q;
+    }
+
+    // ---------- State ----------
+    var S = null;
+    function reset() { used = {}; S = { i: 0, q: null, pick: -1, lifes: { fifty: 1, poll: 1, ustad: 1, swap: 1 }, hint: '', earned: 0, over: false }; }
+    function safeXP(i) { var done = Math.floor(i / 3) * 3; var s = 0; for (var k = 0; k < done; k++) s += PTS[k]; return s; }
+    function totalXP(i) { var s = 0; for (var k = 0; k < i; k++) s += PTS[k]; return s; }
+
+    // ---------- UI: shuru ----------
+    function drawStart() {
+        showXP();
+        $('tierList').innerHTML = TIERS.map(function (t, i) {
+            return '<div style="display:flex;justify-content:space-between;font-size:13.5px;padding:4px 0;border-bottom:1px solid var(--border)"><span>' + t.ic + ' ' + t.n + ' <small style="color:var(--light)">(sawal ' + (i * 3 + 1) + '–' + (i * 3 + 3) + ')</small></span><b>' + (PTS[i * 3] + PTS[i * 3 + 1] + PTS[i * 3 + 2]) + ' XP</b></div>';
+        }).join('');
+        var n = pool.length;
+        $('poolNote').innerHTML = (profile ? '' : '⚠️ XP ke liye pehle app mein login karein (bina login ke sirf khel sakte hain).<br>') +
+            'Sawal aapke ' + maxDay + ' din tak ke ' + n + ' lafzon se aayenge.' +
+            (profile && !isAdmin ? ' Aaj ka XP baaki: <b>' + capLeft() + '</b> / ' + DAILY_CAP + '.' : '');
+        $('btnStart').disabled = n < 8;
+        if (n < 8) $('poolNote').innerHTML += '<br>⚠️ Pehle kuch sabaq (din) mukammal karein.';
+    }
+
+    // ---------- UI: sawal ----------
+    function show(id) { ['vStart', 'vPlay', 'vEnd'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); }); window.scrollTo(0, 0); }
+    function next() {
+        var level = Math.floor(S.i / 3);
+        S.q = build(level); S.pick = -1; S.hint = ''; draw();
+    }
+    function draw() {
+        var q = S.q, w = q.x.w, level = Math.floor(S.i / 3);
+        $('steps').innerHTML = Array.apply(null, Array(TOTAL)).map(function (_, k) { return '<i class="' + (k < S.i ? 'done' : (k === S.i ? 'cur' : '')) + '"></i>'; }).join('');
+        $('qNo').textContent = S.i + 1; $('qTier').textContent = TIERS[level].ic + ' ' + TIERS[level].n;
+        $('qPts').textContent = PTS[S.i];
+        var prompt, main;
+        if (q.type === 0) { prompt = 'Is lafz ka matlab kya hai?'; main = '<div class="ar">' + esc(w.a) + '</div><div class="note">' + esc(w.r) + '</div>'; }
+        else if (q.type === 1) { prompt = 'Ayat ke is hisse mein "' + w.r + '" ka matlab?'; main = '<div class="ar sm">' + esc(w.m) + '</div><div class="note">Lafz: <b>' + esc(w.a) + '</b> (' + esc(w.r) + ')</div>'; }
+        else if (q.type === 2) { prompt = 'Is matlab ka sahi Arabi lafz kaunsa hai?'; main = '<div class="big">' + esc(w.u_ro) + '</div><div class="ur">' + esc(w.u) + '</div>'; }
+        else { prompt = 'Is Roman lafz ka sahi matlab?'; main = '<div class="big">' + esc(w.r) + '</div>'; }
+        $('qPrompt').textContent = prompt; $('qMain').innerHTML = main;
+        var h = $('qHint'); if (S.hint) { h.innerHTML = S.hint; h.classList.remove('hidden'); } else h.classList.add('hidden');
+        drawOpts(); drawLifes();
+        $('confirm').classList.toggle('hidden', S.pick < 0);
+    }
+    function drawOpts() {
+        $('opts').innerHTML = S.q.opts.map(function (o, k) {
+            var body = o.ar ? '<span class="ar2">' + esc(o.ar) + '</span><small>' + esc(o.t) + '</small>'
+                            : esc(o.t) + (o.u ? '<span class="ur2">' + esc(o.u) + '</span>' : '');
+            return '<button class="opt' + (S.pick === k ? ' sel' : '') + (o.gone ? ' gone' : '') + '" data-k="' + k + '"><span class="l">' + LETTERS[k] + '</span><span class="t">' + body + '</span>' + (o.poll != null ? '<span class="p">' + o.poll + '%</span>' : '') + '</button>';
+        }).join('');
+    }
+    function drawLifes() {
+        var L = S.lifes, d = S.over;
+        $('lifes').innerHTML =
+            '<button class="life" data-l="fifty" ' + (L.fifty && !d ? '' : 'disabled') + '>✂️ Do Ghalat Hatayein</button>' +
+            '<button class="life" data-l="poll" ' + (L.poll && !d ? '' : 'disabled') + '>👥 Hazireen ki Raay</button>' +
+            '<button class="life" data-l="ustad" ' + (L.ustad && !d ? '' : 'disabled') + '>📞 Ustad se Rujoo</button>' +
+            '<button class="life" data-l="swap" ' + (L.swap && !d ? '' : 'disabled') + '>🔄 Sawal Tabdeel</button>';
+    }
+
+    // ---------- Madad ----------
+    function life(kind) {
+        if (S.over || !S.lifes[kind]) return;
+        var q = S.q, w = q.x.w;
+        if (kind === 'fifty') {
+            var wrong = shuffle(q.opts.map(function (o, k) { return k; }).filter(function (k) { return !q.opts[k].ok && !q.opts[k].gone; })).slice(0, 2);
+            wrong.forEach(function (k) { q.opts[k].gone = true; });
+            if (q.opts[S.pick] && q.opts[S.pick].gone) S.pick = -1;
+        } else if (kind === 'poll') {
+            var accuracy = [70, 62, 55, 48, 42][Math.floor(S.i / 3)] + rnd(10);       // andaza: mushkil sawal par kam bharosa
+            var live = q.opts.filter(function (o) { return !o.gone; }), left = 100 - accuracy;
+            var wrongs = live.filter(function (o) { return !o.ok; });
+            live.forEach(function (o) { o.poll = 0; });
+            q.opts.forEach(function (o) { if (o.ok) o.poll = accuracy; });
+            wrongs.forEach(function (o, k) { var v = k === wrongs.length - 1 ? left : Math.min(left, rnd(left + 1)); o.poll = v; left -= v; });
+        } else if (kind === 'ustad') {
+            S.hint = '📞 <b>Ustad ka ishara:</b> lafz ' + esc(w.a) + ' ko "<b>' + esc(w.r) + '</b>" padhte hain' + (w.m && q.type !== 1 ? '.<br>Ayat ka hissa: <span style="font-family:Amiri,serif;font-size:20px">' + esc(w.m) + '</span>' : '.') +
+                (q.type !== 2 && w.t_ro && w.t_ro !== w.u_ro ? '<br>Dusra matlab: ' + esc(w.t_ro) : '');
+        } else if (kind === 'swap') {
+            S.lifes.swap = 0; used[q.x.w.a] = 1; next(); toast('🔄 Naya sawal'); return;
+        }
+        S.lifes[kind] = 0; draw();
+    }
+
+    // ---------- Jawab ----------
+    function answer() {
+        var o = S.q.opts[S.pick], q = S.q;
+        S.over = true; drawLifes(); $('confirm').classList.add('hidden');
+        document.querySelectorAll('.opt').forEach(function (b) {
+            var k = +b.dataset.k; b.disabled = true;
+            if (q.opts[k].ok) b.classList.add('ok'); else if (k === S.pick) b.classList.add('bad');
+        });
+        if (o.ok) {
+            S.i++;
+            setTimeout(function () {
+                S.over = false;
+                if (S.i >= TOTAL) return finish('win');
+                if (S.i % 3 === 0) toast('🎉 Darja mukammal: ' + TIERS[S.i / 3 - 1].n + ' — XP pakka!');
+                next();
+            }, 1100);
+        } else {
+            try { if (navigator.vibrate) navigator.vibrate(120); } catch (e) {}
+            setTimeout(function () { finish('lose'); }, 1500);
+        }
+    }
+
+    // ---------- Natija ----------
+    function finish(how) {
+        var base, title, em, msg;
+        if (how === 'win') { base = totalXP(TOTAL) + WIN_BONUS; em = '🌟'; title = 'MashaAllah! Aap Mahir ban gaye'; msg = 'Aapne saare 15 sawal durust kiye.'; }
+        else if (how === 'quit') { base = totalXP(S.i); em = '🛑'; title = 'Aap yahin ruk gaye'; msg = S.i + ' sawal durust kiye.'; }
+        else {
+            base = safeXP(S.i); em = '💭'; title = 'Afsos, durust jawab ye tha:';
+            var c = S.q.opts.filter(function (o) { return o.ok; })[0], w = S.q.x.w;
+            msg = '<b>' + esc(c.ar ? c.ar + ' (' + c.t + ')' : c.t) + '</b><br>Lafz: ' + esc(w.a) + ' — ' + esc(w.r) + ' — ' + esc(w.u_ro) + '<br>Pehle ye lafz dobara padh lein, phir khelein 🤍';
+        }
+        var given = award(base);
+        $('endEm').textContent = em; $('endTitle').textContent = title; $('endMsg').innerHTML = msg;
+        $('endPts').textContent = '+' + given + ' XP';
+        $('endCap').textContent = !profile ? 'XP ke liye login zaroori hai.' : (isAdmin ? 'Admin account ko XP nahi milta.' : (given < base ? 'Aaj ki XP hadd (' + DAILY_CAP + ') poori ho gayi.' : 'Kul XP: ' + getXP()));
+        show('vEnd');
+    }
+
+    // ---------- Events ----------
+    $('btnStart').onclick = function () { reset(); show('vPlay'); next(); };
+    $('btnAgain').onclick = function () { drawStart(); show('vStart'); };
+    $('btnQuit').onclick = function () { if (!S.over && confirm('Yahin ruk jayein? Abhi tak ka XP mil jayega.')) finish('quit'); };
+    $('btnYes').onclick = function () { if (S.pick >= 0 && !S.over) answer(); };
+    $('btnNo').onclick = function () { S.pick = -1; draw(); };
+    $('opts').onclick = function (e) {
+        var b = e.target.closest('.opt'); if (!b || S.over) return;
+        S.pick = +b.dataset.k; drawOpts(); $('confirm').classList.remove('hidden');
+    };
+    $('lifes').onclick = function (e) { var b = e.target.closest('.life'); if (b && !b.disabled) life(b.dataset.l); };
+
+    drawStart();
+})();
+</script>
+</body>
+</html>
