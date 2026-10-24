@@ -78,25 +78,36 @@
     // ---------- Qari ki recording ----------
     // Ek clip: p.u = [pehla link, vikalp link ...]. Pehla na chale to agla try hota hai.
     function playClip(p, opt, my, done) {
-        var c = 0, started = false, settled = false;
+        var c = 0, started = false, settled = false, list = p.u.slice();
         function detach() { audio.onplaying = audio.onended = audio.onerror = null; }
         function finish(ok) { if (settled) return; settled = true; detach(); done(ok); }
         function tryNext() {
             if (my !== current.token || settled) return;
-            if (c >= p.u.length) { finish(false); return; }
+            if (c >= list.length) { finish(false); return; }
             started = false;
-            audio.src = p.u[c++];
+            audio.src = list[c++];
             audio.playbackRate = opt.audioRate || 1;
             var pr = audio.play();
             if (pr && pr.catch) pr.catch(function () { if (my === current.token && !started) tryNext(); });
         }
-        audio.onplaying = function () { started = true; };
-        audio.onended = function () { if (my === current.token) finish(true); };
-        audio.onerror = function () {
-            if (my !== current.token) return;
-            if (!started) tryNext(); else finish(true);
-        };
-        tryNext();
+        function go() {
+            audio.onplaying = function () { started = true; };
+            audio.onended = function () { if (my === current.token) finish(true); };
+            audio.onerror = function () {
+                if (my !== current.token) return;
+                if (!started) tryNext(); else finish(true);
+            };
+            tryNext();
+        }
+        // Ayat download (save) ki hui ho to pehle wahi saved copy chalao — net ke bina bhi chalti hai
+        // (handlers lookup ke BAAD lagte hain, warna "unlock" wali khaali awaaz ka end-event clip ko khatam kar deta)
+        if (p.k && window.QSQari && window.QSQari.localUrl) {
+            window.QSQari.localUrl(p.k).then(function (u) {
+                if (my !== current.token) return;
+                if (u) list.unshift(u);
+                go();
+            }, function () { if (my === current.token) go(); });
+        } else go();
     }
     // parts: [{u:[links], x:text} (Qari), {t:text} (phone)] ek ke baad ek
     function playParts(parts, text, opt, my) {
@@ -120,7 +131,7 @@
     function speak(text, opt) {
         opt = opt || {};
         if (!text) return;
-        var useQari = opt.lang === 'ar' && !!window.QSQari && !!window.Audio;
+        var useQari = opt.lang === 'ar' && !!opt.verse && !!window.QSQari && !!window.Audio;   // Qari sirf ayat (verse) ke liye; baaki sab phone ki awaaz
         if (!synth && !useQari) return;
         var btn = opt.btn || null;
         // Wohi button dobara dabaya = roko

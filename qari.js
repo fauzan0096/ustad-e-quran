@@ -264,7 +264,7 @@
         return Promise.all(groups.map(function (g) {
             var v = quran[g.vi], p0 = FLAT[g.a].p, p1 = FLAT[g.b].p;
             var i0 = seg.from + (g.a - run.s), i1 = seg.from + (g.b - run.s);
-            if (p0 === 0 && p1 === v.l.length - 1) return Promise.resolve([{ u: verseUrls(v.k), x: txt(tk, i0, i1) }]);
+            if (p0 === 0 && p1 === v.l.length - 1) return Promise.resolve([{ u: verseUrls(v.k), x: txt(tk, i0, i1), k: v.k }]);
             var jobs = [];
             for (var p = p0; p <= p1; p++) jobs.push((function (p) {
                 var word = tk[i0 + (p - p0)].o;
@@ -326,14 +326,81 @@
     }
 
     // Ayat ka "surah:ayat" pata ho to Quran text match kiye bina seedha us ayat ki recording (net ke ilawa kuch nahi chahiye)
-    function verseParts(key, text) { return [{ u: verseUrls(key), x: text || '' }]; }
+    // k = ayat ka hawala: agar ayat download (save) ki hui hai to speech.js wahi saved copy chalata hai (net ke bina bhi)
+    function verseParts(key, text) { return [{ u: verseUrls(key), x: text || '', k: key }]; }
 
-    window.QSQari = { plan: plan, resolve: resolve, verseParts: verseParts, ensure: ensure, reciter: RECITER.name };
-
-    // Page khulte hi chupke se Quran text le aao (agar pehle se saved na ho)
-    function warm() {
-        try { if (navigator.connection && navigator.connection.saveData) return; } catch (e) {}
-        ensure().catch(function () {});
+    // ---------- Download / Offline (Qari Mishary ki ayat ki recording) ----------
+    // Ayat ka mp3 phone ke Cache Storage mein save hota hai (sirf is app ke andar). Save hone ke baad net ke bina bhi chalta hai.
+    // saveFile() wohi mp3 phone ki Downloads mein bhi utaar deta hai.
+    var DL_CACHE = 'qs-mishary-v1';                       // NOTE: sw.js is naam ka cache delete nahi karta
+    var blobMem = {};                                     // "112:1" -> blob: link (ek baar bana kar rakh lete hain)
+    function dlKey(key) { return location.origin + '/__qs-audio/' + RECITER.everyayah + '/' + pad(key.split(':')[0], 3) + pad(key.split(':')[1], 3) + '.mp3'; }
+    function cacheOpen() { return window.caches ? caches.open(DL_CACHE) : Promise.reject(new Error('Is browser mein offline save nahi hota')); }
+    function fetchVerseBlob(key) {                        // pehle everyayah.com, na chale to Quran.com
+        var urls = verseUrls(key), i = 0;
+        function next() {
+            if (i >= urls.length) return Promise.reject(new Error('Download nahi ho saka — net check karein'));
+            return fetch(urls[i++]).then(function (r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.blob();
+            }).then(function (b) {
+                if (!b || b.size < 2000) throw new Error('khaali file');
+                return new Blob([b], { type: 'audio/mpeg' });
+            }).catch(next);
+        }
+        return next();
     }
-    if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 4000 }); else setTimeout(warm, 1500);
+    function isSaved(key) {
+        return cacheOpen().then(function (c) { return c.match(dlKey(key)); }).then(function (r) { return !!r; }).catch(function () { return false; });
+    }
+    function download(key) {
+        return fetchVerseBlob(key).then(function (b) {
+            return cacheOpen().then(function (c) {
+                return c.put(dlKey(key), new Response(b, { headers: { 'Content-Type': 'audio/mpeg' } }));
+            });
+        }).then(function () {
+            try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}   // browser kabhi na hataye
+            return true;
+        });
+    }
+    function localUrl(key) {                              // saved ho to blob: link, warna null
+        if (blobMem[key]) return Promise.resolve(blobMem[key]);
+        return cacheOpen().then(function (c) { return c.match(dlKey(key)); }).then(function (r) {
+            return r ? r.blob() : null;
+        }).then(function (b) {
+            if (!b) return null;
+            return (blobMem[key] = URL.createObjectURL(new Blob([b], { type: 'audio/mpeg' })));
+        }).catch(function () { return null; });
+    }
+    function remove(key) {
+        if (blobMem[key]) { try { URL.revokeObjectURL(blobMem[key]); } catch (e) {} delete blobMem[key]; }
+        return cacheOpen().then(function (c) { return c.delete(dlKey(key)); }).catch(function () { return false; });
+    }
+    function savedKeys() {
+        return cacheOpen().then(function (c) { return c.keys(); }).then(function (reqs) {
+            return reqs.map(function (r) {
+                var m = /\/(\d{3})(\d{3})\.mp3$/.exec(r.url);
+                return m ? (+m[1]) + ':' + (+m[2]) : null;
+            }).filter(Boolean);
+        }).catch(function () { return []; });
+    }
+    function saveFile(key) {                              // mp3 file phone mein utaaro
+        return localUrl(key).then(function (u) {
+            if (u) return u;
+            return fetchVerseBlob(key).then(function (b) { return URL.createObjectURL(b); });
+        }).then(function (u) {
+            var a = document.createElement('a');
+            a.href = u; a.download = 'Mishary_Alafasy_' + pad(key.split(':')[0], 3) + '_' + pad(key.split(':')[1], 3) + '.mp3';
+            document.body.appendChild(a); a.click();
+            setTimeout(function () { a.remove(); }, 1000);
+            return true;
+        });
+    }
+
+    window.QSQari = {
+        plan: plan, resolve: resolve, verseParts: verseParts, ensure: ensure, reciter: RECITER.name,
+        download: download, isSaved: isSaved, localUrl: localUrl, remove: remove, savedKeys: savedKeys, saveFile: saveFile
+    };
+
+    // (Qari ab sirf ayat-box ke liye hai — poora Quran text pehle se download karne ki zaroorat nahi)
 })();

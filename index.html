@@ -16,7 +16,7 @@
     <script src="speech.js"></script>
     <script src="qari.js"></script>
     <meta name="theme-color" content="#0F4C3A">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Figtree:wght@400;500;600;700&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #0F4C3A; --primary-deep: #0A2E24; --secondary: #B8923A; --gold-bright: #D9B65A;
@@ -122,6 +122,26 @@
         [data-theme="dark"] .ayat-ar { color: var(--text); }
         [data-theme="dark"] .ayat-hl { background: rgba(217,182,90,.22); color: var(--gold-bright); }
         .ayat-ref { font-size: 12px; opacity: .85; margin-top: 6px; direction: rtl; line-height: 1.7; }
+        .brand-name { font-family: 'Cinzel Decorative', 'Amiri', serif !important; font-weight: 900 !important; letter-spacing: 1px; background: linear-gradient(180deg, #F8E7A8 0%, #E3C36E 45%, #B8892B 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
+        .header-top h1.brand-name { font-size: 20px; }
+        .login-box h1.brand-name { font-size: 26px; background: linear-gradient(180deg, #D4A63A 0%, #A8741A 55%, #6E4A0C 100%); -webkit-background-clip: text; background-clip: text; filter: none; }
+        .lang-cycle { flex: 0 0 auto; min-width: 96px; height: 40px; padding: 0 18px; border: none; border-radius: 20px; background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+        .lang-cycle:active { transform: scale(.95); }
+        .j-node.ms { flex: 0 0 76px; height: 76px; font-size: 12px; gap: 2px; }
+        .j-node.ms b { font-size: 24px; line-height: 1; }
+        .j-node.ms.silver { border-color: #9AA3B2; background: linear-gradient(135deg, #F2F4F8, #AEB6C4 55%, #8A93A3); color: #20242C; }
+        .j-node.ms.gold { border-color: #F5D060; background: linear-gradient(135deg, #FFF3B0, #E8B93C 50%, #B8860B); color: #3A2A00; animation: goldGlow 2s ease-in-out infinite; }
+        .j-node.ms.locked { opacity: .55; filter: grayscale(.6); animation: none; }
+        .j-node.ms.done::after { content: '✓'; position: absolute; top: -4px; right: -4px; width: 22px; height: 22px; border-radius: 50%; background: #2e7d32; color: #fff; font-size: 13px; line-height: 22px; text-align: center; }
+        @keyframes goldGlow { 0%,100% { box-shadow: 0 0 6px 1px rgba(245,208,96,.55); } 50% { box-shadow: 0 0 18px 6px rgba(245,208,96,.95); } }
+        .ayat-actions { direction: ltr; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; font-family: 'Poppins', sans-serif; }
+        .ayat-actions button, .ayat-bulk button { font-family: inherit; font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 20px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; }
+        .ayat-actions button:active, .ayat-bulk button:active { transform: scale(.96); }
+        .ayat-actions button:disabled, .ayat-bulk button:disabled { opacity: .6; cursor: wait; }
+        .ayat-actions .ayat-dl.saved { background: rgba(46,125,50,.14); border-color: #2e7d32; color: #2e7d32; }
+        [data-theme="dark"] .ayat-actions .ayat-dl.saved { color: #81c784; border-color: #81c784; }
+        .ayat-bulk { grid-column: 1 / -1; direction: ltr; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--secondary); background: rgba(184,146,58,.08); font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--text); }
+        .ayat-bulk .ayat-bulk-info { flex: 1 1 100%; font-size: 12px; opacity: .85; }
         .ayat-note { font-family: 'Poppins', sans-serif; direction: ltr; text-align: left; font-size: 12px; background: rgba(184,146,58,.15); border-radius: 8px; padding: 6px 8px; margin-bottom: 6px; }
         .mashq-box { background: var(--soft-bg); border-right: 4px solid var(--rubric); padding: 10px; margin-top: 12px; border-radius: 10px; font-size: 15px; color: var(--text); text-align: right; direction: rtl; font-family: 'Amiri', serif; }
 
@@ -171,7 +191,7 @@
         <div class="login-box">
             <img class="login-logo" src="icon-192.png" alt="">
             <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-            <h1>Quraan Ustad</h1>
+            <h1 class="brand-name">Quraan Ustad</h1>
             <label class="login-label">Aapka Pura Naam</label>
             <input type="text" id="fullNameInput" placeholder="Jaise: Mohammad Fauzan Raza" autocomplete="name" maxlength="40">
             <label class="login-label">Password</label>
@@ -185,7 +205,7 @@
     <div id="mainApp" class="hidden">
         <header>
             <div class="header-top">
-                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1>Quraan Ustad</h1></div>
+                <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1 class="brand-name">Quraan Ustad</h1></div>
                 <div class="user-menu">
                     <button class="icon-btn user-chip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span> ▾</button>
                     <div class="user-drop hidden" id="userDrop">
@@ -198,11 +218,7 @@
                 </div>
             </div>
             <div class="header-tools">
-                <div id="langSel" class="lang-seg" role="group" aria-label="Language">
-                    <button data-l="u" onclick="setMeaningLang('u')">اردو</button>
-                    <button data-l="ro" onclick="setMeaningLang('ro')">Roman</button>
-                    <button data-l="hi" onclick="setMeaningLang('hi')">हिंदी</button>
-                </div>
+                <button id="langSel" class="lang-cycle" onclick="cycleMeaningLang()" title="Meaning ki zubaan badlein">اردو</button>
                 <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                 <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
                 <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
@@ -535,6 +551,8 @@
                     `;
                     grid.appendChild(card);
                 });
+                grid.insertAdjacentHTML('afterbegin', ayatBulkBarHTML(todayData.words));
+                ayatRefreshButtons(grid);
                 document.getElementById('startExamBtn').innerText = `📝 Day ${currentDay} Exam`;
                 document.getElementById('startExamBtn').classList.remove('hidden');
             }
@@ -543,20 +561,35 @@
         function renderJourneyMap() {
             const map = document.getElementById('journeyMap');
             let html = '<div class="j-line"></div>';
+            const admin = userRole === 'admin';
+            const dayNode = i => {
+                const isUnlocked = isDayOpen(i + 1), isCurrent = i + 1 === currentDay;
+                return `<div class="j-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCurrent ? 'current' : ''}" onclick="goToDay(${i+1})">${isUnlocked ? 'Day ' + (i+1) : '🔒'}</div>`;
+            };
+            const msNode = (kind, icon, name, done, open) =>
+                `<div class="j-node ms ${kind} ${done ? 'done' : open ? 'unlocked' : 'locked'}" onclick="goToMilestone('${kind === 'gold' ? 'final' : 'silver'}')"><b>${open || done ? icon : '🔒'}</b>${name}</div>`;
             courseData.forEach((d, i) => {
-                const isUnlocked = isDayOpen(i + 1);
-                const isCurrent = i + 1 === currentDay;
-                html += `<div class="j-node ${isUnlocked ? 'unlocked' : 'locked'} ${isCurrent ? 'current' : ''}" onclick="goToDay(${i+1})">
-                    ${isUnlocked ? 'Day ' + (i+1) : '🔒'}
-                </div>`;
+                html += dayNode(i);
+                if (i + 1 === SILVER_DAYS) html += msNode('silver', '🥈', 'Silver', silverDone(), admin || silverReady());   // beech mein Silver (500 lafz)
             });
+            html += msNode('gold', '🥇', 'Gold', finalDone(), admin || finalReady());                                          // aakhir mein Gold (900 lafz)
             map.innerHTML = html;
         }
+        // Silver / Gold node dabane par: exam shuru (ya pass ho chuka ho to sanad)
+        function goToMilestone(kind) {
+            const admin = userRole === 'admin', gold = kind === 'final';
+            if (gold ? !(admin || finalReady() || finalDone()) : !(admin || silverReady() || silverDone())) {
+                showToast(gold ? '🔒 Pehle Day 90 pura karein' : '🔒 Pehle Day 50 pura karein'); return;
+            }
+            if (gold ? finalDone() : silverDone()) { showStudentCert(gold, savedScore(gold ? 'finalScore' : 'silverScore'), gold ? FINAL_QS : SILVER_QS); return; }
+            startMilestoneExam(kind);
+        }
+        function jumpTop() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }   // naya din hamesha upar se shuru
 
         function goToDay(day) {
             if (userRole !== 'admin' && day > currentDay) { showToast('🔒 Pehle exam pass karein!'); return; }
             if (!isDayOpen(day)) { showToast('🔒 Pehle Silver Exam (500 lafz) pass karein!'); return; }
-            currentDay = day; localStorage.setItem(pk('currentDay'), day); renderCourse();
+            currentDay = day; localStorage.setItem(pk('currentDay'), day); renderCourse(); jumpTop();
         }
 
         function speakText(t, lang, btn, ctx) {
@@ -721,7 +754,7 @@
             return null;
         }
 
-        // 📖 Lafz -> Quran ki ayat (Day 1-10): lafz alag rang mein, hawala, Qari Mishary ki awaaz
+        // 📖 Lafz -> Quran ki ayat (Day 1-10 aur 21-30): lafz alag rang mein, hawala, Qari Mishary ki awaaz
         function ayatBoxHTML(w) {
             if (typeof wordAyat === 'undefined' || typeof ayatText === 'undefined') return '';
             const m = wordAyat[w.a]; if (!m) return '';
@@ -733,7 +766,76 @@
                 ${m.n ? `<div class="ayat-note">${m.n}</div>` : ''}
                 <div class="ayat-ar" onclick="QSpeech.speak('${a.t}', { lang: 'ar', btn: this, verse: '${m.k}' })">${shown} 🔊</div>
                 <div class="ayat-ref">📍 سورة ${a.sn} (${p[0]}) ، آیت ${p[1]} — ${a.sr} ${m.k}<br>📚 الشاملة · 🎙 Qari Mishary Alafasy</div>
+                <div class="ayat-actions" data-k="${m.k}">
+                    <button class="ayat-dl" onclick="ayatDownload('${m.k}', this)">⬇️ Download</button>
+                    <button class="ayat-file" onclick="ayatSaveFile('${m.k}', this)">📥 MP3 file</button>
+                    <button class="ayat-del" style="display:none" onclick="ayatRemove('${m.k}', this)">🗑 Hatao</button>
+                </div>
             </div>`;
+        }
+
+        // ⬇️ Qari Mishary ki ayat download karke rakhna (offline) — qari.js (QSQari.download / isSaved ...)
+        function ayatSetSaved(box, saved) {
+            const dl = box.querySelector('.ayat-dl'), del = box.querySelector('.ayat-del');
+            if (!dl || !del) return;
+            dl.disabled = false; dl.classList.toggle('saved', saved);
+            dl.innerHTML = saved ? '✅ Saved (offline)' : '⬇️ Download';
+            del.style.display = saved ? '' : 'none';
+        }
+        function ayatRefreshButtons(root) {
+            if (!window.QSQari || !QSQari.isSaved) return;
+            (root || document).querySelectorAll('.ayat-actions[data-k]').forEach(box => {
+                QSQari.isSaved(box.dataset.k).then(s => ayatSetSaved(box, s));
+            });
+        }
+        function ayatDownload(k, btn) {
+            if (!window.QSQari) { showToast('❌ Qari abhi load nahi hua'); return; }
+            const box = btn.closest('.ayat-actions');
+            if (btn.classList.contains('saved')) { showToast('✅ Ye ayat pehle se saved hai — offline sun sakte hain'); return; }
+            btn.disabled = true; btn.innerHTML = '⏳ Download ho raha hai...';
+            QSQari.download(k).then(() => { ayatSetSaved(box, true); showToast('✅ Ayat save ho gayi — ab net ke bina bhi sun sakte hain'); })
+                .catch(e => { ayatSetSaved(box, false); showToast('❌ ' + (e && e.message ? e.message : 'Download nahi ho saka')); });
+        }
+        function ayatRemove(k, btn) {
+            const box = btn.closest('.ayat-actions');
+            QSQari.remove(k).then(() => { ayatSetSaved(box, false); showToast('🗑 Saved ayat hata di'); });
+        }
+        function ayatSaveFile(k, btn) {
+            if (!window.QSQari) return;
+            const old = btn.innerHTML; btn.disabled = true; btn.innerHTML = '⏳ ...';
+            QSQari.saveFile(k).then(() => showToast('📥 MP3 file phone mein save ho rahi hai'))
+                .catch(e => showToast('❌ ' + (e && e.message ? e.message : 'File nahi utar saki')))
+                .then(() => { btn.disabled = false; btn.innerHTML = old; });
+        }
+        // Ek saath kai ayaat download: scope 'day' = is din ki, 'all' = jin lafz ki ayat hai wo sab
+        function ayatKeysFor(words) { const set = new Set(); words.forEach(w => { const m = wordAyat[w.a]; if (m) set.add(m.k); }); return [...set]; }
+        function ayatBulkBarHTML(words) {
+            if (typeof wordAyat === 'undefined') return '';
+            const n = ayatKeysFor(words).length; if (!n) return '';
+            const nAll = ayatKeysFor(courseData.flatMap(d => d.words)).length;
+            return `<div class="ayat-bulk">
+                <div class="ayat-bulk-info">🎙 Qari Mishary Alafasy · is din ki ${n} ayaat download karke rakh sakte hain (net ke bina sunne ke liye)</div>
+                <button onclick="ayatBulkDownload('day', this)">⬇️ Is din ki sab ayaat (${n})</button>
+                <button onclick="ayatBulkDownload('all', this)">⬇️ Sab ayaat (${nAll})</button>
+            </div>`;
+        }
+        async function ayatBulkDownload(scope, btn) {
+            if (!window.QSQari) return;
+            const words = scope === 'day' ? courseData.find(d => d.day === currentDay).words : courseData.flatMap(d => d.words);
+            const keys = ayatKeysFor(words);
+            const saved = new Set(await QSQari.savedKeys());
+            const todo = keys.filter(k => !saved.has(k));
+            if (!todo.length) { showToast('✅ Sab ayaat pehle se saved hain'); return; }
+            const bar = btn.closest('.ayat-bulk'); const old = btn.innerHTML;
+            bar.querySelectorAll('button').forEach(b => b.disabled = true);
+            let done = 0, fail = 0;
+            for (const k of todo) {
+                btn.innerHTML = `⏳ ${done + fail + 1}/${todo.length}`;
+                try { await QSQari.download(k); done++; } catch (e) { fail++; }
+                ayatRefreshButtons(document.getElementById('courseGrid'));
+            }
+            bar.querySelectorAll('button').forEach(b => b.disabled = false); btn.innerHTML = old;
+            showToast(fail ? `✅ ${done} save hui, ❌ ${fail} nahi hui (net check karke dobara dabayein)` : `✅ ${done} ayaat save ho gayi — ab offline sun sakte hain`);
         }
 
         function adminGenerateCert(isGold) {
@@ -806,12 +908,12 @@
                     document.getElementById('submitExamBtn').classList.add('hidden');
                     setTimeout(() => {
                         document.getElementById('examModal').classList.add('hidden');
-                        renderCourse();
+                        renderCourse(); jumpTop();
                         showStudentCert(isFinal, score, totalQs);
                     }, 2000);
                 } else {
                     if (window.QSSFX) QSSFX.wrong();
-                    res.innerHTML = `<span style="color:red;">😢 ${score}/${totalQs} (${pct}%). Pass ke liye ${need}/${totalQs} (80%) chahiye. Mushkil lafz dobara yaad karke phir koshish karein.</span>`;
+                    res.innerHTML = `<span style="color:red;">😢 Aap fail ho gaye: ${score}/${totalQs} (${pct}%). ${isFinal ? 'Gold' : 'Silver'} certificate ke liye ${need}/${totalQs} (80%) chahiye. Mushkil lafz dobara yaad karein.</span><br><button class="exam-btn ${isFinal ? 'gold' : ''}" style="margin-top:10px;" onclick="startMilestoneExam('${examMode}')">🔁 Certificate ke liye dobara exam dein</button>`;
                 }
                 return;
             }
@@ -819,7 +921,7 @@
             if (score >= 8) {
                 if (window.QSSFX) QSSFX.win(); addXP(50);
                 res.innerHTML = `<span style="color:green;">🎉 Mubarak! ${score}/${totalQs}. Day Unlocked!</span>`;
-                setTimeout(() => { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); document.getElementById('examModal').classList.add('hidden'); renderCourse(); }, 2000);
+                setTimeout(() => { currentDay++; localStorage.setItem(pk('currentDay'), currentDay); document.getElementById('examModal').classList.add('hidden'); renderCourse(); jumpTop(); }, 2000);
             } else {
                 if (window.QSSFX) QSSFX.wrong();
                 res.innerHTML = `<span style="color:red;">😢 ${score}/${totalQs}. Aapko 8 chahiye.</span>`;
@@ -1121,7 +1223,8 @@
     <script src="progress.js"></script>
 <script>
         function setMeaningLang(v){ localStorage.setItem('mlang', v); markLang(); if (typeof renderCourse === 'function' && typeof courseData !== 'undefined') { try { renderCourse(); } catch(e){} } }
-        function markLang(){ const v = localStorage.getItem('mlang') || 'u'; document.querySelectorAll('#langSel button').forEach(b => b.classList.toggle('on', b.dataset.l === v)); }
+        function markLang(){ const v = localStorage.getItem('mlang') || 'u'; const b = document.getElementById('langSel'); if (b) b.textContent = v === 'ro' ? 'Roman' : v === 'hi' ? 'हिंदी' : 'اردو'; }
+        function cycleMeaningLang(){ const v = localStorage.getItem('mlang') || 'u'; setMeaningLang(v === 'u' ? 'ro' : v === 'ro' ? 'hi' : 'u'); }
         (function(){ const o = localStorage.getItem('mlang'); if (o === 'both' || o === 'urdu') localStorage.setItem('mlang','u'); if (o === 'roman') localStorage.setItem('mlang','ro'); markLang(); })();
     </script>
 </body>
