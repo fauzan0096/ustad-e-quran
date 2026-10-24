@@ -10,8 +10,9 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 - Har din 10 alfaz (kul 900) — Arabic + Roman + meaning, **Mashq** aur tafseel
 - Meaning 3 tarah se: **اردو / Roman / हिंदी**
 - Arabic lafz aur **Mashq par tap karke Qari ki awaaz** suniye 🔊
-- 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–10 aur Day 21–30: lafz 1–100 aur 201–300): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Har ayat ke neeche **⬇️ Download** (app mein save, net ke bina bhi sunein), **📥 MP3 file** (phone mein file utaarein) aur **🗑 Hatao**; din ke upar **Is din ki sab ayaat / Sab ayaat** ek saath download. Ayat ka text Maktaba Shamila se.
+- 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–30 aur 41–50, kul 400 lafz): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Har ayat ke neeche **⬇️ Download** (app mein save, net ke bina bhi sunein), **📥 MP3 file** (phone mein file utaarein) aur **🗑 Hatao**; din ke upar **Is din ki sab ayaat / Sab ayaat** ek saath download. Ayat ka text Maktaba Shamila se.
 - 📝 **Daily Exam** — roz 10 sawal, 8 sahi hon to agla din unlock
+- 🗺️ **92 padav ka safar**: 90 din + beech mein 🥈 Silver (Day 50 ke baad) + aakhir mein 🥇 Gold
 - 🥈 **Silver Exam (500 lafz)** — Day 50 poora hote hi **50 mushkil sawal**. **80% (40/50)** laayen to Silver Sanad milti hai. **Jab tak pass nahi, Day 51 se aage sab band (🔒).**
 - 🥇 **Final Exam (900 lafz)** — Day 90 ke baad **75 sawal**, pass **80% (60/75)**. Silver aur Final **dono 80%+** hon tabhi Gold Sanad.
 - Exam fail ho to dobara de sakte hain (har baar naye sawal). Sanad download/share ho sakti hai.
@@ -20,7 +21,12 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 - 📤 Lafz ya badge ki share card (WhatsApp / Insta)
 - 📖 **Aaj ki Ayat**, 👤 alag-alag naam ki alag profile (har ki apni history)
 
+**Silver/Gold exam mein anbiya ke naam (Adam, Musa, Isa, Muhammad ﷺ wagairah) nahi aate** — na sawal mein, na options mein. Roz ke Day exam mein wo aate hain.
+
 **Mushkil sawal kaise bante hain:** jo lafz aapne daily exam mein galat kiye wo pehle aate hain, phir aakhri dinon ke kam aane wale aur lambe lafz. Galat options bhi sahi jawab jaise lambai ke hote hain, isliye andaze se pass hona mushkil hai.
+
+- 🧠 **Kamzor lafz revision** (galat hue lafz dobara) • 🔔 **Roz ki yaad** (.ics) • 🔍 **Sanad No. + jaanch** (certificate par Sanad No.)
+- 🏠 **Dashboard**: Maqsad → shortcuts → Aaj ki Ayat → Namaz/Yaad → Safar → Aaj ke lafz
 
 ### 🤲 Masnoon Duaein (`dua.html`)
 - **93 duaein**: Namaz (59), Subah-Sham Azkar, Mushkil & Pareshani, Bimari & Shifa, Sone se Pehle
@@ -46,7 +52,7 @@ Basic / Intermediate / High qawaid, misaalon ke saath — har misaal Qari ki awa
 Azan app band hone par bhi + asli phone lock ke liye. Dekhein `android/README.md` (GitHub Actions se APK banta hai).
 
 ### 🎮 Games (`games.html`)
-🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji — nasheed aur sound effects ke saath.
+🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji — sound effects ke saath. Header ka **🎵 button** har game mein nasheed chalata/rokta hai (`nasheed.mp3` chahiye).
 
 ### Aur
 🔊 Suno · 🌙 Dark/Light mode · 🔐 Password login · 📱 PWA (home screen par install)
@@ -74,7 +80,7 @@ Dhyan dein:
 .
 ├── index.html       # Sabaq, exam, login, shop, certificate (main app)
 ├── courseData.js    # 90 din ka course data (900 alfaz)
-├── wordAyat.js      # Har lafz -> Quran ki ayat (Day 1-10 aur 21-30 ke 200 lafz), hawala ke saath
+├── wordAyat.js      # Har lafz -> Quran ki ayat (Day 1-30 aur 41-50 ke lafz), hawala ke saath
 ├── dua.html         # Masnoon duaein + Favourites
 ├── tajweed.html     # Tajweed ke qawaid
 ├── games.html       # Games
@@ -84,6 +90,7 @@ Dhyan dein:
 ├── progress.js      # Levels, badges, share card
 ├── ui.js            # Splash, text size (A-/A+), Aaj ki Ayat
 ├── azan-aksa.mp3 / azan-sweet.mp3 / azan-3.mp3   # Azan ki awaaz
+├── nasheed.mp3      # Games ka nasheed
 ├── namaz.js         # Azan times, roz ki namaz ka sawal, 20 min lock, Calendar alarms
 ├── games-audio.js   # Games ka nasheed aur sound effects (nasheed.mp3 chahiye)
 ├── theme.css        # Shared theme
@@ -103,7 +110,7 @@ Dhyan dein:
 
 Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost:8000` kholen (PWA install aur Qari ki awaaz ke liye server zaroori hai, seedha file kholne se kuch cheezein nahi chalti).
 
-> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v24` → `v25`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
+> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v33` → `v34`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
 
 ## ⬇️ Ayat Download (Offline)
 

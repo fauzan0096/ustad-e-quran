@@ -225,6 +225,42 @@
         .urdu.lt { font-family: 'Figtree', sans-serif; direction: ltr; font-size: 19px; font-weight: 600; }
         .header-tools .xp-badge, .header-tools .streak-badge { height: 32px; display: inline-flex; align-items: center; }
         .login-btn { margin-left: auto; }
+        /* ===== Dashboard v2: ek hi tarteeb — header > maqsad > shortcuts > ayat > tools > safar > sabaq ===== */
+        header { padding-bottom: 18px; border-radius: 0 0 26px 26px; box-shadow: 0 6px 18px rgba(15,76,58,.22); }
+        .header-tools { display: flex; align-items: center; gap: 8px; max-width: 1200px; margin: 14px auto 0; padding-top: 0; border-top: none; flex-wrap: nowrap; }
+        .header-tools .ht-spacer { flex: 1; }
+        .header-tools .xp-badge, .header-tools .streak-badge { height: 32px; padding: 0 12px; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+        .header-tools .lang-cycle { min-width: 72px; height: 36px; padding: 0 14px; font-size: 14px; }
+        .header-tools .icon-btn { width: 36px; height: 36px; font-size: 16px; }
+        .dash { max-width: 760px; margin: 16px auto 0; padding: 0 16px; position: relative; z-index: 2; }
+        .dash > * + * { margin-top: 14px; }
+        .hero { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 16px; box-shadow: var(--shadow); }
+        .hero-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .hero-ic { width: 44px; height: 44px; flex: none; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; background: rgba(184,146,58,.18); }
+        .hero-main { flex: 1; min-width: 0; }
+        .hero-title { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800; font-size: 16px; color: var(--text); }
+        .hero-title span { color: var(--secondary); font-size: 18px; }
+        .hero-sub { font-size: 13px; color: var(--text-light); margin-top: 2px; }
+        .hero .dg-bar { height: 10px; }
+        .quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0 0; padding: 0; max-width: none; }
+        .quick .top-link-btn { padding: 12px 4px 10px; border-radius: 16px; font-size: 12.5px; gap: 7px; }
+        .quick .top-link-btn:active { transform: scale(.96); }
+        .dash .ayat-card { margin: 14px 0 0; padding: 12px 14px; gap: 12px; border-radius: 16px; border-left-width: 1px; }
+        .dash .ayat-card .dg-icon { width: 40px; height: 40px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .ayat-sub { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+        .ayat-go { font-size: 26px; color: var(--secondary); line-height: 1; }
+        .dash #courseTab { margin-top: 22px; }
+        #todayCard:empty { display: none; }
+        .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 2px 8px; font-weight: 800; font-size: 16px; }
+        .sec-head small { color: var(--text-light); font-weight: 500; font-size: 12px; }
+        .sec-head h2 { font-size: 28px !important; margin: 0; line-height: 1.1; }
+        .sec-head.day-head { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); }
+        .dash .journey-wrap { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 18px 14px 12px; }
+        .dash .view-section { padding: 0; max-width: none; }
+        @media (min-width: 700px) { .quick { gap: 14px; } }
+        .mini-tile input[type=time] { font-size: 12px; padding: 0 2px; }
+        .dash .mini-row { max-width: none; margin: 14px 0 0; padding: 0; }
+        .dash > .tool-card { margin: 14px 0 0; }
     </style>
 </head>
 <body>
@@ -265,59 +301,65 @@
                 </div>
             </div>
             <div class="header-tools">
-                <button id="langSel" class="lang-cycle" onclick="cycleMeaningLang()" title="Meaning ki zubaan badlein">اردو</button>
-                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                 <span id="xpBadge" class="xp-badge hidden">⭐ Lvl 1</span>
                 <span id="streakBadge" class="streak-badge hidden">🔥 0</span>
-                <button class="icon-btn login-btn" onclick="logout()" title="Login / Logout">🚪</button>
+                <span class="ht-spacer"></span>
+                <button id="langSel" class="lang-cycle" onclick="cycleMeaningLang()" title="Meaning ki zubaan badlein">اردو</button>
+                <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Theme">🌙</button>
             </div>
         </header>
 
-        <div class="top-links">
-            <a href="tajweed.html" class="top-link-btn"><span class="ti">📖</span>Tajweed</a>
-            <a href="games.html" class="top-link-btn"><span class="ti">🎮</span>Games</a>
-            <a href="dua.html" class="top-link-btn"><span class="ti">🤲</span>Duaein</a>
-            <a href="asma.html" class="top-link-btn"><span class="ti">✨</span>99 Naam</a>
-        </div>
+        <main class="dash">
+            <section class="hero" aria-label="Aaj ka maqsad">
+                <div class="hero-row">
+                    <div class="hero-ic">🎯</div>
+                    <div class="hero-main">
+                        <div class="hero-title">Aaj ka Maqsad <span id="dailyGoalPercent">0%</span></div>
+                        <div class="hero-sub" id="dailyGoalText">Aaj 10 lafz padhein</div>
+                    </div>
+                </div>
+                <div class="dg-bar"><div class="dg-fill" id="dailyGoalFill"></div></div>
+            </section>
 
-        <div class="mini-row">
-            <div id="namazCard"></div>
-            <div class="mini-tile" id="remindCard" title="Phone ke Calendar mein roz ka alarm lag jayega">
-                <div class="mt-top"><span class="mt-ic">🔔</span><b>Roz ki yaad</b></div>
-                <div class="mt-row">
-                    <input type="time" id="remindTime" value="20:00" aria-label="Roz ki yaad ka waqt" onchange="localStorage.setItem('remindTime', this.value)">
-                    <button type="button" class="mt-go" onclick="setReminder()">Lagayein</button>
+            <nav class="quick" aria-label="Seekhein aur khelein">
+                <a href="tajweed.html" class="top-link-btn"><span class="ti">📖</span>Tajweed</a>
+                <a href="games.html" class="top-link-btn"><span class="ti">🎮</span>Games</a>
+                <a href="dua.html" class="top-link-btn"><span class="ti">🤲</span>Duaein</a>
+                <a href="asma.html" class="top-link-btn"><span class="ti">✨</span>99 Naam</a>
+            </nav>
+
+            <div class="ayat-card" onclick="showDailyAyat()" role="button" tabindex="0">
+                <div class="dg-icon">✨</div>
+                <div class="dg-content">
+                    <div class="dg-title">Aaj ki Ayat / Hadith</div>
+                    <div class="ayat-sub">Rozana ka paigham, doston ko bhejein</div>
+                </div>
+                <span class="ayat-go">›</span>
+            </div>
+
+            <div class="mini-row">
+                <div id="namazCard"></div>
+                <div class="mini-tile" id="remindCard" title="Phone ke Calendar mein roz ka alarm lag jayega">
+                    <div class="mt-top"><span class="mt-ic">🔔</span><b>Roz ki yaad</b></div>
+                    <div class="mt-row">
+                        <input type="time" id="remindTime" value="20:00" aria-label="Roz ki yaad ka waqt" onchange="localStorage.setItem('remindTime', this.value)">
+                        <button type="button" class="mt-go" onclick="setReminder()">Lagayein</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="courseTab" class="view-section active">
-            <div id="todayCard" style="margin-top:12px;"></div>
-            
             <div id="weakCard" class="tool-card hidden"></div>
-            <div class="daily-goal-card">
-                <div class="dg-icon">🎯</div>
-                <div class="dg-content">
-                    <div class="dg-title">Daily Goal <span id="dailyGoalPercent">0%</span></div>
-                    <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;" id="dailyGoalText">Aaj 10 lafz padhein</div>
-                    <div class="dg-bar"><div class="dg-fill" id="dailyGoalFill"></div></div>
-                </div>
+
+            <div id="courseTab" class="view-section active">
+                <div id="todayCard"></div>
+                <div class="sec-head"><span>📍 Aapka Safar</span><small>90 din • Silver 🥈 • Gold 🥇</small></div>
+                <div class="journey-wrap" id="journeyMap"></div>
+
+                <div class="sec-head day-head"><h2 id="dayTitle">Day 1</h2><small>Aaj ke 10 lafz</small></div>
+                <div class="grid-container" id="courseGrid"></div>
+                <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam</button>
             </div>
-
-            <div class="ayat-card" onclick="showDailyAyat()">
-                <div class="dg-icon" style="color: var(--secondary);">✨</div>
-                <div class="dg-content">
-                    <div class="dg-title">Aaj ki Ayat / Hadith <span>Share karein ›</span></div>
-                    <div style="font-size:13px;color:var(--text-light);margin-top:2px;">Rozana ka paigham dekhein aur doston ko bhejein.</div>
-                </div>
-            </div>
-
-            <div class="journey-wrap" id="journeyMap"></div>
-
-            <div style="margin: 20px 0;"><h2 id="dayTitle" style="font-size:32px;">Day 1</h2></div>
-            <div class="grid-container" id="courseGrid"></div>
-            <button id="startExamBtn" class="exam-btn" onclick="startWordExam()">📝 Day 1 Exam</button>
-        </div>
+        </main>
 
         <div class="bottom-nav">
             <button onclick="scrollToTop()">📚<br>Sabaq</button>
@@ -855,7 +897,12 @@
             let weak = {};
             try { weak = JSON.parse(localStorage.getItem(pk('weakWords'))) || {}; } catch (e) {}
             const all = [];
-            courseData.forEach(d => { if (d.day <= maxDay) d.words.forEach(w => all.push({ w: w, day: d.day })); });
+            // Silver/Gold exam mein anbiya ke naam na aayein (na sawal mein, na options mein)
+            const bare = s => String(s || '').replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, '');
+            const PROPHET_AR = ['آدم','ادم','نوح','ابراهيم','إبراهيم','اسماعيل','إسماعيل','اسحاق','إسحاق','يعقوب','يوسف','موسى','هارون','عيسى','داوود','داود','سليمان','زكريا','يحيى','شعيب','محمد','احمد','أحمد','ايوب','أيوب','يونس','الياس','إلياس','اليسع','ادريس','إدريس','هود','صالح','لوط','ذو الكفل','اسرائيل','إسرائيل'];
+            const isProphet = w => /alaih|ﷺ|israa/i.test((w.u_ro || '') + ' ' + (w.t_ro || '')) ||
+                bare(w.a).split(/\s+/).some(t => PROPHET_AR.indexOf(t.replace(/^[وفبل]/, '')) > -1 || PROPHET_AR.indexOf(t) > -1);
+            courseData.forEach(d => { if (d.day <= maxDay) d.words.forEach(w => { if (!isProphet(w)) all.push({ w: w, day: d.day }); }); });
             const letters = s => s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, '').length;
             all.forEach(x => { x.s = (weak[x.w.a] || 0) * 3 + (x.day / maxDay) * 1.5 + Math.min(letters(x.w.a), 8) / 8 + Math.random() * 1.2; });
             all.sort((p, q) => q.s - p.s);

@@ -208,23 +208,27 @@
         }
         return a;
     }
+    // Header mein ek hi nasheed button (sfxBtn ke saath) — har game mein dikhta hai
     function ensureNasheedBtn() {
         if (document.getElementById('nasheedBtn')) return;
-        const row = document.querySelector('#kbc .kbc-lifelines');
-        if (!row) return;
+        const theme = document.getElementById('themeBtn');
+        if (!theme) return;
         const b = document.createElement('button');
-        b.className = 'kbc-life';
+        b.className = 'icon-btn';
         b.id = 'nasheedBtn';
+        b.title = 'Nasheed';
         b.onclick = function () { window.toggleNasheed(); };
-        row.appendChild(b);
+        theme.parentNode.insertBefore(b, theme);
     }
     function syncNasheedBtn() {
         ensureNasheedBtn();
         const btn = document.getElementById('nasheedBtn');
         if (!btn) return;
         const playing = !getAudio().paused;
-        btn.textContent = playing ? '🔇 Nasheed Off' : '🎵 Nasheed';
-        btn.classList.toggle('on', playing);
+        btn.textContent = playing ? '\u{1F3B6}' : '\u{1F3B5}';
+        btn.title = playing ? 'Nasheed band karein' : 'Nasheed chalayein';
+        btn.style.outline = playing ? '2px solid #D4AF37' : '';
+        btn.style.background = playing ? 'rgba(212,175,55,.35)' : '';
     }
     function stopNasheed() {
         nasheedWanted = false;
@@ -270,10 +274,10 @@
         syncNasheedBtn();
         return r;
     });
-    // KBC chhodte hi nasheed band
+    // Game badalne par nasheed chalti rahe (har game mein), sirf header button ka haal sync karo
     wrap('switchGame', function (orig, args) {
         const r = orig.apply(this, args);
-        if (args[0] !== 'kbc') stopNasheed();
+        syncNasheedBtn();
         return r;
     });
     // app background mein jaye to ruke, wapas aaye to chale
