@@ -16,6 +16,20 @@
         { k: 'Isha',    n: 'Isha',    i: '🌙' }
     ];
 
+    // ---------- Android app (window.AndroidNS) ----------
+    var NATIVE = (window.AndroidNS && typeof window.AndroidNS.configure === 'function') ? window.AndroidNS : null;
+    function nativeAdmin() { try { return !!NATIVE.isAdmin(); } catch (e) { return false; } }
+    var lastSync = '';
+    function syncNative() {
+        if (!NATIVE) return;
+        try {
+            var T = getTimes(), loc = jget('ns_loc', null);
+            var j = JSON.stringify({ times: T ? T.t : null, lat: loc ? String(loc.lat) : null, lng: loc ? String(loc.lng) : null,
+                school: school(), auto: !!(T && !T.manual && loc), lock: lockOn(), sound: sndPref() });
+            if (j !== lastSync) { lastSync = j; NATIVE.configure(j); }
+        } catch (e) {}
+    }
+
     // ---------- storage ----------
     function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
     function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -76,7 +90,20 @@
     }
 
     // ---------- lock ----------
-    function lockOn() { return lsGet('ns_on') !== '0'; }
+    function lockOn() { return (loggedIn() ? lsGet(P('lockOn')) : lsGet('ns_on')) !== '0'; }
+    function setLock(v) { if (loggedIn()) lsSet(P('lockOn'), v ? '1' : '0'); else lsSet('ns_on', v ? '1' : '0'); }
+    // Azan apne aap: waqt aate hi (pehle 60 sec mein) ek baar bajti hai — lock chalu ho ya na ho
+    function azanTick() {
+        if (NATIVE) return;                       // app mein azan Android service bajati hai
+        var T = getTimes(); if (!T || sndPref() === 'off') return;
+        var now = Date.now();
+        PR.forEach(function (p) {
+            var m = toMin(T.t[p.k]); if (m == null) return;
+            var d = new Date(); var s0 = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, m, 0, 0).getTime();
+            var key = dstr(d) + '_' + p.k;
+            if (now >= s0 && now < s0 + 60000 && lsGet('ns_played') !== key) { lsSet('ns_played', key); playAzan(); toast('🕌 ' + p.n + ' ki azan'); }
+        });
+    }
     function skipKey(date, k) { return date + '_' + k; }
     function bypassed(date, k) { return (jget('ns_skip', [])).indexOf(skipKey(date, k)) >= 0; }
     function addBypass(date, k) { var a = jget('ns_skip', []); a.push(skipKey(date, k)); jset('ns_skip', a.slice(-12)); }
@@ -210,7 +237,7 @@
         }
         var firstShow = !currentWin || currentWin.p.k !== w.p.k;
         currentWin = w;
-        if (firstShow && (w.test || Date.now() - w.start < 60000)) playAzan();
+        if (firstShow && w.test) playAzan();
         lockEl.querySelector('#nsIc').textContent = w.p.i;
         lockEl.querySelector('#nsTitle').textContent = w.test ? 'Lock ka test' : w.p.n + ' ki azan ho gayi';
         lockEl.querySelector('#nsSub').textContent = w.test ? 'Aise lock dikhega. 10 second mein apne aap khul jayega.' : 'Phone/App 20 minute ke liye band hai. Namaz padhein, phir wapas aayein — Allah qubool farmaye 🤍';
@@ -486,13 +513,19 @@
             '<div class="ns-sec">PICHLE 7 DIN</div><div class="ns-week">' + week + '</div>' +
             '<div class="ns-sec">SETTINGS</div>' +
             '<button class="ns-btn gold" data-a="loc">📍 ' + (loc ? 'Waqt dobara lein (location se)' : 'Location se azan ke waqt lein') + '</button>' +
-            '<div class="ns-set"><span>🔒 Azan par 20 min lock</span><input type="checkbox" id="nsOn" ' + (lockOn() ? 'checked' : '') + ' style="width:22px;height:22px"></div>' +
+            '<label class="ns-set" style="background:var(--soft-bg,#F4F1E3);border-radius:14px;padding:12px;cursor:pointer"><span><b>🔒 Azan par 20 min lock lagana hai?</b><br><small style="color:var(--text-light,#55645C)">Tick = lagega • Tick hata do = nahi lagega (sirf aapke liye)</small></span><input type="checkbox" id="nsOn" ' + (lockOn() ? 'checked' : '') + ' style="width:26px;height:26px;flex:0 0 auto"></label>' +
             '<div class="ns-set"><span>🔊 Azan ki awaaz</span><select id="nsSnd">' + ['aksa', 'sweet', 'third', 'off'].map(function (k) { return '<option value="' + k + '" ' + (sndPref() === k ? 'selected' : '') + '>' + SND_NAME[k] + '</option>'; }).join('') + '</select></div>' +
             '<button class="ns-btn ghost" data-a="snd">▶️ Awaaz sunein</button>' +
             '<div class="ns-set"><span>Asr ka hisaab</span><select id="nsSchool"><option value="1" ' + (school() === '1' ? 'selected' : '') + '>Hanafi</option><option value="0" ' + (school() === '0' ? 'selected' : '') + '>Shafi / Maliki / Hanbali</option></select></div>' +
-            '<button class="ns-btn ghost" data-a="ics">📅 Phone Calendar mein azan alarm (2 mahine)</button>' +
-            '<button class="ns-btn ghost" data-a="test">🧪 Lock ka test (10 sec)</button>' +
-            '<div class="ns-note">ℹ️ Web app phone ko system-level lock nahi kar sakti. Ye lock app ke <b>andar</b> chalta hai: azan ke 20 min tak app khulte hi poori screen band rehti hai (reload se bhi nahi hatti). App band ho tab bhi yaad dilane ke liye upar wala <b>Calendar alarm</b> lagayein.' + (isAdmin() ? '<br>👑 Admin par lock nahi lagta (sirf test chalta hai).' : '') + '</div>' +
+            (NATIVE ? '' : '<button class="ns-btn ghost" data-a="ics">📅 Phone Calendar mein azan alarm (2 mahine)</button>') +
+            '<button class="ns-btn ghost" data-a="test">🧪 Screen lock ka test (10 sec)</button>' +
+            (NATIVE ? '<div class="ns-sec">📱 ASLI PHONE LOCK (Android app)</div>' +
+                '<div class="ns-note" style="margin-top:0">' + (nativeAdmin()
+                    ? '✅ Ijazat mili hai. Azan ke waqt app band ho tab bhi azan bajegi' + (lockOn() ? ' aur phone 20 min ke liye lock hoga.' : ' (lock ka tick band hai, isliye phone lock nahi hoga).')
+                    : '⚠️ Azan app band hone par bhi bajegi. Phone lock ke liye neeche ijazat dein (sirf screen lock — koi data nahi padha jata).') + '</div>' +
+                (nativeAdmin() ? '' : '<button class="ns-btn gold" data-a="admin">🔓 Phone lock ki ijazat dein</button>') +
+                '<button class="ns-btn ghost" data-a="ntest">🧪 Azan + phone lock ka test (15 sec)</button>' : '') +
+            (NATIVE ? '<div class="ns-note">🔋 Agar azan waqt par na bajti ho to phone ki Settings → Battery mein "Quraan Ustad" ko <b>Unrestricted / Autostart</b> dein (Xiaomi, Oppo, Vivo, Realme mein zaroori).</div>' : '<div class="ns-note">ℹ️ Web app phone ko system-level lock nahi kar sakti. Ye lock app ke <b>andar</b> chalta hai: azan ke 20 min tak app khulte hi poori screen band rehti hai (reload se bhi nahi hatti). App band ho tab bhi yaad dilane ke liye upar wala <b>Calendar alarm</b> lagayein. Asli phone lock ke liye Android app install karein.</div>') +
             '</div>';
     }
 
@@ -509,6 +542,8 @@
         if (a === 'close') closePanel();
         else if (a === 'test') { testUntil = Date.now() + 10000; closePanel(); tick(); }
         else if (a === 'ics') makeICS();
+        else if (a === 'admin') { try { NATIVE.requestAdmin(); } catch (e) {} }
+        else if (a === 'ntest') { syncNative(); try { NATIVE.test(); } catch (e) {} }
         else if (a === 'report') openReport(0, false);
         else if (a === 'snd') { if (audioEl) stopAzan(); else playAzan(); }
         else if (a === 'loc') {
@@ -520,7 +555,7 @@
     }
     function onPanelChange(e) {
         var t = e.target;
-        if (t.id === 'nsOn') { lsSet('ns_on', t.checked ? '1' : '0'); toast(t.checked ? '🔒 Azan lock chalu' : 'Azan lock band'); tick(); return; }
+        if (t.id === 'nsOn') { setLock(t.checked); toast(t.checked ? '🔒 Azan lock chalu' : 'Azan lock band'); tick(); return; }
         if (t.id === 'nsSnd') { lsSet('ns_snd', t.value); stopAzan(); playAzan(); return; }
         if (t.id === 'nsSchool') { lsSet('ns_school', t.value); if (jget('ns_loc', null)) refreshTimes(true).then(function () { drawPanel(); }); return; }
         if (t.dataset && t.dataset.t) {                       // khud se waqt badla
@@ -546,7 +581,8 @@
     function tick() {
         var w = null;
         if (testUntil > Date.now()) w = { p: { n: 'Test', i: '🧪', k: 'test' }, start: Date.now(), end: testUntil, test: true, date: '' };
-        else if (lockOn() && !isAdmin()) w = activeWindow();
+        else if (lockOn()) w = activeWindow();
+        azanTick(); syncNative();
         if (w) showLock(w);
         else if (lockEl) {
             var wasReal = currentWin && !currentWin.test; hideLock();
@@ -570,7 +606,7 @@
         tick();
         setInterval(tick, 1000);
         setInterval(function () { refreshTimes(false); maybeAsk(); }, 60000);
-        document.addEventListener('visibilitychange', function () { if (!document.hidden) { tick(); refreshTimes(false); setTimeout(maybeAsk, 800); } });
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) { drawPanel(); tick(); refreshTimes(false); setTimeout(maybeAsk, 800); } });
         // pehli baar: waqt set karne ki yaad (ek baar)
         setTimeout(function () {
             if (loggedIn() && !getTimes() && !jget('ns_loc', null) && lsGet('ns_setupAsked') !== '1' && !lockEl && !window.qsSplashActive) {

@@ -35,12 +35,15 @@ Basic / Intermediate / High qawaid, misaalon ke saath — har misaal Qari ki awa
 ### 🕌 Namaz (`namaz.js`)
 - **Azan ke waqt**: 📍 location se Aladhan API se 5 waqt aate hain (ya khud time bharein). Asr: Hanafi / Shafi.
 - **Roz ek baar sawal**: Isha ke baad (ya kal ka na bhara ho to subah) "Poori namaz padhi?" — ✅ sab padhi = +25 XP, 🔥 poori-namaz streak, 3/7/30 din ke badges.
-- **Azan par 20 min lock**: azan ke waqt se 20 minute app par poori screen band; reload se bhi nahi hatti. Zaroori kaam ke liye 5 second dabaye rakhne ka button. Admin par lock nahi lagta.
+- **Azan par 20 min lock**: azan ke waqt se 20 minute app par poori screen band; reload se bhi nahi hatti. Zaroori kaam ke liye 5 second dabaye rakhne ka button. Har profile ke paas apna **🔒 tick** hai (Namaz panel mein) — tick hata do to lock nahi lagta; admin par bhi yahi tick chalta hai.
 - **📊 Mahine ka hisaab**: 5 boxes (Fajr–Isha) mein padhi/chhooti, % aur din-ba-din grid (box dabakar badal sakte hain). Sirf **is mahine + pichle mahine** ka data rakha jata hai. Mahine ke aakhri din Isha ke baad (ya naye mahine mein pehli baar kholne par) apne aap hisaab dikhta hai.
-- **🔊 Azan ki awaaz**: lock ke shuru mein `azan-aksa.mp3` / `azan-sweet.mp3` / `azan-3.mp3` mein se chuni hui bajti hai (Settings mein badal sakte hain ya band). Phone kabhi-kabhi bina chhue awaaz rok deta hai.
+- **🔊 Azan ki awaaz**: azan ka waqt aate hi (app khula ho to) apne aap, lock chalu ho ya na ho, `azan-aksa.mp3` / `azan-sweet.mp3` / `azan-3.mp3` mein se chuni hui bajti hai (Settings mein badal sakte hain ya band). Phone kabhi-kabhi bina chhue awaaz rok deta hai.
 - **📅 Calendar alarm**: 2 mahine ke azan alarms ki `.ics` file (app band ho tab bhi phone bajata hai).
 - Dhyan: web app phone ko **system-level lock nahi kar sakti** — lock sirf app ke andar hai.
 - Har page ke `<head>` mein `<script src="namaz.js" defer></script>` chahiye (index aur games mein lag chuka hai; dua.html, tajweed.html, asma.html mein bhi lagayein taake wahan bhi lock chale).
+
+### 📱 Android App (`android/`)
+Azan app band hone par bhi + asli phone lock ke liye. Dekhein `android/README.md` (GitHub Actions se APK banta hai).
 
 ### 🎮 Games (`games.html`)
 🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji — nasheed aur sound effects ke saath.
