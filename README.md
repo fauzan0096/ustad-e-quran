@@ -10,7 +10,7 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 - Har din 10 alfaz (kul 900) — Arabic + Roman + meaning, **Mashq** aur tafseel
 - Meaning 3 tarah se: **اردو / Roman / हिंदी**
 - Arabic lafz aur **Mashq par tap karke Qari ki awaaz** suniye 🔊
-- 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–30 aur 41–50, kul 400 lafz): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Har ayat ke neeche **⬇️ Download** (app mein save, net ke bina bhi sunein), **📥 MP3 file** (phone mein file utaarein) aur **🗑 Hatao**; din ke upar **Is din ki sab ayaat / Sab ayaat** ek saath download. Ayat ka text Maktaba Shamila se.
+- 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–50: lafz 1–500, poore): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Har ayat ke neeche **⬇️ Download** (app mein save, net ke bina bhi sunein), **📥 MP3 file** (phone mein file utaarein) aur **🗑 Hatao**; din ke upar **Is din ki sab ayaat / Sab ayaat** ek saath download. Ayat ka text Maktaba Shamila se.
 - 📝 **Daily Exam** — roz 10 sawal, 8 sahi hon to agla din unlock
 - 🗺️ **92 padav ka safar**: 90 din + beech mein 🥈 Silver (Day 50 ke baad) + aakhir mein 🥇 Gold
 - 🥈 **Silver Exam (500 lafz)** — Day 50 poora hote hi **50 mushkil sawal**. **80% (40/50)** laayen to Silver Sanad milti hai. **Jab tak pass nahi, Day 51 se aage sab band (🔒).**
@@ -80,7 +80,7 @@ Dhyan dein:
 .
 ├── index.html       # Sabaq, exam, login, shop, certificate (main app)
 ├── courseData.js    # 90 din ka course data (900 alfaz)
-├── wordAyat.js      # Har lafz -> Quran ki ayat (Day 1-30 aur 41-50 ke lafz), hawala ke saath
+├── wordAyat.js      # Har lafz -> Quran ki ayat (Day 1-50 ke 500 lafz), hawala ke saath
 ├── dua.html         # Masnoon duaein + Favourites
 ├── tajweed.html     # Tajweed ke qawaid
 ├── games.html       # Games
@@ -110,7 +110,7 @@ Dhyan dein:
 
 Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost:8000` kholen (PWA install aur Qari ki awaaz ke liye server zaroori hai, seedha file kholne se kuch cheezein nahi chalti).
 
-> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v33` → `v34`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
+> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v36` → `v37`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
 
 ## ⬇️ Ayat Download (Offline)
 
