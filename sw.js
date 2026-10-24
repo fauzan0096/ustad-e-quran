@@ -5,6 +5,8 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
+// v31: Mahine ka hisaab (5 boxes, 2 mahine ka data), azan ki awaaz (3 mp3)
+// v30: Shop mein 16 stickers (hamesha ke liye, naam ke baazu mein), theme dobara lagana, namaz.js (azan lock + roz ki namaz)
 // v29: naam ka font Playfair Display + Aref Ruqaa
 // v28: app ke naam ka naya design (Reem Kufi)
 // v27: Kamzor lafz revision, roz ki yaad-dehani (.ics), Sanad No. + jaanch
@@ -15,7 +17,7 @@
 // v22: Qari ki awaaz har Quran ke hisse par (multi-ayat, teeno Qul, Ayatul Kursi) + dua mein Favourites — cache badalna zaroori hai
 // (v21: naya login (pura naam + multi-user profiles) aur certificate naam fix)
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v29';
+const CACHE_NAME = 'quran-ustad-auto-v31';
 // Download ki hui ayat ki recordings (qari.js) — ye cache kabhi delete nahi karna
 const KEEP_CACHES = [CACHE_NAME, 'qs-mishary-v1'];
 
@@ -39,6 +41,7 @@ const ASSETS = [
     './ui.js',
     './theme.css',
     './progress.js',
+    './namaz.js',
     './qari.js'
 ];
 

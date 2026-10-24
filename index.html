@@ -13,6 +13,7 @@
     <meta name="apple-mobile-web-app-title" content="Quran Ustad">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="install.js" defer></script>
+    <script src="namaz.js" defer></script>
     <script src="speech.js"></script>
     <script src="qari.js"></script>
     <meta name="theme-color" content="#0F4C3A">
@@ -171,6 +172,26 @@
         .shop-item button { background: var(--primary); color: #fff; border: none; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; }
         .shop-item button:disabled { background: var(--border); color: var(--text-light); }
 
+        .shop-sec { grid-column: 1 / -1; font-weight: 800; font-size: 15px; margin-top: 8px; text-align: left; }
+        .shop-sec small { font-weight: 500; color: var(--text-light); font-size: 11px; }
+        .shop-eq { grid-column: 1 / -1; background: var(--soft-bg); border: 1px dashed var(--secondary); border-radius: 12px; padding: 10px; font-size: 13px; text-align: center; }
+        .shop-item { position: relative; }
+        .shop-item.rare { border-color: #4a90d9; } .shop-item.epic { border-color: #9b59b6; } .shop-item.legend { border-color: #E3C36E; background: linear-gradient(180deg, rgba(227,195,110,.22), rgba(227,195,110,.04)); }
+        .si-rar { position: absolute; top: 6px; right: 8px; font-size: 10px; font-weight: 800; color: var(--text-light); }
+        .shop-item.rare .si-rar { color: #4a90d9; } .shop-item.epic .si-rar { color: #9b59b6; } .shop-item.legend .si-rar { color: #C79E3F; }
+        .si-icon.glow { animation: stkGlow 2s ease-in-out infinite; }
+        .shop-item button.use { background: linear-gradient(180deg, #E3C36E, #C79E3F); color: #2A2008; }
+        .shop-item button.off { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+        .shop-item button.on { background: var(--soft-bg); color: var(--primary); }
+        .stk-row { display: inline-flex; gap: 2px; margin-left: 4px; vertical-align: middle; }
+        .stk { font-size: 15px; line-height: 1; display: inline-block; }
+        .stk.big { font-size: 24px; margin: 2px 3px; }
+        .stk.epic { filter: drop-shadow(0 0 4px #b57edc); }
+        .stk.legend { animation: stkGlow 2s ease-in-out infinite; }
+        .stk-big-row { margin-top: 6px; }
+        @keyframes stkGlow { 0%,100% { filter: drop-shadow(0 0 2px rgba(245,208,96,.6)); transform: scale(1); } 50% { filter: drop-shadow(0 0 9px rgba(245,208,96,1)); transform: scale(1.12); } }
+        @media (prefers-reduced-motion: reduce) { .stk.legend, .si-icon.glow { animation: none; } }
+
         .exam-q { margin-bottom: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 16px; background: var(--soft-bg); }
         .exam-ar { font-family: 'Amiri', serif; font-size: 34px; text-align: center; color: var(--ink); }
         .option-btn { padding: 12px; margin: 6px 0; width: 100%; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; font-size: 18px; font-family: 'Noto Nastaliq Urdu', serif; }
@@ -222,13 +243,14 @@
             <div class="header-top">
                 <div class="brand"><img class="brand-logo" src="icon-192.png" alt=""><h1 class="brand-name"><span class="bn-a">Quraan</span><span class="bn-b">Ustad</span></h1></div>
                 <div class="user-menu">
-                    <button class="icon-btn user-chip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span> ▾</button>
+                    <button class="icon-btn user-chip" onclick="toggleUserMenu(event)">👤 <span id="userChipName">ID</span><span id="userChipStk" class="stk-row"></span> ▾</button>
                     <div class="user-drop hidden" id="userDrop">
-                        <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small></div>
+                        <div class="user-drop-info">Profile: <b id="userDropProfile">-</b><br><small>Role: <span id="userDropRole">-</span></small><div id="userDropStk" class="stk-big-row"></div></div>
+                        <button class="ud-shop" onclick="window.NS&&NS.open()">🕌 Namaz ka Hisaab</button>
                         <button class="ud-cert" onclick="handleCertificateClick()">🏆 Certificate (Sanad)</button>
                         <button class="ud-shop" onclick="document.getElementById('verifyModal').classList.remove('hidden')">🔍 Sanad ki jaanch</button>
                         <button class="ud-shop" onclick="openShop()">🛒 Inaam Ghar (Shop)</button>
-                        <button class="ud-default" onclick="resetTheme()">🔄 Default Theme</button>
+                        <button class="ud-default" onclick="resetTheme()">🔄 Default Theme (kharidi hui safe)</button>
                         <button onclick="logout()" style="margin-top:8px;">🚪 Logout</button>
                     </div>
                 </div>
@@ -253,6 +275,7 @@
             <div id="todayCard" style="margin-top:16px;"></div>
             
             <div id="weakCard" class="tool-card hidden"></div>
+            <div id="namazCard"></div>
             <div class="tool-card" id="remindCard">
                 <div class="tc-title">🔔 Roz ki yaad-dehani</div>
                 <div class="tc-sub">Waqt chunein — phone ke Calendar mein roz ka alarm lag jayega (app band ho tab bhi bajega).</div>
@@ -311,7 +334,7 @@
             <h2 style="text-align:center;">🛒 Inaam Ghar</h2>
             <div style="text-align:center; margin-bottom:15px; font-weight:bold; font-size:20px;">Aapka XP: <span id="shopXP">0</span></div>
             <div id="shopGrid" class="shop-grid"></div>
-            <button class="exam-btn" style="margin-top:15px; background:var(--soft-bg); color:var(--text); border:1px solid var(--border);" onclick="resetTheme(); closeShop();">🔄 Default Theme par wapas jayein</button>
+            <button class="exam-btn" style="margin-top:15px; background:var(--soft-bg); color:var(--text); border:1px solid var(--border);" onclick="resetTheme(); closeShop();">🔄 Default Theme lagayein (kharidi hui cheezein safe rehti hain)</button>
         </div>
     </div>
 
@@ -453,32 +476,89 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             currentDay = parseInt(localStorage.getItem(pk('currentDay'))) || 1;
+            guardTheme();
             initApp();
         }
 
         // --- Themes ---
         document.body.setAttribute('data-theme', currentTheme);
         function toggleTheme() {
-            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-            localStorage.setItem('theme', currentTheme);
-            document.body.setAttribute('data-theme', currentTheme);
-            document.getElementById('themeBtn').innerText = currentTheme === 'dark' ? '☀️' : '🌙';
+            applyTheme(currentTheme === 'light' ? 'dark' : 'light');
         }
         function resetTheme() {
-            currentTheme = 'light';
-            localStorage.setItem('theme', currentTheme);
-            document.body.setAttribute('data-theme', currentTheme);
-            document.getElementById('themeBtn').innerText = '🌙';
-            showToast('Default theme apply ho gayi!');
+            // Sirf abhi ke liye default theme lagti hai — kharidi hui themes safe rehti hain, Shop se dobara lag jaati hain
+            applyTheme('light');
+            showToast('Default theme lagi (kharidi hui themes Shop mein safe hain)');
         }
 
         // --- Shop ---
+        // Kharida hua item HAMESHA profile ke paas rehta hai (ownedItems). Lagana/hatana alag cheez hai —
+        // theme badalne ya reset karne se kuch bhi khatam nahi hota, shop se dobara "Lagayein" dabayein.
+        const RARITY = { common: 'Aam', rare: 'Khaas', epic: 'Nayaab', legend: 'Shahi' };
         const SHOP_ITEMS = [
-            { id: 'theme_midnight', type: 'theme', icon: '🌙', name: 'Midnight Theme', cost: 300 },
-            { id: 'theme_royal', type: 'theme', icon: '💎', name: 'Royal Theme', cost: 300 },
-            { id: 'theme_lightblue', type: 'theme', icon: '💧', name: 'Sky Blue Theme', cost: 250 },
-            { id: 'av_kaaba', type: 'avatar', icon: '🕋', name: 'Kaaba Avatar', cost: 100 }
+            { id: 'theme_midnight',  type: 'theme', icon: '🌙', name: 'Midnight Theme', cost: 300, theme: 'midnight' },
+            { id: 'theme_royal',     type: 'theme', icon: '💎', name: 'Royal Theme',    cost: 300, theme: 'royal' },
+            { id: 'theme_lightblue', type: 'theme', icon: '💧', name: 'Sky Blue Theme', cost: 250, theme: 'lightblue' },
+            // Stickers — profile ke naam ke baazu mein lagte hain (max 3)
+            { id: 'av_kaaba',    type: 'sticker', rarity: 'common', icon: '🕋', name: 'Kaaba',            cost: 100 },
+            { id: 'st_masjid',   type: 'sticker', rarity: 'common', icon: '🕌', name: 'Masjid',           cost: 100 },
+            { id: 'st_moon',     type: 'sticker', rarity: 'common', icon: '☪️', name: 'Chaand Sitara',    cost: 80 },
+            { id: 'st_khajoor',  type: 'sticker', rarity: 'common', icon: '🌴', name: 'Khajoor',          cost: 90 },
+            { id: 'st_tasbeeh',  type: 'sticker', rarity: 'common', icon: '📿', name: 'Tasbeeh',          cost: 120 },
+            { id: 'st_rose',     type: 'sticker', rarity: 'common', icon: '🌹', name: 'Gulab',            cost: 100 },
+            { id: 'st_quran',    type: 'sticker', rarity: 'rare',   icon: '📖', name: 'Quran Premi',      cost: 150 },
+            { id: 'st_dua',      type: 'sticker', rarity: 'rare',   icon: '🤲', name: 'Dua Wala',         cost: 150 },
+            { id: 'st_camel',    type: 'sticker', rarity: 'rare',   icon: '🐪', name: 'Ounth',            cost: 180 },
+            { id: 'st_fire',     type: 'sticker', rarity: 'rare',   icon: '🔥', name: 'Josh',             cost: 200 },
+            { id: 'st_lion',     type: 'sticker', rarity: 'epic',   icon: '🦁', name: 'Sher-e-Quran',     cost: 300 },
+            { id: 'st_eagle',    type: 'sticker', rarity: 'epic',   icon: '🦅', name: 'Baaz',             cost: 300 },
+            { id: 'st_trophy',   type: 'sticker', rarity: 'epic',   icon: '🏆', name: 'Champion',         cost: 350 },
+            { id: 'st_star',     type: 'sticker', rarity: 'epic',   icon: '🌟', name: 'Roshan Sitara',    cost: 400 },
+            { id: 'st_diamond',  type: 'sticker', rarity: 'legend', icon: '💎', name: 'Heera',            cost: 600 },
+            { id: 'st_crown',    type: 'sticker', rarity: 'legend', icon: '👑', name: 'Taj',              cost: 800 },
+            { id: 'st_alim',     type: 'sticker', rarity: 'legend', icon: '🎓', name: 'Alim',             cost: 1000 }
         ];
+        const MAX_STICKERS = 3;
+        const itemById = id => SHOP_ITEMS.find(i => i.id === id);
+
+        // Admin ke paas XP nahi hota, isliye woh sab kuch aazma sakta hai
+        function ownedList() { return userRole === 'admin' ? SHOP_ITEMS.map(i => i.id) : lsJSON(pk('ownedItems'), []); }
+        function equippedStickers() {
+            const owned = ownedList();
+            let eq = localStorage.getItem(pk('equippedStickers'));
+            if (eq === null) {                      // purane khareedaar: jo sticker pehle kharida tha wo khud lag jaye
+                if (userRole === 'admin') return [];
+                const auto = owned.filter(id => (itemById(id) || {}).type === 'sticker').slice(0, MAX_STICKERS);
+                lsSave(pk('equippedStickers'), auto);
+                return auto;
+            }
+            try { eq = JSON.parse(eq); } catch (e) { eq = []; }
+            return (Array.isArray(eq) ? eq : []).filter(id => owned.includes(id) && itemById(id));
+        }
+
+        // Naam ke baazu + dropdown mein stickers dikhao
+        function renderProfileStickers() {
+            const eq = equippedStickers().map(itemById).filter(Boolean);
+            const chip = document.getElementById('userChipStk');
+            if (chip) chip.innerHTML = eq.map(s => `<span class="stk ${s.rarity}" title="${s.name}">${s.icon}</span>`).join('');
+            const big = document.getElementById('userDropStk');
+            if (big) big.innerHTML = eq.length
+                ? eq.map(s => `<span class="stk big ${s.rarity}" title="${s.name}">${s.icon}</span>`).join('')
+                : '<small style="color:var(--text-light)">Shop se sticker khareedein ✨</small>';
+        }
+
+        // Theme sirf wahi lage jo is profile ne kharida ho
+        function applyTheme(t) {
+            currentTheme = t;
+            localStorage.setItem('theme', t);
+            document.body.setAttribute('data-theme', t);
+            const b = document.getElementById('themeBtn');
+            if (b) b.innerText = t === 'dark' ? '☀️' : '🌙';
+        }
+        function guardTheme() {
+            const it = SHOP_ITEMS.find(i => i.type === 'theme' && i.theme === currentTheme);
+            if (it && !ownedList().includes(it.id)) applyTheme('light');
+        }
 
         function openShop() {
             document.getElementById('userDrop').classList.add('hidden');
@@ -487,40 +567,76 @@
         }
         function closeShop() { document.getElementById('shopModal').classList.add('hidden'); }
 
+        function shopCard(item, owned, eq, xp) {
+            const isOwned = owned.includes(item.id);
+            let btn;
+            if (!isOwned) {
+                btn = `<button onclick="buyItem('${item.id}')" ${xp < item.cost ? 'disabled' : ''}>${xp < item.cost ? '🔒 ' + (item.cost - xp) + ' XP aur' : '🛒 Unlock'}</button>`;
+            } else if (item.type === 'theme') {
+                const on = currentTheme === item.theme;
+                btn = on ? `<button class="on" disabled>✓ Lagi hui hai</button>` : `<button class="use" onclick="equipTheme('${item.id}')">🎨 Lagayein</button>`;
+            } else {
+                const on = eq.includes(item.id);
+                btn = `<button class="${on ? 'off' : 'use'}" onclick="toggleSticker('${item.id}')">${on ? '✖ Hatayein' : '📌 Lagayein'}</button>`;
+            }
+            return `<div class="shop-item ${item.rarity || ''} ${isOwned ? 'owned' : ''}">
+                ${item.rarity ? `<div class="si-rar">${RARITY[item.rarity]}</div>` : ''}
+                <div class="si-icon ${item.rarity === 'legend' ? 'glow' : ''}">${item.icon}</div>
+                <div class="si-name">${item.name}</div>
+                <div class="si-cost">${isOwned ? '✅ Hamesha aapka' : '⭐ ' + item.cost + ' XP'}</div>
+                ${btn}
+            </div>`;
+        }
+
         function renderShop() {
             const xp = parseInt(localStorage.getItem(pk('xp'))) || 0;
             document.getElementById('shopXP').innerText = xp;
-            const owned = lsJSON(pk('ownedItems'), []);
-            document.getElementById('shopGrid').innerHTML = SHOP_ITEMS.map(item => {
-                const isOwned = owned.includes(item.id);
-                return `
-                <div class="shop-item ${isOwned ? 'owned' : ''}">
-                    <div class="si-icon">${item.icon}</div>
-                    <div class="si-name">${item.name}</div>
-                    <div class="si-cost">⭐ ${item.cost} XP</div>
-                    <button onclick="buyItem('${item.id}', ${item.cost})" ${isOwned || xp < item.cost ? 'disabled' : ''}>
-                        ${isOwned ? '✅ Unlocked' : 'Unlock'}
-                    </button>
-                </div>`;
-            }).join('');
+            const owned = ownedList(), eq = equippedStickers();
+            const stk = eq.map(itemById).filter(Boolean);
+            const head = `<div class="shop-eq">Aapke stickers (${stk.length}/${MAX_STICKERS}): ${stk.length ? stk.map(s => `<span class="stk big ${s.rarity}">${s.icon}</span>`).join('') : '<small>abhi koi nahi</small>'}</div>`;
+            const themes = SHOP_ITEMS.filter(i => i.type === 'theme').map(i => shopCard(i, owned, eq, xp)).join('');
+            const stickers = SHOP_ITEMS.filter(i => i.type === 'sticker').map(i => shopCard(i, owned, eq, xp)).join('');
+            document.getElementById('shopGrid').innerHTML =
+                head +
+                `<div class="shop-sec">🎨 Themes</div>${themes}` +
+                `<div class="shop-sec">🏷️ Stickers <small>(profile ke naam ke saath dikhte hain)</small></div>${stickers}`;
         }
 
-        function buyItem(id, cost) {
+        function buyItem(id) {
+            const item = itemById(id);
+            if (!item || userRole === 'admin') return;
+            const owned = lsJSON(pk('ownedItems'), []);
+            if (owned.includes(id)) return;                 // do baar paise na kate
             const xp = parseInt(localStorage.getItem(pk('xp'))) || 0;
-            if (xp < cost) return;
-            localStorage.setItem(pk('xp'), xp - cost);
-            let owned = lsJSON(pk('ownedItems'), []);
+            if (xp < item.cost) return;
+            localStorage.setItem(pk('xp'), xp - item.cost);
             owned.push(id); lsSave(pk('ownedItems'), owned);
-            updateXPUI(); renderShop();
-            
-            const item = SHOP_ITEMS.find(i => i.id === id);
-            if (item.type === 'theme') {
-                currentTheme = id === 'theme_midnight' ? 'midnight' : id === 'theme_royal' ? 'royal' : 'lightblue';
-                localStorage.setItem('theme', currentTheme);
-                document.body.setAttribute('data-theme', currentTheme);
+            if (item.type === 'theme') applyTheme(item.theme);
+            else {                                          // naya sticker foran lag jaye (agar jagah ho)
+                const eq = equippedStickers();
+                if (eq.length < MAX_STICKERS) { eq.push(id); lsSave(pk('equippedStickers'), eq); }
             }
+            updateXPUI(); renderShop(); renderProfileStickers();
             if (window.QSSFX) QSSFX.win();
-            showToast(`🎉 ${item.name} Unlocked!`);
+            showToast(`🎉 ${item.name} ab hamesha aapka!`);
+        }
+        function equipTheme(id) {
+            const item = itemById(id);
+            if (!item || !ownedList().includes(id)) return;
+            applyTheme(item.theme); renderShop();
+            showToast(`🎨 ${item.name} laga di`);
+        }
+        function toggleSticker(id) {
+            if (!ownedList().includes(id)) return;
+            let eq = equippedStickers();
+            if (eq.includes(id)) eq = eq.filter(x => x !== id);
+            else {
+                if (eq.length >= MAX_STICKERS) { showToast(`Sirf ${MAX_STICKERS} sticker lag sakte hain — pehle koi hatayein`); return; }
+                eq.push(id);
+                if (window.QSSFX) QSSFX.correct();
+            }
+            lsSave(pk('equippedStickers'), eq);
+            renderShop(); renderProfileStickers();
         }
 
         // --- XP ---
@@ -545,6 +661,7 @@
             document.getElementById('userChipName').innerText = p ? p.name : 'User';
             document.getElementById('userDropProfile').innerText = p ? p.name : '-';
             document.getElementById('userDropRole').innerText = userRole === 'admin' ? 'Admin' : 'Student';
+            renderProfileStickers();
             updateXPUI(); renderCourse(); updateStreak(); checkDailyGoal();
         }
 

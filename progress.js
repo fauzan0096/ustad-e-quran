@@ -5,7 +5,7 @@
 (function () {
     // ---------- storage helpers ----------
     // Profile ke hisaab se alag save hone wali keys (index.html ka pk() 'p_<profile>_<key>' banata hai)
-    var PER = { currentDay: 1, streak: 1, bestStreak: 1, bookmarks: 1, perfectExams: 1, revisionsDone: 1, badgesEarned: 1 };
+    var PER = { currentDay: 1, streak: 1, bestStreak: 1, bookmarks: 1, perfectExams: 1, revisionsDone: 1, badgesEarned: 1, namazBest: 1 };
     function K(k) {
         try { if (PER[k] && typeof pk === 'function' && typeof activeProfile !== 'undefined' && activeProfile) return pk(k); } catch (e) {}
         return k;
@@ -37,6 +37,9 @@
         { id: 'p1',  i: '💯', n: 'Full marks',             d: 'Exam mein 10/10 aaye',                  t: function (s) { return s.perfect >= 1; } },
         { id: 'p5',  i: '🎯', n: '5 baar full marks',      d: 'Exam mein 5 baar 10/10',                t: function (s) { return s.perfect >= 5; } },
         { id: 'r1',  i: '🔁', n: 'Dohrai mukammal',        d: 'Dohrai mein sab lafz sahi',             t: function (s) { return s.rev >= 1; } },
+        { id: 'n3',  i: '🕌', n: '3 din poori namaz',      d: 'Lagatar 3 din paanchon namaz',          t: function (s) { return s.namaz >= 3; } },
+        { id: 'n7',  i: '🤲', n: 'Namazi — 7 din',         d: 'Poora hafta paanchon namaz',            t: function (s) { return s.namaz >= 7; } },
+        { id: 'n30', i: '🌙', n: 'Pakka Namazi — 30 din',  d: 'Poora mahina paanchon namaz, MashaAllah!', t: function (s) { return s.namaz >= 30; } },
         { id: 'f10', i: '❤️', n: '10 pasandida',           d: '10 lafz pasandida mein jode',           t: function (s) { return s.favs >= 10; } }
     ];
 
@@ -50,7 +53,7 @@
         var best = Math.max(num('bestStreak'), streak);
         if (best !== num('bestStreak')) lsSet('bestStreak', best);
         return { total: total, days: days, words: words, streak: Math.max(streak, best), cur: streak, best: best,
-                 favs: lsJSON('bookmarks', []).length, perfect: num('perfectExams'), rev: num('revisionsDone') };
+                 favs: lsJSON('bookmarks', []).length, namaz: num('namazBest'), perfect: num('perfectExams'), rev: num('revisionsDone') };
     }
 
     function levelOf(words) {

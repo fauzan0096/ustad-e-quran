@@ -10,12 +10,13 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 - Har din 10 alfaz (kul 900) — Arabic + Roman + meaning, **Mashq** aur tafseel
 - Meaning 3 tarah se: **اردو / Roman / हिंदी**
 - Arabic lafz aur **Mashq par tap karke Qari ki awaaz** suniye 🔊
-- 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–10, pehle 100 lafz): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Ayat ka text Maktaba Shamila se.
+- 📖 **Har lafz ke saath Quran ki ayat** (abhi Day 1–10 aur Day 21–30: lafz 1–100 aur 201–300): ayat mein wo lafz **alag rang** mein, **surah aur ayat ka hawala**, aur ayat par tap karke **Qari Mishary Alafasy** ki awaaz. Har ayat ke neeche **⬇️ Download** (app mein save, net ke bina bhi sunein), **📥 MP3 file** (phone mein file utaarein) aur **🗑 Hatao**; din ke upar **Is din ki sab ayaat / Sab ayaat** ek saath download. Ayat ka text Maktaba Shamila se.
 - 📝 **Daily Exam** — roz 10 sawal, 8 sahi hon to agla din unlock
 - 🥈 **Silver Exam (500 lafz)** — Day 50 poora hote hi **50 mushkil sawal**. **80% (40/50)** laayen to Silver Sanad milti hai. **Jab tak pass nahi, Day 51 se aage sab band (🔒).**
 - 🥇 **Final Exam (900 lafz)** — Day 90 ke baad **75 sawal**, pass **80% (60/75)**. Silver aur Final **dono 80%+** hon tabhi Gold Sanad.
 - Exam fail ho to dobara de sakte hain (har baar naye sawal). Sanad download/share ho sakti hai.
-- 🔥 Streak, ⭐ XP/Levels, 🏅 Badges, 🛒 Inaam Ghar (Shop)
+- 🔥 Streak, ⭐ XP/Levels, 🏅 Badges
+- 🛒 **Inaam Ghar (Shop)** — 3 themes + **16 stickers** (Aam / Khaas / Nayaab / Shahi). **Kharida hua item hamesha profile ke paas rehta hai**; theme badalne/reset karne se kuch khatam nahi hota, Shop se **🎨 Lagayein** dabayein. Stickers (max 3) **profile ke naam ke baazu mein** dikhte hain (Shahi stickers chamakte hain ✨)
 - 📤 Lafz ya badge ki share card (WhatsApp / Insta)
 - 📖 **Aaj ki Ayat**, 👤 alag-alag naam ki alag profile (har ki apni history)
 
@@ -30,6 +31,16 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 
 ### 🕌 Tajweed (`tajweed.html`)
 Basic / Intermediate / High qawaid, misaalon ke saath — har misaal Qari ki awaaz mein.
+
+### 🕌 Namaz (`namaz.js`)
+- **Azan ke waqt**: 📍 location se Aladhan API se 5 waqt aate hain (ya khud time bharein). Asr: Hanafi / Shafi.
+- **Roz ek baar sawal**: Isha ke baad (ya kal ka na bhara ho to subah) "Poori namaz padhi?" — ✅ sab padhi = +25 XP, 🔥 poori-namaz streak, 3/7/30 din ke badges.
+- **Azan par 20 min lock**: azan ke waqt se 20 minute app par poori screen band; reload se bhi nahi hatti. Zaroori kaam ke liye 5 second dabaye rakhne ka button. Admin par lock nahi lagta.
+- **📊 Mahine ka hisaab**: 5 boxes (Fajr–Isha) mein padhi/chhooti, % aur din-ba-din grid (box dabakar badal sakte hain). Sirf **is mahine + pichle mahine** ka data rakha jata hai. Mahine ke aakhri din Isha ke baad (ya naye mahine mein pehli baar kholne par) apne aap hisaab dikhta hai.
+- **🔊 Azan ki awaaz**: lock ke shuru mein `azan-aksa.mp3` / `azan-sweet.mp3` / `azan-3.mp3` mein se chuni hui bajti hai (Settings mein badal sakte hain ya band). Phone kabhi-kabhi bina chhue awaaz rok deta hai.
+- **📅 Calendar alarm**: 2 mahine ke azan alarms ki `.ics` file (app band ho tab bhi phone bajata hai).
+- Dhyan: web app phone ko **system-level lock nahi kar sakti** — lock sirf app ke andar hai.
+- Har page ke `<head>` mein `<script src="namaz.js" defer></script>` chahiye (index aur games mein lag chuka hai; dua.html, tajweed.html, asma.html mein bhi lagayein taake wahan bhi lock chale).
 
 ### 🎮 Games (`games.html`)
 🏆 KBC · ⭐ Sahaba · 🧠 Memory · 😀 Emoji — nasheed aur sound effects ke saath.
@@ -60,7 +71,7 @@ Dhyan dein:
 .
 ├── index.html       # Sabaq, exam, login, shop, certificate (main app)
 ├── courseData.js    # 90 din ka course data (900 alfaz)
-├── wordAyat.js      # Har lafz -> Quran ki ayat (Day 1-10 ke 100 lafz), hawala ke saath
+├── wordAyat.js      # Har lafz -> Quran ki ayat (Day 1-10 aur 21-30 ke 200 lafz), hawala ke saath
 ├── dua.html         # Masnoon duaein + Favourites
 ├── tajweed.html     # Tajweed ke qawaid
 ├── games.html       # Games
@@ -69,6 +80,8 @@ Dhyan dein:
 ├── qari.js          # Quran text pehchan kar Qari ki recording dhoondhta hai
 ├── progress.js      # Levels, badges, share card
 ├── ui.js            # Splash, text size (A-/A+), Aaj ki Ayat
+├── azan-aksa.mp3 / azan-sweet.mp3 / azan-3.mp3   # Azan ki awaaz
+├── namaz.js         # Azan times, roz ki namaz ka sawal, 20 min lock, Calendar alarms
 ├── games-audio.js   # Games ka nasheed aur sound effects (nasheed.mp3 chahiye)
 ├── theme.css        # Shared theme
 ├── install.js       # Install popup (upar banner)
@@ -88,6 +101,12 @@ Dhyan dein:
 Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost:8000` kholen (PWA install aur Qari ki awaaz ke liye server zaroori hai, seedha file kholne se kuch cheezein nahi chalti).
 
 > Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v24` → `v25`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
+
+## ⬇️ Ayat Download (Offline)
+
+- Download karne par ayat ki Mishary wali mp3 phone ke **Cache Storage** (`qs-mishary-v1`) mein save hoti hai; phir ayat par tap karne se pehle wahi saved copy chalti hai (net na ho tab bhi). Saved na ho to pehle jaisa net se.
+- `sw.js` is cache (`qs-mishary-v1`) ko version badalne par bhi delete nahi karta. Naam badlein to `qari.js` (`DL_CACHE`) aur `sw.js` (`KEEP_CACHES`) dono mein.
+- Download ke liye internet chahiye aur everyayah.com / Quran.com ko browser se fetch karne dena chahiye (CORS).
 
 ## 🛠️ Data Badalna / Badhaana
 
