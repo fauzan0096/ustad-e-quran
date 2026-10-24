@@ -88,6 +88,15 @@
         .top-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px auto 4px; max-width: 1200px; padding: 0 16px; position: relative; z-index: 1; }
         .top-link-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border-radius: 16px; background: var(--card-bg); color: var(--text); text-decoration: none; font-weight: 600; font-size: 13px; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .top-link-btn .ti { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: rgba(15,76,58,.12); }
+        .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 1200px; margin: 10px auto 0; padding: 0 16px; position: relative; z-index: 1; align-items: stretch; }
+        .mini-row > div { min-width: 0; display: flex; }
+        .mini-tile { flex: 1; flex-direction: column; justify-content: center; gap: 6px; min-height: 68px; padding: 10px 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+        .mini-tile .mt-top { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; line-height: 1.2; }
+        .mini-tile .mt-ic { font-size: 20px; line-height: 1; }
+        .mini-tile .mt-row { display: flex; gap: 6px; align-items: center; min-width: 0; }
+        .mini-tile input[type=time] { flex: 1 1 0; min-width: 0; height: 34px; padding: 0 6px; border: 1px solid var(--border); border-radius: 10px; background: var(--soft-bg); color: var(--text); font: 600 13px 'Figtree', sans-serif; }
+        .mini-tile .mt-go { flex: 0 0 auto; height: 34px; padding: 0 10px; border: none; border-radius: 10px; font: 700 12px 'Figtree', sans-serif; color: #2A2008; background: linear-gradient(180deg, #E3C36E, #C79E3F); cursor: pointer; }
+        @media (max-width: 339px) { .mini-row { grid-template-columns: 1fr; } }
         .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; }
         .view-section.active { display: block; }
 
@@ -98,14 +107,14 @@
         .j-node.current { border-color: var(--gold-bright); background: var(--card-bg); color: var(--ink); transform: scale(1.1); }
         .j-node.locked { opacity: 0.6; background: var(--soft-bg); }
 
-        .daily-goal-card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin: 16px auto 0; display: flex; align-items: center; gap: 16px; border: 1px solid var(--border); }
-        .dg-icon { font-size: 32px; background: var(--soft-bg); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .daily-goal-card { background: var(--card-bg); border-radius: 16px; padding: 14px 16px; margin: 12px auto 0; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; border: 1px solid var(--border); }
+        .dg-icon { font-size: 28px; flex: 0 0 auto; background: var(--soft-bg); width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .dg-content { flex: 1; }
         .dg-title { font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; }
         .dg-bar { height: 8px; background: var(--border); border-radius: 8px; overflow: hidden; margin-top: 6px; }
         .dg-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--secondary), var(--gold-bright)); transition: width .5s; }
 
-        .ayat-card { background: linear-gradient(135deg, rgba(184,146,58,0.1), rgba(184,146,58,0.02)); border: 1px solid var(--secondary); border-left: 4px solid var(--secondary); border-radius: 16px; padding: 16px; margin: 10px auto 0; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.2s; }
+        .ayat-card { background: linear-gradient(135deg, rgba(184,146,58,0.1), rgba(184,146,58,0.02)); border: 1px solid var(--secondary); border-left: 4px solid var(--secondary); border-radius: 16px; padding: 14px 16px; margin: 12px auto 0; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.2s; }
         .ayat-card:active { transform: scale(0.98); }
         .ayat-card .dg-icon { background: rgba(184,146,58,0.2); }
         .ayat-card .dg-title { color: var(--secondary); }
@@ -271,17 +280,21 @@
             <a href="asma.html" class="top-link-btn"><span class="ti">✨</span>99 Naam</a>
         </div>
 
+        <div class="mini-row">
+            <div id="namazCard"></div>
+            <div class="mini-tile" id="remindCard" title="Phone ke Calendar mein roz ka alarm lag jayega">
+                <div class="mt-top"><span class="mt-ic">🔔</span><b>Roz ki yaad</b></div>
+                <div class="mt-row">
+                    <input type="time" id="remindTime" value="20:00" aria-label="Roz ki yaad ka waqt" onchange="localStorage.setItem('remindTime', this.value)">
+                    <button type="button" class="mt-go" onclick="setReminder()">Lagayein</button>
+                </div>
+            </div>
+        </div>
+
         <div id="courseTab" class="view-section active">
-            <div id="todayCard" style="margin-top:16px;"></div>
+            <div id="todayCard" style="margin-top:12px;"></div>
             
             <div id="weakCard" class="tool-card hidden"></div>
-            <div id="namazCard"></div>
-            <div class="tool-card" id="remindCard">
-                <div class="tc-title">🔔 Roz ki yaad-dehani</div>
-                <div class="tc-sub">Waqt chunein — phone ke Calendar mein roz ka alarm lag jayega (app band ho tab bhi bajega).</div>
-                <input type="time" id="remindTime" value="20:00" onchange="localStorage.setItem('remindTime', this.value)">
-                <button class="exam-btn gold" onclick="setReminder()">🔔 Alarm lagayein</button>
-            </div>
             <div class="daily-goal-card">
                 <div class="dg-icon">🎯</div>
                 <div class="dg-content">
