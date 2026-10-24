@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Quraan Ustad - Complete Course</title>
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
@@ -261,6 +261,10 @@
         .mini-tile input[type=time] { font-size: 12px; padding: 0 2px; }
         .dash .mini-row { max-width: none; margin: 14px 0 0; padding: 0; }
         .dash > .tool-card { margin: 14px 0 0; }
+        /* iPhone: status bar ke peeche bhi hara rang (blur/dhundhla patti nahi), watermark band */
+        html { background: #0F4C3A; }
+        body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top, 0px); background: #14614A; z-index: 1100; pointer-events: none; }
+        body::after { display: none !important; }
     </style>
 </head>
 <body>

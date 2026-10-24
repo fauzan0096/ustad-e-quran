@@ -29,7 +29,7 @@ Ek simple, mobile-friendly web app (PWA) jisse Quran ke alfaz, namaz ki duaen au
 - 🏠 **Dashboard**: Maqsad → shortcuts → Aaj ki Ayat → Namaz/Yaad → Safar → Aaj ke lafz
 
 ### 🤲 Masnoon Duaein (`dua.html`)
-- **93 duaein**: Namaz (59), Subah-Sham Azkar, Mushkil & Pareshani, Bimari & Shifa, Sone se Pehle
+- **119 duaein**: Namaz (59), Subah-Sham Azkar, Roz marra (26, Hisnul Muslim), Mushkil & Pareshani, Bimari & Shifa, Sone se Pehle
 - Har dua: Arabic (line-wise) + Roman + Urdu tarjuma + tafseel + hawala
 - 🔍 Search (Urdu ya Roman)
 - **⭐ Favourites** — jo dua baar baar padhni ho, card ke ☆ par tap karein. Upar **⭐ Favourites** tab mein sab ek jagah milengi (search bhi chalta hai). Har profile ki apni favourites list.
@@ -110,7 +110,7 @@ Dhyan dein:
 
 Locally chalane ke liye `python3 -m http.server` chalayein aur `http://localhost:8000` kholen (PWA install aur Qari ki awaaz ke liye server zaroori hai, seedha file kholne se kuch cheezein nahi chalti).
 
-> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v36` → `v37`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
+> Koi bhi file badalne par `sw.js` mein `CACHE_NAME` ka number badha dein (jaise `v38` → `v39`), taake purane phones par naya version aaye. Users ki history (localStorage) par koi asar nahi padta.
 
 ## ⬇️ Ayat Download (Offline)
 

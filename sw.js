@@ -5,6 +5,8 @@
 // Audio (nasheed.mp3) = SW se bypass, browser seedha network se chalata hai
 // ==========================================
 
+// v38: Roz marra ki 26 duaein (Hisnul Muslim), namaz.js dua aur asma pages mein
+// v37: Tajweed ke 38 qawaid (18 naye), iPhone status bar ka dhundhla hissa theek
 // v36: ayat Day 1-50 (lafz 1-500) poore
 // v35: ayat Day 1-30 + 41-57 (dono versions mila diye)
 // v34: Naya dashboard (maqsad > shortcuts > namaz/yaad > ayat > safar > sabaq), nasheed har game mein, Silver/Gold exam mein anbiya ke naam nahi
@@ -22,7 +24,7 @@
 // v22: Qari ki awaaz har Quran ke hisse par (multi-ayat, teeno Qul, Ayatul Kursi) + dua mein Favourites — cache badalna zaroori hai
 // (v21: naya login (pura naam + multi-user profiles) aur certificate naam fix)
 // NOTE: sirf Cache Storage badalta hai, users ki history (localStorage) ko koi asar nahi
-const CACHE_NAME = 'quran-ustad-auto-v36';
+const CACHE_NAME = 'quran-ustad-auto-v38';
 // Download ki hui ayat ki recordings (qari.js) — ye cache kabhi delete nahi karna
 const KEEP_CACHES = [CACHE_NAME, 'qs-mishary-v1'];
 
